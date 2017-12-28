@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.htkapp.modules.merchant.buffetFood.dao.SeatInformationMapper">
+
+    <sql id="Base_Column_List">
+        id,seat_name, number_seat, shop_id,seat_status
+    </sql>
+    
+    <!-- =====================接口开始======================= -->
+    <select id="getSeatInformationListByShopIdDAO" resultType="SeatInformation">
+        select 
+        <include refid="Base_Column_List" />
+        from seat_information
+        where shop_id = #{shopId} and seat_status = 0
+    </select>
+
+    <!-- =====================接口结束======================= -->
+
+</mapper>

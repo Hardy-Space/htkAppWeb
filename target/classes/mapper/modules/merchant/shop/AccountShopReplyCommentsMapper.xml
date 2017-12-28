@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.htkapp.modules.merchant.shop.dao.AccountShopReplyCommentsMapper">
+
+    <sql id="Base_Column_List">
+        id, reply_content, comment_id, account_shop_token
+    </sql>
+
+    <!-- ==============================JSP页面接口开始===================================== -->
+    <select id="getNoCommentNumberDAO" resultType="java.lang.Integer">
+        select count(0)
+        from account_shop_reply_comments
+        right join shop_message_comment
+        on account_shop_reply_comments.comment_id = shop_message_comment.id
+        where account_shop_reply_comments.account_shop_token = #{accountShopToken}
+    </select>
+    <select id="getBadCommentNumberDAO" resultType="java.lang.Integer">
+        select count(0)
+        from account_shop_reply_comments
+        right join shop_message_comment
+        on account_shop_reply_comments.comment_id = shop_message_comment.id
+        where
+        account_shop_reply_comments.account_shop_token = #{accountShopToken}
+        and
+        shop_message_comment.comments_stars > 1
+    </select>
+    <select id="getReplyContentByIdDAO" resultType="AccountShopReplyComments" >
+        select *
+        from account_shop_reply_comments
+        where comment_id = #{commentId}
+    </select>
+    <insert id="insertReplyDAO" >
+        insert into
+        account_shop_reply_comments(reply_content,comment_id,account_shop_token)
+        values(#{replyContent}, #{commentId}, #{accountShopToken})
+    </insert>
+    <!-- ==============================接口结束===================================== -->
+
+</mapper>
