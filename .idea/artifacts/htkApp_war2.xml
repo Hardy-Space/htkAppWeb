@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" build-on-make="true" name="htkApp:war2">
-    <output-path>$PROJECT_DIR$/out/artifacts/htkApp_war2</output-path>
-    <root id="archive" name="htkApp_war2.war">
-      <element id="artifact" artifact-name="htkApp:war exploded" />
-    </root>
-  </artifact>
-</component>

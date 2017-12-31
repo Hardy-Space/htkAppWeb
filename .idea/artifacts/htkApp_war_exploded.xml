@@ -49,7 +49,7 @@
           <element id="library" level="project" name="Maven: javax.validation:validation-api:1.1.0.Final" />
           <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging:3.2.1.Final" />
           <element id="library" level="project" name="Maven: com.fasterxml:classmate:1.1.0" />
-          <element id="library" level="project" name="alipay-sdk-java20170615110434" />
+          <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.8.0" />
           <element id="library" level="project" name="Maven: cn.jpush.api:jpush-client:3.2.17" />
           <element id="library" level="project" name="Maven: cn.jpush.api:jiguang-common:1.0.3" />
           <element id="library" level="project" name="Maven: com.squareup.okhttp3:okhttp:3.3.1" />
@@ -95,6 +95,7 @@
           <element id="library" level="project" name="Maven: org.apache.zookeeper:zookeeper:3.4.6" />
           <element id="library" level="project" name="Maven: org.codehaus.woodstox:wstx-asl:3.2.7" />
           <element id="library" level="project" name="Maven: org.noggit:noggit:0.5" />
+          <element id="library" level="project" name="alipay-sdk-java20170615110434" />
         </element>
       </element>
       <element id="directory" name="META-INF">
