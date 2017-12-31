@@ -2,6 +2,7 @@ package com.htkapp.modules.API.service.serviceImpl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import com.htkapp.core.API.APIRequestParams;
 import com.htkapp.core.MethodsParamsEntity.PushMesEntity;
@@ -29,7 +30,11 @@ import com.htkapp.modules.merchant.shop.entity.Shop;
 import com.htkapp.modules.merchant.shop.service.AccountShopServiceI;
 import com.htkapp.modules.merchant.shop.service.ShopServiceI;
 import com.xiaoleilu.hutool.date.DateUtil;
+import com.xiaoleilu.hutool.json.JSONUtil;
 import io.goeasy.GoEasy;
+import net.sf.json.JsonConfig;
+import net.sf.json.util.JSONUtils;
+import org.json.JSONArray;
 import org.springframework.stereotype.Service;
 import sun.security.action.GetLongAction;
 
@@ -264,6 +269,8 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
                 ReturnBuffetFoodOrderData buffetFoodOrder = buffetFoodOrderService.getOrderByOrderNumber(params.getOrderNumber());
                 if (buffetFoodOrder != null) {
                     //查找订单中的商品
+//                    BuffetFoodOrder buffetFoodOrder = buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(params.getOrderNumber());
+//                    List<BuffetFoodOrderProduct> buffetFoodOrderProductList = buffetFoodOrder.getProductLists();
                     List<BuffetFoodOrderProduct> buffetFoodOrderProductList = buffetFoodOrderProductService.getOrderProductListByOrderNumber(buffetFoodOrder.getOrderNumber());
                     buffetFoodOrder.setProductList(buffetFoodOrderProductList);
                     //格式化时间
@@ -416,13 +423,16 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
     public APIResponseModel getLastModifiedProductList(APIRequestParams params) {
         if (params != null && params.getOrderNumber() != null) {
             //根据订单号查询订单详情{ 订单号，时间，订单状态，已点商品{名字、数量、价格}, 已提交时间 }
-            ReturnBuffetFoodOrderData buffetFoodOrder = buffetFoodOrderService.getOrderByOrderNumber(params.getOrderNumber());
-            if (buffetFoodOrder != null) {
+            ReturnBuffetFoodOrderData buffetFoodOrderData = buffetFoodOrderService.getOrderByOrderNumber(params.getOrderNumber());
+            if (buffetFoodOrderData != null) {
                 //查找订单中的商品
-                List<BuffetFoodOrderProduct> buffetFoodOrderProductList = buffetFoodOrderProductService.getOrderProductListByOrderNumber(buffetFoodOrder.getOrderNumber());
-                buffetFoodOrder.setProductList(buffetFoodOrderProductList);
+                BuffetFoodOrder buffetFoodOrder = buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(params.getOrderNumber());
+                net.sf.json.JSONArray jsonArray = net.sf.json.JSONArray.fromObject(buffetFoodOrder.getAdjustOrderProductJson());
+                List<BuffetFoodOrderProduct> buffetFoodOrderProductList = net.sf.json.JSONArray.toList(jsonArray,new BuffetFoodOrderProduct(),new JsonConfig());
+//                List<BuffetFoodOrderProduct> buffetFoodOrderProductList = buffetFoodOrderProductService.getOrderProductListByOrderNumber(buffetFoodOrder.getOrderNumber());
+                buffetFoodOrderData.setProductList(buffetFoodOrderProductList);
                 System.out.println("已点商品列表");
-                return new APIResponseModel<>(Globals.API_SUCCESS, "成功", buffetFoodOrder);
+                return new APIResponseModel<>(Globals.API_SUCCESS, "成功", buffetFoodOrderData);
             } else {
                 return new APIResponseModel(Globals.API_FAIL, "查找不到订单");
             }

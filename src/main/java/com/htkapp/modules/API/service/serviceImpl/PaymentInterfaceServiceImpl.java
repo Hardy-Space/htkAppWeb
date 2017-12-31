@@ -83,11 +83,11 @@ public class PaymentInterfaceServiceImpl implements PaymentInterfaceService {
     public APIResponseModel callUpPaymentInterfaceHTK(APIRequestParams params, OrderRecord orderRecord) {
         if (params != null && orderRecord != null) {
             try {
-                //根据类flag 判断是微信还是支付宝
+
                 String out_trade_no = OrderNumGen.next().toString();
                 orderRecord.setOrderNumber(out_trade_no);
                 orderRecord.setOrderTime(format(new Date(), NORM_DATETIME_PATTERN));
-                //根据订单中的mark 判断是外卖还是团购
+                //根据类flag 判断是微信还是支付宝
                 if (params.getFlag() == 1) {
                     //支付宝
                     CallUpAliPayReturnData result = AliPayUtil.generateAlipayPaymentInformation(orderRecord.getOrderAmount(), orderRecord.getMark(), out_trade_no);
