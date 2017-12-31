@@ -132,6 +132,16 @@ public class IntegralManageController {
         return mDirectory + "exits_active_message";
     }
 
+    //订座订单列表页面
+    @RequestMapping(value = "/getSeatOrderList")
+    public String getSeatOrderPage(Model model) {
+        model.addAttribute("date", new Date().getTime());
+        model.addAttribute("int_mark_seatOrder", true);
+        model.addAttribute("int_mark", true);
+
+        return mDirectory + "integral_seatOrder";
+    }
+
     //作废活动接口
     @RequestMapping("/obsoleteActivity")
     @ResponseBody
