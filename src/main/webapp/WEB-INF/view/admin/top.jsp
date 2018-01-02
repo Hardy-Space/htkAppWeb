@@ -32,7 +32,7 @@
             <li class="layui-nav-item ${app_page ? "layui-this" : ""}"><a href="${sysPath}admin/appVersionManage/index">app管理</a></li>
             <li class="layui-nav-item ${user_page ? "layui-this" : ""}"><a href="${sysPath}admin/manageUser">用户管理</a></li>
             <li class="layui-nav-item ${category_page ? "layui-this" : ""}"><a href="${sysPath}admin/category/takeoutCategory">分类管理</a></li>
-            <li class="layui-nav-item ${permission_page ? "layui-this" : ""}"><a href="${sysPath}admin/permission">权限管理</a></li>
+            <li class="layui-nav-item ${permission_page ? "layui-this" : ""}"><a href="javascript:void(0)">权限管理</a></li>
             <li class="layui-nav-item ${registerApp_page ? "layui-this" : ""}"><a href="${sysPath}admin/registerApplyList">注册申请列表</a></li>
         </ul>
     </div>
