@@ -678,7 +678,7 @@ public class MerchantController {
         Map<String, Object> map = new HashMap<>();
         map.put("date", new Date().getTime());
         map.put("int_mark", true);
-        map.put("int_mark_list", true); //账单管理
+        map.put("int_mark_list", true);
         OtherUtils.ReturnValByModel(model, map);
 //        if(result.hasErrors()){
 //            System.out.println("验证有错误");
@@ -686,6 +686,18 @@ public class MerchantController {
         merchantService.integralListDateAndByCondition(model, pageNum, params.getUserPhone());
         return mDirectory + "integral_list";
     }
+
+    //=====订座订单
+    @RequestMapping(value =  "/integral/seatOrder", method = RequestMethod.GET)
+    public String integralSeatOrder(Model model) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("date", new Date().getTime());
+        map.put("int_mark", true);
+        map.put("int_mark_seatOrder", true);
+        OtherUtils.ReturnValByModel(model, map);
+        return mDirectory + "integral_seatOrder";
+    }
+
 
     //财务管理
     //====账单资金

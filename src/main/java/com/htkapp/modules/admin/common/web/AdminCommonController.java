@@ -131,6 +131,12 @@ public class AdminCommonController {
     //==================================分类管理
 
     //==================================权限管理
+    @RequestMapping(value = "/permissionPage", method = RequestMethod.GET)
+    public String permissionPage(Model model) {
+        model.addAttribute("date", new Date().getTime());
+        model.addAttribute("permission_page", true);
+        return adminDirector + "permission";
+    }
 
     //==================================注册申请列表
     @RequestMapping("/registerApplyList")
