@@ -41,5 +41,7 @@ public interface AccountShopServiceI {
     void updatePassword(AccountShop accountShop);
     //修改手机号
     void updateShopPhone(AccountShop accountShop);
+    //更改剩余时间
+    void updateUseTimeById(int userId, String time);
     /* ========================JSP页面接品结束=============================== */
 }

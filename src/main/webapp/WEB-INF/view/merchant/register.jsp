@@ -27,7 +27,7 @@
     <![endif]-->
     <style>
         .register_content {
-            width: 45%;
+            width: 53%;
             margin: auto;
             background-color: #fff;
             border-radius: 3px;

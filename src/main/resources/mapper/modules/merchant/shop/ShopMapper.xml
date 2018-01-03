@@ -222,6 +222,12 @@
             <if test="accountShopId != null">
                 account_shop_id,
             </if>
+            <if test="mark != null">
+                mark,
+            </if>
+            <if test="shopCategoryId != null">
+                shop_category_id,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="shopName != null">
@@ -256,6 +262,12 @@
             </if>
             <if test="accountShopId != null">
                 #{accountShopId},
+            </if>
+            <if test="mark != null">
+                #{mark},
+            </if>
+            <if test="shopCategoryId != null">
+                #{shopCategoryId},
             </if>
         </trim>
     </insert>

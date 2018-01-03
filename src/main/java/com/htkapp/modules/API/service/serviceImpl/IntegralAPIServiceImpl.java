@@ -246,7 +246,7 @@ public class IntegralAPIServiceImpl implements IntegralAPIService {
                     JSONObject object = new JSONObject();
                     if (StringUtils.isEmpty(shop.getShopQrCodeUrl())) {
                         //调用方法生成二维码并返回地址,保存地址到数据库
-                        String qrImgURL = OtherUtils.getImgUrl(String.valueOf(params.getShopId()), "/shop/QRCode/");
+                        String qrImgURL = OtherUtils.getImgUrl(String.valueOf(params.getShopId()), "/shop/QRCode/", 0);
                         object.put("qrImgUrl", OtherUtils.getRootDirectory() + qrImgURL);
                         //保存到数据库
                         shopService.updateShopQRCode(qrImgURL,params.getShopId());

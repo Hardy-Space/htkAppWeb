@@ -152,11 +152,7 @@ public class ShopServiceImpl implements ShopServiceI {
         try {
             List<Shop> shopList = shopDao.getShopListByAccountShopIdDAO(accountShopId);
             if (shopList != null && shopList.size() > 0) {
-                if (shopList.size() > 2) {
-                    throw new Exception(Globals.CALL_DATABASE_ERROR);
-                } else {
-                    return shopList;
-                }
+                return shopList;
             } else {
                 throw new Exception(Globals.CALL_DATABASE_ERROR);
             }

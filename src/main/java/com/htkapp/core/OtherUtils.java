@@ -94,7 +94,7 @@ public class OtherUtils {
     }
 
     //原因是：chrome浏览器可以识别出Base64数据为图片，Firefox无法识别为图片 生成二维码数据
-    public static String getImgUrl(String id, String folder) throws Exception {
+    public static String getImgUrl(String id, String folder, int flag) throws Exception {
         try {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 //            HttpSession session = request.getSession();
@@ -103,7 +103,7 @@ public class OtherUtils {
             JSONObject jsonObject = new JSONObject();
             String shopIdStr = encryptString(id);
             jsonObject.put("shopKey", shopIdStr);
-            jsonObject.put("type", 0);  //0关注－收藏   1自助点餐
+            jsonObject.put("type", flag);  //0关注－收藏   1自助点餐
             Map<EncodeHintType, Object> hints = new EnumMap<>(EncodeHintType.class);
             hints.put(EncodeHintType.MARGIN, 0);  //margin 边框距离
             hints.put(EncodeHintType.CHARACTER_SET, StandardCharsets.UTF_8.name());
@@ -111,12 +111,14 @@ public class OtherUtils {
             BitMatrix matrix = new QRCodeWriter().encode(jsonObject.toJSONString(), BarcodeFormat.QR_CODE, 500, 500, hints);
 //            String getPath = session.getServletContext().getRealPath("/upload") + folder;
             String fileName = "shop_" + id + ".png";
-            String writeTempPath = "D:\\resource";
+//            String writeTempPath = "D:\\resource";
+            String writeTempPath = "/opt/temp";
             File file = new File(writeTempPath, fileName);
             Path path = file.toPath();
             MatrixToImageWriter.writeToPath(matrix, "PNG", path);
             FTPClient client = getFTPClient(FTPConfig.host, FTPConfig.port, FTPConfig.userName, FTPConfig.password);
-            uploadFileForFTP(client, fileName, writeTempPath + "\\" + fileName, "Resource\\htkApp\\upload\\" + folder);
+//            uploadFileForFTP(client, fileName, writeTempPath + "\\" + fileName, "Resource\\htkApp\\upload\\" + folder);
+            uploadFileForFTP(client, fileName, writeTempPath + "/" + fileName, "Resource\\htkApp\\upload\\" + folder);
             //同时存入项目文件夹下
             String rootPath = Globals.PROJECT_URL + Globals.PHOTO_URL + folder;
             return rootPath + fileName;

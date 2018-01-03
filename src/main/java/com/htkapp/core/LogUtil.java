@@ -19,6 +19,11 @@ public class LogUtil {
         logger.error(message, e);
     }
 
+    public static void error(Class<? extends Object> clazz, String message) {
+        Logger logger = Logger.getLogger(clazz);
+        logger.error(message);
+    }
+
 
     public static void info(Class<? extends Object> clazz, String message){
         Logger logger = Logger.getLogger(clazz);

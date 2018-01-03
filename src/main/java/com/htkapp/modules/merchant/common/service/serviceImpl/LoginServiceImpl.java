@@ -77,7 +77,7 @@ public class LoginServiceImpl implements LoginService {
                         //登陆成功，改变账号状态
                         AccountShop accountShop = new AccountShop();
                         accountShop.setToken(user.getToken());
-                        accountShop.setPcLoginState(true);
+//                        accountShop.setPcLoginState(true);
                         accountShopService.changeAccountShopLoginState(accountShop);
                         return new AjaxResponseModel<AjaxReturnLoginData>(Globals.COMMON_SUCCESS_AND_JUMP_URL, "登陆成功", returnData);
                     } catch (Exception e) {
@@ -118,7 +118,7 @@ public class LoginServiceImpl implements LoginService {
                             clearCookies(request, response);
                             AccountShop accountShop = new AccountShop();
                             accountShop.setToken(accountShopToken);
-                            accountShop.setPcLoginState(false);
+//                            accountShop.setPcLoginState(false);
                             try {
                                 accountShopService.changeAccountShopLoginState(accountShop);
                                 return new AjaxResponseModel<String>(Globals.COMMON_SUCCESS_AND_JUMP_URL, " 退出登陆成功", "/merchant/login.htm");

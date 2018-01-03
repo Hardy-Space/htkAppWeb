@@ -26,7 +26,7 @@ public class AccountShop {
 
     private Integer accountStatus;
 
-    private boolean pcLoginState;
+    private Integer pcLoginState;
 
     private boolean appLoginState;
 
@@ -39,6 +39,12 @@ public class AccountShop {
     private String alipayAccount; //支付宝提现账号
 
     private String alipayAccountType;  //支付宝提现账号类型
+
+    private String shopListStr;   //商铺列表字符串
+
+    private String roleStr;  //权限
+
+    private String identity;
 
     public String getUserName() {
         return userName;
@@ -128,11 +134,11 @@ public class AccountShop {
         this.nickName = nickName;
     }
 
-    public boolean getPcLoginState() {
+    public Integer getPcLoginState() {
         return pcLoginState;
     }
 
-    public void setPcLoginState(boolean pcLoginState) {
+    public void setPcLoginState(Integer pcLoginState) {
         this.pcLoginState = pcLoginState;
     }
 
@@ -215,5 +221,29 @@ public class AccountShop {
                 ", alipayAccount='" + alipayAccount + '\'' +
                 ", alipayAccountType='" + alipayAccountType + '\'' +
                 '}';
+    }
+
+    public String getShopListStr() {
+        return shopListStr;
+    }
+
+    public void setShopListStr(String shopListStr) {
+        this.shopListStr = shopListStr;
+    }
+
+    public String getRoleStr() {
+        return roleStr;
+    }
+
+    public void setRoleStr(String roleStr) {
+        this.roleStr = roleStr;
+    }
+
+    public String getIdentity() {
+        return identity;
+    }
+
+    public void setIdentity(String identity) {
+        this.identity = identity;
     }
 }

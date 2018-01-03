@@ -30,4 +30,10 @@ public class RoleServiceImpl implements RoleService {
         }
         return null;
     }
+
+    //通过用户id查找用户角色
+    @Override
+    public Set<String> getRoleListNameByUserId(long userId) {
+        return roleDao.getRoleListNameByUserIdDAO(userId);
+    }
 }

@@ -23,4 +23,19 @@ public class AccountShopRoleServiceImpl implements AccountShopRoleService {
             throw new InsertException(Globals.DEFAULT_EXCEPTION_INSERT_FAILED);
         }
     }
+
+    //根据商户id查找用户权限
+    @Override
+    public AccountShopRole getAccountShopRoleById(int id) {
+        return accountShopRoleDao.getAccountShopRoleByIdDAO(id);
+    }
+
+    //修改用户权限
+    @Override
+    public void updateAccountShopRole(AccountShopRole accountShopRole) {
+        int row = accountShopRoleDao.updateAccountShopRoleDAO(accountShopRole);
+        if(row <= 0){
+            throw new InsertException(Globals.DEFAULT_EXCEPTION_INSERT_FAILED);
+        }
+    }
 }

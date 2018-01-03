@@ -60,6 +60,8 @@ public class Shop {
 
     private String des;  //店铺简介
 
+    private String bufImg; //自助点餐二维码
+
     public Integer getShopId() {
         return shopId;
     }
@@ -307,5 +309,13 @@ public class Shop {
                 ", shopCategoryName='" + shopCategoryName + '\'' +
                 ", des='" + des + '\'' +
                 '}';
+    }
+
+    public String getBufImg() {
+        return bufImg;
+    }
+
+    public void setBufImg(String bufImg) {
+        this.bufImg = bufImg;
     }
 }

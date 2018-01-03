@@ -9,6 +9,11 @@ import com.htkapp.core.utils.Globals;
 import com.htkapp.modules.admin.common.service.AdminCommonControllerServiceI;
 import com.htkapp.modules.common.dto.AjaxReturnLoginData;
 import com.htkapp.modules.common.entity.LoginUser;
+import com.htkapp.modules.merchant.shop.dao.RegisterApplyMapper;
+import com.htkapp.modules.merchant.shop.entity.AccountShop;
+import com.htkapp.modules.merchant.shop.entity.RegisterApply;
+import com.htkapp.modules.merchant.shop.service.AccountShopServiceI;
+import com.htkapp.modules.merchant.shop.service.RegisterApplyService;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +41,10 @@ public class AdminCommonController {
     private OtherUtils otherUtilsService;
     @Resource
     private AdminCommonControllerServiceI adminCommonControllerService;
+    @Resource
+    private AccountShopServiceI accountShopService;
+    @Resource
+    private RegisterApplyMapper registerApplyDao;
 
 
     //==================================管理登陆页
@@ -105,6 +114,29 @@ public class AdminCommonController {
         return adminCommonControllerService.enterPermissions(params);
     }
 
+    //开通接口，更改账号状态
+    @RequestMapping(value = "/changeAccountState", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResponseModel changeAccountState(AjaxRequestParams params) {
+        AccountShop accountShop = new AccountShop();
+        accountShop.setPcLoginState(1);
+        accountShop.setId(params.getId());
+        try {
+            boolean result = accountShopService.changeAccountShopLoginState(accountShop);
+            if(result) {
+                AccountShop accountShop1 = accountShopService.getAccountShopDataById(params.getId());
+                int row = registerApplyDao.deleteByIdDAO(accountShop1.getId());
+                if(row <= 0){
+                    return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
+                }
+            }
+            return new AjaxResponseModel(result ? Globals.COMMON_SUCCESSFUL_OPERATION :Globals.COMMON_OPERATION_FAILED);
+        }catch (Exception e){
+            return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
+        }
+
+    }
+
     //==================================管理首页
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String adminIndexPage(Model model) {
@@ -132,9 +164,14 @@ public class AdminCommonController {
 
     //==================================权限管理
     @RequestMapping(value = "/permissionPage", method = RequestMethod.GET)
-    public String permissionPage(Model model) {
+    public String permissionPage(Model model,
+                                 @RequestParam(value = "pageNum", defaultValue = "1", required = false) Integer pageNum) {
         model.addAttribute("date", new Date().getTime());
         model.addAttribute("permission_page", true);
+        RequestParams params = new RequestParams();
+        params.setModel(model);
+        params.setPageNum(pageNum);
+        adminCommonControllerService.permissionPage(params);
         return adminDirector + "permission";
     }
 

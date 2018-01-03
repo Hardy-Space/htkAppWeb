@@ -10,6 +10,8 @@ public interface RoleMapper {
 
     //通过用户id查找用户角色
     Set<String> getRoleListByUserIdDAO(long userId);
+    //通过用户id查找用户角色
+    Set<String> getRoleListNameByUserIdDAO(long userId);
     //获取所有店铺角色
     List<Role> getRoleListDAO();
 }

@@ -11,4 +11,6 @@ public interface RegisterApplyMapper {
     int insertApplyByIdDAO(RegisterApply apply);
     //获取注册申请列表
     List<RegisterApply> getRegisterApplyListDAO(@Param("stateId") int stateId, @Param("orderDesc") String orderDesc);
+    //根据商户id删除
+    int deleteByIdDAO(int id);
 }

@@ -40,10 +40,6 @@ public class TakeoutController {
     private TakeoutCategoryServiceI takeoutCategoryService;
     @Resource
     private TakeoutProductServiceI takeoutProductService;
-    @Resource
-    private OrderCommonService orderCommonService;
-    @Resource
-    private ShopServiceI shopService;
 
     public static String mTakeoutDirectory = "merchant/";
 

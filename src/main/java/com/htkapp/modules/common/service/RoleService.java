@@ -11,5 +11,7 @@ public interface RoleService {
     Set<String> getRoleListByUserId(long userId);
     //获取所有店铺角色
     List<Role> getRoleList();
+    //通过用户id查找用户角色
+    Set<String> getRoleListNameByUserId(long userId);
 
 }

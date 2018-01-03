@@ -164,32 +164,45 @@ public class MerchantServiceImpl implements MerchantService {
                 accountShop.setToken(UUID.randomUUID().toString());
                 accountShop.setSaltToken(Globals.DEFAULT_SALT_TOKEN);
                 accountShop.setAccountStatus(-2);  //状态
+                accountShop.setIdentity(accountShop1.getIdentity());
                 accountShop.setEncryptToken(MD5Utils.getMD5Encode(accountShop.getToken() + accountShop.getSaltToken())); //md5加密后的token
                 int accountShopId = accountShopService.registerAccountShopByPhone(accountShop);
                 Shop shop = new Shop();
-                shop.setShopName(params.getShopName());
-                shop.setLogoUrl("htk/upload/merchant/avatarImg/defaultMerchant.jpg");  //设置一张默认的店铺图片
-                shop.setOpeningTime("8:00-23:00");  //默认的营业时间
-                shop.setLongitude(params.getLongitude());
-                shop.setLatitude(params.getLatitude());
-                shop.setLocation(params.getLocation());
-                shop.setAddress(params.getAddress());
-                shop.setAccountShopId(accountShopId);
-                shop.setPhone(accountShop.getPhone());
-                shop.setMobilePhone(accountShop.getPhone());
-                shop.setDeliveryFee(20.00);
-                shop.setIntro("欢迎光临本店!!!");
-                System.out.println(shop.getLatitude() + shop.getLongitude());
-                int shopId = shopService.insertShopById(shop);
-                if (accountShopId > 0 && shopId > 0) {
-                    RegisterApply apply = new RegisterApply();
-                    apply.setShopId(shopId);
-                    apply.setAccountShopId(accountShopId);
-                    registerApplyService.insertApplyById(apply);
-                    return new AjaxResponseModel<String>(Globals.COMMON_SUCCESSFUL_OPERATION, "注册成功");
-                } else {
-                    return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "注册失败");
+                int[] a = new int[3];
+                a[0] = 0;
+                a[1] = 1;
+                a[2] = 2;
+                RegisterApply apply = new RegisterApply();
+                for (int i=0; i<a.length; i++) {
+                    //(a[i] == 0 ? "外卖" : (a[i] == 1 ? "团购" : "自助点餐"))
+                    shop.setShopName(params.getShopName());
+                    shop.setLogoUrl("htk/upload/merchant/avatarImg/defaultMerchant.jpg");  //设置一张默认的店铺图片
+                    shop.setOpeningTime("8:00-23:00");  //默认的营业时间
+                    shop.setLongitude(params.getLongitude());
+                    shop.setLatitude(params.getLatitude());
+                    shop.setLocation(params.getLocation());
+                    shop.setAddress(params.getAddress());
+                    shop.setAccountShopId(accountShopId);
+                    shop.setPhone(accountShop.getPhone());
+                    shop.setMobilePhone(accountShop.getPhone());
+                    shop.setDeliveryFee(20.00);
+                    if(a[i] == 0){
+                        shop.setShopCategoryId(43);
+                    }else if(a[i] == 1){
+                        shop.setShopCategoryId(49);
+                    }
+                    shop.setIntro("欢迎光临本店!!!");
+                    shop.setMark(a[i]);
+                    int shopId = shopService.insertShopById(shop);
+                    if (accountShopId > 0 && shopId > 0) {
+                        apply.setShopId(shopId);
+                        apply.setAccountShopId(accountShopId);
+                    } else {
+                        return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "注册失败");
+                    }
                 }
+                registerApplyService.insertApplyById(apply);
+                return new AjaxResponseModel<String>(Globals.COMMON_SUCCESSFUL_OPERATION, "注册成功");
             } catch (Exception e) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, e.getMessage());
@@ -657,8 +670,8 @@ public class MerchantServiceImpl implements MerchantService {
                     long time = date.getTime() - DateUtil.parse(each.getOrderTime()).getTime();
                     commitMinute = DateUtil.formatBetween(time, BetweenFormater.Level.MINUTE);
                     each.setMinute(commitMinute);
-                    if(orderProductList != null){
-                        for (BuffetFoodOrderProduct every : orderProductList){
+                    if (orderProductList != null) {
+                        for (BuffetFoodOrderProduct every : orderProductList) {
                             quantity += every.getQuantity();
                         }
                     }
@@ -1073,6 +1086,18 @@ public class MerchantServiceImpl implements MerchantService {
                         if (sc != null) {
                             stringBuffer.append(";").append(sc.getCategoryName());
                             shop.setShopCategoryName(stringBuffer.toString());
+                        }
+                    }
+                    //查询当前店铺下是否有自助点餐商铺
+                    Shop shop1 = shopService.getShopByAccountShopIdAndMark(accountShop.getId(), 2);
+                    if (shop1 != null) {
+                        if (shop1.getShopQrCodeUrl() == null) {
+                            //生成自助点餐二维码
+                            String qrImgURL = OtherUtils.getImgUrl(String.valueOf(shop1.getShopId()), "/shop/QRCode/", 1);
+                            if (qrImgURL != null) {
+                                shop.setBufImg(OtherUtils.getRootDirectory() + qrImgURL);
+                                shopService.updateShopQRCode(qrImgURL,shop1.getShopId());
+                            }
                         }
                     }
                     //商户使用剩余时间

@@ -186,6 +186,15 @@ public class AccountShopServiecImpl implements AccountShopServiceI {
         }
     }
 
+    //更改剩余时间
+    @Override
+    public void updateUseTimeById(int userId, String time) {
+        int row = accountShopDao.updateUseTimeByIdDAO(userId, time);
+        if(row <= 0){
+            throw new UpdateException(Globals.DEFAULT_EXCEPTION_UPDATE_FAILED);
+        }
+    }
+
     /* ========================JSP页面接口结束=============================== */
 
 }

@@ -105,7 +105,7 @@
                 <a href="${sysPath}merchant/shopInfo/store">门店设置</a>
             </div>
             <div class="s_info topOneItem margin-20">
-                <div class="panel panel-default shopInfo" style="height: 250px;">
+                <div class="panel panel-default shopInfo" style="height: 280px;">
                     <div class="panel-heading">
                         <div class="layui-row">
                             <div class="layui-col-md6">
@@ -162,10 +162,12 @@
                                                 <span>店铺二维码</span>
                                                 <span>:</span>
                                                 <div class="qrImg" style="width: 116px;height: 116px;">
-                                                    <img src="${data.shopQrCodeUrl}">
+                                                    <img src="${data.shopQrCodeUrl}" style="position: relative;top: 40px;left: -96px">
+                                                    <img src="${data.bufImg}" style="position: relative;top: -76px;left: 46px">
                                                 </div>
-                                                <span style="position: relative;top:-135px;left: 215px">
-                                                    <a href="${data.shopQrCodeUrl}" download="${data.shopName}">下载</a>
+                                                <span style="position: relative;top:9px;left: 87px">
+                                                    <a href="${data.shopQrCodeUrl}" download="${data.shopName}" style="position: relative;left: -50px">下载</a>
+                                                    <a href="${data.bufImg}" download="${data.shopName}" style="position: relative;left: 50px">下载</a>
                                                 </span>
                                             </div>
                                         </div>

@@ -29,6 +29,8 @@ public interface AccountShopMapper {
     int changePasswordDAO(@Param("phone") String phone, @Param("password") String password);
     //通过商户token查询商户的剩余使用时间
     AccountShop getUseTimeByTokenDAO(String token);
+    //更改剩余时间
+    int updateUseTimeByIdDAO(int userId, String time);
 
     /* =======================接口结束============================= */
 

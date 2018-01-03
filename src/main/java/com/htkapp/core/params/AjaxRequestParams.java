@@ -44,6 +44,10 @@ public class AjaxRequestParams {
 
     private Double deliveryFee;  //配送费
 
+    private String time;
+
+    private String token;
+
     public String getUserPhone() {
         return userPhone;
     }
@@ -178,5 +182,21 @@ public class AjaxRequestParams {
 
     public void setDeliveryFee(Double deliveryFee) {
         this.deliveryFee = deliveryFee;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

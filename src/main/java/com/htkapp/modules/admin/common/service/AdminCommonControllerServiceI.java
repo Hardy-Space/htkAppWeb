@@ -25,5 +25,7 @@ public interface AdminCommonControllerServiceI {
     AjaxResponseModel getPermissions();
     //确认店铺权限
     AjaxResponseModel enterPermissions(AjaxRequestParams params);
+    //权限页面,查找商户列表
+    void permissionPage(RequestParams params);
     /* =======================JSP页面接口结束============================ */
 }
