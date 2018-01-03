@@ -12,4 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping(value = "/admin/permission")
 public class PermissionController {
 
+    @RequestMapping(value = "/page", method = RequestMethod.POST)
+    public String page() {
+        return "";
+    }
 }
