@@ -177,7 +177,7 @@ public class MerchantServiceImpl implements MerchantService {
                 for (int i=0; i<a.length; i++) {
                     //(a[i] == 0 ? "外卖" : (a[i] == 1 ? "团购" : "自助点餐"))
                     shop.setShopName(params.getShopName());
-                    shop.setLogoUrl("htk/upload/merchant/avatarImg/defaultMerchant.jpg");  //设置一张默认的店铺图片
+                    shop.setLogoUrl("htkApp/upload/merchant/avatarImg/defaultMerchant.jpg");  //设置一张默认的店铺图片
                     shop.setOpeningTime("8:00-23:00");  //默认的营业时间
                     shop.setLongitude(params.getLongitude());
                     shop.setLatitude(params.getLatitude());
@@ -1077,15 +1077,18 @@ public class MerchantServiceImpl implements MerchantService {
                 Model model = params.getModel();
                 if (shop != null) {
                     shop.setLogoUrl(OtherUtils.getRootDirectory() + shop.getLogoUrl());
+                    //关注收藏二维码
                     String existedQrUrl = shop.getShopQrCodeUrl();
                     if (TextUtils.isEmpty(existedQrUrl)) {
-                        String qrImgURL = OtherUtils.getImgUrl(String.valueOf(shop.getShopId()), "/shop/QRCode/", 1);
+                        String qrImgURL = OtherUtils.getImgUrl(String.valueOf(shop.getShopId()), "/shop/QRCode/", 0);
                         if (qrImgURL != null) {
-                            shop.setBufImg(OtherUtils.getRootDirectory() + qrImgURL);
+//                            shop.setBufImg(OtherUtils.getRootDirectory() + qrImgURL);
+                            shop.setShopQrCodeUrl(OtherUtils.getRootDirectory()+qrImgURL);
                             shopService.updateShopQRCode(qrImgURL,shop.getShopId());
                         }
+                    }else {
+                        shop.setShopQrCodeUrl(OtherUtils.getRootDirectory() + shop.getShopQrCodeUrl());
                     }
-                    shop.setShopQrCodeUrl(OtherUtils.getRootDirectory() + shop.getShopQrCodeUrl());
                     //查询店铺分类和父分类
                     StringBuffer stringBuffer = new StringBuffer();
                     ShopCategory shopCategory = shopCategoryService.getCategoryById(shop.getShopCategoryId());
@@ -1100,16 +1103,17 @@ public class MerchantServiceImpl implements MerchantService {
                     //查询当前店铺下是否有自助点餐商铺
                     Shop shop1 = shopService.getShopByAccountShopIdAndMark(accountShop.getId(), 2);
                     if (shop1 != null) {
-                        if (shop1.getShopQrCodeUrl() == null) {
+                        if (TextUtils.isEmpty(shop1.getShopQrCodeUrl())) {
                             //生成自助点餐二维码
                             String qrImgURL = OtherUtils.getImgUrl(String.valueOf(shop1.getShopId()), "/shop/QRCode/", 1);
                             if (qrImgURL != null) {
                                 shop.setBufImg(OtherUtils.getRootDirectory() + qrImgURL);
                                 shopService.updateShopQRCode(qrImgURL,shop1.getShopId());
                             }
+                        }else {
+                            shop.setBufImg(OtherUtils.getRootDirectory() + shop1.getShopQrCodeUrl());
                         }
                     }
-                    shop.setBufImg(OtherUtils.getRootDirectory() + shop1.getShopQrCodeUrl());
                     //商户使用剩余时间
                     String useRemainingTime = DateUtil.formatBetween(new Date(), DateUtil.parse(accountShop.getUseEndTime()), BetweenFormater.Level.MINUTE);
                     model.addAttribute("data", shop);

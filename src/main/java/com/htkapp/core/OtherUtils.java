@@ -97,10 +97,7 @@ public class OtherUtils {
     //原因是：chrome浏览器可以识别出Base64数据为图片，Firefox无法识别为图片 生成二维码数据
     public static String getImgUrl(String id, String folder, int flag) throws Exception {
         try {
-            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-//            HttpSession session = request.getSession();
-//            String getStorePath = "F:\\yinqilei\\workspace\\huitoukezhongzuoxiangmu\\src\\main\\webapp\\upload";
-//            String getStorePath = "C:\\Program Files\\Apache Software Foundation\\Tomcat 7.0\\webapps\\htkApp\\upload";
+            long time = System.currentTimeMillis();
             JSONObject jsonObject = new JSONObject();
             String shopIdStr = encryptString(id);
             jsonObject.put("shopKey", shopIdStr);
@@ -110,10 +107,8 @@ public class OtherUtils {
             hints.put(EncodeHintType.CHARACTER_SET, StandardCharsets.UTF_8.name());
             hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
             BitMatrix matrix = new QRCodeWriter().encode(jsonObject.toJSONString(), BarcodeFormat.QR_CODE, 500, 500, hints);
-//            String getPath = session.getServletContext().getRealPath("/upload") + folder;
-            String fileName = "shop_" + id + ".png";
+            String fileName = "shop_" + id + "_" + time + ".png";
             String writeTempPath = "D:\\resource";
-//            String writeTempPath = "/opt/temp";
             File file = new File(writeTempPath, fileName);
             Path path = file.toPath();
             try {
@@ -122,9 +117,7 @@ public class OtherUtils {
                 e.printStackTrace();
             }
             FTPClient client = getFTPClient(FTPConfig.host, FTPConfig.port, FTPConfig.userName, FTPConfig.password);
-//            uploadFileForFTP(client, fileName, writeTempPath + "\\" + fileName, "Resource\\htkApp\\upload\\" + folder);
             uploadFileForFTP(client, fileName, writeTempPath + "/" + fileName, "Resource\\htkApp\\upload\\" + folder);
-            //同时存入项目文件夹下
             String rootPath = Globals.PROJECT_URL + Globals.PHOTO_URL + folder;
             return rootPath + fileName;
         } catch (Exception e) {

@@ -162,8 +162,8 @@
                                                 <span>店铺二维码</span>
                                                 <span>:</span>
                                                 <div class="qrImg" style="width: 116px;height: 116px;">
-                                                    <img src="${data.shopQrCodeUrl}" style="position: relative;top: 40px;left: -96px">
-                                                    <img src="${data.bufImg}" style="position: relative;top: -76px;left: 46px">
+                                                    <img src="${data.shopQrCodeUrl}?${date}" style="position: relative;top: 40px;left: -96px">
+                                                    <img src="${data.bufImg}?${date}" style="position: relative;top: -76px;left: 46px">
                                                 </div>
                                                 <span style="position: relative;top:9px;left: 87px">
                                                     <a href="${data.shopQrCodeUrl}" download="${data.shopName}" style="position: relative;left: -50px">下载</a>
