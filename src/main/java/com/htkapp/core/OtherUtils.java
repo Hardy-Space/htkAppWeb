@@ -36,6 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -111,11 +112,15 @@ public class OtherUtils {
             BitMatrix matrix = new QRCodeWriter().encode(jsonObject.toJSONString(), BarcodeFormat.QR_CODE, 500, 500, hints);
 //            String getPath = session.getServletContext().getRealPath("/upload") + folder;
             String fileName = "shop_" + id + ".png";
-//            String writeTempPath = "D:\\resource";
-            String writeTempPath = "/opt/temp";
+            String writeTempPath = "D:\\resource";
+//            String writeTempPath = "/opt/temp";
             File file = new File(writeTempPath, fileName);
             Path path = file.toPath();
-            MatrixToImageWriter.writeToPath(matrix, "PNG", path);
+            try {
+                MatrixToImageWriter.writeToPath(matrix, "PNG", path);
+            }catch (FileNotFoundException e){
+                e.printStackTrace();
+            }
             FTPClient client = getFTPClient(FTPConfig.host, FTPConfig.port, FTPConfig.userName, FTPConfig.password);
 //            uploadFileForFTP(client, fileName, writeTempPath + "\\" + fileName, "Resource\\htkApp\\upload\\" + folder);
             uploadFileForFTP(client, fileName, writeTempPath + "/" + fileName, "Resource\\htkApp\\upload\\" + folder);

@@ -6,6 +6,8 @@ import com.htkapp.core.curdException.DeleteException;
 import com.htkapp.core.exception.costom.NullDataException;
 import com.htkapp.core.exception.order.OrderException;
 import com.htkapp.core.utils.Globals;
+import com.htkapp.modules.merchant.integral.entity.AccountTicketList;
+import com.htkapp.modules.merchant.integral.service.AccountTicketListService;
 import com.htkapp.modules.merchant.pay.dao.OrderRecordMapper;
 import com.htkapp.modules.merchant.pay.entity.OrderRecord;
 import com.htkapp.modules.merchant.pay.service.OrderRecordService;
@@ -30,6 +32,9 @@ public class OrderRecordServiceImpl implements OrderRecordService {
     @Resource
     private OrderRecordMapper orderRecordDao;
 
+    @Resource
+    private AccountTicketListService ticketListService;
+
     Class<? extends Object> cls = OrderRecordServiceImpl.class;
 
     /* ================接口开始======================= */
@@ -53,6 +58,12 @@ public class OrderRecordServiceImpl implements OrderRecordService {
             if (row <= 0) {
                 throw new Exception(Globals.CALL_DATABASE_ERROR);
             }
+
+            //更新用户拥有的优惠券数量
+            List<AccountTicketList> accountTicketLists = ticketListService.getTicketListByTokenAndCouponId(orderRecord.getToken(),orderRecord.getCouponId());
+            int nowQuantity = accountTicketLists.get(0).getQuantity();
+            ticketListService.updateTicketListByTokenAndCouponIdDAO(nowQuantity-1,orderRecord.getToken(),orderRecord.getCouponId());
+
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

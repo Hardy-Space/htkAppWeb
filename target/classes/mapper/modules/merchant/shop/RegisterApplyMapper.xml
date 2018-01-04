@@ -14,9 +14,13 @@
     </insert>
     <select id="getRegisterApplyListDAO" resultType="RegisterApply">
         select
-        account_shop.phone, account_shop.identity, shop.shop_name, shop.address, register_apply.gmt_create as applyTime
+        account_shop.phone, account_shop.id as account_shop_id, account_shop.identity, shop.shop_name, shop.address, register_apply.gmt_create as applyTime
         from register_apply left join shop on register_apply.shop_id = shop.shop_id
         left join account_shop on shop.account_shop_id = account_shop.id
         where register_apply.state = #{stateId} order by ${orderDesc}
     </select>
+    <delete id="deleteByIdDAO">
+        delete from register_apply
+        where account_shop_id = #{0}
+    </delete>
 </mapper>

@@ -49,6 +49,7 @@ import com.htkapp.modules.merchant.shop.service.ShopServiceI;
 import com.xiaoleilu.hutool.date.BetweenFormater;
 import com.xiaoleilu.hutool.date.DateUnit;
 import com.xiaoleilu.hutool.date.DateUtil;
+import org.apache.http.util.TextUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -1076,6 +1077,14 @@ public class MerchantServiceImpl implements MerchantService {
                 Model model = params.getModel();
                 if (shop != null) {
                     shop.setLogoUrl(OtherUtils.getRootDirectory() + shop.getLogoUrl());
+                    String existedQrUrl = shop.getShopQrCodeUrl();
+                    if (TextUtils.isEmpty(existedQrUrl)) {
+                        String qrImgURL = OtherUtils.getImgUrl(String.valueOf(shop.getShopId()), "/shop/QRCode/", 1);
+                        if (qrImgURL != null) {
+                            shop.setBufImg(OtherUtils.getRootDirectory() + qrImgURL);
+                            shopService.updateShopQRCode(qrImgURL,shop.getShopId());
+                        }
+                    }
                     shop.setShopQrCodeUrl(OtherUtils.getRootDirectory() + shop.getShopQrCodeUrl());
                     //查询店铺分类和父分类
                     StringBuffer stringBuffer = new StringBuffer();
@@ -1100,6 +1109,7 @@ public class MerchantServiceImpl implements MerchantService {
                             }
                         }
                     }
+                    shop.setBufImg(OtherUtils.getRootDirectory() + shop1.getShopQrCodeUrl());
                     //商户使用剩余时间
                     String useRemainingTime = DateUtil.formatBetween(new Date(), DateUtil.parse(accountShop.getUseEndTime()), BetweenFormater.Level.MINUTE);
                     model.addAttribute("data", shop);

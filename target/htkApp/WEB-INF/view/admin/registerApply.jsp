@@ -69,11 +69,6 @@
                     <c:choose>
                         <c:when test="${data != null}">
                             <table class="layui-table">
-                                <colgroup>
-                                    <col width="150">
-                                    <col width="200">
-                                    <col>
-                                </colgroup>
                                 <thead>
                                 <tr>
                                     <th>负责人手机号</th>
@@ -81,8 +76,7 @@
                                     <th>店铺名</th>
                                     <th>店铺位置</th>
                                     <th>申请时间</th>
-                                    <th>店铺权限</th>
-                                    <th>店铺分类</th>
+                                    <th>操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -93,11 +87,10 @@
                                         <td class="shopName">${each.shopName}</td>
                                         <td class="address">${each.address}</td>
                                         <td class="applyTime">${each.applyTime}</td>
-                                        <td><a class="distribution a" data-type="permissions">分配</a><input
-                                                hidden="hidden"/></td>
-                                        <td><a class="distribution b" data-type="category">分配</a><input
-                                                hidden="hidden"/>
-                                        </td>
+                                        <%--<td><a class="distribution b" data-type="category">分配</a><input--%>
+                                                <%--hidden="hidden"/>--%>
+                                        <%--</td>--%>
+                                        <td class="open"><a href="javascript:void(0)" data-id="${each.accountShopId}">开通</a></td>
                                     </tr>
                                 </c:forEach>
                                 </tbody>
@@ -219,7 +212,7 @@
                         content: contentStr,
                         offset: '250px',
                         fixed: true,
-                        area: {width: '380px', height: '500px'}
+                        area: {width: '380px', height: '300px'}
                     };
                     layer_pageTier(params);
                     form.render();
@@ -251,8 +244,12 @@
                         var a = pEle.parent().find('.distribution.a');
                         $(a).find('input').val(selVal);
                         layer_msg("success", result.message)
+                        window.location.reload();
                     } else {
                         layer_msg("error", result.message)
+                        setTimeout(function () {
+                            window.location.reload();
+                        },2000)
                     }
                 } else {
                     layer_msg("exception", "网络连接异常");
@@ -316,6 +313,21 @@
             }
         });
     }
+
+    $(".open").on("click", function () {
+        const url = baseUrl + "/admin/changeAccountState";
+        const id = $(this).children().attr("data-id");
+        $.post(url, {id: id}, function (result) {
+            if(result && result.code == 0){
+                window.location.reload();
+            }else {
+                layer_msg("失败", 'error');
+                setTimeout(function () {
+                    window.location.reload();
+                },2000)
+            }
+        })
+    })
 </script>
 </body>
 </html>

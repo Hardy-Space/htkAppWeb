@@ -27,8 +27,8 @@
   </select>
   <update id="changeAccountShopLoginStateDAO" >
     update account_shop
-    set pc_login_state = #{pcLoginState}
-    where token = #{token}
+    set account_status = #{pcLoginState}
+    where id = #{id}
   </update>
   <select id="getAccountShopDataByIdDAO" resultType="AccountShop">
     select 
@@ -102,6 +102,9 @@
       <if test="useEndTime != null">
         use_end_time,
       </if>
+      <if test="identity != null">
+        identity,
+      </if>
     </trim>
     <trim prefix="values(" suffix=")" suffixOverrides=",">
       <if test="userName != null">
@@ -138,7 +141,10 @@
         #{useStartTime},
       </if>
       <if test="useEndTime != null">
-        #{useEndTime}
+        #{useEndTime},
+      </if>
+      <if test="identity != null">
+        #{identity},
       </if>
     </trim>
   </insert>
@@ -169,6 +175,11 @@
     update account_shop
     set phone = #{phone}
     where id = #{id}
+  </update>
+  <update id="updateUseTimeByIdDAO">
+    update account_shop
+    set use_end_time = #{1}
+    where id = #{0}
   </update>
 
   <!-- ============================JSP页面接口结束==================================== -->

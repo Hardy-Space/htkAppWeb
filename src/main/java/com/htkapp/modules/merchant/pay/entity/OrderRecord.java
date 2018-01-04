@@ -74,6 +74,16 @@ public class OrderRecord {
 
     private List<OrderBuyPackageContent> orderBuyPackageContentList;  //团购订单产品列表
 
+    private String couponId ;
+
+    public String getCouponId() {
+        return couponId;
+    }
+
+    public void setCouponId(String couponId) {
+        this.couponId = couponId;
+    }
+
     public Integer getId() {
         return id;
     }

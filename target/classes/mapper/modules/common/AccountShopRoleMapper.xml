@@ -27,4 +27,15 @@
             </if>
         </trim>
     </insert>
+    <select id="getAccountShopRoleByIdDAO" resultType="AccountShopRole">
+        select 
+        <include refid="Base_Column_List" />
+        from account_shop_role
+        where u_id = #{0}
+    </select>
+    <update id="updateAccountShopRoleDAO" >
+        update account_shop_role
+        set r_id = #{rId}
+        where u_id = #{uId}
+    </update>
 </mapper>

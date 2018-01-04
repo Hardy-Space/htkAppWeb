@@ -1,6 +1,7 @@
 package com.htkapp.modules.merchant.integral.dao;
 
 import com.htkapp.modules.merchant.integral.entity.AccountTicketList;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -12,4 +13,8 @@ public interface AccountTicketListMapper {
     List<AccountTicketList> getTicketListByTokenDAO(String token);
     //插入用户优惠券
     int insertAccountTicketDAO(AccountTicketList ticketList);
+
+    List<AccountTicketList> getTicketListByTokenAndCouponIdDAO(String token, String ticket_id);
+
+    int updateTicketListByTokenAndCouponIdDAO(@Param("ticketQuantity") int ticketQuantity,@Param("token") String token,@Param("ticket_id") String couponId);
 }

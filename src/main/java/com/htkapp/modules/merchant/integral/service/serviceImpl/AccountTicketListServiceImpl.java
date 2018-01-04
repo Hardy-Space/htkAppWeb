@@ -26,6 +26,27 @@ public class AccountTicketListServiceImpl implements AccountTicketListService {
         return null;
     }
 
+    /**
+     *     通过用户token 和 优惠券id 查找此用户所拥有的优惠券列表
+     *     @modified by 马鹏昊
+     */
+    @Override
+    public List<AccountTicketList> getTicketListByTokenAndCouponId(String token, String ticket_id) {
+        List<AccountTicketList> ticketList = accountTicketListDao.getTicketListByTokenAndCouponIdDAO(token, ticket_id);
+        if(ticketList != null && ticketList.size() > 0){
+            return ticketList;
+        }
+        return null;
+    }
+
+    @Override
+    public void updateTicketListByTokenAndCouponIdDAO(int ticketQuantity, String token, String ticket_id) {
+        int row = accountTicketListDao.updateTicketListByTokenAndCouponIdDAO(ticketQuantity,token,ticket_id);
+        if(row <= 0){
+            throw new InsertException(Globals.DEFAULT_EXCEPTION_INSERT_FAILED);
+        }
+    }
+
     //通过用户token 查找优惠券列表
     @Override
     public List<AccountTicketList> getTicketListByToken(String token) {
@@ -44,4 +65,5 @@ public class AccountTicketListServiceImpl implements AccountTicketListService {
             throw new InsertException(Globals.DEFAULT_EXCEPTION_INSERT_FAILED);
         }
     }
+
 }
