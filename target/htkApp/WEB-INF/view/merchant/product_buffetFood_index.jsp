@@ -199,7 +199,8 @@
             var url = baseUrl + "/merchant/buffetFood/product/addCategory";
             var name = ele.find("input[name='catName']").val();
             var des = ele.find("input[name='catDes']").val();
-            var params = {categoryName: name};
+//            var params = {categoryName: name};
+            var params = {categoryName: name,mark:2};
             if (ele.find("input[name='catName']").val() === "") {
                 ele.find("input[name='catName']").focus();
                 return false;
@@ -207,14 +208,15 @@
                 $.post(url, params, function (result, status) {
                     if (status === 'success') {
                         if (result && result.code === 0) {
-                            $(".catList").append("<a href='javascript:void(0);' data-des='" + des + "'>" + name + "</a>");
-                            var next = $(".catList a").eq(0).text();
-                            $(".goodsList .add").before('<div class="goodsContiner clearfix"><p class="emptyGoods">暂无数据</p><div class="pageNotice">已在当前分类底部，<a href="">下一个分类:' + next + '</a></div></div>');
-                            if ($(".catList a").length === 1) {
-                                $(".catList a").eq(0).click();
-                            }
-                            $(".layer,.layerCont").hide();
-                            $(".layer input[type='text']").val("");
+//                            $(".catList").append("<a href='javascript:void(0);' data-des='" + des + "'>" + name + "</a>");
+//                            var next = $(".catList a").eq(0).text();
+//                            $(".goodsList .add").before('<div class="goodsContiner clearfix"><p class="emptyGoods">暂无数据</p><div class="pageNotice">已在当前分类底部，<a href="">下一个分类:' + next + '</a></div></div>');
+//                            if ($(".catList a").length === 1) {
+//                                $(".catList a").eq(0).click();
+//                            }
+//                            $(".layer,.layerCont").hide();
+//                            $(".layer input[type='text']").val("");
+                            location.reload();
                             return false;
                         } else {
                             layer_msg(result.code, 'error');
@@ -240,14 +242,15 @@
             $.post(url, params, function (result, status) {
                 if (status === 'success') {
                     if (result && result.code === 0) {
-                        if (ele.find("input[name='catName']").val() === "") {
-                            ele.find("input[name='catName']").focus();
-                            return false;
-                        }
-                        $(".catList .cur").text(name).attr("data-des", des);
-                        $(".catTitle>span").text(name).attr("title", des);
-                        $(".layer,.layerCont").hide();
-                        $(".layer input[type='text']").val("");
+//                        if (ele.find("input[name='catName']").val() === "") {
+//                            ele.find("input[name='catName']").focus();
+//                            return false;
+//                        }
+//                        $(".catList .cur").text(name).attr("data-des", des);
+//                        $(".catTitle>span").text(name).attr("title", des);
+//                        $(".layer,.layerCont").hide();
+//                        $(".layer input[type='text']").val("");
+                        location.reload();
                         return false;
                     } else {
                         layer_msg(result.message, 'error');
@@ -273,14 +276,15 @@
                 $.post(url, params, function (result, status) {
                     if (status === 'success') {
                         if (result && result.code === 0) {
-                            $(".catList .cur").remove();
-                            $(".goodsList .goodsContiner.cur").remove();
-                            $(".catTitle>span").text("").attr("title", "");
-                            if ($(".catList a").length > 0) {
-                                $(".catList a:first").click();
-                            }
-                            $(".layer,.layerCont").hide();
-                            $(".layer input[type='text']").val("");
+//                            $(".catList .cur").remove();
+//                            $(".goodsList .goodsContiner.cur").remove();
+//                            $(".catTitle>span").text("").attr("title", "");
+//                            if ($(".catList a").length > 0) {
+//                                $(".catList a:first").click();
+//                            }
+//                            $(".layer,.layerCont").hide();
+//                            $(".layer input[type='text']").val("");
+                            location.reload();
                             layer.closeAll('dialog'); //关闭信息框
                         } else {
                             layer_msg(result.message, 'error');

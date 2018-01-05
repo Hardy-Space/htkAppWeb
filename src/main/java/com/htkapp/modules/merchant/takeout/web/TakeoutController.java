@@ -154,10 +154,10 @@ public class TakeoutController {
     //添加分类接口
     @RequestMapping("/product/addCategory")
     @ResponseBody
-    public AjaxResponseModel addCategory(String categoryName) {
+    public AjaxResponseModel addCategory(String categoryName,int mark) {
         try {
             LoginUser user = OtherUtils.getLoginUserByRequest();
-            takeoutCategoryService.addCategoryById(categoryName, user.getUserId());
+            takeoutCategoryService.addCategoryById(categoryName, user.getUserId(),mark);
             return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION, "添加成功");
         } catch (Exception e) {
             return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "添加失败");

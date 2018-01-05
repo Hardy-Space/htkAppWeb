@@ -94,7 +94,7 @@ public class BuffetFoodController {
     }
 
     //====　接口
-    //获取外卖商品页面接口
+    //获取自助点餐商品页面接口
     @RequestMapping(value = "/product/getProductData", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResponseModel getProductById(String actionName) {
@@ -135,11 +135,11 @@ public class BuffetFoodController {
     //添加分类接口
     @RequestMapping("/product/addCategory")
     @ResponseBody
-    public AjaxResponseModel addCategory(String categoryName) {
+    public AjaxResponseModel addCategory(String categoryName,int mark) {
         try {
             LoginUser user = OtherUtils.getLoginUserByRequest();
-            Shop shop = shopService.getShopDataByAccountShopId(user.getUserId());
-            buffetFoodCategoryService.addCategoryById(categoryName, shop.getShopId());
+//            Shop shop = shopService.getShopDataByAccountShopId(user.getUserId());
+            buffetFoodCategoryService.addCategoryById(categoryName, user.getUserId(),mark);
             return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION, "添加成功");
         } catch (Exception e) {
             return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "添加失败");

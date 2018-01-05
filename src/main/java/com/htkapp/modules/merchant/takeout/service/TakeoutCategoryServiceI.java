@@ -21,7 +21,7 @@ public interface TakeoutCategoryServiceI {
     //通过分类id修改分类名称
     void editCategoryNameById(TakeoutCategory category) throws Exception;
     //商户新增分类
-    void addCategoryById(String categoryName, int accountShopId) throws Exception;
+    void addCategoryById(String categoryName, int accountShopId,int mark) throws Exception;
     //通过分类id查询分类信息
     TakeoutCategory getCategoryById(int categoryId);
     //删除分类

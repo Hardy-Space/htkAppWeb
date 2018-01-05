@@ -28,7 +28,7 @@ public interface BuffetFoodCategoryService {
     //通过分类id查询分类信息
     BuffetFoodCategory getCategoryById(int categoryId);
     //新增分类
-    void addCategoryById(String categoryName, int accountShopId) throws Exception;
+    void addCategoryById(String categoryName, int accountShopId,int mark) throws Exception;
     //通过分类ID　删除分类
     void delCategoryById(int categoryId) throws Exception;
     /* ========================JSP页面接口结束============================ */

@@ -150,7 +150,8 @@ public class BuffetFoodProductServiceImpl implements BuffetFoodProductService {
         try {
             int row = buffetFoodProductDao.delProductByCIdDAO(categoryId);
             if (row <= 0) {
-                throw new Exception("删除分类下的所有商品失败");
+//                throw new Exception("删除分类下的所有商品失败");
+                //这里应该什么也不做，因为有一种情况是我添加了分类但是没有添加商品，这时的row是0很正常不应该抛出异常
             }
         } catch (Exception e) {
             //向上抛出，抛到service 调用层处理

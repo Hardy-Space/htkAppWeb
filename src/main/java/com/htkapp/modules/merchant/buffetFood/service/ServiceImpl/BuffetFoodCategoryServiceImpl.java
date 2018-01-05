@@ -88,9 +88,9 @@ public class BuffetFoodCategoryServiceImpl implements BuffetFoodCategoryService 
 
     //新增分类
     @Override
-    public void addCategoryById(String categoryName, int accountShopId) throws Exception {
+    public void addCategoryById(String categoryName, int accountShopId,int mark) throws Exception {
         try {
-            int row = buffetFoodCategoryDao.addCategoryByIdDAO(categoryName, accountShopId);
+            int row = buffetFoodCategoryDao.addCategoryByIdDAO(categoryName, accountShopId, mark);
             if(row == 0){
                 throw new Exception();
             }

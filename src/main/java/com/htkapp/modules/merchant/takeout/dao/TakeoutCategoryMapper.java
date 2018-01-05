@@ -24,7 +24,7 @@ public interface TakeoutCategoryMapper {
     //通过分类id查询分类信息
     TakeoutCategory getCategoryByIdDAO(int categoryId);
     //新增分类
-    int addCategoryByIdDAO(String categoryName, int accountShopId);
+    int addCategoryByIdDAO(String categoryName, int accountShopId,int mark);
     //通过分类ID　删除分类
     int delCategoryByIdDAO(int categoryId);
     /* ===================JSP页面接口结束============================ */

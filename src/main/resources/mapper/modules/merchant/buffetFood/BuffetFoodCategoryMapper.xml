@@ -36,7 +36,7 @@
         from
         buffet_food_category
         left join shop on buffet_food_category.shop_id = shop.shop_id
-        left join account_shop on shop.shop_id = account_shop.id
+        left join account_shop on shop.account_shop_id = account_shop.id
         where account_shop.id = #{accountShopId}
     </select>
     <update id="editCategoryNameByIdDAO">
@@ -48,7 +48,7 @@
         insert into buffet_food_category(category_name,shop_id)
         values(#{0},
         (select shop_id from shop
-        left join account_shop on shop.shop_id = account_shop.id where account_shop.id=#{1}))
+        left join account_shop on shop.account_shop_id = account_shop.id where account_shop.id=#{1} and mark=#{2}))
     </insert>
     <select id="getCategoryByIdDAO" resultType="BuffetFoodCategory">
         select
