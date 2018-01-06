@@ -139,7 +139,7 @@ public class TakeoutServiceImpl implements TakeoutService {
                 }
             }
             LoginUser user = OtherUtils.getLoginUserByRequest();
-            Shop shop = shopService.getShopDataByAccountShopId(user.getUserId());
+            Shop shop = shopService.getShopIdByAccountShopId(user.getUserId(),takeoutProduct.getMark());
             if (productList != null && productList.getList().size() > 0) {
                 for (ListProperty each : productList.getList()) {
                     takeoutProduct.setShopId(shop.getShopId());

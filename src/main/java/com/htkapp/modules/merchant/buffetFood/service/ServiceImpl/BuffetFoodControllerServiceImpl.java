@@ -67,7 +67,8 @@ public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerServ
                 product.setImgUrl(uploadUrl);
             }
             LoginUser user = OtherUtils.getLoginUserByRequest();
-            Shop shop = shopService.getShopDataByAccountShopId(user.getUserId());
+            product.getMark();
+            Shop shop = shopService.getShopIdByAccountShopId(user.getUserId(),product.getMark());
             product.setShopId(shop.getShopId());
             buffetFoodProductService.addBuffetFoodProduct(product);
         } catch (Exception e) {

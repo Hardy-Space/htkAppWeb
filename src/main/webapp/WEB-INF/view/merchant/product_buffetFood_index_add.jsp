@@ -41,6 +41,7 @@
                                         <div class="formTit"><i>*</i>商品名称</div>
                                         <div class="formInput fontNum">
                                             <input type="text" placeholder="请输入商品名称" name="productName" maxlength="20"/>
+                                            <input type="hidden" name="mark" value="2">
                                             <span class="num">0/20</span>
                                         </div>
                                     </div>

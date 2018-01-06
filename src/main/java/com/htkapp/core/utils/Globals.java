@@ -201,7 +201,7 @@ public final class Globals {
 
     public static final String SHOPCATEGORY_IMG_UTL = "shopCategoryImgs/";
     //顾客
-    public static final String CUSTOMER_USER = "C";
+    public static final String  CUSTOMER_USER = "C";
 
 
     /*=========================app端使用开始====================================*/

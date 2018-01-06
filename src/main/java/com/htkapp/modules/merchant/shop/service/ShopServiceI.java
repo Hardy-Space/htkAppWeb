@@ -49,6 +49,8 @@ public interface ShopServiceI {
 	/* ===================JSP页面接口开始======================= */
 	//根据商户id查询店铺信息
 	Shop getShopDataByAccountShopId(int accountShopId) throws Exception;
+	//根据商户id查询店铺id
+	Shop getShopIdByAccountShopId(int accountShopId,int mark) throws Exception;
 	//通过商户token查找商铺信息
 	Shop getShopDataByAccountShopToken(String accountShopToken) throws Exception;
 	//通过商户ID改变店铺状态

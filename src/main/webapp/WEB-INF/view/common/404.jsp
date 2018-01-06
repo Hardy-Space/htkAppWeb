@@ -5,8 +5,8 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>您访问的页面不在地球上404错误模板</title>
-    <link rel="stylesheet" type="text/css" href="${staticFilePath}resource/custom/plugins/404/style.css">
+<title>您访问的页面不在地球上404错误模板</title>
+<link rel="stylesheet" type="text/css" href="${staticFilePath}resource/custom/plugins/404/style.css">
 </head>
 <body>
 <div class="newfinno-con"></div>

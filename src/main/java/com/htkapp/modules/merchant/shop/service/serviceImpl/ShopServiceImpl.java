@@ -260,6 +260,15 @@ public class ShopServiceImpl implements ShopServiceI {
             throw new Exception(Globals.CALL_DATABASE_ERROR);
         }
     }
+    //根据商户id查询店铺id
+    @Override
+    public Shop getShopIdByAccountShopId(int accountShopId,int mark) throws Exception {
+        try {
+            return shopDao.getShopIdByAccountShopId(accountShopId,mark);
+        } catch (Exception e) {
+            throw new Exception(Globals.CALL_DATABASE_ERROR);
+        }
+    }
 
     //通过商户token查找商铺信息
     @Override

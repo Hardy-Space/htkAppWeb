@@ -12,6 +12,16 @@ import java.util.List;
 
 public class TakeoutProduct {
 
+    private int mark;
+
+    public int getMark() {
+        return mark;
+    }
+
+    public void setMark(int mark) {
+        this.mark = mark;
+    }
+
     private Integer id;
 
     private String imgUrl;

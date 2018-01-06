@@ -8,6 +8,16 @@ import java.util.List;
  */
 public class BuffetFoodProduct {
 
+    private Integer mark;
+
+    public Integer getMark() {
+        return mark;
+    }
+
+    public void setMark(Integer mark) {
+        this.mark = mark;
+    }
+
     private Integer id;
 
     private String productName;  //产品名字

@@ -59,6 +59,15 @@
             where shop_.mark = #{mark} group by shop_id
         </if>
     </select>
+
+
+
+    <select id="getShopIdByAccountShopId" resultType="Shop">
+        select shop.shop_id
+        from shop
+        where shop.account_shop_id = #{0} and shop.mark=#{1}
+    </select>
+
     <select id="getShopDataByIdDAO" resultType="Shop">
         select
         shop.shop_id,shop_name,logo_url,score,monthly_sales_volume,

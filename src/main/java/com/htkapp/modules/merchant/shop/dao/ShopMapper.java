@@ -21,6 +21,8 @@ public interface ShopMapper {
     List<Shop> getShopByConditionDAO(@Param("keyWord") String keyWord, @Param("mark") int mark);
     //根据店铺id查找店铺信息
     Shop getShopDataByIdDAO(int shopId);
+    //根据店铺id查找店铺id
+    Shop getShopIdByAccountShopId(int accountShopId,int mark);
     //根据店铺id和店铺类型查找店铺信息
     Shop getShopShowInfoByIdDAO(@Param("shopId") int shopId);
     //根据传入的店铺类别id，返回店铺列表
