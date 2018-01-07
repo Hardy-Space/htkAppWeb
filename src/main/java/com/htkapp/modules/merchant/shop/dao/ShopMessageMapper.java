@@ -9,4 +9,6 @@ public interface ShopMessageMapper {
 
     //更改配送费
     int updateDeliverFeeDAO(ShopMessage shopMessage);
+
+    int initShopMessage(int shopId);
 }

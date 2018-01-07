@@ -38,10 +38,7 @@ import com.htkapp.modules.merchant.integral.entity.Integral;
 import com.htkapp.modules.merchant.integral.service.IntegralService;
 import com.htkapp.modules.merchant.pay.entity.*;
 import com.htkapp.modules.merchant.pay.service.*;
-import com.htkapp.modules.merchant.shop.entity.AccountShop;
-import com.htkapp.modules.merchant.shop.entity.AccountShopReplyComments;
-import com.htkapp.modules.merchant.shop.entity.RegisterApply;
-import com.htkapp.modules.merchant.shop.entity.Shop;
+import com.htkapp.modules.merchant.shop.entity.*;
 import com.htkapp.modules.merchant.shop.service.AccountShopReplyCommentsService;
 import com.htkapp.modules.merchant.shop.service.AccountShopServiceI;
 import com.htkapp.modules.merchant.shop.service.RegisterApplyService;
@@ -174,6 +171,9 @@ public class MerchantServiceImpl implements MerchantService {
                 a[1] = 1;
                 a[2] = 2;
                 RegisterApply apply = new RegisterApply();
+
+
+
                 for (int i=0; i<a.length; i++) {
                     //(a[i] == 0 ? "外卖" : (a[i] == 1 ? "团购" : "自助点餐"))
                     shop.setShopName(params.getShopName());
@@ -198,6 +198,12 @@ public class MerchantServiceImpl implements MerchantService {
                     if (accountShopId > 0 && shopId > 0) {
                         apply.setShopId(shopId);
                         apply.setAccountShopId(accountShopId);
+                        /**
+                         * @modify_by 马鹏昊
+                         * @desc 因为不少地方都用到了shop_message这个表，但是现在缺少shop_message这个表的插入逻辑，所以在注册
+                         * 商家的时候插入shop_message记录
+                         */
+                        int row = shopService.initShopMessage(shopId);
                     } else {
                         return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "注册失败");
                     }

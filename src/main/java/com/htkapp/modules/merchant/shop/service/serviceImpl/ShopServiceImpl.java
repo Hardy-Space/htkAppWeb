@@ -6,6 +6,7 @@ import com.htkapp.core.curdException.UpdateException;
 import com.htkapp.core.exception.costom.NullDataException;
 import com.htkapp.core.utils.Globals;
 import com.htkapp.modules.merchant.shop.dao.ShopMapper;
+import com.htkapp.modules.merchant.shop.dao.ShopMessageMapper;
 import com.htkapp.modules.merchant.shop.entity.Shop;
 import com.htkapp.modules.merchant.shop.service.ShopServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,18 @@ public class ShopServiceImpl implements ShopServiceI {
     @Resource
     private ShopMapper shopDao;
 
+    @Resource
+    private ShopMessageMapper shopMessageDao;
+
     /* ===============接口开始===================== */
+
+
+    @Override
+    public int initShopMessage(int shopId) {
+        int row = shopMessageDao.initShopMessage(shopId);
+        return row;
+    }
+
     //根据条件搜索商家
     @Override
     public List<Shop> getShopByCondition(String keyWord, int mark, int pageNo, int pageLimit) throws Exception {

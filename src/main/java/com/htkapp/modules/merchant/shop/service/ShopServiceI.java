@@ -71,6 +71,8 @@ public interface ShopServiceI {
 	void updateIntro(Shop shop);
 	//店铺简介修改
 	void updateDes(Shop shop);
+	//注册shop_message表
+	int initShopMessage(int shopId);
 	//配送费
 	void updateDeliveryFee(Shop shop);
 	/* ====================JSP页面接口结束========================= */
