@@ -12,4 +12,9 @@
         where shop_id = #{shopId}
     </update>
 
+    <insert id="initShopMessage">
+        insert into shop_message(shop_id)
+        values(#{shopId})
+    </insert>
+
 </mapper>
