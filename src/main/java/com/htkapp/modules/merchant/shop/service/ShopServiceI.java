@@ -32,7 +32,7 @@ public interface ShopServiceI {
 	Shop getShopByAccountShopIdAndMark(int accountShopId, int mark) throws Exception;
 	//通过一级分类id获取所有二级分类店铺
 	List<Shop> getShopListByChildCategoryIdsAndFocus(Set<String> childSId, Set<Integer> shopIdList, String token, int tag, int pageNo, int pageLimit);
-	//通过分类id查询所有已关注店铺
+	//通过分类id查询所有店铺(未关注tag是0，已关注tag是1)
 	List<Shop> getShopListByCategoryIdAndFocus(int categoryId, Set<Integer> shopIdList, String token, int tag,int pageNo, int pageLimit);
 	//查找一级分类下的所有关注店铺数量
 	int getFocusCategoryShopListCount(Set<String> childSId, Set<Integer> shopIdList, String token, int tag);

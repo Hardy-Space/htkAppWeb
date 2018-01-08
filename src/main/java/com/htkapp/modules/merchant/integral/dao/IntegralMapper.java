@@ -20,6 +20,10 @@ public interface IntegralMapper {
     Integer getIntegralValByAccountTokenDAO(String token, String accountToken);
     /* ==========================接口结束============================== */
 
+    Integer getVal(String token, int shopId);
+
+    Integer updateIntegral(String token, int shopId,int val);
+
 
     /* ==========================JSP页面接口开始================================ */
     //根据商户token查找积分用户列表

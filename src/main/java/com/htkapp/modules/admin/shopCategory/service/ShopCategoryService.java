@@ -1,8 +1,7 @@
 package com.htkapp.modules.admin.shopCategory.service;
 
-import com.htkapp.core.jsAjax.AjaxResponseModel;
-import com.htkapp.core.params.AjaxRequestParams;
 import com.htkapp.modules.admin.shopCategory.entity.ShopCategory;
+import com.htkapp.modules.merchant.shop.entity.ShopCategoryData;
 
 import java.util.List;
 
@@ -21,6 +20,8 @@ public interface ShopCategoryService {
 
 
     /* ====================JSP接口开始===================== */
+    //根据类别id查找商铺类别信息
+    List<ShopCategoryData> getShopCategoryList();
     //根据类别id查找商铺类别信息
     ShopCategory getShopCategoryDataById(int categoryId) throws Exception;
     //查询标识分类列表

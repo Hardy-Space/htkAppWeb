@@ -93,8 +93,16 @@ public class IntegralManageServiceImpl implements IntegralManageService {
             //根据拿到的用户信息查找积分值
             AccountFocus accountFocus = accountFocusService.getAccountFocusByUserPhone(params.getUserPhone(), accountShopToken);
             if (accountFocus != null) {
-                //增加或减积分
-                integralService.presentOrDeductionIntegralByToken(accountFocus.getAccountToken(), accountFocus.getShopId(), params.getValue(), params.getOperationId());
+                //先查出积分数量
+                int nowVal = integralService.getVal(accountFocus.getAccountToken(), accountFocus.getShopId());
+                int newVal = 0;
+                if (params.getOperationId()==0) {
+                    newVal = (nowVal - params.getValue())<0?0:(nowVal - params.getValue());
+                }else if (params.getOperationId()==1){
+                    newVal = nowVal+params.getValue();
+                }
+                integralService.updateIntegral(accountFocus.getAccountToken(), accountFocus.getShopId(), newVal);
+//                integralService.presentOrDeductionIntegralByToken(accountFocus.getAccountToken(), accountFocus.getShopId(), params.getValue(), params.getOperationId());
                 //通过商铺id查找商铺信息
                 //记录积分变动记录
                 String recordTypeStr = params.getOperationId() == 0 ? "抵扣积分" : "赠送积分";

@@ -1,7 +1,6 @@
 package com.htkapp.modules.merchant.shop.service.serviceImpl;
 
 
-import com.github.pagehelper.PageInfo;
 import com.htkapp.core.MD5Utils;
 import com.htkapp.core.OtherUtils;
 import com.htkapp.core.jsAjax.AjaxResponseModel;
@@ -12,24 +11,16 @@ import com.htkapp.core.utils.Globals;
 import com.htkapp.modules.admin.shopCategory.entity.ShopCategory;
 import com.htkapp.modules.admin.shopCategory.service.ShopCategoryService;
 import com.htkapp.modules.common.entity.LoginUser;
+import com.htkapp.modules.merchant.shop.entity.ShopCategoryData;
 import com.htkapp.modules.merchant.shop.dto.ShopMessageData;
 import com.htkapp.modules.merchant.shop.entity.*;
 import com.htkapp.modules.merchant.shop.service.*;
 import com.xiaoleilu.hutool.date.BetweenFormater;
 import com.xiaoleilu.hutool.date.DateUtil;
-import com.xiaoleilu.hutool.util.ImageUtil;
-import jdk.nashorn.internal.objects.Global;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -50,6 +41,17 @@ public class ShopInfoControllerServiceImpl implements ShopInfoControllerService 
     private ShopMessageService shopMessageService;
 
     /* =======================接口开始============================ */
+
+    @Override
+    public void getShopCategoryList(Model model) {
+        try {
+            List<ShopCategoryData> results = shopCategoryService.getShopCategoryList();
+            model.addAttribute("data",results);
+        }catch (Exception e){
+            model.addAttribute("data",null);
+        }
+    }
+
     //获取店铺信息(店名、地址、分类、加入时间、剩余精确时间,店铺编号,店铺二维码等等)
     //店铺头像，我的账号名，营业时间，订餐时间,店铺公告，店铺简介
     @Override

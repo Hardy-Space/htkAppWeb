@@ -1,6 +1,7 @@
 package com.htkapp.modules.admin.shopCategory.dao;
 
 import com.htkapp.modules.admin.shopCategory.entity.ShopCategory;
+import com.htkapp.modules.merchant.shop.entity.ShopCategoryData;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -13,6 +14,10 @@ import java.util.List;
 public interface ShopCategoryMapper {
 
     /* ================接口开始================== */
+
+    List<ShopCategoryData> getShopCategoryList();
+
+
     //查找所有商铺类别信息
     List<ShopCategory> getShopCategoryDAO(int mark);
     //根据分类id获取分类信息

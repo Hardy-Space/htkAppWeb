@@ -826,6 +826,7 @@ public class AccountServiceImpl implements AccountServiceI {
     //通过token查找app用户数据
     @Override
     public Account selectByToken(String token) throws Exception {
+
         if (StringUtils.isNotEmpty(token)) {
             try {
                 return accountDao.selectByTokenDAO(token);

@@ -450,7 +450,7 @@ public class ShopDataServiceImpl implements ShopDataService {
                 } else {
                     return new APIResponseModel(Globals.API_REQUEST_BAD);
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 return new APIResponseModel(Globals.API_FAIL);
             }
         } else {
@@ -525,20 +525,20 @@ public class ShopDataServiceImpl implements ShopDataService {
                                 .setShippingAddress(orderRecord.getShippingAddress());
                         orderInfo.setCommentStatus(statusCode);
                         Date curDate = new Date();
-                        if(orderRecord.getOrderState() == 1){
+                        if (orderRecord.getOrderState() == 1) {
                             int value = 1000 * 60 * 5;
                             Date date = DateUtil.parseDateTime(orderRecord.getLastUpdateTime());
-                            System.out.println("订单毫秒数"+date.getTime());
+                            System.out.println("订单毫秒数" + date.getTime());
                             System.out.println(format(date, NORM_DATETIME_PATTERN));
-                            System.out.println("当前时间差毫秒数:"+(curDate.getTime() - value));
+                            System.out.println("当前时间差毫秒数:" + (curDate.getTime() - value));
                             System.out.println(format(curDate, NORM_DATETIME_PATTERN));
                             System.out.println("详情计时");
-                            if(date.getTime() >= (curDate.getTime() - value)){
+                            if (date.getTime() >= (curDate.getTime() - value)) {
                                 orderInfo.setTimeLeft(date.getTime() + value - curDate.getTime());
-                            }else {
+                            } else {
                                 orderInfo.setTimeLeft(0);
                             }
-                        }else {
+                        } else {
                             orderInfo.setTimeLeft(0);
                         }
                     }
@@ -604,15 +604,15 @@ public class ShopDataServiceImpl implements ShopDataService {
                                                 .setShippingAddress(orderRecordT.getShippingAddress());
                                     }
                                     Date curDate = new Date();
-                                    if(orderRecordT.getOrderState() == 1){
+                                    if (orderRecordT.getOrderState() == 1) {
                                         int value = 1000 * 60 * 5;
                                         Date date = DateUtil.parseDate(orderRecordT.getOrderTime());
-                                        if(date.getTime() >= (curDate.getTime() - value)){
+                                        if (date.getTime() >= (curDate.getTime() - value)) {
                                             orderInfo.setTimeLeft(date.getTime() + value - curDate.getTime());
-                                        }else {
+                                        } else {
                                             orderInfo.setTimeLeft(0);
                                         }
-                                    }else {
+                                    } else {
                                         orderInfo.setTimeLeft(0);
                                     }
                                     orderInfo.setOneProductName(resultList.get(0).getProductName());
@@ -962,7 +962,13 @@ public class ShopDataServiceImpl implements ShopDataService {
                     pageNo = pageNumber;
                 }
                 Set<Integer> focusList = accountFocusService.getCollectionShopIdListByToken(token, mark);
-                if (focusList != null) {
+                if (focusList==null){
+                    //因为数据库查询的时候这个集合不能为null，size也不能为0，再加上shop_id是shop表的主键所以不会是-1，所以这里添加个-1
+                    focusList = new HashSet<>();
+                    focusList.add(-1);
+                }
+                //把判断去掉，是因为如果新用户还没有关注任何商家的时候看不到任何推荐的商家
+//                if (focusList != null) {
                     //有关注的店铺，再根据店铺分类查找
                     //如果childCId = 0 则查询当前大类下的所有店铺
                     if (childCId == 0) {
@@ -1019,7 +1025,7 @@ public class ShopDataServiceImpl implements ShopDataService {
                             info.setShopList(shopList);
                             if (shopList.size() <= 3) {
                                 //推荐商铺
-                                //根据用户token推荐未关注的店铺
+                                //根据用户token推荐未关注的店铺（tag为0是查未关注的）
                                 List<Shop> shops = shopService.getShopListByCategoryIdAndFocus(childCId, focusList, token, 0, pageNo, pageLimit);
                                 if (shops != null) {
                                     for (Shop each : shops) {
@@ -1040,10 +1046,27 @@ public class ShopDataServiceImpl implements ShopDataService {
                             return new APIResponseModel<>(Globals.API_SUCCESS, "当前类别下没店铺", null);
                         }
                     }
-                } else {
-                    //没有关注的店铺,直接返回null
-                    return new APIResponseModel<>(Globals.API_SUCCESS, "成功", null);
-                }
+//                } else {
+//
+//
+//                    //根据用户token推荐未关注的店铺（tag为0是查未关注的）
+//                    Set<Integer> nullfocusList = new HashSet<>();
+//                    nullfocusList.add(-1);
+//                    List<Shop> shops = shopService.getShopListByCategoryIdAndFocus(childCId, nullfocusList, token, 0, pageNo, pageLimit);
+//                    RecommendedShopInfo info = new RecommendedShopInfo();
+//                    if (shops != null) {
+//                        for (Shop each : shops) {
+//                            if (each.getLogoUrl() != null) {
+//                                each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
+//                            }
+//                            System.out.println("重复了");
+//                        }
+//                        info.setShopList(null);
+//                        info.setRecommendShopList(shops);
+//                    }
+//
+//                    return new APIResponseModel<>(Globals.API_SUCCESS, "成功", info);
+//                }
             } catch (Exception e) {
                 LogUtil.error(ele, "错误:", e);
                 return new APIResponseModel(Globals.API_FAIL, e.getMessage());
@@ -1162,20 +1185,20 @@ public class ShopDataServiceImpl implements ShopDataService {
     //店铺头像接口
     @Override
     public APIResponseModel getShopImgUrl(APIRequestParams params) {
-        if(params != null && params.getShopId() != null){
+        if (params != null && params.getShopId() != null) {
             try {
                 Shop shop = shopService.getShopDataById(params.getShopId());
-                if(shop != null){
+                if (shop != null) {
                     JSONObject object = new JSONObject();
-                    object.put("shopImgUrl",OtherUtils.getRootDirectory() + shop.getLogoUrl());
-                    return new APIResponseModel<>(Globals.API_SUCCESS,"成功", object);
-                }else {
-                    return new APIResponseModel(Globals.API_FAIL,"店铺不存在");
+                    object.put("shopImgUrl", OtherUtils.getRootDirectory() + shop.getLogoUrl());
+                    return new APIResponseModel<>(Globals.API_SUCCESS, "成功", object);
+                } else {
+                    return new APIResponseModel(Globals.API_FAIL, "店铺不存在");
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 return new APIResponseModel(Globals.API_FAIL);
             }
-        }else {
+        } else {
             return new APIResponseModel(Globals.API_REQUEST_BAD);
         }
     }
@@ -1183,20 +1206,20 @@ public class ShopDataServiceImpl implements ShopDataService {
     //店铺相册接口
     @Override
     public APIResponseModel getShopAlbumList(APIRequestParams params) {
-        if(params !=  null && params.getShopId() != null){
+        if (params != null && params.getShopId() != null) {
             //根据店铺id查找相册列表
             try {
                 List<ShopAlbum> resultList = shopAlbumService.getShopAlbumListByShopId(params.getShopId());
-                if(resultList != null){
-                    for (ShopAlbum each: resultList){
+                if (resultList != null) {
+                    for (ShopAlbum each : resultList) {
                         each.setImgUrl(OtherUtils.getRootDirectory() + each.getImgUrl());
                     }
                 }
                 return new APIResponseModel<>(Globals.API_SUCCESS, "成功", resultList);
-            }catch (Exception e){
+            } catch (Exception e) {
                 return new APIResponseModel(Globals.API_FAIL);
             }
-        }else {
+        } else {
             return new APIResponseModel(Globals.API_REQUEST_BAD);
         }
     }
@@ -1204,17 +1227,17 @@ public class ShopDataServiceImpl implements ShopDataService {
     //订座订单详情
     @Override
     public APIResponseModel getSeatOrderDetail(APIRequestParams params) {
-        if(params != null && params.getOrderNumber() != null){
+        if (params != null && params.getOrderNumber() != null) {
             try {
                 SeatOrderDetail seatOrder = seatOrderService.getSeatOrderDetail(params.getOrderNumber(), params.getToken());
                 Shop shop = shopService.getShopDataById(seatOrder.getShopId());
                 seatOrder.setPhone(shop.getMobilePhone());
                 seatOrder.setAddress(shop.getAddress());
                 return new APIResponseModel<>(Globals.API_SUCCESS, "成功", seatOrder);
-            }catch (Exception e){
+            } catch (Exception e) {
                 return new APIResponseModel(Globals.API_FAIL);
             }
-        }else {
+        } else {
             return new APIResponseModel(Globals.API_REQUEST_BAD);
         }
     }

@@ -18,7 +18,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="${staticFilePath}resource/custom/plugins/layui/css/layui.css?${date}" media="all">
     <link rel="stylesheet" href="${staticFilePath}resource/custom/css/index.css?${date}">
-    <link id="layuicss-skinlayercss" rel="stylesheet" href="${staticFilePath}resource/custom/plugins/layui/css/modules/layer/default/layer.css?${date}" media="all">
+    <link id="layuicss-skinlayercss" rel="stylesheet"
+          href="${staticFilePath}resource/custom/plugins/layui/css/modules/layer/default/layer.css?${date}" media="all">
     <!-- HTML5 Shim 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
     <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
     <!--[if lt IE 9]>
@@ -83,8 +84,11 @@
             margin-left: 120px;
         }
     </style>
+
 </head>
 <body class="beg-login-bg">
+
+
 <div class="register">
     <div class="register_content shadow_">
         <form class="layui-form register-form">
@@ -95,10 +99,19 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">店铺名称</label>
                 <div class="layui-input-block">
-                    <input type="text" name="shopName" lay-verify="title|required|name" autocomplete="off" placeholder="请输入店铺名称"
+                    <input type="text" name="shopName" lay-verify="title|required|name" autocomplete="off"
+                           placeholder="请输入店铺名称"
                            class="layui-input">
                 </div>
             </div>
+
+            <%--<div class="layui-form-item">--%>
+                <%--<label class="layui-form-label">店铺分类</label>--%>
+                <%--<div class="layui-input-inline select-input">--%>
+                    <%--<select id="shopCategory" lay-ignore lay-verify="required" onchange="search(this)">--%>
+                    <%--</select>--%>
+                <%--</div>--%>
+            <%--</div>--%>
 
             <div class="layui-form-item">
                 <label class="layui-form-label">负责人姓名</label>
@@ -111,7 +124,8 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">负责人身份证</label>
                 <div class="layui-input-block">
-                    <input type="text" name="identity" lay-verify="identity|required" placeholder="请输入负责人身份证" autocomplete="off"
+                    <input type="text" name="identity" lay-verify="identity|required" placeholder="请输入负责人身份证"
+                           autocomplete="off"
                            class="layui-input">
                 </div>
             </div>
@@ -119,7 +133,8 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">负责人手机号</label>
                 <div class="layui-input-block">
-                    <input type="text" name="phone" lay-verify="phone|required" placeholder="请输入负责人手机号" autocomplete="off"
+                    <input type="text" name="phone" lay-verify="phone|required" placeholder="请输入负责人手机号"
+                           autocomplete="off"
                            class="layui-input">
                 </div>
             </div>
@@ -127,7 +142,8 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">请输入密码</label>
                 <div class="layui-input-inline">
-                    <input type="password" id="pass1" name="password1" lay-verify="pass|required" placeholder="请输入密码" autocomplete="off"
+                    <input type="password" id="pass1" name="password1" lay-verify="pass|required" placeholder="请输入密码"
+                           autocomplete="off"
                            class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">请填写6到12位密码</div>
@@ -136,7 +152,8 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">确认输入密码</label>
                 <div class="layui-input-inline">
-                    <input type="password" id="pass2" name="password" lay-verify="pass|required|same_password" placeholder="请再次输入密码" autocomplete="off"
+                    <input type="password" id="pass2" name="password" lay-verify="pass|required|same_password"
+                           placeholder="请再次输入密码" autocomplete="off"
                            class="layui-input">
                 </div>
                 <div class="layui-form-mid layui-word-aux">请填写6到12位密码</div>
@@ -144,7 +161,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">店铺位置</label>
                 <div class="layui-input-inline select-input">
-                    <select lay-ignore id='province'lay-verify="required" onchange="search(this)">
+                    <select lay-ignore id='province' lay-verify="required" onchange="search(this)">
                     </select>
                 </div>
                 <div class="layui-input-inline select-input">
@@ -156,7 +173,7 @@
                     </select>
                 </div>
                 <div class="layui-input-inline select-input">
-                    <select id='street' lay-ignore lay-verify="required"  onchange="setCenter(this)">
+                    <select id='street' lay-ignore lay-verify="required" onchange="setCenter(this)">
                     </select>
                 </div>
             </div>
@@ -170,10 +187,10 @@
                             style="height: 36px;line-height: 36px;position: relative;top: -3px;left: 20px;">确认
                     </button>
                 </div>
-                <input name="location" hidden="hidden" id="location" />
+                <input name="location" hidden="hidden" id="location"/>
             </div>
-            <input name="longitude" hidden="hidden" id="longitude" />
-            <input name="latitude" hidden="hidden" id="latitude" />
+            <input name="longitude" hidden="hidden" id="longitude"/>
+            <input name="latitude" hidden="hidden" id="latitude"/>
             <div class="layui-form-item">
                 <label class="layui-form-label">地图位置</label>
                 <div class="layui-input-block">
@@ -198,7 +215,8 @@
 <script type="text/javascript" src="${staticFilePath}resource/custom/js/base.js?${date}"></script>
 <script type="text/javascript" src="${staticFilePath}resource/custom/js/layer_.js?${date}"></script>
 <script type="text/javascript" src="${staticFilePath}resource/custom/plugins/MD5/MD5.js?${date}"></script>
-<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.1&key=130d9c7f6d892db69a83aa96bf7c3828&plugin=AMap.DistrictSearch,AMap.Geocoder"></script>
+<script type="text/javascript"
+        src="http://webapi.amap.com/maps?v=1.4.1&key=130d9c7f6d892db69a83aa96bf7c3828&plugin=AMap.DistrictSearch,AMap.Geocoder"></script>
 <script type="text/javascript">
     var map, district, polygons = [], citycode;
     var citySelect = document.getElementById('city');
@@ -206,7 +224,7 @@
     var areaSelect = document.getElementById('street');
     var placeSearch;
     var cityCode_;
-    var a1="", a2="", a3="", a4 = "";
+    var a1 = "", a2 = "", a3 = "", a4 = "";
     var aVal = "";
     var location_ = {};
     //获取输入框对象
@@ -219,7 +237,7 @@
     });
 
     //地址
-    AMap.service(["AMap.PlaceSearch"], function() {
+    AMap.service(["AMap.PlaceSearch"], function () {
         placeSearch = new AMap.PlaceSearch({ //构造地点查询类
             pageSize: 5,
             pageIndex: 1,
@@ -264,25 +282,25 @@
             districtSelect.innerHTML = '';
             areaSelect.innerHTML = '';
             a1 = data.name;
-            if(a2  !== "")
+            if (a2 !== "")
                 a2 = "";
-            if(a3 !== "")
+            if (a3 !== "")
                 a3 = "";
-            if(a4 !== "")
+            if (a4 !== "")
                 a4 = ""
         } else if (level === 'city') {
             districtSelect.innerHTML = '';
             areaSelect.innerHTML = '';
             a2 = data.name;
-            if(a3 !== "")
+            if (a3 !== "")
                 a3 = "";
-            if(a4 !== "")
+            if (a4 !== "")
                 a4 = ""
         } else if (level === 'district') {
             cityCode_ = data.citycode;
             areaSelect.innerHTML = '';
             a3 = data.name
-            if(a4 !== "")
+            if (a4 !== "")
                 a4 = ""
         }
         aVal = a1 + a2 + a3 + a4;
@@ -308,6 +326,27 @@
 
     }
 
+    <%--页面初始化的时候把下拉店铺分类填好--%>
+//    $(function()
+//    {
+//        var shopCategoryListJson;
+//        var url = baseUrl + "/merchant/shopInfo/getShopCategoryList";
+//        var params={actionName: 'getData'};
+//        $.post(url,params,function(data){
+//            if (data.code === 0 && data.data !== null) {
+//                //获取数据成功
+//                shopCategoryListJson = data;
+//                $.each(shopCategoryListJson, function (index, item) {
+//                    $("#shopCategory").append("<option value='" + index + "'>" + item.categoryName + "</option>");
+//                });
+//            } else {
+//                //后台执行异常,外卖下分类为空(显示提示信息)
+//                layer_msg(data.message, 'exception');
+//            }
+//        });
+//    });
+
+
     function search(obj) {
         //清除地图上所有覆盖物
         for (var i = 0, l = polygons.length; i < l; i++) {
@@ -329,7 +368,7 @@
 
     function setCenter(obj) {
         var a4 = obj[obj.options.selectedIndex].innerHTML;
-        if(a4 === "--请选择--")
+        if (a4 === "--请选择--")
             a4 = "";
         aVal = a1 + a2 + a3 + a4;
         inputEle.val(a1 + a2 + a3 + a4);
@@ -342,7 +381,7 @@
             radius: 1000 //范围，默认：500
         });
         //地理编码,返回地理编码结果
-        geocoder.getLocation(address, function(status, result) {
+        geocoder.getLocation(address, function (status, result) {
             if (status === 'complete' && result.info === 'OK') {
                 location_ = result['geocodes'][0].location;
                 $("#longitude").val(location_.lng);
@@ -355,13 +394,13 @@
     function addMarker(i, d) {
         var marker = new AMap.Marker({
             map: map,
-            position: [ d.location.getLng(),  d.location.getLat()]
+            position: [d.location.getLng(), d.location.getLat()]
         });
         var infoWindow = new AMap.InfoWindow({
             content: d.formattedAddress,
             offset: {x: 0, y: -30}
         });
-        marker.on("mouseover", function(e) {
+        marker.on("mouseover", function (e) {
             infoWindow.open(map, marker.getPosition());
         });
     }
@@ -382,18 +421,18 @@
     //查找按钮
     $("#searchBtn").on("click", function () {
         const val = $("#searchVal").val();
-        if(a1 === "" || a2 === "" || a3 === "") {
-            layer.msg('请选择完成地址', {icon: 5, anim:6});
+        if (a1 === "" || a2 === "" || a3 === "") {
+            layer.msg('请选择完成地址', {icon: 5, anim: 6});
             return
-        }else if(aVal.length === val.length){
-            layer.msg('请输入选择完成后的详细地址', {icon: 5, anim:6});
+        } else if (aVal.length === val.length) {
+            layer.msg('请输入选择完成后的详细地址', {icon: 5, anim: 6});
             return
         }
         $("#location").val(a1);
         $("#longitude").val(location_.lng);
         $("#latitude").val(location_.lat);
         //关键字查询
-        geocoder(val,cityCode_);
+        geocoder(val, cityCode_);
     })
 </script>
 <script type="text/javascript" src="http://webapi.amap.com/demos/js/liteToolbar.js"></script>
@@ -408,23 +447,23 @@
         //监听提交按钮
         form.on('submit(register)', function (data) {
             //逆地理编码
-            geocoder(data.field.address,cityCode_);
+            geocoder(data.field.address, cityCode_);
             data.field.longitude = location_.lng;
             data.field.latitude = location_.lat;
             data.field.password = MD5(data.field.password).toUpperCase();
             const url = baseUrl + "/merchant/register";
             $.post(url, data.field, function (result, status) {
-                if(status === 'success'){
-                    if(result && result.code === 0){
+                if (status === 'success') {
+                    if (result && result.code === 0) {
                         //注册成功,跳转到登陆页面
-                        window.location.href = baseUrl +"/merchant/login";
+                        window.location.href = baseUrl + "/merchant/login";
                         return false;
-                    }else {
+                    } else {
                         //注册失败，显示错误信息
                         layer_msg(data.message, 'error');
                         return false;
                     }
-                }else {
+                } else {
                     layer_msg('网络连接失败', 'exception');
                     return false;
                 }
@@ -446,7 +485,7 @@
             //验证密码是否一样
             same_password: function (value) {
                 var pass1 = $("#pass1").val();
-                if(value !== pass1){
+                if (value !== pass1) {
                     return '两次输入密码不一致';
                 }
             }
@@ -457,11 +496,11 @@
         var ele = $(this);
         console.log(ele.val().length);
         console.log(aVal.length);
-        if(ele.val().length > aVal.length){
-            if(aVal === ""){
+        if (ele.val().length > aVal.length) {
+            if (aVal === "") {
                 ele.val(aVal)
             }
-        }else {
+        } else {
             ele.val(aVal);
         }
     })

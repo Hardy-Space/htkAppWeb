@@ -46,18 +46,32 @@
         where account_shop.token = #{0} and account_token = #{1}
     </select>
     <!--<select id="getIntegralUserListByShopTokenDAO" resultType="Integral">-->
-        <!--select-->
-        <!--integral.id, val, integral.shop_id, integral.account_token, integral.gmt_create as joinTime,-->
-        <!--integral.gmt_modified as last_use_time, flag-->
-        <!--from integral-->
-        <!--left join shop on integral.shop_id = shop.shop_id-->
-        <!--left join account_shop on shop.account_shop_id = account_shop.id-->
-        <!--where account_shop.token = #{token}-->
-        <!--<if test="condition != null">-->
-            <!--and account_token = #{condition} group by integral.account_token-->
-        <!--</if>-->
-        <!--order by ${orderDesc}-->
+    <!--select-->
+    <!--integral.id, val, integral.shop_id, integral.account_token, integral.gmt_create as joinTime,-->
+    <!--integral.gmt_modified as last_use_time, flag-->
+    <!--from integral-->
+    <!--left join shop on integral.shop_id = shop.shop_id-->
+    <!--left join account_shop on shop.account_shop_id = account_shop.id-->
+    <!--where account_shop.token = #{token}-->
+    <!--<if test="condition != null">-->
+    <!--and account_token = #{condition} group by integral.account_token-->
+    <!--</if>-->
+    <!--order by ${orderDesc}-->
     <!--</select>-->
+
+    <select id="getVal" resultType="java.lang.Integer">
+        select val
+        from integral
+        where account_token = #{0}
+        and shop_id = #{1}
+    </select>
+
+    <update id="updateIntegral">
+        update integral set val = #{2}
+        where account_token = #{0}
+        and shop_id = #{1}
+    </update>
+
     <update id="presentOrDeductionIntegralByTokenDAO">
         update integral
         <choose>
@@ -75,7 +89,7 @@
     </update>
     <select id="getUserIntegralByAccountTokenDAO" resultType="Integral">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from integral
         where account_token = #{0} and shop_id = #{1}
     </select>

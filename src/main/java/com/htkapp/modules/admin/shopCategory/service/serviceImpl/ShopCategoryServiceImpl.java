@@ -3,19 +3,14 @@ package com.htkapp.modules.admin.shopCategory.service.serviceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.htkapp.core.exception.costom.NullDataException;
-import com.htkapp.core.jsAjax.AjaxResponseModel;
-import com.htkapp.core.params.AjaxRequestParams;
 import com.htkapp.core.utils.Globals;
 import com.htkapp.modules.admin.shopCategory.dao.ShopCategoryMapper;
 import com.htkapp.modules.admin.shopCategory.entity.ShopCategory;
 import com.htkapp.modules.admin.shopCategory.service.ShopCategoryService;
-import com.htkapp.modules.common.entity.AccountShopRole;
 import com.htkapp.modules.common.service.AccountShopRoleService;
-import com.htkapp.modules.merchant.shop.entity.AccountShop;
+import com.htkapp.modules.merchant.shop.entity.ShopCategoryData;
 import com.htkapp.modules.merchant.shop.service.AccountShopServiceI;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -34,6 +29,20 @@ public class ShopCategoryServiceImpl implements ShopCategoryService {
     private AccountShopRoleService accountShopRoleService;
 
     /* =================接口开始==================== */
+
+    /**
+     * 获取所有的商铺分类
+     * @return
+     */
+    @Override
+    public List<ShopCategoryData> getShopCategoryList() {
+        try {
+            return shopCategoryDao.getShopCategoryList();
+        }catch (Exception e){
+            return null;
+        }
+    }
+
     //获取所有商铺类别
     @Override
     public List<ShopCategory> getAllCategory(int pageNo, int pageLimit, int mark) throws Exception {

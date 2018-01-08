@@ -49,10 +49,10 @@ public class IntegralServiceImpl implements IntegralService {
     public int determineTheIntegralByValue(int integralValue, String token, int shopId) {
         //根据用户token 和 商铺id 查找用户的积分值
         //比对用户积分值 和 所需积分值  满足条件则返回1 否则返回0
-        Integral integral = integralDao.getUserIntegralByAccountTokenDAO(token,shopId);
-        if(integral != null){
+        Integral integral = integralDao.getUserIntegralByAccountTokenDAO(token, shopId);
+        if (integral != null) {
             //判断
-           return integral.getVal() > integralValue ? 1 : 0;
+            return integral.getVal() > integralValue ? 1 : 0;
         }
         return 0;
     }
@@ -84,7 +84,7 @@ public class IntegralServiceImpl implements IntegralService {
     //根据用户token获取数据
     @Override
     public Integral getUserIntegralByAccountToken(String token, int shopId) {
-        return integralDao.getUserIntegralByAccountTokenDAO(token,shopId);
+        return integralDao.getUserIntegralByAccountTokenDAO(token, shopId);
     }
 
     @Override
@@ -107,10 +107,21 @@ public class IntegralServiceImpl implements IntegralService {
     @Override
     public Integer getIntegralValByAccountToken(String token, String accountToken) {
         Integer result = integralDao.getIntegralValByAccountTokenDAO(token, accountToken);
-        if(result > 0){
+        if (result > 0) {
             return result;
         }
         return 0;
+    }
+
+    @Override
+    public Integer getVal(String token, int shopId) {
+        Integer result = integralDao.getVal(token, shopId);
+        return result;
+    }
+
+    @Override
+    public Integer updateIntegral(String token, int shopId, int val) {
+        return integralDao.updateIntegral(token,shopId,val);
     }
 
     /* ===========================JSP接口结束================================ */
