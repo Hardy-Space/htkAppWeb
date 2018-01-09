@@ -344,6 +344,18 @@
             overflow: auto;
         }
     </style>
+    <script>
+        function printMenu() {
+            var url = baseUrl+"/printMenu";
+            $.post(url,function (result) {
+                if("fail".equal(result)){
+                    alert("打印失败");
+                }else if ("success".equal(result)){
+                    $('#myModal').modal('dismiss');
+                }
+            });
+        }
+    </script>
 </head>
 <body>
 <div class="layui-layout layui-layout-admin">
@@ -507,7 +519,7 @@
             <span class="col-md-12">
                 <span class="col-md-6 bianhao orderNumber modelWindow">订单编号：</span>
                 <span class="xiangqing col-md-12">
-                    <button id="myModalc" type="button" class="bt modelWindow bt-primary col-md-4">打印</button>
+                    <button id="myModalc" onclick="printMenu()" type="button" class="bt modelWindow bt-primary col-md-4">打印</button>
                     <input data-dismiss="modal" type="button" class="bt cancel modelWindow bt-default col-md-4 "
                            value="取消"/>
                     <button type="button" class="layui-btn layui-btn-normal col-md-4 affirmSettleBtn">确认结算</button>
@@ -519,6 +531,7 @@
 </body>
 <%@include file="js.jsp" %>
 <script>
+
     layui.use(['element', 'util', 'layer', 'laydate', 'laypage'], function () {
         var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
         var page = layui.laypage;

@@ -961,7 +961,7 @@ public class MerchantServiceImpl implements MerchantService {
             try {
                 String orderDesc = "gmt_create desc";
                 LoginUser user = OtherUtils.getLoginUserByRequest();
-                Shop shop = shopService.getShopDataByAccountShopIdAndMark(user.getUserId(), 0);
+                Shop shop = shopService.getShopDataByAccountShopIdAndMark(user.getUserId(), 2);
                 if (shop != null) {
                     List<BuffetFoodOrder> resultList = buffetFoodOrderService.getBuffetFoodOrderListByShopIdAndOrderStateId(orderDesc, shop.getShopId(), 1, pageNumber, pageLimit);
                     if (resultList != null) {

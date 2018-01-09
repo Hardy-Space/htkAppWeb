@@ -29,9 +29,15 @@ public class BuffetFoodAPI {
     private BuffetFoodService buffetFoodService;
 
     //通过商铺id获取分类列表
+//    @RequestMapping(value = "/getCategoryList", method = RequestMethod.POST)
+//    public APIResponseModel getCategoryList(String qrKey) {
+//        return buffetFoodService.getCategoryList(qrKey);
+//    }
+
+    //通过商铺id获取分类列表
     @RequestMapping(value = "/getCategoryList", method = RequestMethod.POST)
-    public APIResponseModel getCategoryList(String qrKey) {
-        return buffetFoodService.getCategoryList(qrKey);
+    public APIResponseModel getCategoryList(int shopId) {
+        return buffetFoodService.getCategoryList(shopId);
     }
 
     //根据分类id获取菜品列表

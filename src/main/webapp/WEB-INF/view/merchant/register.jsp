@@ -105,13 +105,13 @@
                 </div>
             </div>
 
-            <%--<div class="layui-form-item">--%>
-                <%--<label class="layui-form-label">店铺分类</label>--%>
-                <%--<div class="layui-input-inline select-input">--%>
-                    <%--<select id="shopCategory" lay-ignore lay-verify="required" onchange="search(this)">--%>
-                    <%--</select>--%>
-                <%--</div>--%>
-            <%--</div>--%>
+            <div class="layui-form-item">
+                <label class="layui-form-label">店铺分类</label>
+                <div class="layui-input-inline select-input">
+                    <select id="shopCategory" lay-ignore lay-verify="required" onchange="search(this)">
+                    </select>
+                </div>
+            </div>
 
             <div class="layui-form-item">
                 <label class="layui-form-label">负责人姓名</label>
@@ -327,24 +327,22 @@
     }
 
     <%--页面初始化的时候把下拉店铺分类填好--%>
-//    $(function()
-//    {
-//        var shopCategoryListJson;
-//        var url = baseUrl + "/merchant/shopInfo/getShopCategoryList";
-//        var params={actionName: 'getData'};
-//        $.post(url,params,function(data){
-//            if (data.code === 0 && data.data !== null) {
-//                //获取数据成功
-//                shopCategoryListJson = data;
-//                $.each(shopCategoryListJson, function (index, item) {
-//                    $("#shopCategory").append("<option value='" + index + "'>" + item.categoryName + "</option>");
-//                });
-//            } else {
-//                //后台执行异常,外卖下分类为空(显示提示信息)
-//                layer_msg(data.message, 'exception');
-//            }
-//        });
-//    });
+    $(function () {
+        var shopCategoryListJson;
+        var url = baseUrl + "/merchant/shopInfo/getShopCategoryList";
+        $.post(url, function (data) {
+            if (data.code === 0 && data.data !== null) {
+                //获取数据成功
+                shopCategoryListJson = data;
+                $.each(shopCategoryListJson, function (index, item) {
+                    $("#shopCategory").append("<option value='" + index + "'>" + item.categoryName + "</option>");
+                });
+            } else {
+                //后台执行异常,外卖下分类为空(显示提示信息)
+                layer_msg(data.message, 'exception');
+            }
+        });
+    });
 
 
     function search(obj) {

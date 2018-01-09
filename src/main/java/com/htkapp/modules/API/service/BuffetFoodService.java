@@ -15,6 +15,8 @@ public interface BuffetFoodService {
     /* =============接口开始================= */
     //通过商铺id获取分类列表
     APIResponseModel getCategoryList(String qrKey);
+    //通过商铺id获取分类列表
+    APIResponseModel getCategoryList(int shopId);
     //根据分类获取菜品列表
     APIResponseModel getGoodsListByCategoryId(APIRequestParams params);
     //获取商铺的座位列表

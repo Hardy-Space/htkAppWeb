@@ -107,6 +107,28 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
         }
     }
 
+    @Override
+    public APIResponseModel getCategoryList(int shopId) {
+        try {
+            List<BuffetFoodCategory> resultList = buffetFoodCategoryService.getBuffetFoodCategoryListByShopId(shopId);
+            if (resultList != null && resultList.size() > 0) {
+                for (int i = 0; i < resultList.size(); i++) {
+                    if (resultList.get(i).getCategoryName().equals("推荐")) {
+                        BuffetFoodCategory a = resultList.get(0);
+                        resultList.set(0, resultList.get(i));
+                        resultList.set(i, a);
+                        break;
+                    }
+                }
+                return new APIResponseModel<List<BuffetFoodCategory>>(Globals.API_SUCCESS, "成功", resultList);
+            } else {
+                return new APIResponseModel<List<BuffetFoodCategory>>(Globals.API_SUCCESS, "还没有新建分类", resultList);
+            }
+        } catch (Exception e) {
+            return new APIResponseModel(Globals.API_FAIL);
+        }
+    }
+
     //根据分类获取菜品列表
     @Override
     public APIResponseModel getGoodsListByCategoryId(APIRequestParams params) {
