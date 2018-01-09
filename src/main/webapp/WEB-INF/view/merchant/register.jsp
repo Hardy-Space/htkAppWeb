@@ -108,7 +108,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">店铺分类</label>
                 <div class="layui-input-inline select-input">
-                    <select id="shopCategory" lay-ignore lay-verify="required" onchange="search(this)">
+                    <select id="shopCategory" lay-ignore lay-verify="required" >
                     </select>
                 </div>
             </div>
@@ -227,6 +227,9 @@
     var a1 = "", a2 = "", a3 = "", a4 = "";
     var aVal = "";
     var location_ = {};
+
+//    var categoryId;
+
     //获取输入框对象
     var inputEle = $("#searchVal");
 
@@ -326,16 +329,30 @@
 
     }
 
+//    绑定分类选择变化更新选择的分类id
+//    $("#shopCategory").bind("change",function(){
+//        var id = $(this).val();
+//        categoryId = id;
+//    });
+
+//    初始化的select的默认分类id赋值
+//    $(function () {
+//        var id = $("#shopCategory").val();
+//        categoryId = id;
+//        //这里获取的是null
+//        alert(""+categoryId);
+//    });
+
     <%--页面初始化的时候把下拉店铺分类填好--%>
     $(function () {
         var shopCategoryListJson;
         var url = baseUrl + "/merchant/shopInfo/getShopCategoryList";
-        $.post(url, function (data) {
-            if (data.code === 0 && data.data !== null) {
+        $.post(url, function (result) {
+            if (result.code === 0 && result.data !== null) {
                 //获取数据成功
-                shopCategoryListJson = data;
+                shopCategoryListJson = result.data;
                 $.each(shopCategoryListJson, function (index, item) {
-                    $("#shopCategory").append("<option value='" + index + "'>" + item.categoryName + "</option>");
+                    $("#shopCategory").append("<option value='" + item.id + "'>" + item.categoryName + "</option>");
                 });
             } else {
                 //后台执行异常,外卖下分类为空(显示提示信息)
@@ -444,10 +461,15 @@
 
         //监听提交按钮
         form.on('submit(register)', function (data) {
+//            alert($("#shopCategory").val());
             //逆地理编码
             geocoder(data.field.address, cityCode_);
             data.field.longitude = location_.lng;
             data.field.latitude = location_.lat;
+
+            //把选择的分类给带上
+            data.field.categoryId = $("#shopCategory").val();
+
             data.field.password = MD5(data.field.password).toUpperCase();
             const url = baseUrl + "/merchant/register";
             $.post(url, data.field, function (result, status) {

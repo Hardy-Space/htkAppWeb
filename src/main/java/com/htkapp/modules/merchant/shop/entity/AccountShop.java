@@ -2,6 +2,16 @@ package com.htkapp.modules.merchant.shop.entity;
 
 public class AccountShop {
 
+    private Integer categoryId;
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
     private Integer id;
 
     private String userName;

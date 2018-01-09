@@ -166,6 +166,7 @@ public class MerchantServiceImpl implements MerchantService {
                 accountShop.setEncryptToken(MD5Utils.getMD5Encode(accountShop.getToken() + accountShop.getSaltToken())); //md5加密后的token
                 int accountShopId = accountShopService.registerAccountShopByPhone(accountShop);
                 Shop shop = new Shop();
+                //0代表外卖，1代表团购，2代表自助点餐
                 int[] a = new int[3];
                 a[0] = 0;
                 a[1] = 1;
@@ -184,14 +185,21 @@ public class MerchantServiceImpl implements MerchantService {
                     shop.setLocation(params.getLocation());
                     shop.setAddress(params.getAddress());
                     shop.setAccountShopId(accountShopId);
+
+                    /**
+                     * @author 马鹏昊
+                     * @desc 加入商铺类别
+                     */
+                    shop.setShopCategoryId(accountShop1.getCategoryId());
+
                     shop.setPhone(accountShop.getPhone());
                     shop.setMobilePhone(accountShop.getPhone());
                     shop.setDeliveryFee(20.00);
-                    if(a[i] == 0){
-                        shop.setShopCategoryId(43);
-                    }else if(a[i] == 1){
-                        shop.setShopCategoryId(49);
-                    }
+//                    if(a[i] == 0){
+//                        shop.setShopCategoryId(43);
+//                    }else if(a[i] == 1){
+//                        shop.setShopCategoryId(49);
+//                    }
                     shop.setIntro("欢迎光临本店!!!");
                     shop.setMark(a[i]);
                     int shopId = shopService.insertShopById(shop);

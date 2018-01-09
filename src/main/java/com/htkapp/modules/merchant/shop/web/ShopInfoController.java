@@ -31,17 +31,12 @@ public class ShopInfoController {
     private ShopInfoControllerService controllerService;
 
 
+
     //获取商铺分类列表（商家注册页面）
     @RequestMapping(value = "/getShopCategoryList", method = RequestMethod.POST)
-    public String getShopCategoryList(Model model) {
-        controllerService.getShopCategoryList(model);
-        model.addAttribute("getShopCategoryList",true);
-        Map<String, Object> map = new HashMap<>();
-        map.put("sto_mark", true);
-        map.put("sto_mark_s", true);
-        map.put("date", new Date().getTime());
-        OtherUtils.ReturnValByModel(model, map);
-        return mDirectory + "register";
+    @ResponseBody
+    public AjaxResponseModel uploadAlbumInterface(){
+        return controllerService.getShopCategoryList();
     }
 
     //商铺信息－跳转到用户页面

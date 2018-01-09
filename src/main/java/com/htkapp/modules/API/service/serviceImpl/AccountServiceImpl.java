@@ -95,7 +95,8 @@ public class AccountServiceImpl implements AccountServiceI {
                                 .setAvatarUrl("htkApp/upload/app/default/appDefaultAva_img.jpg")
                                 .setToken(UUID.randomUUID().toString())
                                 .setRegisterTime(format(new Date(), NORM_DATETIME_PATTERN))
-                                .setAccountStatus(1); //默认激活账号
+                                .setAccountStatus(1) //默认激活账号
+                                .setNickName("尚无昵称");
                         account.setEncryptToken(MD5Utils.getMD5Encode(account.getToken() + account.getSaltToken()));
                         try {
                             return insertAccount(account);

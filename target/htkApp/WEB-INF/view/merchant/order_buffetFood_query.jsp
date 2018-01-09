@@ -344,18 +344,18 @@
             overflow: auto;
         }
     </style>
-    <script>
-        function printMenu() {
-            var url = baseUrl+"/printMenu";
-            $.post(url,function (result) {
-                if("fail".equal(result)){
-                    alert("打印失败");
-                }else if ("success".equal(result)){
-                    $('#myModal').modal('dismiss');
-                }
-            });
-        }
-    </script>
+    <%--<script>--%>
+        <%--function printMenu() {--%>
+            <%--var url = baseUrl+"/printMenu";--%>
+            <%--$.post(url,function (result) {--%>
+                <%--if("fail".equal(result)){--%>
+                    <%--alert("打印失败");--%>
+                <%--}else if ("success".equal(result)){--%>
+                    <%--$('#myModal').modal('dismiss');--%>
+                <%--}--%>
+            <%--});--%>
+        <%--}--%>
+    <%--</script>--%>
 </head>
 <body>
 <div class="layui-layout layui-layout-admin">

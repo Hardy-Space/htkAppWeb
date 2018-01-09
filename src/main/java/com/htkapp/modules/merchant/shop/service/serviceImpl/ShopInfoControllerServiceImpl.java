@@ -43,12 +43,12 @@ public class ShopInfoControllerServiceImpl implements ShopInfoControllerService 
     /* =======================接口开始============================ */
 
     @Override
-    public void getShopCategoryList(Model model) {
+    public AjaxResponseModel getShopCategoryList() {
         try {
-            List<ShopCategoryData> results = shopCategoryService.getShopCategoryList();
-            model.addAttribute("data",results);
+            List<ShopCategoryData> data = shopCategoryService.getShopCategoryList();
+            return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION, "成功", data);
         }catch (Exception e){
-            model.addAttribute("data",null);
+            return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "失败",null );
         }
     }
 

@@ -10,7 +10,7 @@ public interface ShopInfoControllerService {
 
     /* ====================接口开始========================= */
     //获取商铺分类列表（商家注册页面）
-    void getShopCategoryList(Model model);
+    AjaxResponseModel getShopCategoryList();
     //获取店铺信息(店名、地址、分类、加入时间、剩余精确时间,店铺编号,店铺二维码等等.)
     void getShopMessageByShopEncryptToken(Model model);
     //店铺相册页面
