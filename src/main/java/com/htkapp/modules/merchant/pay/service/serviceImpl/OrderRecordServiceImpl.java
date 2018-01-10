@@ -54,15 +54,19 @@ public class OrderRecordServiceImpl implements OrderRecordService {
                 orderRecord.setNumber(num);
             }
             orderRecord.setAllNumber(allNumberVal + 1);
+            //这是插入order_record表记录
             int row = orderRecordDao.paymentSuccessfullyCreatedOrderDAO(orderRecord);
             if (row <= 0) {
                 throw new Exception(Globals.CALL_DATABASE_ERROR);
             }
 
             //更新用户拥有的优惠券数量
-            List<AccountTicketList> accountTicketLists = ticketListService.getTicketListByTokenAndCouponId(orderRecord.getToken(),orderRecord.getCouponId());
-            int nowQuantity = accountTicketLists.get(0).getQuantity();
-            ticketListService.updateTicketListByTokenAndCouponIdDAO(nowQuantity-1,orderRecord.getToken(),orderRecord.getCouponId());
+            List<AccountTicketList> accountTicketLists = ticketListService.getTicketListByTokenAndCouponId(orderRecord.getToken(), orderRecord.getCouponId());
+            //使用优惠券的情况下才操作
+            if (accountTicketLists != null && accountTicketLists.size() > 0) {
+                int nowQuantity = accountTicketLists.get(0).getQuantity();
+                ticketListService.updateTicketListByTokenAndCouponIdDAO(nowQuantity - 1, orderRecord.getToken(), orderRecord.getCouponId());
+            }
 
         } catch (Exception e) {
             throw new Exception(e.getMessage());
@@ -242,7 +246,7 @@ public class OrderRecordServiceImpl implements OrderRecordService {
     @Override
     public void deleteOrderByOrderNumber(String orderNumber, String token) {
         int row = orderRecordDao.deleteOrderByOrderNumberDAO(orderNumber, token);
-        if(row <= 0){
+        if (row <= 0) {
             throw new DeleteException(Globals.DEFAULT_EXCEPTION_DELETE_FAILED);
         }
     }
@@ -501,7 +505,7 @@ public class OrderRecordServiceImpl implements OrderRecordService {
     public List<OrderRecord> getOrderRecordListByDescAndShopId(int shopId, String orderDesc, int pageNum, int pageLimit, String keyWord) {
         PageHelper.startPage(pageNum, pageLimit);
         List<OrderRecord> orderRecordList = orderRecordDao.getOrderRecordListByDescAndShopIdDAO(shopId, orderDesc, keyWord);
-        if(orderRecordList != null && orderRecordList.size() > 0){
+        if (orderRecordList != null && orderRecordList.size() > 0) {
             return orderRecordList;
         }
         return null;

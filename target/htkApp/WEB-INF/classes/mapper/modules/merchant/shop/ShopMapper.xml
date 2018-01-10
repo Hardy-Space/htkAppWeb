@@ -61,7 +61,6 @@
     </select>
 
 
-
     <select id="getShopIdByAccountShopId" resultType="Shop">
         select shop.shop_id
         from shop
@@ -93,7 +92,7 @@
     </select>
     <select id="getShopByAccountShopIdDAO" resultType="Shop">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from shop
         where account_shop_id = #{accountShopId}
     </select>
@@ -104,13 +103,13 @@
     </update>
     <select id="getShopListByAccountShopIdDAO" resultType="Shop">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from shop
         where account_shop_id = #{accountShopId}
     </select>
     <select id="getShopByAccountShopIdAndMarkDAO" resultType="Shop">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from shop
         where account_shop_id = #{accountShopId} and mark = #{mark}
     </select>
@@ -124,14 +123,14 @@
                 <foreach collection="shopIdList" index="index" item="each" open="(" separator="," close=")">
                     #{each}
                 </foreach>
-                and shop.shop_category_id = #{categoryId}
+                and shop.shop_category_id = #{categoryId} and shop.mark=#{mark}
             </when>
             <otherwise>
                 shop.shop_id in
                 <foreach collection="shopIdList" index="index" item="each" open="(" separator="," close=")">
                     #{each}
                 </foreach>
-                and shop.shop_category_id = #{categoryId}
+                and shop.shop_category_id = #{categoryId} and shop.mark=#{mark}
             </otherwise>
         </choose>
     </select>
@@ -149,6 +148,7 @@
                 <foreach collection="childSId" index="indexs" item="every" open="" separator="or" close="">
                     shop.shop_category_id = #{every}
                 </foreach>
+                and shop.mark=#{mark}
             </when>
             <otherwise>
                 shop.shop_id in
@@ -159,6 +159,7 @@
                 <foreach collection="childSId" index="indexs" item="every" open="" separator="or" close="">
                     shop.shop_category_id = #{every}
                 </foreach>
+                and shop.mark=#{mark}
             </otherwise>
         </choose>
     </select>
@@ -169,7 +170,7 @@
     </select>
     <select id="getShopByIndexDAO" resultType="Shop">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from shop
         where mark = #{1} limit #{0}, 1
     </select>
@@ -185,7 +186,7 @@
     <!-- ==================JSP页面接口开始===================== -->
     <select id="getShopDataByAccountShopIdDAO" resultType="Shop">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from shop
         where account_shop_id = #{accountShopId}
     </select>

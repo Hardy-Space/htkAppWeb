@@ -185,9 +185,9 @@ public class ShopServiceImpl implements ShopServiceI {
 
     //通过一级分类id获取所有二级分类店铺
     @Override
-    public List<Shop> getShopListByChildCategoryIdsAndFocus(Set<String> childSId, Set<Integer> shopIdList, String token, int tag, int pageNo, int pageLimit) {
+    public List<Shop> getShopListByChildCategoryIdsAndFocus(int mark,Set<String> childSId, Set<Integer> shopIdList, String token, int tag, int pageNo, int pageLimit) {
         PageHelper.startPage(pageNo, pageLimit);
-        List<Shop> shops = shopDao.getShopListByChildCategoryIdsAndFocusDAO(childSId, shopIdList, token, tag);
+        List<Shop> shops = shopDao.getShopListByChildCategoryIdsAndFocusDAO(mark,childSId, shopIdList, token, tag);
         if (shops != null) {
             return shops;
         }
@@ -196,9 +196,9 @@ public class ShopServiceImpl implements ShopServiceI {
 
     //通过分类id查询所有已关注店铺
     @Override
-    public List<Shop> getShopListByCategoryIdAndFocus(int categoryId, Set<Integer> shopIdList, String token, int tag, int pageNo, int pageLimit) {
+    public List<Shop> getShopListByCategoryIdAndFocus(int mark,int categoryId, Set<Integer> shopIdList, String token, int tag, int pageNo, int pageLimit) {
         PageHelper.startPage(pageNo, pageLimit);
-        List<Shop> shops = shopDao.getShopListByCategoryIdAndFocusDAO(categoryId,shopIdList, token,tag);
+        List<Shop> shops = shopDao.getShopListByCategoryIdAndFocusDAO(mark,categoryId,shopIdList, token,tag);
         if (shops != null) {
             return shops;
         }
@@ -207,8 +207,8 @@ public class ShopServiceImpl implements ShopServiceI {
 
     //查找分类下的所有关注店铺数量(子分类是0:代表全部)
     @Override
-    public int getFocusCategoryShopListCount(Set<String> childSId, Set<Integer> shopIdList, String token, int tag) {
-        List<Shop> resultList = shopDao.getShopListByChildCategoryIdsAndFocusDAO(childSId,shopIdList,token,tag);
+    public int getFocusCategoryShopListCount(int mark,Set<String> childSId, Set<Integer> shopIdList, String token, int tag) {
+        List<Shop> resultList = shopDao.getShopListByChildCategoryIdsAndFocusDAO(mark,childSId,shopIdList,token,tag);
         if(resultList != null && resultList.size() > 0){
             return resultList.size();
         }
@@ -217,8 +217,8 @@ public class ShopServiceImpl implements ShopServiceI {
 
     //查找二级分类下的所有关注店铺数量
     @Override
-    public int getFocusChildCategoryShopListCount(int categoryId, Set<Integer> shopIdList, String token, int tag) {
-        List<Shop> shops = shopDao.getShopListByCategoryIdAndFocusDAO(categoryId,shopIdList, token, tag);
+    public int getFocusChildCategoryShopListCount(int mark,int categoryId, Set<Integer> shopIdList, String token, int tag) {
+        List<Shop> shops = shopDao.getShopListByCategoryIdAndFocusDAO(mark,categoryId,shopIdList, token, tag);
         if(shops != null && shops.size() > 0){
             return shops.size();
         }

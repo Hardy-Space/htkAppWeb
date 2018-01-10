@@ -53,6 +53,9 @@ import static com.xiaoleilu.hutool.date.DateUtil.*;
 public class MerchantController {
 
     @Resource
+    private ShopServiceI shopService;
+
+    @Resource
     private MerchantService merchantService;
     @Resource
     private OtherUtils otherUtilsMethod;
@@ -308,7 +311,7 @@ public class MerchantController {
     //====外卖订单（实时订单）
     @RequestMapping(value = "/takeout/order/realTimeTakeoutOrder", method = RequestMethod.GET)
     public String realTimeTakeoutOrder(Model model,
-                                       @RequestParam(value = "statusCode", required = false, defaultValue = "0") Integer statusCode) {
+                                       @RequestParam(value = "statusCode", required = false, defaultValue = "0") Integer statusCode) throws Exception{
         //默认查找新订单,并返回数据给前台
         //前端点击事件处理，get方式请求后台查询数据，并把查询的条件返回给前台，显示上一请求后台的条件
 
@@ -333,7 +336,14 @@ public class MerchantController {
 
         String startDate = DateUtil.beginOfDay(new Date()).toString();
         String endDate = DateUtil.endOfDay(new Date()).toString();
-        merchantService.getTakeoutRealTimeOrderByCondition(model, 1, startDate, endDate, statusCode);
+
+        //取到shopId
+        LoginUser user = OtherUtils.getLoginUserByRequest();
+        //此处是外卖，所以mark是0
+        Shop shop = shopService.getShopByAccountShopIdAndMark(user.getUserId(),0);
+
+
+        merchantService.getTakeoutRealTimeOrderByCondition(model, shop.getShopId(), startDate, endDate, statusCode);
         return mDirectory + "order_takeout_realTime";
     }
 
