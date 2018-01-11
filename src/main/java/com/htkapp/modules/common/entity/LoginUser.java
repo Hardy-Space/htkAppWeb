@@ -48,6 +48,14 @@ public class LoginUser implements Serializable {
     private String shopName; //店铺名字
 
     private int state;  //店铺状态
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
 
     /**
      * 创建时间
@@ -229,11 +237,5 @@ public class LoginUser implements Serializable {
         this.shopName = shopName;
     }
 
-    public int getState() {
-        return state;
-    }
 
-    public void setState(int state) {
-        this.state = state;
-    }
 }

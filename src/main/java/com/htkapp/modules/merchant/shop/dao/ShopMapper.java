@@ -13,6 +13,11 @@ import java.util.Set;
 public interface ShopMapper {
 
     /* ====================接口开始=====================  */
+
+    List<Shop> getShopListByCategoryList(@Param("categoryIdList") Set<Integer> allCategoryIdSet);
+
+    Set<Integer> getAllChildCategoryIdList(int categoryId);
+
     //获取所有店铺的经纬度(根据用户token推荐未关注商家)
     List<Shop> getAllShopLatitudeAndLongitudeDAO(int mark, String token, String orderDesc);
     //推荐所有商家(用户未登陆推荐商家)

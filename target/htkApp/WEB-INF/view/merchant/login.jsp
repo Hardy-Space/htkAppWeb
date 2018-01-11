@@ -15,6 +15,9 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
     <link rel="stylesheet" href="${staticFilePath}resource/custom/plugins/layui/css/layui.css?${date}" media="all">
     <link rel="stylesheet" href="${staticFilePath}resource/custom/css/index.css?${date}">
     <link id="layuicss-skinlayercss" rel="stylesheet" href="${staticFilePath}resource/custom/plugins/layui/css/modules/layer/default/layer.css?${date}" media="all">

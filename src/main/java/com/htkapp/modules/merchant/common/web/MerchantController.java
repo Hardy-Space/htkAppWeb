@@ -102,7 +102,23 @@ public class MerchantController {
                 if(nowTime.getTime() > endTime.getTime()){
                     return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "帐号使用时间过期");
                 }
+
+                /**
+                 * @author 马鹏昊
+                 * @desc 返回店铺状态(因为店铺是否休息的标志位是存在shop表里，account_shop表并没有这个字段，
+                 * shop表里有三条一样的account_shop_id的记录，他们的state在后台切换营业状态的时候是同时更新的，
+                 * 所以只要随便写一个mark来获取一条记录就够用)
+                 */
+
+                Shop shop = shopService.getShopDataByAccountShopIdAndMark(loginUser.getUserId(),0);
+                loginUser.setState(shop.getState());
+                loginUser.setShopName(shop.getShopName());
                 session.setAttribute(Globals.MERCHANT_SESSION_USER, loginUser);
+                //店铺名字
+                session.setAttribute("shopName", shop.getShopName().toString());
+                //店铺是否营业状态（0停止营业 1营业中）
+                session.setAttribute("status", shop.getState().toString());
+
                 AjaxReturnLoginData returnData = new AjaxReturnLoginData(loginUser.getUserName(), loginUser.getPassword(), loginUser.getRole(), "/merchant/index", loginUser.getToken());
                 return new AjaxResponseModel<>(Globals.COMMON_SUCCESS_AND_JUMP_URL, "成功", returnData, "/merchant/index");
             } else {
@@ -212,8 +228,8 @@ public class MerchantController {
     //改变店铺状态接口
     @RequestMapping(value = "/changeShopState_Page", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResponseModel changeShopState(HttpServletRequest request, int stateId) {
-        return merchantService.changeShopState(request, stateId);
+    public AjaxResponseModel changeShopState(HttpServletRequest request, int stateId/*,int userId*/) {
+        return merchantService.changeShopState(request, stateId/*,userId*/);
     }
 
     //改变通知消息状态接口

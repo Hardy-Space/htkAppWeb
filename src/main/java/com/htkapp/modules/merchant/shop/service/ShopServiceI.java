@@ -10,6 +10,11 @@ public interface ShopServiceI {
 
 
 	/* ================接口开始====================== */
+
+	List<Shop> getShopListByCategoryList(Set<Integer> allCategoryIdSet);
+
+	Set<Integer> getAllChildCategoryIdList(int categoryId);
+
 	//根据条件搜索商家
 	List<Shop> getShopByCondition(String keyWord, int mark, int pageNo, int pageLimit)throws Exception;
 	//查询出所有商铺的经纬度

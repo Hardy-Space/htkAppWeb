@@ -57,6 +57,7 @@ import redis.clients.jedis.JedisPool;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
@@ -272,10 +273,21 @@ public class MerchantServiceImpl implements MerchantService {
 
     //改变店铺状态接口
     @Override
-    public AjaxResponseModel changeShopState(HttpServletRequest request, int stateId) {
+    public AjaxResponseModel changeShopState(HttpServletRequest request, int stateId/*,int userId*/) {
         try {
             LoginUser user = OtherUtils.getLoginUserByRequest();
             shopService.changeShopOpenStateById(stateId, user.getUserId());
+
+            //重新设置session的相关属性，这样jsp才会及时更新显示状态
+            HttpSession session = request.getSession();
+            LoginUser loginUser = (LoginUser) session.getAttribute(Globals.MERCHANT_SESSION_USER);
+            Shop shop = shopService.getShopDataByAccountShopIdAndMark(loginUser.getUserId(),0);
+            //店铺名字
+            session.setAttribute("shopName", shop.getShopName().toString());
+            //店铺是否营业状态（0停止营业 1营业中）
+            session.setAttribute("status", shop.getState().toString());
+
+
             return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
         } catch (Exception e) {
             return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);

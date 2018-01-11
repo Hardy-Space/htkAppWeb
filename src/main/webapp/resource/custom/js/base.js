@@ -95,6 +95,7 @@ function offsetDateMethod(date, val) {
 //改变店铺状态(1是正常营业，0是停止营业)
 $(".changeState").on("click", function () {
     var stateId = $(this).attr("data-id");
+    // var userId = $(".userId").val();
     var url = baseUrl + "/merchant/changeShopState_Page";
     var params = {
         stateId: stateId
@@ -112,7 +113,9 @@ $(".changeState").on("click", function () {
                     //改变按钮状态
                     if (!stopState.hasClass("cur")) {
                         stopState.addClass("cur");
-                        openState.removeClass("cur")
+                    }
+                    if (openState.hasClass("cur")){
+                        openState.removeClass("cur");
                     }
                 } else {
                     //显示提示信息
@@ -132,7 +135,9 @@ $(".changeState").on("click", function () {
                     //改变按钮状态
                     if (!openState.hasClass("cur")) {
                         openState.addClass("cur");
-                        stopState.removeClass("cur")
+                    }
+                    if(stopState.hasClass("cur")){
+                        stopState.removeClass("cur");
                     }
                 } else {
                     //显示提示信息

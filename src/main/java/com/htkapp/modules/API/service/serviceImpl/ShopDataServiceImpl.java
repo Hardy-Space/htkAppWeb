@@ -1098,11 +1098,22 @@ public class ShopDataServiceImpl implements ShopDataService {
                 }
                 //childCId = 0 代表App选择的是全部分类
                 if (childCId == 0) {
-                    //此处setList只保存了首页点击的大分类的id，因为是全部，所以不需要查询子分类
+                    //此处setList只保存了首页点击的大分类的id，因为是全部，所以先查到所有这个大分类下的子分类
+                    Set<Integer> allChildCategoryIdList = shopService.getAllChildCategoryIdList(categoryId);
+                    //大分类id也要放进去
+                    allChildCategoryIdList.add(categoryId);
+
+                    //查找属于这些分类下的所有商家
+//                    List<Shop> allShop = shopService.getShopListByCategoryList(allChildCategoryIdList);
+
+                    //转成String
                     Set<String> setList = new HashSet<>();
-                    setList.add(categoryId + "");
+                    for (Integer s : allChildCategoryIdList) {
+                        setList.add(s + "");
+                    }
+
                     //tag=1代表查询用户关注了并且在此分类下的商家
-                    List<Shop> shops = shopService.getShopListByChildCategoryIdsAndFocus(mark,setList, focusList, token, 1, pageNo, pageLimit);
+                    List<Shop> shops = shopService.getShopListByChildCategoryIdsAndFocus(mark, setList, focusList, token, 1, pageNo, pageLimit);
                     if (shops != null) {
                         for (Shop each : shops) {
                             each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
@@ -1119,7 +1130,7 @@ public class ShopDataServiceImpl implements ShopDataService {
                         //如果已关注的商家数量小于3，那么还需要返回推荐商家
                         if (shops.size() <= 3) {
                             //tag=0代表查询用户未关注的且在此分类下的商家
-                            List<Shop> shopList = shopService.getShopListByChildCategoryIdsAndFocus(mark,setList, focusList, token, 0, pageNo, 10);
+                            List<Shop> shopList = shopService.getShopListByChildCategoryIdsAndFocus(mark, setList, focusList, token, 0, pageNo, 10);
                             if (shopList != null) {
                                 for (Shop each : shopList) {
                                     if (each.getLogoUrl() != null) {
@@ -1145,7 +1156,7 @@ public class ShopDataServiceImpl implements ShopDataService {
                         //没有已关注商家
                         info.setShopList(null);
                         //tag=0代表查询用户未关注的且在此分类下的商家
-                        List<Shop> shopList = shopService.getShopListByChildCategoryIdsAndFocus(mark,setList, focusList, token, 0, pageNo, 10);
+                        List<Shop> shopList = shopService.getShopListByChildCategoryIdsAndFocus(mark, setList, focusList, token, 0, pageNo, 10);
                         if (shopList != null) {
                             for (Shop each : shopList) {
                                 if (each.getLogoUrl() != null) {
@@ -1165,7 +1176,7 @@ public class ShopDataServiceImpl implements ShopDataService {
                     }
                 } else {//如果childCId不为0，则代表App是选择了某个子分类
                     //tag=1代表查询用户关注的且在这个子分类下的商家
-                    List<Shop> shopList = shopService.getShopListByCategoryIdAndFocus(mark,childCId, focusList, token, 1, pageNo, pageLimit);
+                    List<Shop> shopList = shopService.getShopListByCategoryIdAndFocus(mark, childCId, focusList, token, 1, pageNo, pageLimit);
                     if (shopList != null && shopList.size() > 0) {
                         for (Shop each : shopList) {
                             each.setCollection(true);
@@ -1179,7 +1190,7 @@ public class ShopDataServiceImpl implements ShopDataService {
                         info.setShopList(shopList);
                         if (shopList.size() <= 3) {
                             //查询推荐商家
-                            List<Shop> shops = shopService.getShopListByCategoryIdAndFocus(mark,childCId, focusList, token, 0, pageNo, pageLimit);
+                            List<Shop> shops = shopService.getShopListByCategoryIdAndFocus(mark, childCId, focusList, token, 0, pageNo, pageLimit);
                             if (shops != null) {
                                 for (Shop each : shops) {
                                     if (each.getLogoUrl() != null) {
@@ -1203,7 +1214,7 @@ public class ShopDataServiceImpl implements ShopDataService {
                         RecommendedShopInfo info = new RecommendedShopInfo();
                         info.setShopList(null);
                         //查询推荐商家
-                        List<Shop> shops = shopService.getShopListByCategoryIdAndFocus(mark,childCId, focusList, token, 0, pageNo, pageLimit);
+                        List<Shop> shops = shopService.getShopListByCategoryIdAndFocus(mark, childCId, focusList, token, 0, pageNo, pageLimit);
                         if (shops != null) {
                             for (Shop each : shops) {
                                 if (each.getLogoUrl() != null) {

@@ -7,6 +7,21 @@
     state,mark, des, account_shop_id, shop_category_id, shop_qr_code_url
   </sql>
 
+    <select id="getShopListByCategoryList" resultType="Shop">
+        select * from shop
+        where shop.shop_category_id in
+        <foreach collection="categoryIdList" index="index" item="each" open="(" separator="," close=")">
+            #{each}
+        </foreach>
+    </select>
+
+    <!--获取属于大分类下的所有子分类id-->
+    <select id="getAllChildCategoryIdList" resultType="java.lang.Integer">
+        select id
+        from shop_category
+        where parent_id = #{0}
+    </select>
+
     <!-- ==================接口开始======================== -->
     <select id="getAllShopLatitudeAndLongitudeDAO" resultType="Shop">
         select
@@ -144,20 +159,21 @@
                 <foreach collection="shopIdList" index="index" item="each" open="(" separator="," close=")">
                     #{each}
                 </foreach>
-                and
-                <foreach collection="childSId" index="indexs" item="every" open="" separator="or" close="">
-                    shop.shop_category_id = #{every}
+                and shop.shop_category_id in
+                <foreach collection="childSId" index="indexs" item="every" open="(" separator="," close=")">
+                    #{every}
                 </foreach>
                 and shop.mark=#{mark}
+                and shop.shop_category_id in(#{childSId})
             </when>
             <otherwise>
                 shop.shop_id in
                 <foreach collection="shopIdList" index="index" item="each" open="(" separator="," close=")">
                     #{each}
                 </foreach>
-                and
-                <foreach collection="childSId" index="indexs" item="every" open="" separator="or" close="">
-                    shop.shop_category_id = #{every}
+                and shop.shop_category_id in
+                <foreach collection="childSId" index="indexs" item="every" open="(" separator="," close=")">
+                    #{every}
                 </foreach>
                 and shop.mark=#{mark}
             </otherwise>

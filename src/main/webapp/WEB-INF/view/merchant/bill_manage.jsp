@@ -556,7 +556,28 @@
         })
         //ajax　向后台发起post请求，提现到商户支付账户
 
-
+        var productId = $(this).attr('data-id');
+        var url = baseUrl + '/merchant/takeout/product/emptyProductInventoryById';
+        var params = {productId : productId};
+        var eleM = $(this);
+        $.post(url,params,function (result,status) {
+            if(status === 'success'){
+                if(result && result.code === 0){
+                    //改变页面元素显示值
+                    var ele =  eleM.parent().prevAll("div:first").find('.num');
+                    var arr = new Array();
+                    arr = ele.text().split("/");
+                    ele.text(0+""+"/"+""+arr[1]);
+                    return false;
+                }else {
+                    layer_msg(result.message,'error');
+                    return false;
+                }
+            }else {
+                layer_msg('网络连接失败','exception');
+                return false;
+            }
+        },"json");
 
     })
 
