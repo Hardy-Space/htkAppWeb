@@ -513,8 +513,8 @@ public class MerchantServiceImpl implements MerchantService {
             }
             //账户可用余额
             double accountBalance = billBalanceSheetService.getAccountBalance(accountShopToken);
-            //待入账余额
-            double waitingPostAmount = billRecordService.getAmountToBeAccountedByType(accountShopToken, 1);
+            //待入账余额(1是已入账，2是未入账)
+            double waitingPostAmount = billRecordService.getAmountToBeAccountedByType(accountShopToken, 2);
             //商家的提现收款账号
             String aliPayAccount = accountShopService.selectByToken(accountShopToken).getAlipayAccount();
             String startTime = "";
@@ -1023,7 +1023,7 @@ public class MerchantServiceImpl implements MerchantService {
             try {
                 Model model = params.getModel();
                 LoginUser user = OtherUtils.getLoginUserByRequest();
-                Shop shop = shopService.getShopByAccountShopIdAndMark(user.getUserId(), 0);
+                Shop shop = shopService.getShopByAccountShopIdAndMark(user.getUserId(), 2);
                 int pageNumber = Globals.DEFAULT_PAGE_NO;
                 int pageLimit = Globals.DEFAULT_PAGE_LIMIT;
                 if (params.getPageNum() > 1) {
@@ -1064,7 +1064,7 @@ public class MerchantServiceImpl implements MerchantService {
             try {
                 Model model = params.getModel();
                 LoginUser user = OtherUtils.getLoginUserByRequest();
-                Shop shop = shopService.getShopByAccountShopIdAndMark(user.getUserId(), 0);
+                Shop shop = shopService.getShopByAccountShopIdAndMark(user.getUserId(), 2);
                 int pageNumber = Globals.DEFAULT_PAGE_NO;
                 int pageLimit = Globals.DEFAULT_PAGE_LIMIT;
                 if (params.getPageNum() > 1) {

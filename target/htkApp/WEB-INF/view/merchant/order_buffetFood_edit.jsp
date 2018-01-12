@@ -542,7 +542,7 @@
                                                     <span class="xiangqing col-md-6">
 														<input type="button"
 															   class="bt bt-primary col-md-2 floatRight settleBtn curPage"
-															   value="打印小票"/>
+															   value="打印小票" data-orderNumber="${each.orderNumber}"/>
                                                         <input type="button"
 															   class="bt bt-primary col-md-2 floatRight settleBtna curPage"
 															   value="核退" data-orderNumber="${each.orderNumber}"/>
@@ -730,5 +730,15 @@
             }
         })
     })
+
+    //打印小票
+    $(".settleBtn.curPage").on("click",function(){
+        var orderNumber = $(this).attr("data-orderNumber");
+        const url = baseUrl + "/merchant/buffetFood/print";
+        $.post(url,{orderNumber:orderNumber},function(result){
+            console.log(result)
+        })
+    })
+
 </script>
 </html>

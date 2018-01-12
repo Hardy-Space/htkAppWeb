@@ -33,5 +33,7 @@ public interface BuffetFoodControllerService {
     AjaxResponseModel replyReminder(AjaxRequestParams params);
     //确认调单
     AjaxResponseModel enterAdjust(AjaxRequestParams params);
+    //打印自助点餐订单
+    AjaxResponseModel printOrder(AjaxRequestParams params);
     /* =========================接口结束============================ */
 }

@@ -234,6 +234,21 @@ public class BuffetFoodController {
         return buffetFoodControllerService.enterAdjust(params);
     }
 
+    //打印各种单据接口
+    @RequestMapping("/print")
+    @ResponseBody
+    public AjaxResponseModel printOrder(Model model,AjaxRequestParams params){
+        if(params!=null&&params.getOrderNumber()!=null) {
+//    		 Map<String, Object> map = new HashMap<>();
+//    	        map.put("date", new Date().getTime());
+//    	        map.put("ord_mark", true);
+//    	        map.put("ord_mark_b_h", true);
+//    	        OtherUtils.ReturnValByModel(model, map);
+            return  buffetFoodControllerService.printOrder(params);
+        }
+        return buffetFoodControllerService.printOrder(params);
+    }
+
 
     //核退
     @RequestMapping("/replyFalse")

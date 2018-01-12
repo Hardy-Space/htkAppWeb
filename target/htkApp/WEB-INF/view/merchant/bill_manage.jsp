@@ -35,6 +35,13 @@
             height: 25px;
             padding-left: 5px;
         }
+        .alipayAccountInput {
+            width: 100px;
+            border-radius: 2px;
+            border: 1px solid #ccccce;
+            height: 25px;
+            padding-left: 5px;
+        }
 
         .notEnterA:hover {
             color: #949498;
@@ -429,11 +436,12 @@
             "                            <span class=\"textSpan\">\n" +
             "                                <span class=\"spanItem\" style=\"padding: 8px 0\">\n" +
             "                                    <span class=\"firstName\" style=\"font-size: 16px;\">第三方账户:</span>\n" +
-            "                                    <span style=\"margin-left: 10px;font-size: 15px;font-weight: bold\">支付宝&nbsp;&nbsp;&nbsp;&nbsp;(尾号6071)</span>\n" +
+            "                                    <span style=\"margin-left: 10px;font-size: 15px;font-weight: bold\">${alipayAccount}</span>\n" +
+//            "       <input style='ime-mode:disabled\"' onpaste=\"return false;\"  class=\"alipayAccountInput\" id=\"alipayAccount\" value=\"\">\n"+
             "                                </span>\n" +
             "                                <span class=\"spanItem\" style=\"display: block;padding: 8px 0\">\n" +
-            "                                    <span class=\"firstName\" style=\"font-size: 16px;\">账户可用余额:</span>\n" +
-            "                                    <span class='usableBalance' style=\"margin-left: 10px;font-size: 15px;font-weight: bold\">1971.00</span>\n" +
+            "                                    <span class=\"firstName\" style=\"font-size: 16px;\">可提现金额:</span>\n" +
+            "                                    <span class='usableBalance' style=\"margin-left: 10px;font-size: 15px;font-weight: bold\">${availableBalance}</span>\n" +
             "                                </span>\n" +
             "                            </span>\n" +
             "                        </div>\n" +
@@ -554,9 +562,32 @@
             icon: 1,
             offset: '80px'
         })
-        //ajax　向后台发起post请求，提现到商户支付账户
+        //ajax　
 
-        $()
+        //@author 马鹏昊
+        // 向后台发起post请求，提现到商户支付账户
+        var productId = $(this).attr('data-id');
+        var url = baseUrl + '/merchant/withdraw';
+        var params = {productId : productId};
+        var eleM = $(this);
+        $.post(url,params,function (result,status) {
+            if(status === 'success'){
+                if(result && result.code === 0){
+                    //改变页面元素显示值
+                    var ele =  eleM.parent().prevAll("div:first").find('.num');
+                    var arr = new Array();
+                    arr = ele.text().split("/");
+                    ele.text(0+""+"/"+""+arr[1]);
+                    return false;
+                }else {
+                    layer_msg(result.message,'error');
+                    return false;
+                }
+            }else {
+                layer_msg('网络连接失败','exception');
+                return false;
+            }
+        },"json");
 
     })
 

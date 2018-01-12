@@ -64,6 +64,16 @@ public class MerchantController {
 
 
     //==============================================================商户登陆、退出、主页
+
+    //商户登陆页面GET
+    @RequestMapping(value = "/withdraw", method = RequestMethod.POST)
+    public String merchantWithdraw(String userName, Model model) {
+
+
+return null;
+
+    }
+
     //商户登陆页面GET
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String merchantLogin(String userName, Model model) {
