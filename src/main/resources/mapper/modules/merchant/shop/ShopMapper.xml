@@ -164,7 +164,6 @@
                     #{every}
                 </foreach>
                 and shop.mark=#{mark}
-                and shop.shop_category_id in(#{childSId})
             </when>
             <otherwise>
                 shop.shop_id in

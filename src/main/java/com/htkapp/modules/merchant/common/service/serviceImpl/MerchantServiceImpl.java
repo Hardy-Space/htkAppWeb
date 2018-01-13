@@ -566,7 +566,7 @@ public class MerchantServiceImpl implements MerchantService {
             model.addAttribute("accountBalance", Double.parseDouble(df.format(accountBalance + waitingPostAmount)));  //总余额
             model.addAttribute("availableBalance", Double.parseDouble(df.format(accountBalance)));  //可用余额
             model.addAttribute("remainingBalance", Double.parseDouble(df.format(waitingPostAmount)));  //待入账余额
-            model.addAttribute("shroffAccountNumber", aliPayAccount);
+            model.addAttribute("alipayAccount", aliPayAccount);
             model.addAttribute("data", resultList);
             model.addAttribute("dateVal", date);
             model.addAttribute("page", pageInfo);

@@ -13,6 +13,13 @@
         where account_shop_token = #{0}
         order by gmt_create desc limit 1
     </select>
+
+    <update id="updateAccountBalance">
+        update bill_balance_sheet
+        set balance = #{1}
+        where account_shop_token = #{0}
+    </update>
+
     <select id="getBalanceSheetRecordListByAccountShopTokenDAO" resultType="BillBalanceSheet">
         select
         <include refid="Base_Column_List"/>
