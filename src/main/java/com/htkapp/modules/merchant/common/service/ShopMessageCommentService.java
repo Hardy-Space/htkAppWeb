@@ -1,9 +1,6 @@
 package com.htkapp.modules.merchant.common.service;
 
-import com.htkapp.modules.merchant.common.dto.CommentListInfo;
-import com.htkapp.modules.merchant.common.dto.GroupBuyCommentList;
-import com.htkapp.modules.merchant.common.dto.ReturnCommentInfo;
-import com.htkapp.modules.merchant.common.dto.TakeoutCommentList;
+import com.htkapp.modules.merchant.common.dto.*;
 import com.htkapp.modules.merchant.common.entity.ShopMessageComment;
 import org.apache.ibatis.annotations.Param;
 
@@ -20,6 +17,8 @@ public interface ShopMessageCommentService {
     /* =============接口开始================== */
     //通过传入的店铺id查找外卖下的评论
     List<ReturnCommentInfo> getTakeoutCommentById(int shopId, int pageNo, int pageLimit) throws Exception;
+    //通过传入的用户评论的id查找商家回复的评论
+    List<MerchantReplyInfo> getMerchantReplyListByUserCommentId(Integer userCommentId) throws Exception;
     //根据订单id查看评价详情
     ShopMessageComment viewReviewDetailsById(Integer orderId) throws Exception;
     //评价订单
@@ -45,5 +44,6 @@ public interface ShopMessageCommentService {
     int getDateCountByDateVal(String accountShopToken, int cMark, int comMark, String startTime, String endTime);
     //通过传入星级，获取该星级的总值, comStar传入0则代表获取全部值
     double getStarValByStarNumDAO(String accountShopToken, int cMark, int comStar);
+
     /* =================JSP页面接口结束======================= */
 }

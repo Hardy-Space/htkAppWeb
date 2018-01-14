@@ -10,7 +10,7 @@
         select
         <include refid="Base_Column_List" />
         from account_ticket_list
-        where account_token = #{0} and shop_id = #{1}
+        where account_token = #{0} and shop_id = #{1} and quantity>0
     </select>
 
     <!--/**-->

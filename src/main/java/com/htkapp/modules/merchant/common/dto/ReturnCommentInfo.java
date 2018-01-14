@@ -23,6 +23,15 @@ public class ReturnCommentInfo {
 
     private Integer commentId;  //评论id
 
+    private String merchantReply ;
+
+    public String getMerchantReply() {
+        return merchantReply;
+    }
+
+    public void setMerchantReply(String merchantReply) {
+        this.merchantReply = merchantReply;
+    }
 
     public Integer getAccountId() {
         return accountId;

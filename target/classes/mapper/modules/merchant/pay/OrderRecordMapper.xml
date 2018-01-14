@@ -220,7 +220,7 @@
             and order_state = 1
         </if>
         <if test="mark == 1">
-            and order_state = 3 or order_state = 2 or order_state = 4
+            and (order_state = 3 or order_state = 2 or order_state = 4)
         </if>
         and mark = 0 order by ${orderDesc}
     </select>
