@@ -16,6 +16,12 @@ public class TakeoutProductServiceImpl implements TakeoutProductServiceI {
 	@Resource
 	private TakeoutProductMapper takeoutProductDao;
 
+	@Override
+	public TakeoutProduct getTakeoutProductByProductId(int productId) throws Exception {
+		TakeoutProduct takeoutProduct = takeoutProductDao.getTakeoutProductByProductId(productId);
+		return takeoutProduct;
+	}
+
 	/* ================接口开始======================== */
 	//通过查出来的店铺类别id查找出店铺下的商品
 	@Override

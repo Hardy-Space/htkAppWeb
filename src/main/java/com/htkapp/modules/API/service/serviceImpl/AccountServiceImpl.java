@@ -8,6 +8,7 @@ import com.htkapp.core.OtherUtils;
 import com.htkapp.core.curdException.UpdateException;
 import com.htkapp.core.dto.APIResponseModel;
 import com.htkapp.core.exception.costom.NullDataException;
+import com.htkapp.core.jsAjax.AjaxResponseModel;
 import com.htkapp.core.utils.FileUploadUtils;
 import com.htkapp.core.utils.GetImagesByUrl;
 import com.htkapp.core.utils.Globals;
@@ -20,9 +21,12 @@ import com.htkapp.modules.API.entity.AppShippingAddress;
 import com.htkapp.modules.API.service.*;
 import com.htkapp.modules.common.entity.LoginUser;
 import com.htkapp.modules.merchant.common.service.UserServiceI;
+import com.htkapp.modules.merchant.integral.entity.IntegralManageRecord;
+import com.htkapp.modules.merchant.integral.service.IntegralManageRecordService;
 import com.htkapp.modules.merchant.integral.service.IntegralService;
 import com.htkapp.modules.merchant.pay.dto.AppAccountInfo;
 import com.htkapp.modules.merchant.pay.entity.BillBalanceSheet;
+import com.htkapp.modules.merchant.pay.entity.OrderProduct;
 import com.htkapp.modules.merchant.pay.entity.OrderRecord;
 import com.htkapp.modules.merchant.pay.service.BillBalanceSheetService;
 import com.htkapp.modules.merchant.pay.service.BillRecordService;
@@ -31,6 +35,8 @@ import com.htkapp.modules.merchant.shop.entity.AccountShop;
 import com.htkapp.modules.merchant.shop.entity.Shop;
 import com.htkapp.modules.merchant.shop.service.AccountShopServiceI;
 import com.htkapp.modules.merchant.shop.service.ShopServiceI;
+import com.htkapp.modules.merchant.takeout.entity.TakeoutProduct;
+import com.htkapp.modules.merchant.takeout.service.TakeoutProductServiceI;
 import com.xiaoleilu.hutool.date.DateUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,6 +80,10 @@ public class AccountServiceImpl implements AccountServiceI {
     private OtherUtils otherUtilsService;
     @Resource
     private IntegralService integralService;
+    @Resource
+    private TakeoutProductServiceI takeoutProductService;
+    @Resource
+    private IntegralManageRecordService integralManageRecordService;
 
     /* ====================接口的逻辑处理方法开始========================= */
     //通过手机号注册用户
@@ -758,6 +768,24 @@ public class AccountServiceImpl implements AccountServiceI {
                 billBalanceSheetService.keepRecordByAccountShopToken(balanceSheet);
 
                 //增加用户积分  增加积分记录  增加交易记录
+                /**
+                 * @author 马鹏昊
+                 * @desc 给用户增加消费返还积分
+                 */
+                if (accountShop != null) {
+                    //先查出积分数量
+                    int nowVal = integralService.getVal(orderRecord.getToken(), shop.getShopId());
+                    OrderProduct orderProduct = orderRecordService.getOrderProduct(orderRecord.getId());
+                    TakeoutProduct takeoutProduct = takeoutProductService.getTakeoutProductByProductId(orderProduct.getProductId());
+                    int addedValue = takeoutProduct.getIntegral();
+                    int newVal = nowVal + addedValue ;
+                    integralService.updateIntegral(orderRecord.getToken(), shop.getShopId(), newVal);
+                    //通过商铺id查找商铺信息
+                    //记录积分变动记录
+                    String recordTypeStr = "消费返还积分";
+                    IntegralManageRecord record = new IntegralManageRecord(recordTypeStr, accountShop.getToken(), orderRecord.getToken(), addedValue);
+                    integralManageRecordService.insertRecordByToken(record);
+                }
 
                 return new APIResponseModel<>(Globals.API_SUCCESS, "成功", orderRecord.getId());
             } catch (Exception e) {

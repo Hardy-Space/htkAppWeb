@@ -9,6 +9,7 @@ import com.htkapp.core.utils.Globals;
 import com.htkapp.modules.merchant.integral.entity.AccountTicketList;
 import com.htkapp.modules.merchant.integral.service.AccountTicketListService;
 import com.htkapp.modules.merchant.pay.dao.OrderRecordMapper;
+import com.htkapp.modules.merchant.pay.entity.OrderProduct;
 import com.htkapp.modules.merchant.pay.entity.OrderRecord;
 import com.htkapp.modules.merchant.pay.service.OrderRecordService;
 import com.xiaoleilu.hutool.date.DateUtil;
@@ -377,7 +378,7 @@ public class OrderRecordServiceImpl implements OrderRecordService {
             if (result == null) {
                 return 0;
             } else {
-                return result;
+                return result.shortValue();
             }
         } catch (Exception e) {
             throw new Exception(Globals.CALL_DATABASE_ERROR);
@@ -509,6 +510,12 @@ public class OrderRecordServiceImpl implements OrderRecordService {
             return orderRecordList;
         }
         return null;
+    }
+
+    @Override
+    public OrderProduct getOrderProduct(Integer id) {
+        OrderProduct orderProduct = orderRecordDao.getOrderProduct(id);
+        return orderProduct;
     }
 
     /* ====================JSP页面接口结束========================= */

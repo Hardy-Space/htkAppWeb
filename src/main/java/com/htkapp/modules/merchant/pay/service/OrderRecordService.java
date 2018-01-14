@@ -1,6 +1,7 @@
 package com.htkapp.modules.merchant.pay.service;
 
 import com.htkapp.core.exception.order.OrderException;
+import com.htkapp.modules.merchant.pay.entity.OrderProduct;
 import com.htkapp.modules.merchant.pay.entity.OrderRecord;
 import org.apache.ibatis.annotations.Param;
 
@@ -85,5 +86,7 @@ public interface OrderRecordService {
     int statisticalQuantityByStateIdAndDate(Integer shopId, Integer stateId, String startTime, String endTime);
     //根据商铺id和排序条件查询订单列表
     List<OrderRecord> getOrderRecordListByDescAndShopId(int shopId, String orderDesc, int pageNum, int pageLimit, String keyWord);
+
+    OrderProduct getOrderProduct(Integer id);
     /* ====================JSP页面接口结束========================= */
 }

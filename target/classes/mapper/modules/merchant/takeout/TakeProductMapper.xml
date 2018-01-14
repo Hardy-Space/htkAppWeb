@@ -7,6 +7,13 @@
   </sql>
 
     <!-- ==================接口开始======================= -->
+
+    <select id="getTakeoutProductByProductId" resultType="TakeoutProduct">
+        select *
+        from takeout_product
+        where id = #{0}
+    </select>
+
     <select id="getTakeoutProductByIdDAO" resultType="TakeoutProduct">
         select
         <include refid="Base_Column_List"/>

@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 import static com.xiaoleilu.hutool.date.DatePattern.NORM_DATETIME_PATTERN;
@@ -66,27 +67,45 @@ public class IndexServiceImpl implements IndexService {
             //退单
             int currentRefundNumber = orderRefundService.getCurrentRefundOrderNumber(accountShopToken);
             DateTime date = DateUtil.yesterday();
-            DateTime todayDate = DateUtil.parse(format(new Date(),NORM_DATETIME_PATTERN));
+            DateTime todayDate = DateUtil.parse(format(new Date(), NORM_DATETIME_PATTERN));
             //昨天
             DateTime yBeginDate = DateUtil.beginOfDay(date);
             DateTime yEndDate = DateUtil.endOfDay(date);
+
+            DecimalFormat df = new DecimalFormat("######0.00");
+
+
             //昨日订单数
             int yesterdayNumber = orderRecordService.getOrderNumberByDate(accountShopToken, yBeginDate.toString(), yEndDate.toString());
             //昨日营业额
             double yesterdayRevenue = orderRecordService.getRevenueByDate(accountShopToken, yBeginDate.toString(), yEndDate.toString());
+
+            /**
+             * @author 马鹏昊
+             * @desc             防止精度溢出
+             */
+            String yesterdayRevenueStr = df.format(yesterdayRevenue);
+
             //昨天
             DateTime tBeginDate = DateUtil.beginOfDay(todayDate);
             DateTime tEndDate = DateUtil.endOfDay(todayDate);
             //今日订单数
             int todayNumber = orderRecordService.getOrderNumberByDate(accountShopToken, tBeginDate.toString(), tEndDate.toString());
-            //今日营业数
+            //今日营业额
             double todayRevenue = orderRecordService.getRevenueByDate(accountShopToken, tBeginDate.toString(), tEndDate.toString());
+
+            /**
+             * @author 马鹏昊
+             * @desc             防止精度溢出
+             */
+            String todayRevenueStr = df.format(todayRevenue);
+
             Shop shop = shopService.getShopByAccountShopId(user.getUserId());
             IndexInfo indexInfo = new IndexInfo(
                     loginTime, signOutTime, useRemainingTime,
                     newOrderNumber, 0, currentRefundNumber,
                     badCommentNumber, noCommentNumber, yesterdayNumber,
-                    String.valueOf(yesterdayRevenue), 0,todayNumber,String.valueOf(todayRevenue));
+                    yesterdayRevenueStr, 0, todayNumber, todayRevenueStr);
             indexInfo.setUseRemainingTime(useRemainingTime);
             indexInfo.setShopState(shop.getState());
             indexInfo.setShopName(shop.getShopName());
@@ -98,16 +117,16 @@ public class IndexServiceImpl implements IndexService {
 
     //首页店铺停止营业
     @Override
-    public AjaxResponseModel stopShop(HttpServletRequest request,Integer shopStateId) {
-        if(shopStateId != null){
+    public AjaxResponseModel stopShop(HttpServletRequest request, Integer shopStateId) {
+        if (shopStateId != null) {
             try {
                 LoginUser user = OtherUtils.getLoginUserByRequest();
-                shopService.changeShopStateById(user.getUserId(),shopStateId);
-                return new AjaxResponseModel<>(Globals.COMMON_SUCCESS_AND_REFRESH_CURRENT_PAGE,"操作成功","");
-            }catch (Exception e){
-                return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED,"操作失败，请稍后再试");
+                shopService.changeShopStateById(user.getUserId(), shopStateId);
+                return new AjaxResponseModel<>(Globals.COMMON_SUCCESS_AND_REFRESH_CURRENT_PAGE, "操作成功", "");
+            } catch (Exception e) {
+                return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "操作失败，请稍后再试");
             }
-        }else {
+        } else {
             return new AjaxResponseModel(Globals.COMMON_PARAMETER_ERROR);
         }
     }
