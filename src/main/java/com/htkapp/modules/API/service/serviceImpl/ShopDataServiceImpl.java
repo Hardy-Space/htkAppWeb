@@ -26,6 +26,7 @@ import com.htkapp.modules.admin.shopCategory.service.ShopCategoryService;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrder;
 import com.htkapp.modules.merchant.buffetFood.service.BuffetFoodOrderProductService;
 import com.htkapp.modules.merchant.buffetFood.service.BuffetFoodOrderService;
+import com.htkapp.modules.merchant.common.dto.MerchantReplyInfo;
 import com.htkapp.modules.merchant.common.dto.ReturnCommentInfo;
 import com.htkapp.modules.merchant.common.entity.AdvertisingInformation;
 import com.htkapp.modules.merchant.common.entity.ShopMessageComment;
@@ -396,12 +397,15 @@ public class ShopDataServiceImpl implements ShopDataService {
             }
             try {
                 Shop shop = shopService.getShopDataById(shopId);
-                //根据店铺id查询店铺下的所有评论总
+                //根据店铺id查询店铺下的所有评论总数
                 int commentCount = shopMessageCommentService.getShopCommentCount(shopId);
                 if (shop.getMark() == 0) {
                     try {
                         //根据店铺id查找店铺下的评论
                         List<ReturnCommentInfo> resultList = shopMessageCommentService.getTakeoutCommentById(shopId, pageNo, pageLimit);
+
+
+
                         if (resultList != null) {
                             for (ReturnCommentInfo each : resultList) {
                                 try {
@@ -413,6 +417,19 @@ public class ShopDataServiceImpl implements ShopDataService {
                                         each.setNickName(account.getNickName());
                                         each.setCommentTime(each.getCommentTime().substring(0, each.getCommentTime().length() - 10));
                                     }
+
+                                    /**
+                                     * @author 马鹏昊
+                                     * @desc 加上商家回复的内容
+                                     */
+                                    List<MerchantReplyInfo> merchantReplyInfos = shopMessageCommentService.getMerchantReplyListByUserCommentId(each.getCommentId());
+                                    if (merchantReplyInfos!=null&&merchantReplyInfos.size()>0) {
+                                        //因为商家只能回复一条，所以集合里只有一条数据
+                                        MerchantReplyInfo merchantReplyInfo = merchantReplyInfos.get(0);
+                                        String userCommentInfo = merchantReplyInfo.getReplyContent();
+                                        each.setMerchantReply(userCommentInfo);
+                                    }
+
                                 } catch (Exception e) {
                                     return new APIResponseModel(Globals.API_FAIL, e.getMessage());
                                 }

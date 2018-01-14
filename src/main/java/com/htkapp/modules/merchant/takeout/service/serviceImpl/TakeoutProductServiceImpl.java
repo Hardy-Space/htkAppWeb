@@ -37,9 +37,9 @@ public class TakeoutProductServiceImpl implements TakeoutProductServiceI {
 	public void productReduceNumber(int productId, int quantity) throws OrderException {
 		try {
 			int row = takeoutProductDao.productReduceNumberDAO(productId, quantity);
-			if(row <= 0){
-				throw new OrderException("减库存失败");
-			}
+//			if(row <= 0){
+//				throw new OrderException("减库存失败");
+//			}
 		}catch (Exception e){
 			throw new OrderException(Globals.CALL_DATABASE_ERROR);
 		}
