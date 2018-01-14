@@ -356,7 +356,7 @@
                 });
             } else {
                 //后台执行异常,外卖下分类为空(显示提示信息)
-//                layer_msg(result.data.message, 'exception');
+                layer_msg(data.message, 'exception');
             }
         });
     });

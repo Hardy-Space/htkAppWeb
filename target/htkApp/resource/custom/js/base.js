@@ -208,38 +208,37 @@ function tOrderHandle(statusCode, message, soundsUrl_) {
     var delay = 20000;
     //查看当前页面，如果在订单页面则自动刷新
     const curUrl = window.document.location.href;
-    //如果停留在外卖页面
-    // if(curUrl.indexOf('merchant/takeout/order/realTimeTakeoutOrder') > 0){
-    //     switch (statusCode){
-    //         case 1:
-    //             //新订单
-    //             playSounds(soundsUrl_ + "resource/custom/sounds/xinDuanXiaoXi.mp3");
-    //             break;
-    //         case 2:
-    //             //已接单
-    //             playSounds(soundsUrl_ + "resource/custom/sounds/xinDuanXiaoXi.mp3");
-    //             break;
-    //         case 3:
-    //             //配送订单
-    //             playSounds(soundsUrl_ + "resource/custom/sounds/xinDuanXiaoXi.mp3");
-    //             break;
-    //         case 4:
-    //             //已收货消息
-    //             playSounds(soundsUrl_ + "resource/custom/sounds/7815.wav");
-    //             break;
-    //         case 5:
-    //             //取消订单
-    //             playSounds(soundsUrl_ + "resource/custom/sounds/8858.wav");
-    //             break;
-    //         case 6:
-    //             //催单消息
-    //             playSounds(soundsUrl_ + "resource/custom/sounds/xinDuanXiaoXi.mp3");
-    //             break;
-    //         default :
-    //             break;
-    //     }
-    //     window.location.reload();
-    // }else {
+    if(curUrl.indexOf('merchant/takeout/order/realTimeTakeoutOrder') > 0){
+        switch (statusCode){
+            case 1:
+                //新订单
+                playSounds(soundsUrl_ + "resource/custom/sounds/xinDuanXiaoXi.mp3");
+                break;
+            case 2:
+                //已接单
+                playSounds(soundsUrl_ + "resource/custom/sounds/xinDuanXiaoXi.mp3");
+                break;
+            case 3:
+                //配送订单
+                playSounds(soundsUrl_ + "resource/custom/sounds/xinDuanXiaoXi.mp3");
+                break;
+            case 4:
+                //已收货消息
+                playSounds(soundsUrl_ + "resource/custom/sounds/7815.wav");
+                break;
+            case 5:
+                //取消订单
+                playSounds(soundsUrl_ + "resource/custom/sounds/8858.wav");
+                break;
+            case 6:
+                //催单消息
+                playSounds(soundsUrl_ + "resource/custom/sounds/xinDuanXiaoXi.mp3");
+                break;
+            default :
+                break;
+        }
+        window.location.reload();
+    }else {
         if (statusCode === 1) {
             //新订单
             const soundsUrl = soundsUrl_ + "resource/custom/sounds/xinDuanXiaoXi.mp3";
@@ -283,8 +282,7 @@ function tOrderHandle(statusCode, message, soundsUrl_) {
             playSounds(soundsUrl);
             orderPushHint(title, message, url, delay)
         }
-
-    // }
+    }
 }
 
 //团购订单推送处理
