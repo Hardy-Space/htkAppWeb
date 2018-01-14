@@ -741,7 +741,9 @@ public class AccountServiceImpl implements AccountServiceI {
         if (StringUtils.isNotEmpty(orderNumber)) {
             try {
                 OrderRecord orderRecord = orderRecordService.getOrderRecordByOrderNumber(orderNumber);
-                AccountShop accountShop = accountShopService.getAccountShopDataById(orderRecord.getShopId());
+                //这里要根据account_shop_id去查AccountShop
+                Shop shop = shopService.getShopDataById(orderRecord.getShopId());
+                AccountShop accountShop = accountShopService.getAccountShopDataById(shop.getAccountShopId());
                 orderRecordService.changeOrderStateByOrderNumber(orderNumber, Globals.DEFAULT_T_ENTER_RECEIVING);
                 //改变记录状态为已入账
                 billRecordService.changeRecordStatusByOrderNumber(orderNumber, 2);

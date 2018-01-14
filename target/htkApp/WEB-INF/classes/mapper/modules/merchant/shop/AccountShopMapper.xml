@@ -13,7 +13,21 @@
   </sql>
 
 
+
   <!-- ==========================接口开始================================ -->
+
+  <select id="getAlipayAccount" resultType="AccountShop">
+    select *
+    from account_shop
+    where id = #{0}
+  </select>
+
+  <update id="changeBindedAccount">
+    update account_shop
+    set alipay_account = #{1}
+    where id = #{0}
+  </update>
+
   <update id="changePasswordBySMSDAO">
     update account_shop
     set password = #{password}

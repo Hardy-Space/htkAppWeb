@@ -113,7 +113,7 @@
         sum(amount)
         from bill_record
         where gmt_create between #{1} and #{2}
-        and account_shop_token = #{0}
+        and account_shop_token = #{0} and status = '2'
     </select>
     <select id="getTodayOrderIncomeByDateDAO" resultType="Double">
         select

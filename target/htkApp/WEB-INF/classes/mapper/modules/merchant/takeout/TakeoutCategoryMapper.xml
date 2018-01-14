@@ -26,7 +26,7 @@
     takeout_category
     left join shop on takeout_category.shop_id = shop.shop_id
     left join account_shop on shop.account_shop_id = account_shop.id
-    where account_shop.id = #{accountShopId}
+    where account_shop.id = #{accountShopId} and mark = 0
   </select>
     <update id="editCategoryNameByIdDAO">
     update takeout_category

@@ -25,7 +25,7 @@ public interface MerchantService {
     //找回密码确认身份成功后，更改密码接口
     AjaxResponseModel changePassword(String phone, String password, String code);
     //改变店铺状态接口
-    AjaxResponseModel changeShopState(HttpServletRequest request, int stateId);
+    AjaxResponseModel changeShopState(HttpServletRequest request, int stateId /*,int userId*/);
     //改变通知消息状态
     AjaxResponseModel changeNotificationMessageStatus(Integer id, Integer statusCode);
     /* ==============接口结束================ */

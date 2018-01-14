@@ -57,6 +57,7 @@ import redis.clients.jedis.JedisPool;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
@@ -272,10 +273,21 @@ public class MerchantServiceImpl implements MerchantService {
 
     //改变店铺状态接口
     @Override
-    public AjaxResponseModel changeShopState(HttpServletRequest request, int stateId) {
+    public AjaxResponseModel changeShopState(HttpServletRequest request, int stateId/*,int userId*/) {
         try {
             LoginUser user = OtherUtils.getLoginUserByRequest();
             shopService.changeShopOpenStateById(stateId, user.getUserId());
+
+            //重新设置session的相关属性，这样jsp才会及时更新显示状态
+            HttpSession session = request.getSession();
+            LoginUser loginUser = (LoginUser) session.getAttribute(Globals.MERCHANT_SESSION_USER);
+            Shop shop = shopService.getShopDataByAccountShopIdAndMark(loginUser.getUserId(),0);
+            //店铺名字
+            session.setAttribute("shopName", shop.getShopName().toString());
+            //店铺是否营业状态（0停止营业 1营业中）
+            session.setAttribute("status", shop.getState().toString());
+
+
             return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
         } catch (Exception e) {
             return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
@@ -501,8 +513,8 @@ public class MerchantServiceImpl implements MerchantService {
             }
             //账户可用余额
             double accountBalance = billBalanceSheetService.getAccountBalance(accountShopToken);
-            //待入账余额
-            double waitingPostAmount = billRecordService.getAmountToBeAccountedByType(accountShopToken, 1);
+            //待入账余额(1是已入账，2是未入账)
+            double waitingPostAmount = billRecordService.getAmountToBeAccountedByType(accountShopToken, 2);
             //商家的提现收款账号
             String aliPayAccount = accountShopService.selectByToken(accountShopToken).getAlipayAccount();
             String startTime = "";
@@ -554,7 +566,7 @@ public class MerchantServiceImpl implements MerchantService {
             model.addAttribute("accountBalance", Double.parseDouble(df.format(accountBalance + waitingPostAmount)));  //总余额
             model.addAttribute("availableBalance", Double.parseDouble(df.format(accountBalance)));  //可用余额
             model.addAttribute("remainingBalance", Double.parseDouble(df.format(waitingPostAmount)));  //待入账余额
-            model.addAttribute("shroffAccountNumber", aliPayAccount);
+            model.addAttribute("alipayAccount", aliPayAccount);
             model.addAttribute("data", resultList);
             model.addAttribute("dateVal", date);
             model.addAttribute("page", pageInfo);
@@ -1011,7 +1023,7 @@ public class MerchantServiceImpl implements MerchantService {
             try {
                 Model model = params.getModel();
                 LoginUser user = OtherUtils.getLoginUserByRequest();
-                Shop shop = shopService.getShopByAccountShopIdAndMark(user.getUserId(), 0);
+                Shop shop = shopService.getShopByAccountShopIdAndMark(user.getUserId(), 2);
                 int pageNumber = Globals.DEFAULT_PAGE_NO;
                 int pageLimit = Globals.DEFAULT_PAGE_LIMIT;
                 if (params.getPageNum() > 1) {
@@ -1052,7 +1064,7 @@ public class MerchantServiceImpl implements MerchantService {
             try {
                 Model model = params.getModel();
                 LoginUser user = OtherUtils.getLoginUserByRequest();
-                Shop shop = shopService.getShopByAccountShopIdAndMark(user.getUserId(), 0);
+                Shop shop = shopService.getShopByAccountShopIdAndMark(user.getUserId(), 2);
                 int pageNumber = Globals.DEFAULT_PAGE_NO;
                 int pageLimit = Globals.DEFAULT_PAGE_LIMIT;
                 if (params.getPageNum() > 1) {

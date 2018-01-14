@@ -9,6 +9,10 @@
             + path + "/";
 
     String staticFilePath = "http://120.27.5.36:8500/htkApp/";
+    response.setHeader("Pragma","No-cache");
+    response.setHeader("Cache-Control","no-cache");
+    response.setDateHeader("Expires", 0);
+    response.flushBuffer();
 %>
 <c:set var="sysPath" value="<%=basePath %>" />
 

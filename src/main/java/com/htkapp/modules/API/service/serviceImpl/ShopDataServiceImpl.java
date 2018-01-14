@@ -950,6 +950,134 @@ public class ShopDataServiceImpl implements ShopDataService {
     }
 
     //根据分类id查询获取分类下的所有店铺,并筛选店铺
+//    @Override
+//    public APIResponseModel getShopListByCategoryIdAndChildIdAndConditions(Integer categoryId, Integer childCId,
+//                                                                           Double userLo, Double userLa, String token,
+//                                                                           int pageNumber, Integer mark, Integer distanceType) {
+//        if (categoryId != null && childCId != null && mark != null) {
+//            try {
+//                int pageNo = Globals.API_HOME_PAGE_CATEGORY_NO;
+//                int pageLimit = Globals.API_HOME_PAGE_CATEGORY_LIMIT;
+//                if (pageNumber > 1) {
+//                    pageNo = pageNumber;
+//                }
+//                Set<Integer> focusList = accountFocusService.getCollectionShopIdListByToken(token, mark);
+//                if (focusList==null){
+//                    //因为数据库查询的时候这个集合不能为null，size也不能为0，再加上shop_id是shop表的主键所以不会是-1，所以这里添加个-1
+//                    focusList = new HashSet<>();
+//                    focusList.add(-1);
+//                }
+//                //把判断去掉，是因为如果新用户还没有关注任何商家的时候看不到任何推荐的商家
+////                if (focusList != null) {
+//                    //有关注的店铺，再根据店铺分类查找
+//                    //如果childCId = 0 则查询当前大类下的所有店铺
+//                    if (childCId == 0) {
+//                        //查询当前大分类下的所有店铺  查询所有二级分类店铺
+//                        List<ShopCategory> resultList = shopCategoryService.getCategoryListById(categoryId);
+//                        Set<String> setList = new HashSet<>();
+//                        if (resultList != null && resultList.size() > 0) {
+//                            for (ShopCategory each : resultList) {
+//                                setList.add(each.getId().toString());
+//                            }
+//                            List<Shop> shops = shopService.getShopListByChildCategoryIdsAndFocus(setList, focusList, token, 1, pageNo, pageLimit);
+//                            if (shops != null) {
+//                                for (Shop each : shops) {
+//                                    each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
+//                                    each.setCollection(true);
+//                                }
+//                                RecommendedShopInfo info = new RecommendedShopInfo();
+//                                if (distanceType != 0) {
+//                                    ServiceMethodUtils.filterByDistanceType(distanceType, userLo, userLa, shops);
+//                                }
+//                                info.setShopList(shops);
+//                                if (shops.size() <= 3) {
+//                                    //推荐商铺
+//                                    //根据用户token推荐未关注的店铺
+//                                    List<Shop> shopList = shopService.getShopListByChildCategoryIdsAndFocus(setList, focusList, token, 0, pageNo, 10);
+//                                    if (shopList != null) {
+//                                        for (Shop each : shopList) {
+//                                            if (each.getLogoUrl() != null) {
+//                                                each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
+//                                            }
+//                                        }
+//                                        info.setRecommendShopList(shopList);
+//                                    } else {
+//                                        info.setRecommendShopList(null);
+//                                    }
+//                                } else {
+//                                    info.setRecommendShopList(null);
+//                                }
+//                                return new APIResponseModel<>(Globals.API_SUCCESS, "成功", info);
+//                            } else {
+//                                return new APIResponseModel<>(Globals.API_SUCCESS, "成功", null);
+//                            }
+//                        } else {
+//                            return new APIResponseModel<>(Globals.API_SUCCESS, " 当前分类下没有店铺", null);
+//                        }
+//                    } else {
+//                        List<Shop> shopList = shopService.getShopListByCategoryIdAndFocus(childCId, focusList, token, 1, pageNo, pageLimit);
+//                        if (shopList != null && shopList.size() > 0) {
+//                            for (Shop each : shopList) {
+//                                each.setCollection(true);
+//                                each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
+//                            }
+//                            RecommendedShopInfo info = new RecommendedShopInfo();
+//                            info.setShopList(shopList);
+//                            if (shopList.size() <= 3) {
+//                                //推荐商铺
+//                                //根据用户token推荐未关注的店铺（tag为0是查未关注的）
+//                                List<Shop> shops = shopService.getShopListByCategoryIdAndFocus(childCId, focusList, token, 0, pageNo, pageLimit);
+//                                if (shops != null) {
+//                                    for (Shop each : shops) {
+//                                        if (each.getLogoUrl() != null) {
+//                                            each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
+//                                        }
+//                                        System.out.println("重复了");
+//                                    }
+//                                    info.setRecommendShopList(shops);
+//                                } else {
+//                                    info.setRecommendShopList(null);
+//                                }
+//                            } else {
+//                                info.setRecommendShopList(null);
+//                            }
+//                            return new APIResponseModel<>(Globals.API_SUCCESS, "成功", info);
+//                        } else {
+//                            return new APIResponseModel<>(Globals.API_SUCCESS, "当前类别下没店铺", null);
+//                        }
+//                    }
+////                } else {
+////
+////
+////                    //根据用户token推荐未关注的店铺（tag为0是查未关注的）
+////                    Set<Integer> nullfocusList = new HashSet<>();
+////                    nullfocusList.add(-1);
+////                    List<Shop> shops = shopService.getShopListByCategoryIdAndFocus(childCId, nullfocusList, token, 0, pageNo, pageLimit);
+////                    RecommendedShopInfo info = new RecommendedShopInfo();
+////                    if (shops != null) {
+////                        for (Shop each : shops) {
+////                            if (each.getLogoUrl() != null) {
+////                                each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
+////                            }
+////                            System.out.println("重复了");
+////                        }
+////                        info.setShopList(null);
+////                        info.setRecommendShopList(shops);
+////                    }
+////
+////                    return new APIResponseModel<>(Globals.API_SUCCESS, "成功", info);
+////                }
+//            } catch (Exception e) {
+//                LogUtil.error(ele, "错误:", e);
+//                return new APIResponseModel(Globals.API_FAIL, e.getMessage());
+//            }
+//        } else {
+//            return new APIResponseModel(Globals.API_REQUEST_BAD);
+//        }
+//    }
+
+
+    //根据分类id查询获取分类下的所有店铺,并筛选店铺
     @Override
     public APIResponseModel getShopListByCategoryIdAndChildIdAndConditions(Integer categoryId, Integer childCId,
                                                                            Double userLo, Double userLa, String token,
@@ -961,112 +1089,150 @@ public class ShopDataServiceImpl implements ShopDataService {
                 if (pageNumber > 1) {
                     pageNo = pageNumber;
                 }
+                //先拿到用户收藏的所有商家集合
                 Set<Integer> focusList = accountFocusService.getCollectionShopIdListByToken(token, mark);
-                if (focusList==null){
+                if (focusList == null) {
                     //因为数据库查询的时候这个集合不能为null，size也不能为0，再加上shop_id是shop表的主键所以不会是-1，所以这里添加个-1
                     focusList = new HashSet<>();
                     focusList.add(-1);
                 }
-                //把判断去掉，是因为如果新用户还没有关注任何商家的时候看不到任何推荐的商家
-//                if (focusList != null) {
-                    //有关注的店铺，再根据店铺分类查找
-                    //如果childCId = 0 则查询当前大类下的所有店铺
-                    if (childCId == 0) {
-                        //查询当前大分类下的所有店铺  查询所有二级分类店铺
-                        List<ShopCategory> resultList = shopCategoryService.getCategoryListById(categoryId);
-                        Set<String> setList = new HashSet<>();
-                        if (resultList != null && resultList.size() > 0) {
-                            for (ShopCategory each : resultList) {
-                                setList.add(each.getId().toString());
-                            }
-                            List<Shop> shops = shopService.getShopListByChildCategoryIdsAndFocus(setList, focusList, token, 1, pageNo, pageLimit);
-                            if (shops != null) {
-                                for (Shop each : shops) {
-                                    each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
-                                    each.setCollection(true);
-                                }
-                                RecommendedShopInfo info = new RecommendedShopInfo();
-                                if (distanceType != 0) {
-                                    ServiceMethodUtils.filterByDistanceType(distanceType, userLo, userLa, shops);
-                                }
-                                info.setShopList(shops);
-                                if (shops.size() <= 3) {
-                                    //推荐商铺
-                                    //根据用户token推荐未关注的店铺
-                                    List<Shop> shopList = shopService.getShopListByChildCategoryIdsAndFocus(setList, focusList, token, 0, pageNo, 10);
-                                    if (shopList != null) {
-                                        for (Shop each : shopList) {
-                                            if (each.getLogoUrl() != null) {
-                                                each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
-                                            }
-                                        }
-                                        info.setRecommendShopList(shopList);
-                                    } else {
-                                        info.setRecommendShopList(null);
-                                    }
-                                } else {
-                                    info.setRecommendShopList(null);
-                                }
-                                return new APIResponseModel<>(Globals.API_SUCCESS, "成功", info);
-                            } else {
-                                return new APIResponseModel<>(Globals.API_SUCCESS, "成功", null);
-                            }
-                        } else {
-                            return new APIResponseModel<>(Globals.API_SUCCESS, " 当前分类下没有店铺", null);
+                //childCId = 0 代表App选择的是全部分类
+                if (childCId == 0) {
+                    //此处setList只保存了首页点击的大分类的id，因为是全部，所以先查到所有这个大分类下的子分类
+                    Set<Integer> allChildCategoryIdList = shopService.getAllChildCategoryIdList(categoryId);
+                    //大分类id也要放进去
+                    allChildCategoryIdList.add(categoryId);
+
+                    //查找属于这些分类下的所有商家
+//                    List<Shop> allShop = shopService.getShopListByCategoryList(allChildCategoryIdList);
+
+                    //转成String
+                    Set<String> setList = new HashSet<>();
+                    for (Integer s : allChildCategoryIdList) {
+                        setList.add(s + "");
+                    }
+
+                    //tag=1代表查询用户关注了并且在此分类下的商家
+                    List<Shop> shops = shopService.getShopListByChildCategoryIdsAndFocus(mark, setList, focusList, token, 1, pageNo, pageLimit);
+                    if (shops != null) {
+                        for (Shop each : shops) {
+                            each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
+                            each.setCollection(true);
                         }
-                    } else {
-                        List<Shop> shopList = shopService.getShopListByCategoryIdAndFocus(childCId, focusList, token, 1, pageNo, pageLimit);
-                        if (shopList != null && shopList.size() > 0) {
-                            for (Shop each : shopList) {
-                                each.setCollection(true);
-                                each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
-                            }
-                            RecommendedShopInfo info = new RecommendedShopInfo();
-                            info.setShopList(shopList);
-                            if (shopList.size() <= 3) {
-                                //推荐商铺
-                                //根据用户token推荐未关注的店铺（tag为0是查未关注的）
-                                List<Shop> shops = shopService.getShopListByCategoryIdAndFocus(childCId, focusList, token, 0, pageNo, pageLimit);
-                                if (shops != null) {
-                                    for (Shop each : shops) {
-                                        if (each.getLogoUrl() != null) {
-                                            each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
-                                        }
-                                        System.out.println("重复了");
+                        //要返回的此分类下的所有商家集合（包括商家已关注的和被推荐的）
+                        RecommendedShopInfo info = new RecommendedShopInfo();
+                        //根据距离过滤商家
+                        if (distanceType != 0) {
+                            ServiceMethodUtils.filterByDistanceType(distanceType, userLo, userLa, shops);
+                        }
+                        //把查询出的用户已关注的商家集合填进去
+                        info.setShopList(shops);
+                        //如果已关注的商家数量小于3，那么还需要返回推荐商家
+                        if (shops.size() <= 3) {
+                            //tag=0代表查询用户未关注的且在此分类下的商家
+                            List<Shop> shopList = shopService.getShopListByChildCategoryIdsAndFocus(mark, setList, focusList, token, 0, pageNo, 10);
+                            if (shopList != null) {
+                                for (Shop each : shopList) {
+                                    if (each.getLogoUrl() != null) {
+                                        each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
                                     }
-                                    info.setRecommendShopList(shops);
-                                } else {
-                                    info.setRecommendShopList(null);
                                 }
+                                //根据距离过滤商家
+                                if (distanceType != 0) {
+                                    ServiceMethodUtils.filterByDistanceType(distanceType, userLo, userLa, shopList);
+                                }
+                                //填充推荐商家
+                                info.setRecommendShopList(shopList);
                             } else {
                                 info.setRecommendShopList(null);
                             }
-                            return new APIResponseModel<>(Globals.API_SUCCESS, "成功", info);
                         } else {
-                            return new APIResponseModel<>(Globals.API_SUCCESS, "当前类别下没店铺", null);
+                            info.setRecommendShopList(null);
                         }
+                        return new APIResponseModel<>(Globals.API_SUCCESS, "成功", info);
+                    } else {//如果没有查询出已关注商家，那么更需要返回推荐商家
+                        //要返回的此分类下的所有商家集合（这里只有被推荐的）
+                        RecommendedShopInfo info = new RecommendedShopInfo();
+                        //没有已关注商家
+                        info.setShopList(null);
+                        //tag=0代表查询用户未关注的且在此分类下的商家
+                        List<Shop> shopList = shopService.getShopListByChildCategoryIdsAndFocus(mark, setList, focusList, token, 0, pageNo, 10);
+                        if (shopList != null) {
+                            for (Shop each : shopList) {
+                                if (each.getLogoUrl() != null) {
+                                    each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
+                                }
+                            }
+                            //根据距离过滤商家
+                            if (distanceType != 0) {
+                                ServiceMethodUtils.filterByDistanceType(distanceType, userLo, userLa, shopList);
+                            }
+                            //填充推荐商家
+                            info.setRecommendShopList(shopList);
+                        } else {
+                            info.setRecommendShopList(null);
+                        }
+                        return new APIResponseModel<>(Globals.API_SUCCESS, "成功", info);
                     }
-//                } else {
-//
-//
-//                    //根据用户token推荐未关注的店铺（tag为0是查未关注的）
-//                    Set<Integer> nullfocusList = new HashSet<>();
-//                    nullfocusList.add(-1);
-//                    List<Shop> shops = shopService.getShopListByCategoryIdAndFocus(childCId, nullfocusList, token, 0, pageNo, pageLimit);
-//                    RecommendedShopInfo info = new RecommendedShopInfo();
-//                    if (shops != null) {
-//                        for (Shop each : shops) {
-//                            if (each.getLogoUrl() != null) {
-//                                each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
-//                            }
-//                            System.out.println("重复了");
-//                        }
-//                        info.setShopList(null);
-//                        info.setRecommendShopList(shops);
-//                    }
-//
-//                    return new APIResponseModel<>(Globals.API_SUCCESS, "成功", info);
-//                }
+                } else {//如果childCId不为0，则代表App是选择了某个子分类
+                    //tag=1代表查询用户关注的且在这个子分类下的商家
+                    List<Shop> shopList = shopService.getShopListByCategoryIdAndFocus(mark, childCId, focusList, token, 1, pageNo, pageLimit);
+                    if (shopList != null && shopList.size() > 0) {
+                        for (Shop each : shopList) {
+                            each.setCollection(true);
+                            each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
+                        }
+                        RecommendedShopInfo info = new RecommendedShopInfo();
+                        //根据距离过滤商家
+                        if (distanceType != 0) {
+                            ServiceMethodUtils.filterByDistanceType(distanceType, userLo, userLa, shopList);
+                        }
+                        info.setShopList(shopList);
+                        if (shopList.size() <= 3) {
+                            //查询推荐商家
+                            List<Shop> shops = shopService.getShopListByCategoryIdAndFocus(mark, childCId, focusList, token, 0, pageNo, pageLimit);
+                            if (shops != null) {
+                                for (Shop each : shops) {
+                                    if (each.getLogoUrl() != null) {
+                                        each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
+                                    }
+                                    System.out.println("重复了");
+                                }
+                                //根据距离过滤商家
+                                if (distanceType != 0) {
+                                    ServiceMethodUtils.filterByDistanceType(distanceType, userLo, userLa, shops);
+                                }
+                                info.setRecommendShopList(shops);
+                            } else {
+                                info.setRecommendShopList(null);
+                            }
+                        } else {
+                            info.setRecommendShopList(null);
+                        }
+                        return new APIResponseModel<>(Globals.API_SUCCESS, "成功", info);
+                    } else {
+                        RecommendedShopInfo info = new RecommendedShopInfo();
+                        info.setShopList(null);
+                        //查询推荐商家
+                        List<Shop> shops = shopService.getShopListByCategoryIdAndFocus(mark, childCId, focusList, token, 0, pageNo, pageLimit);
+                        if (shops != null) {
+                            for (Shop each : shops) {
+                                if (each.getLogoUrl() != null) {
+                                    each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
+                                }
+                                System.out.println("重复了");
+                            }
+                            //根据距离过滤商家
+                            if (distanceType != 0) {
+                                ServiceMethodUtils.filterByDistanceType(distanceType, userLo, userLa, shops);
+                            }
+                            info.setRecommendShopList(shops);
+                        } else {
+                            info.setRecommendShopList(null);
+                        }
+                        return new APIResponseModel<>(Globals.API_SUCCESS, "成功", info);
+                    }
+                }
             } catch (Exception e) {
                 LogUtil.error(ele, "错误:", e);
                 return new APIResponseModel(Globals.API_FAIL, e.getMessage());
@@ -1075,6 +1241,7 @@ public class ShopDataServiceImpl implements ShopDataService {
             return new APIResponseModel(Globals.API_REQUEST_BAD);
         }
     }
+
 
     //根据标记和大分类id获取小分类列表(加全部分类)
     @Override
