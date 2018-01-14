@@ -68,7 +68,12 @@ public class IntegralManageController {
     public AjaxResponseModel uploadMsgImg(MultipartFile file){
         return integralManageService.uploadMsgImg(file);
     }
-
+    //创建资讯图片上传
+    @RequestMapping("/uploadNewsContentImg")
+    @ResponseBody
+    public String uploadNewsContentImg(MultipartFile file){
+        return integralManageService.uploadNewsContentImg(file);
+    }
     //创建兑换活动
     @RequestMapping("/createExchangeActivity")
     @ResponseBody

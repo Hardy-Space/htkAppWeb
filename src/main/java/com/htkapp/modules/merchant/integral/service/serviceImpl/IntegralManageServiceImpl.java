@@ -146,6 +146,20 @@ public class IntegralManageServiceImpl implements IntegralManageService {
             return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
         }
     }
+    
+    //创建资讯图片上传
+    @Override
+    public String uploadNewsContentImg(MultipartFile file) {
+    	try {
+    		System.out.println("-----==================进入了uploadNewsContentImg");
+    		String imgUrl = FileUploadUtils.appUploadContentImg(file, "merchant/newContentImg/");
+    		return imgUrl;
+    	}catch(Exception e) {
+    		
+    		 return "{\"code\": 1,\"msg\": \"成功\"}";
+    	}
+    	
+    }
 
     //创建兑换活动
     @Override

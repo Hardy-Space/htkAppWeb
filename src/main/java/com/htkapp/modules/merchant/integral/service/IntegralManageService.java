@@ -44,4 +44,6 @@ public interface IntegralManageService {
     //修改资讯
     AjaxResponseModel updateMes(ShopArticleInfo shopArticleInfo);
     /* ====================JSP页面接口结束========================== */
+
+	String uploadNewsContentImg(MultipartFile file);
 }
