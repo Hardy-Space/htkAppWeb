@@ -39,6 +39,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -410,6 +411,14 @@ public class IntegralAPIServiceImpl implements IntegralAPIService {
                         ticketRecord.setShopId(params.getShopId());
                         ticketRecord.setTicketId(params.getTicketId());
                         shopSaverTicketRecordService.insertAccountExchangeRecord(ticketRecord);
+
+                        /**
+                         * @author 马鹏昊
+                         * @desc 修改最近消费时间（gmt_modified字段）
+                         */
+                        integralService.updateLatestConsumeTime(params.getToken(), params.getShopId(),new Timestamp((new Date()).getTime()));
+
+
                         return new APIResponseModel(Globals.API_SUCCESS);
                     }
                     return new APIResponseModel(Globals.API_FAIL, "积分值不足");

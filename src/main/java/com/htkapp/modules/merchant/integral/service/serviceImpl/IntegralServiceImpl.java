@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -98,6 +99,14 @@ public class IntegralServiceImpl implements IntegralService {
     @Override
     public void updateIntegralFlagByToken(String token, int flagId) {
         int row = integralDao.updateIntegralFlagByTokenDAO(token, flagId);
+        if (row <= 0) {
+            throw new UpdateException(Globals.DEFAULT_EXCEPTION_UPDATE_FAILED);
+        }
+    }
+
+    @Override
+    public void updateLatestConsumeTime(String token, Integer shopId, Timestamp time) {
+        int row = integralDao.updateLatestConsumeTime(token, shopId,time);
         if (row <= 0) {
             throw new UpdateException(Globals.DEFAULT_EXCEPTION_UPDATE_FAILED);
         }

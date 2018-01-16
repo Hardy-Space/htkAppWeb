@@ -46,4 +46,6 @@ public interface IntegralManageService {
     /* ====================JSP页面接口结束========================== */
 
 	String uploadNewsContentImg(MultipartFile file);
+
+    AjaxResponseModel uploadMsgTitleImg(MultipartFile file);
 }

@@ -161,6 +161,17 @@ public class IntegralManageServiceImpl implements IntegralManageService {
     	
     }
 
+    @Override
+    public AjaxResponseModel uploadMsgTitleImg(MultipartFile file) {
+        try {
+            System.out.println("-----==================进入了uploadNewsContentImg");
+            String imgUrl = FileUploadUtils.appUploadMsgTitleImg(file, "merchant/message/");
+            return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION,"成功", imgUrl);
+        }catch(Exception e) {
+            return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
+        }
+    }
+
     //创建兑换活动
     @Override
     public AjaxResponseModel createExchangeActivity(AccountSaverTicket saverTicket, String startTime, String endTime) {

@@ -1,8 +1,11 @@
 package com.htkapp.modules.merchant.common.web;
 
+import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.request.AlipayFundTransOrderQueryRequest;
 import com.alipay.api.request.AlipayFundTransToaccountTransferRequest;
+import com.alipay.api.response.AlipayFundTransOrderQueryResponse;
 import com.alipay.api.response.AlipayFundTransToaccountTransferResponse;
 import com.htkapp.core.OtherUtils;
 import com.htkapp.core.config.AlipayConfig;
@@ -35,6 +38,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -798,6 +802,10 @@ public class MerchantController {
             LoginUser user = (LoginUser) session.getAttribute(Globals.MERCHANT_SESSION_USER);
             AccountShop accountShop = accountShopService.getAlipayAccount(user.getUserId());
 
+            float moneyF = Float.parseFloat(money);
+            DecimalFormat decimalFormat=new DecimalFormat("0.00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+            String p = decimalFormat.format(moneyF);//format 返回的是字符串
+
             if (accountShop != null) {
 
                 AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APPID, AlipayConfig.RSA_PRIVATE_KEY, "json",
@@ -805,27 +813,51 @@ public class MerchantController {
                 AlipayFundTransToaccountTransferRequest request = new AlipayFundTransToaccountTransferRequest();
                 String out_trade_no = OrderNumGen.next().toString();
                 request.setBizContent("{" +
-                        "\"out_biz_no\":" + out_trade_no + "," +
-                        "\"payee_type\":" + accountShop.getAlipayAccountType() + "," +
-                        "\"payee_account\":" + accountShop.getAlipayAccount() + "," +
-                        "\"amount\":" + money + "," +
+                        "\"out_biz_no\":" + "\""+out_trade_no+"\"," +
+                        "\"payee_type\":" + "\""+accountShop.getAlipayAccountType() + "\"," +
+                        "\"payee_account\":" +"\""+ accountShop.getAlipayAccount() + "\"," +
+                        "\"amount\":" +"\""+ p +  "\"," +
                         "\"payer_show_name\":\"青岛华凌科技有限公司\"," +
-                        "\"payee_real_name\":" + accountShop.getUserName() + "," +
+                        //收款方真实姓名（如果传了该值则会校验真实姓名和收款方账户是否一致）
+//                        "\"payee_real_name\":" +"\""+ accountShop.getUserName() +"\"," +
 //                    "\"remark\":\"转账备注\"" +
                         "\"remark\":\"商家提现\"" +
                         "}");
                 AlipayFundTransToaccountTransferResponse response = alipayClient.execute(request);
                 if (response.isSuccess()) {
                     System.out.println("调用成功");
+//                    callAplipayQuery(alipayClient,out_trade_no);
                     double oldBalance = billBalanceSheetService.getAccountBalance(accountShop.getToken());
                     double newBalance = oldBalance - Double.valueOf(money);
                     int row = billBalanceSheetService.updateAccountBalance(accountShop.getToken(), newBalance);
-                } else
+                } else {
                     System.out.println("调用失败");
+//                    callAplipayQuery(alipayClient,out_trade_no);
+                }
             }
             return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION, "成功");
         } catch (Exception e) {
             return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, e.getMessage());
+        }
+    }
+
+    public void callAplipayQuery(AlipayClient alipayClient,String orderNo){
+        //调用查询接口
+        AlipayFundTransOrderQueryRequest request2 = new AlipayFundTransOrderQueryRequest();
+        request2.setBizContent("{" +
+                "    \"out_biz_no\":"+"\""+orderNo +"\"," +
+//                            "    \"order_id\":"+"" +
+                "  }");
+        AlipayFundTransOrderQueryResponse response2 = null;
+        try {
+            response2 = alipayClient.execute(request2);
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+        }
+        if(response2.isSuccess()){
+            System.out.println("调用成功");
+        } else {
+            System.out.println("调用失败");
         }
     }
 

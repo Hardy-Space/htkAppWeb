@@ -6,6 +6,14 @@
         id, val, shop_id, account_token, gmt_create as joinTime, flag
     </sql>
 
+
+    <update id="updateLatestConsumeTime">
+        update integral
+                set gmt_modified =  #{2}
+        where account_token = #{0}
+        and shop_id = #{1}
+    </update>
+
     <!-- ===============================接口开始=================================== -->
     <select id="getAccountIntegralListByIdDAO"
             resultType="com.htkapp.modules.merchant.integral.dto.AccountIntegralList">

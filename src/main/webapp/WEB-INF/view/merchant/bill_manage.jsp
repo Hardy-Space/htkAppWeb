@@ -474,7 +474,7 @@
             "                            </span>\n" +
             "                        </div>\n" +
             "                        <div style=\"text-align: center;padding-top: 15px;\">\n" +
-            "                            <button class='toConfirmWithdrawal'  id='toConfirmWithdrawal'" +
+            "                            <button class='toConfirmWithdrawal layui-btn-disabled' disabled='disabled' id='toConfirmWithdrawal'" +
             " style=\"width: 200px;height: 40px;font-size: 20px;background-color: orange;border: 1px solid #fff; border-radius: 5px;font-weight: bold\">\n" +
             "                                确认提现\n" +
             "                            </button>\n" +
@@ -568,7 +568,7 @@
                 if (subStrVal === '') {
                     //小数点后没有值
                     val += "00";
-                } else if (subStrVal.length > 0) {
+                } else if (subStrVal.length == 1) {
                     val += "0";
                 } else {
                     val += "";
@@ -578,7 +578,7 @@
                 val += ".00";
             }
             inputParentEle.prepend("<span style='margin-left: 30px;cursor: pointer;color:#337ab7' class='updateAmount'>修改金额</span>");
-            inputParentEle.prepend("<span style='margin-left: 10px;color: red'>" + val + "</span>");
+            inputParentEle.prepend("<span style='margin-left: 10px;color: red' class='finalMoney'>" + val + "</span>");
             inputEle.remove();  //删除输入框元素
             $(this).remove();  //删除被点击元素的本身
             //置确认提现按钮为可点击状态
@@ -587,12 +587,18 @@
                 btnEle.removeClass("layui-btn-disabled");
                 btnEle.attr("disabled", false);
             }
-        } else if (inputVal < 1) {
+        } else if (inputVal <= 1) {
             //输入数字无效
             var params = {
-                mes: "输入金额无效，请重新输入金额!",
+                mes: "提现金额必须大于1元!",
                 ele: "#withdrawDepositAmount"
             };
+            //置确认提现按钮为不可点击状态
+            var btnEle = $("#toConfirmWithdrawal");
+            if ($(btnEle).length > 0) {
+                btnEle.addClass("layui-btn-disabled");
+                btnEle.attr("disabled", true);
+            }
             layer_tips(params);
         } else if (inputVal > usableBalance) {
             //输入金额大于现有可用余额
@@ -600,6 +606,12 @@
                 mes: "输入金额大于现有可用余额,请重新输入!",
                 ele: "#withdrawDepositAmount"
             };
+            //置确认提现按钮为不可点击状态
+            var btnEle = $("#toConfirmWithdrawal");
+            if ($(btnEle).length > 0) {
+                btnEle.addClass("layui-btn-disabled");
+                btnEle.attr("disabled", true);
+            }
             layer_tips(params);
         }
     });
@@ -635,7 +647,7 @@
         //@author 马鹏昊
         // 向后台发起post请求，提现到商户支付账户
         var url = baseUrl + '/merchant/withdraw';
-        var money = $(".withdrawDepositInput").val();
+        var money = $(".finalMoney").text();
         var params = {money:money};
         $.post(url,params, function (result, status) {
             //关闭弹窗
@@ -643,7 +655,7 @@
             if (status === 'success') {
                 if (result && result.code === 0) {
                     //改变页面元素显示值
-                    window.reload();
+                    window.location.reload();
                     return false;
                 } else {
                     layer_msg(result.message, 'error');

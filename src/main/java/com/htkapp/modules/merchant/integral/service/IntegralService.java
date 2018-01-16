@@ -3,6 +3,7 @@ package com.htkapp.modules.merchant.integral.service;
 import com.htkapp.modules.merchant.integral.dto.AccountIntegralList;
 import com.htkapp.modules.merchant.integral.entity.Integral;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -37,5 +38,8 @@ public interface IntegralService {
     void insertUserIntegralDAO(Integral integral);
     //更改用户积分状态
     void updateIntegralFlagByToken(String token, int flagId);
+
+    void updateLatestConsumeTime(String token, Integer shopId, Timestamp time);
+
     /* =======================JSP页面接口结束=============================== */
 }

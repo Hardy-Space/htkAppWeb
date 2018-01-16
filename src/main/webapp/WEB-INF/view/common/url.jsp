@@ -16,4 +16,7 @@
 %>
 <c:set var="sysPath" value="<%=basePath %>" />
 
-<c:set var="staticFilePath" value="<%=basePath%>" />
+
+<%--马鹏昊修改--%>
+<%--<c:set var="staticFilePath" value="<%=basePath%>" />--%>
+<c:set var="staticFilePath" value="<%=staticFilePath%>" />

@@ -54,7 +54,37 @@ public class FileUploadUtils {
         }
     }
 
-    //资讯内容上传的图片
+    /**
+     * @author 马鹏昊
+     * @desc 处理上传标题图片
+     * @date 2018-1-15
+     */
+    public static String appUploadMsgTitleImg(MultipartFile myFile, String folder) throws Exception {
+        try {
+            //重置文件名
+            long time = System.currentTimeMillis();
+            String timeStr = String.valueOf(time);
+            String[] originalFileName = myFile.getOriginalFilename().split("\\.");
+            String fileName = timeStr + "." + originalFileName[1];
+            FTPClient client = getFTPClient(FTPConfig.host, FTPConfig.port, FTPConfig.userName, FTPConfig.password);
+            String writeTempPath = "D:\\resource";
+//            String writeTempPath = "/home/terabithia";
+            FileUtils.copyInputStreamToFile(myFile.getInputStream(), new File(writeTempPath, fileName));
+            uploadFileForFTP(client, fileName, writeTempPath + "\\" + fileName, "Resource\\htkApp\\upload\\" + folder);
+//            uploadFileForFTP(client, fileName, writeTempPath + "/" + fileName, "Resource\\htkApp\\upload\\" + folder);
+            String avaPath = Globals.PROJECT_URL + Globals.PHOTO_URL + folder;
+            return avaPath + fileName;
+        } catch (IOException ex) {
+            System.out.println("Exception: " + ex);
+            ex.printStackTrace();
+            throw new IOException("");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("");
+        }
+    }
+
+    //资讯内容上传的图片(by 石超)
     public static String appUploadContentImg(MultipartFile myFile, String folder) throws Exception {
         try {
             //重置文件名
@@ -68,13 +98,13 @@ public class FileUploadUtils {
             FileUtils.copyInputStreamToFile(myFile.getInputStream(), new File(writeTempPath, fileName));
             uploadFileForFTP(client, fileName, writeTempPath + "\\" + fileName, "Resource\\htkApp\\upload\\" + folder);
 //            uploadFileForFTP(client, fileName, writeTempPath + "/" + fileName, "Resource\\htkApp\\upload\\" + folder);
-            String avaPath = OtherUtils.getRootDirectory() + Globals.PROJECT_URL + Globals.PHOTO_URL + folder+fileName;
+            String avaPath = OtherUtils.getRootDirectory() + Globals.PROJECT_URL + Globals.PHOTO_URL + folder + fileName;
 //            String avaPath = Globals.PROJECT_URL + Globals.PHOTO_URL + folder+fileName;
 //            String rjson = "{\"code\": 0,\"msg\": \"成功\",\"data\": {\"src\": \"" + avaPath + "\"}}";
-            JSONObject map=new JSONObject();
+            JSONObject map = new JSONObject();
             map.put("code", 0);
             map.put("msg", "成功");
-            JSONObject js= new JSONObject();
+            JSONObject js = new JSONObject();
             js.put("src", avaPath);
             map.put("data", js);
             return map.toString();
@@ -89,7 +119,7 @@ public class FileUploadUtils {
     }
 
     //剪切后的图片上传
-    public static String cutUploadImg(MultipartFile file, String folder) throws Exception{
+    public static String cutUploadImg(MultipartFile file, String folder) throws Exception {
         try {
             //重置文件名
             long time = System.currentTimeMillis();
@@ -104,13 +134,13 @@ public class FileUploadUtils {
             FileUtils.copyInputStreamToFile(file.getInputStream(), upload);
             String outFileName = String.valueOf(System.currentTimeMillis());
             FTPClient client = getFTPClient(FTPConfig.host, FTPConfig.port, FTPConfig.userName, FTPConfig.password);
-            uploadFileForFTP(client, outFileName+ "." + originalFileName[1], localOutPath + "\\" + outFileName + "." + originalFileName[1], "Resource\\htkApp\\upload\\" + folder);
+            uploadFileForFTP(client, outFileName + "." + originalFileName[1], localOutPath + "\\" + outFileName + "." + originalFileName[1], "Resource\\htkApp\\upload\\" + folder);
 //            uploadFileForFTP(client, outFileName+ "." + originalFileName[1], localOutPath + "/" + outFileName + "." + originalFileName[1], "Resource\\htkApp\\upload\\" + folder);
             String avaPath = Globals.PROJECT_URL + Globals.PHOTO_URL + folder;
             return avaPath + outFileName + "." + originalFileName[1];
-        }catch (IOException e){
+        } catch (IOException e) {
             throw new IOException(e.getMessage());
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
     }
