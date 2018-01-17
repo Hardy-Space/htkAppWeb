@@ -180,8 +180,8 @@
                                             <td>#${i.count}</td>
                                             <td>${each.userPhone}</td>
                                             <td>${each.joinTime}</td>
-                                            <td>${each.lastUseTime}</td>
-                                            <td>${each.lastUseTime}</td>
+                                            <td>${each.lastConsumeTime}</td>
+                                            <td>${each.lastGetTime}</td>
                                             <td>${each.val}积分</td>
                                             <td><a data-type="z" data-user_phone="${each.userPhone}">赠送积分</a></td>
                                             <td><a data-type="d" data-user_phone="${each.userPhone}">抵扣积分</a></td>

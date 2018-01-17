@@ -927,8 +927,11 @@ public class MerchantServiceImpl implements MerchantService {
                     if (account != null) {
                         each.setUserPhone(account.getUserName());
                     }
-                    if (each.getLastUseTime() != null) {
-                        each.setLastUseTime(format(DateUtil.parseDate(each.getJoinTime()), NORM_DATE_PATTERN));
+                    if (each.getLastConsumeTime() != null) {
+                        each.setLastConsumeTime(format(DateUtil.parseDate(each.getLastConsumeTime()), NORM_DATE_PATTERN));
+                    }
+                    if (each.getLastGetTime() != null) {
+                        each.setLastGetTime(format(DateUtil.parseDate(each.getLastGetTime()), NORM_DATE_PATTERN));
                     }
                     //查次根据用户token查看积分
                     Integer val = integralService.getIntegralValByAccountToken(accountShopToken, each.getAccountToken());

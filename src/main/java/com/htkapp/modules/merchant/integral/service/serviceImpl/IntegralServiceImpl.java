@@ -106,7 +106,15 @@ public class IntegralServiceImpl implements IntegralService {
 
     @Override
     public void updateLatestConsumeTime(String token, Integer shopId, Timestamp time) {
-        int row = integralDao.updateLatestConsumeTime(token, shopId,time);
+        int row = integralDao.updateLatestConsumeTime(token, shopId, time);
+        if (row <= 0) {
+            throw new UpdateException(Globals.DEFAULT_EXCEPTION_UPDATE_FAILED);
+        }
+    }
+
+    @Override
+    public void updateLatestGetTime(String token, Integer shopId, Timestamp time) {
+        int row = integralDao.updateLatestGetTime(token, shopId, time);
         if (row <= 0) {
             throw new UpdateException(Globals.DEFAULT_EXCEPTION_UPDATE_FAILED);
         }
@@ -130,7 +138,7 @@ public class IntegralServiceImpl implements IntegralService {
 
     @Override
     public Integer updateIntegral(String token, int shopId, int val) {
-        return integralDao.updateIntegral(token,shopId,val);
+        return integralDao.updateIntegral(token, shopId, val);
     }
 
     /* ===========================JSP接口结束================================ */

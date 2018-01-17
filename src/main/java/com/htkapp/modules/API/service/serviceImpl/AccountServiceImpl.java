@@ -46,6 +46,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -750,7 +751,7 @@ public class AccountServiceImpl implements AccountServiceI {
     //用户确认收货接口
     @Override
     @Transactional
-    public APIResponseModel enterReceipt(APIRequestParams params,String orderNumber, String token) {
+    public APIResponseModel enterReceipt(APIRequestParams params, String orderNumber, String token) {
         if (StringUtils.isNotEmpty(orderNumber)) {
             try {
                 OrderRecord orderRecord = orderRecordService.getOrderRecordByOrderNumber(orderNumber);
@@ -784,17 +785,27 @@ public class AccountServiceImpl implements AccountServiceI {
                     List<OrderProduct> allBuyedProducts = orderProductService.getProductListByOrderId(orderRecord.getId());
                     for (OrderProduct each : allBuyedProducts) {
                         TakeoutProduct takeoutProduct = takeoutProductService.getTakeoutProductByProductId(each.getProductId());
-                        int addedValue = takeoutProduct.getIntegral()*each.getQuantity();
+                        int addedValue = takeoutProduct.getIntegral() * each.getQuantity();
                         sumAddedInteger += addedValue;
                         newVal += addedValue;
                     }
 
-                    integralService.updateIntegral(orderRecord.getToken(), shop.getShopId(), newVal);
-                    //通过商铺id查找商铺信息
-                    //记录积分变动记录
-                    String recordTypeStr = "消费返还积分";
-                    IntegralManageRecord record = new IntegralManageRecord(recordTypeStr, accountShop.getToken(), orderRecord.getToken(), sumAddedInteger);
-                    integralManageRecordService.insertRecordByToken(record);
+                    //如果新积分数和旧积分数不一样，说明购买的商品携带了返还积分，需要更新积分
+                    if (newVal != nowVal) {
+                        integralService.updateIntegral(orderRecord.getToken(), shop.getShopId(), newVal);
+                        //通过商铺id查找商铺信息
+                        //记录积分变动记录
+                        String recordTypeStr = "消费返还积分";
+                        IntegralManageRecord record = new IntegralManageRecord(recordTypeStr, accountShop.getToken(), orderRecord.getToken(), sumAddedInteger);
+                        integralManageRecordService.insertRecordByToken(record);
+
+                        /**
+                         * @author 马鹏昊
+                         * @desc 修改最近获得时间（gmt_latest_get字段）
+                         */
+                        integralService.updateLatestGetTime(orderRecord.getToken(), shop.getShopId(), new Timestamp((new Date()).getTime()));
+                    }
+
                 }
 
                 return new APIResponseModel<>(Globals.API_SUCCESS, "成功", orderRecord.getId());

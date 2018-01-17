@@ -39,5 +39,7 @@ public interface IntegralMapper {
     int insertUserIntegralDAO(Integral integral);
 
     int updateLatestConsumeTime(String token, Integer shopId , Timestamp time);
+
+    int updateLatestGetTime(String token, Integer shopId, Timestamp time);
     /* ==========================JSP页面接口结束================================ */
 }

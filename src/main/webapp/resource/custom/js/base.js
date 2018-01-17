@@ -213,7 +213,12 @@ function tOrderHandle(statusCode, message, soundsUrl_) {
     //     switch (statusCode){
     //         case 1:
     //             //新订单
-    //             playSounds(soundsUrl_ + "resource/custom/sounds/xinDuanXiaoXi.mp3");
+    //             const soundsUrl = soundsUrl_ + "resource/custom/sounds/xinDuanXiaoXi.mp3";
+    //             url = baseUrl + "/merchant/takeout/order/realTimeTakeoutOrder?statusCode=0";
+    //             title = "新订单推送";
+    //             playSounds(soundsUrl);
+    //             orderPushHint(title, message, url, delay)
+    //             // playSounds(soundsUrl_ + "resource/custom/sounds/xinDuanXiaoXi.mp3");
     //             break;
     //         case 2:
     //             //已接单
@@ -225,15 +230,30 @@ function tOrderHandle(statusCode, message, soundsUrl_) {
     //             break;
     //         case 4:
     //             //已收货消息
-    //             playSounds(soundsUrl_ + "resource/custom/sounds/7815.wav");
+    //             const soundsUrl = soundsUrl_ + "resource/custom/sounds/7815.wav";
+    //             url = baseUrl + "/merchant/takeout/order/realTimeTakeoutOrder?statusCode=3";
+    //             title = "已收货消息";
+    //             playSounds(soundsUrl);
+    //             orderPushHint(title, message, url, delay)
+    //             // playSounds(soundsUrl_ + "resource/custom/sounds/7815.wav");
     //             break;
     //         case 5:
     //             //取消订单
-    //             playSounds(soundsUrl_ + "resource/custom/sounds/8858.wav");
+    //             const soundsUrl = soundsUrl_ + "resource/custom/sounds/8858.wav";
+    //             url = baseUrl + "/merchant/takeout/order/realTimeTakeoutOrder?statusCode=5";
+    //             title = "订单取消消息";
+    //             playSounds(soundsUrl);
+    //             orderPushHint(title, message, url, delay)
+    //             // playSounds(soundsUrl_ + "resource/custom/sounds/8858.wav");
     //             break;
     //         case 6:
     //             //催单消息
-    //             playSounds(soundsUrl_ + "resource/custom/sounds/xinDuanXiaoXi.mp3");
+    //             const soundsUrl = soundsUrl_ + "resource/custom/sounds/xinDuanXiaoXi.mp3";
+    //             url = baseUrl + "/merchant/takeout/order/realTimeTakeoutOrder?statusCode=4";
+    //             title = "催单消息";
+    //             playSounds(soundsUrl);
+    //             orderPushHint(title, message, url, delay)
+    //             // playSounds(soundsUrl_ + "resource/custom/sounds/xinDuanXiaoXi.mp3");
     //             break;
     //         default :
     //             break;

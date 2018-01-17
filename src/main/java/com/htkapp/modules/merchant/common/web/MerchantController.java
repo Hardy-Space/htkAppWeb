@@ -812,6 +812,15 @@ public class MerchantController {
                         AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.SIGNTYPE);
                 AlipayFundTransToaccountTransferRequest request = new AlipayFundTransToaccountTransferRequest();
                 String out_trade_no = OrderNumGen.next().toString();
+                if (TextUtils.isEmpty(out_trade_no)){
+                    return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "订单号为空");
+                }
+                if (TextUtils.isEmpty(accountShop.getAlipayAccountType())){
+                    return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "第三方账户类型payee_type为空");
+                }
+                if (TextUtils.isEmpty(accountShop.getAlipayAccount())){
+                    return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "第三方账户类型payee_account为空");
+                }
                 request.setBizContent("{" +
                         "\"out_biz_no\":" + "\""+out_trade_no+"\"," +
                         "\"payee_type\":" + "\""+accountShop.getAlipayAccountType() + "\"," +

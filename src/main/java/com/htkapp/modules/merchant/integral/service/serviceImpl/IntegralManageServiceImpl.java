@@ -34,6 +34,7 @@ import sun.rmi.runtime.Log;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -96,10 +97,28 @@ public class IntegralManageServiceImpl implements IntegralManageService {
                 //先查出积分数量
                 int nowVal = integralService.getVal(accountFocus.getAccountToken(), accountFocus.getShopId());
                 int newVal = 0;
+
+
+
+                //0抵扣积分  1赠送积分
                 if (params.getOperationId()==0) {
                     newVal = (nowVal - params.getValue())<0?0:(nowVal - params.getValue());
+
+                    /**
+                     * @author 马鹏昊
+                     * @desc 修改最近消费时间（gmt_modified字段）
+                     */
+                    integralService.updateLatestConsumeTime(accountFocus.getAccountToken(), accountFocus.getShopId(),new Timestamp((new Date()).getTime()));
+
                 }else if (params.getOperationId()==1){
                     newVal = nowVal+params.getValue();
+
+                    /**
+                     * @author 马鹏昊
+                     * @desc 修改最近获得时间（gmt_latest_get字段）
+                     */
+                    integralService.updateLatestGetTime(accountFocus.getAccountToken(), accountFocus.getShopId(),new Timestamp((new Date()).getTime()));
+
                 }
                 integralService.updateIntegral(accountFocus.getAccountToken(), accountFocus.getShopId(), newVal);
 //                integralService.presentOrDeductionIntegralByToken(accountFocus.getAccountToken(), accountFocus.getShopId(), params.getValue(), params.getOperationId());

@@ -41,5 +41,7 @@ public interface IntegralService {
 
     void updateLatestConsumeTime(String token, Integer shopId, Timestamp time);
 
+    void updateLatestGetTime(String token, Integer shopId, Timestamp timestamp);
+
     /* =======================JSP页面接口结束=============================== */
 }

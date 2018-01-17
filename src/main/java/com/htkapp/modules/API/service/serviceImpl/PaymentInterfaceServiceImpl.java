@@ -23,6 +23,8 @@ import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrder;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrderProduct;
 import com.htkapp.modules.merchant.buffetFood.service.BuffetFoodOrderProductService;
 import com.htkapp.modules.merchant.buffetFood.service.BuffetFoodOrderService;
+import com.htkapp.modules.merchant.integral.entity.AccountTicketList;
+import com.htkapp.modules.merchant.integral.service.AccountTicketListService;
 import com.htkapp.modules.merchant.pay.dto.CallUpAliPayReturnData;
 import com.htkapp.modules.merchant.pay.dto.EnterPayReturn;
 import com.htkapp.modules.merchant.pay.entity.OrderRecord;
@@ -57,6 +59,8 @@ public class PaymentInterfaceServiceImpl implements PaymentInterfaceService {
 
     @Resource
     private OrderRecordService orderRecordService;
+    @Resource
+    private AccountTicketListService accountTicketListService;
     @Resource
     private ShopServiceI shopService;
     @Resource
@@ -146,6 +150,13 @@ public class PaymentInterfaceServiceImpl implements PaymentInterfaceService {
                             String startTime = format(DateUtil.beginOfDay(DateUtil.parse(record.getOrderTime())), NORM_DATETIME_PATTERN);
                             String endTime = format(DateUtil.endOfDay(DateUtil.parse(record.getOrderTime())), NORM_DATETIME_PATTERN);
                             apiCommonService.updateBillData(new ServiceParams(accountShop.getToken(), startTime, endTime, orderNumber, record.getOrderAmount()));
+
+                            /**
+                             * @author 马鹏昊
+                             * @desc 取消订单之后退还用户优惠券（如果有用到的话）
+                             */
+//                            accountTicketListService.getTicketListByTokenAndCouponId()
+
                             return new APIResponseModel<>(Globals.API_SUCCESS, "取消成功", record.getId());
                         }else {
                             return new APIResponseModel(Globals.API_FAIL);
