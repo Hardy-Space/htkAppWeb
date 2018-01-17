@@ -317,7 +317,8 @@
         //上传资讯图片
         var uploadInst = upload.render({
             elem: ele //绑定元素
-            ,url: baseUrl + '/merchant/integral/uploadMsgImg' //上传接口
+//            ,url: baseUrl + '/merchant/integral/uploadMsgImg' //上传接口
+            ,url: baseUrl + '/merchant/integral/uploadMsgTitleImg' //上传接口
             ,accept: 'images'
             ,exts: 'jpg|png|gif|bmp|jpeg'
             ,auto: true
@@ -359,7 +360,7 @@
             "    <div class=\"layui-input-block\">\n" +
             "<div style='border: 1px dashed #ccc;max-width: 180px;border-radius: 3px;'>" +
             "<label style='cursor: pointer'>" +
-            "            <img src='"+jsonStr.imgUrl+"' class='uploadImg' id='uploadImg'/>  " +
+            "            <img style='width:100px;height:100px' src='"+jsonStr.imgUrl+"' class='uploadImg' id='uploadImg'/>  " +
             "<input hidden='hidden' name='imgUrl' id='imgUrl_' value='"+imgUrl+"' />"+
             "</label>" +
             "       </div>" +
@@ -394,9 +395,15 @@
         };
         index = layer_pageTier(params);
         //刷新动态添加的html
+//        edit.set({
+//            uploadImage: {
+//                url: 'server/index',
+//                type: 'post'
+//            }
+//        });
         edit.set({
             uploadImage: {
-                url: 'server/index',
+                url: baseUrl + '/merchant/integral/uploadNewsContentImg',
                 type: 'post'
             }
         });

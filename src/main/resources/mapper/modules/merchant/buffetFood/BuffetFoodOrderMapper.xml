@@ -280,7 +280,7 @@
     <select id="getAdjustOrderListDAO" resultType="BuffetFoodOrder">
         select id, order_number, order_amount, discount_amount, order_body,seat_name,
         payment_method, order_state, account_token, shop_id, mark, reminder_state,
-        adjust_order_json,adjust_order_product_json adjustOrderProductJson, remark, serial_number, all_serial_number, gmt_create as orderTime
+        adjust_order_json, remark, serial_number, all_serial_number, gmt_create as orderTime
         from buffet_food_order
         where shop_id = #{shopId} and adjust_order_product_json is not null order by ${orderDesc}
     </select>

@@ -14,7 +14,7 @@ public interface AccountTicketListMapper {
     //插入用户优惠券
     int insertAccountTicketDAO(AccountTicketList ticketList);
 
-    List<AccountTicketList> getTicketListByTokenAndCouponIdDAO(String token, String ticket_id);
+    List<AccountTicketList> getTicketListByTokenAndCouponIdDAO(String token, Integer ticket_id);
 
-    int updateTicketListByTokenAndCouponIdDAO(@Param("ticketQuantity") int ticketQuantity,@Param("token") String token,@Param("ticket_id") String couponId);
+    int updateTicketListByTokenAndCouponIdDAO(@Param("ticketQuantity") int ticketQuantity,@Param("token") String token,@Param("ticket_id") Integer couponId);
 }

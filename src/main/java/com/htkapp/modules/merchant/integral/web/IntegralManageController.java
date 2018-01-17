@@ -62,13 +62,32 @@ public class IntegralManageController {
         return integralManageService.createNewActive(shopArticleInfo);
     }
 
-    //创建资讯图片上传
+    //创建资讯图片上传(最初的，殷其磊做)
     @RequestMapping("/uploadMsgImg")
     @ResponseBody
     public AjaxResponseModel uploadMsgImg(MultipartFile file){
         return integralManageService.uploadMsgImg(file);
     }
 
+    /**
+     * @author 马鹏昊
+     * @desc 创建资讯标题图片上传
+     */
+    @RequestMapping("/uploadMsgTitleImg")
+    @ResponseBody
+    public AjaxResponseModel uploadMsgTitleImg(MultipartFile file){
+        return integralManageService.uploadMsgTitleImg(file);
+    }
+
+    /**
+     * @author 石超
+     * @desc  创建资讯内容图片上传
+     */
+    @RequestMapping("/uploadNewsContentImg")
+    @ResponseBody
+    public String uploadNewsContentImg(MultipartFile file){
+        return integralManageService.uploadNewsContentImg(file);
+    }
     //创建兑换活动
     @RequestMapping("/createExchangeActivity")
     @ResponseBody

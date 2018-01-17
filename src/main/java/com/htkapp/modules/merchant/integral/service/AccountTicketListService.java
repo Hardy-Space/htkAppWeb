@@ -15,8 +15,8 @@ public interface AccountTicketListService {
     void insertAccountTicket(AccountTicketList ticketList);
 
     //通过用户token 和 优惠券id 查找优惠券列表（其实只能查到一条）
-    List<AccountTicketList> getTicketListByTokenAndCouponId(String token, String ticketId);
+    List<AccountTicketList> getTicketListByTokenAndCouponId(String token, Integer ticketId);
 
     //更新用户优惠券数量
-    void updateTicketListByTokenAndCouponIdDAO(int ticketQuantity,String token,String couponId);
+    void updateTicketListByTokenAndCouponIdDAO(int ticketQuantity,String token,Integer couponId);
 }

@@ -8,6 +8,7 @@ import com.htkapp.core.OtherUtils;
 import com.htkapp.core.curdException.UpdateException;
 import com.htkapp.core.dto.APIResponseModel;
 import com.htkapp.core.exception.costom.NullDataException;
+import com.htkapp.core.jsAjax.AjaxResponseModel;
 import com.htkapp.core.utils.FileUploadUtils;
 import com.htkapp.core.utils.GetImagesByUrl;
 import com.htkapp.core.utils.Globals;
@@ -20,17 +21,23 @@ import com.htkapp.modules.API.entity.AppShippingAddress;
 import com.htkapp.modules.API.service.*;
 import com.htkapp.modules.common.entity.LoginUser;
 import com.htkapp.modules.merchant.common.service.UserServiceI;
+import com.htkapp.modules.merchant.integral.entity.IntegralManageRecord;
+import com.htkapp.modules.merchant.integral.service.IntegralManageRecordService;
 import com.htkapp.modules.merchant.integral.service.IntegralService;
 import com.htkapp.modules.merchant.pay.dto.AppAccountInfo;
 import com.htkapp.modules.merchant.pay.entity.BillBalanceSheet;
+import com.htkapp.modules.merchant.pay.entity.OrderProduct;
 import com.htkapp.modules.merchant.pay.entity.OrderRecord;
 import com.htkapp.modules.merchant.pay.service.BillBalanceSheetService;
 import com.htkapp.modules.merchant.pay.service.BillRecordService;
+import com.htkapp.modules.merchant.pay.service.OrderProductService;
 import com.htkapp.modules.merchant.pay.service.OrderRecordService;
 import com.htkapp.modules.merchant.shop.entity.AccountShop;
 import com.htkapp.modules.merchant.shop.entity.Shop;
 import com.htkapp.modules.merchant.shop.service.AccountShopServiceI;
 import com.htkapp.modules.merchant.shop.service.ShopServiceI;
+import com.htkapp.modules.merchant.takeout.entity.TakeoutProduct;
+import com.htkapp.modules.merchant.takeout.service.TakeoutProductServiceI;
 import com.xiaoleilu.hutool.date.DateUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +46,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -61,6 +69,8 @@ public class AccountServiceImpl implements AccountServiceI {
     @Resource
     private OrderRecordService orderRecordService;
     @Resource
+    private OrderProductService orderProductService;
+    @Resource
     private AccountFocusService accountFocusService;
     @Resource
     private AppAccountEventLogService eventLogService;
@@ -74,6 +84,10 @@ public class AccountServiceImpl implements AccountServiceI {
     private OtherUtils otherUtilsService;
     @Resource
     private IntegralService integralService;
+    @Resource
+    private TakeoutProductServiceI takeoutProductService;
+    @Resource
+    private IntegralManageRecordService integralManageRecordService;
 
     /* ====================接口的逻辑处理方法开始========================= */
     //通过手机号注册用户
@@ -589,24 +603,24 @@ public class AccountServiceImpl implements AccountServiceI {
     //微信登陆未绑定用户调起接口
     @Override
     public APIResponseModel weChatLoginCallUpInterface(APIRequestParams params) {
-        if(StringUtils.isNotEmpty(params.getToken())){
+        if (StringUtils.isNotEmpty(params.getToken())) {
             try {
                 Account account = selectByToken(params.getToken());
                 //已登陆状态
-                if(StringUtils.isNotEmpty(params.getWeChatToken()) && StringUtils.isNotEmpty(params.getAvatarUrl()) && account != null){
+                if (StringUtils.isNotEmpty(params.getWeChatToken()) && StringUtils.isNotEmpty(params.getAvatarUrl()) && account != null) {
                     //更新用户的微信登陆token
                     try {
                         changeThirdPartyToken(params.getWeChatToken(), 1, params.getToken());
                         return new APIResponseModel(Globals.API_SUCCESS);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         return new APIResponseModel(Globals.API_FAIL);
                     }
                 }
-                return new APIResponseModel(Globals.API_FAIL,"用户不存在或参数为空");
-            }catch (Exception e){
+                return new APIResponseModel(Globals.API_FAIL, "用户不存在或参数为空");
+            } catch (Exception e) {
                 return new APIResponseModel(Globals.API_FAIL);
             }
-        }else {
+        } else {
             //未登陆状态
             if (StringUtils.isNotEmpty(params.getPhone()) && StringUtils.isNotEmpty(params.getCode().toString()) && StringUtils.isNotEmpty(params.getWeChatToken()) && StringUtils.isNotEmpty(params.getAvatarUrl())) {
                 try {
@@ -663,25 +677,25 @@ public class AccountServiceImpl implements AccountServiceI {
     //qq登陆未绑定用户调起接口
     @Override
     public APIResponseModel qqLoginCallUpInterface(APIRequestParams params) {
-        if(StringUtils.isNotEmpty(params.getToken())){
+        if (StringUtils.isNotEmpty(params.getToken())) {
             try {
                 Account account = selectByToken(params.getToken());
                 //已登陆状态
-                if(StringUtils.isNotEmpty(params.getQqToken()) && StringUtils.isNotEmpty(params.getAvatarUrl()) && account != null){
+                if (StringUtils.isNotEmpty(params.getQqToken()) && StringUtils.isNotEmpty(params.getAvatarUrl()) && account != null) {
                     //更新用户的微信登陆token
                     try {
                         System.out.println("验证用户成功");
                         changeThirdPartyToken(params.getQqToken(), 1, params.getToken());
                         return new APIResponseModel(Globals.API_SUCCESS);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         return new APIResponseModel(Globals.API_FAIL);
                     }
                 }
-                return new APIResponseModel(Globals.API_FAIL,"用户不存在或参数为空");
-            }catch (Exception e){
+                return new APIResponseModel(Globals.API_FAIL, "用户不存在或参数为空");
+            } catch (Exception e) {
                 return new APIResponseModel(Globals.API_FAIL);
             }
-        }else {
+        } else {
             if (StringUtils.isNotEmpty(params.getPhone()) && StringUtils.isNotEmpty(params.getCode().toString()) && StringUtils.isNotEmpty(params.getQqToken())) {
                 try {
                     //通过手机号验证用户是否存在,不存在则新建用户信息,并和微信服务器返回的token值相绑定
@@ -737,11 +751,13 @@ public class AccountServiceImpl implements AccountServiceI {
     //用户确认收货接口
     @Override
     @Transactional
-    public APIResponseModel enterReceipt(String orderNumber, String token) {
+    public APIResponseModel enterReceipt(APIRequestParams params, String orderNumber, String token) {
         if (StringUtils.isNotEmpty(orderNumber)) {
             try {
                 OrderRecord orderRecord = orderRecordService.getOrderRecordByOrderNumber(orderNumber);
-                AccountShop accountShop = accountShopService.getAccountShopDataById(orderRecord.getShopId());
+                //这里要根据account_shop_id去查AccountShop
+                Shop shop = shopService.getShopDataById(orderRecord.getShopId());
+                AccountShop accountShop = accountShopService.getAccountShopDataById(shop.getAccountShopId());
                 orderRecordService.changeOrderStateByOrderNumber(orderNumber, Globals.DEFAULT_T_ENTER_RECEIVING);
                 //改变记录状态为已入账
                 billRecordService.changeRecordStatusByOrderNumber(orderNumber, 2);
@@ -756,6 +772,41 @@ public class AccountServiceImpl implements AccountServiceI {
                 billBalanceSheetService.keepRecordByAccountShopToken(balanceSheet);
 
                 //增加用户积分  增加积分记录  增加交易记录
+                /**
+                 * @author 马鹏昊
+                 * @desc 给用户增加消费返还积分
+                 */
+                if (accountShop != null) {
+
+                    //先查出积分数量
+                    int nowVal = integralService.getVal(orderRecord.getToken(), shop.getShopId());
+                    int newVal = nowVal;
+                    int sumAddedInteger = 0;
+                    List<OrderProduct> allBuyedProducts = orderProductService.getProductListByOrderId(orderRecord.getId());
+                    for (OrderProduct each : allBuyedProducts) {
+                        TakeoutProduct takeoutProduct = takeoutProductService.getTakeoutProductByProductId(each.getProductId());
+                        int addedValue = takeoutProduct.getIntegral() * each.getQuantity();
+                        sumAddedInteger += addedValue;
+                        newVal += addedValue;
+                    }
+
+                    //如果新积分数和旧积分数不一样，说明购买的商品携带了返还积分，需要更新积分
+                    if (newVal != nowVal) {
+                        integralService.updateIntegral(orderRecord.getToken(), shop.getShopId(), newVal);
+                        //通过商铺id查找商铺信息
+                        //记录积分变动记录
+                        String recordTypeStr = "消费返还积分";
+                        IntegralManageRecord record = new IntegralManageRecord(recordTypeStr, accountShop.getToken(), orderRecord.getToken(), sumAddedInteger);
+                        integralManageRecordService.insertRecordByToken(record);
+
+                        /**
+                         * @author 马鹏昊
+                         * @desc 修改最近获得时间（gmt_latest_get字段）
+                         */
+                        integralService.updateLatestGetTime(orderRecord.getToken(), shop.getShopId(), new Timestamp((new Date()).getTime()));
+                    }
+
+                }
 
                 return new APIResponseModel<>(Globals.API_SUCCESS, "成功", orderRecord.getId());
             } catch (Exception e) {

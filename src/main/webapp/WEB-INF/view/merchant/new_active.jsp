@@ -260,6 +260,7 @@
     var edit;
     var editIndex;
     layui.use(['element', 'util', 'layer', 'laydate', 'form', 'upload', 'layedit'], function () {
+
         var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
         var util = layui.util;
         date = layui.laydate;
@@ -268,6 +269,7 @@
         edit = layui.layedit;
         form.on('submit(message)', function(data){
             //取编辑器内容
+//            alert("========================layui.element:"+layui.element+" layui.util:"+layui.util+" layui.form:"+layui.form+" layui.upload:"+layui.upload+" layui.layedit:"+layui.layedit)
             if(editIndex !== undefined){
                 data.field.htmlContent = edit.getContent(editIndex);
             }
@@ -306,14 +308,16 @@
             })
             return false;
         });
+
         form.verify({
 
         });
     });
-    
+
     $(document).on("click", ".uploadImg", function () {
         var ele = this;
         //上传资讯图片
+//        alert("========================asdadasd:" + baseUrl + '/merchant/integral/uploadMsgImg')
         var uploadInst = upload.render({
             elem: ele //绑定元素
             ,url: baseUrl + '/merchant/integral/uploadMsgImg' //上传接口
@@ -400,7 +404,7 @@
             "    <div class=\"layui-input-block\">\n" +
             "<div style='border: 1px dashed #ccc;max-width: 180px;border-radius: 3px;'>" +
             "<label style='cursor: pointer'>" +
-            "            <img  src='${staticFilePath}resource/images/uppic.jpg' class='uploadImg' id='uploadImg'/>  " +
+            "            <img style='width:100px;height:100px' src='${staticFilePath}resource/images/uppic.jpg' class='uploadImg' id='uploadImg'/>  " +
                 "<input hidden='hidden' name='imgUrl' id='imgUrl_' />"+
             "</label>" +
             "       </div>" +
@@ -436,10 +440,10 @@
         };
         layer_pageTier(params);
         //刷新动态添加的html
-        //初始化富文本编辑器
+        //初始化富文本编辑器(要在edit.build之前)
         edit.set({
             uploadImage: {
-                url: 'server/index',
+                url: baseUrl + '/merchant/integral/uploadNewsContentImg',
                 type: 'post'
             }
         });

@@ -36,5 +36,7 @@ public interface TakeoutProductMapper {
     int delProductByCIdDAO(int categoryId);
     //关联团购添加产品表，只查询出未添加到团购产品表中的数据
     List<TakeoutProduct> getNotInGroupBuyProductListDataDAO(int shopId);
+
+    TakeoutProduct getTakeoutProductByProductId(int productId);
     /* ====================JSP页面接口结束========================== */
 }	

@@ -87,7 +87,6 @@ public class BuffetFoodAPI {
 
     //获取商铺自助点餐的座位列表
     @RequestMapping(value = "/getShopSeatInfoById", method = RequestMethod.POST)
-    //TODO
     public APIResponseModel getShopSeatInfoById(Integer shopId) {
         return buffetFoodService.getShopSeatInfoById(shopId);
     }
@@ -118,7 +117,6 @@ public class BuffetFoodAPI {
 
     //确认下单按钮
     @RequestMapping(value = "/confirmOrderButton", method = RequestMethod.POST)
-    //TODO
     public APIResponseModel confirmOrderButton(APIRequestParams params, BuffetFoodOrder order){
         return buffetFoodService.confirmOrderButton(params, order);
     }

@@ -71,7 +71,10 @@
                 number,
             </if>
             <if test="allNumber != null">
-                all_number
+                all_number,
+            </if>
+            <if test="couponId != null">
+                coupon_id
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
@@ -129,6 +132,9 @@
             <if test="allNumber != null">
                 #{allNumber},
             </if>
+            <if test="couponId != null">
+                #{couponId}
+            </if>
         </trim>
     </insert>
     <select id="getOrderRecordByIdDAO" resultType="OrderRecord">
@@ -145,9 +151,7 @@
         where account_token = #{token} and mark = #{mark} order by ${orderByDesc}
     </select>
     <select id="getOrderRecordByOrderNumberDAO" resultType="OrderRecord">
-        select id,
-        order_number,order_amount,shop_id, mark, order_time, order_state, account_token as token, voucher_number,
-        payment_method
+        select *
         from order_record
         where order_number = #{orderNumber}
     </select>

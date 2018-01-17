@@ -23,6 +23,8 @@ import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrder;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrderProduct;
 import com.htkapp.modules.merchant.buffetFood.service.BuffetFoodOrderProductService;
 import com.htkapp.modules.merchant.buffetFood.service.BuffetFoodOrderService;
+import com.htkapp.modules.merchant.integral.entity.AccountTicketList;
+import com.htkapp.modules.merchant.integral.service.AccountTicketListService;
 import com.htkapp.modules.merchant.pay.dto.CallUpAliPayReturnData;
 import com.htkapp.modules.merchant.pay.dto.EnterPayReturn;
 import com.htkapp.modules.merchant.pay.entity.OrderRecord;
@@ -43,6 +45,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.xiaoleilu.hutool.date.DateUtil.NORM_DATETIME_PATTERN;
@@ -57,6 +60,8 @@ public class PaymentInterfaceServiceImpl implements PaymentInterfaceService {
 
     @Resource
     private OrderRecordService orderRecordService;
+    @Resource
+    private AccountTicketListService accountTicketListService;
     @Resource
     private ShopServiceI shopService;
     @Resource
@@ -146,6 +151,21 @@ public class PaymentInterfaceServiceImpl implements PaymentInterfaceService {
                             String startTime = format(DateUtil.beginOfDay(DateUtil.parse(record.getOrderTime())), NORM_DATETIME_PATTERN);
                             String endTime = format(DateUtil.endOfDay(DateUtil.parse(record.getOrderTime())), NORM_DATETIME_PATTERN);
                             apiCommonService.updateBillData(new ServiceParams(accountShop.getToken(), startTime, endTime, orderNumber, record.getOrderAmount()));
+
+                            /**
+                             * @author 马鹏昊
+                             * @desc 取消订单之后退还用户优惠券（如果有用到的话）
+                             */
+                            //获取这个订单用到的优惠券信息（只会找到一个）
+                            List<AccountTicketList> ticketLists = accountTicketListService.getTicketListByTokenAndCouponId( params.getToken(),record.getCouponId());
+                            //如果用到了的话
+                            if (ticketLists!=null&&ticketLists.size()>0) {
+                                AccountTicketList coupon = ticketLists.get(0);
+                                int nowQuantity = coupon.getQuantity();
+                                accountTicketListService.updateTicketListByTokenAndCouponIdDAO(nowQuantity + 1, params.getToken(), record.getCouponId());
+                            }
+
+
                             return new APIResponseModel<>(Globals.API_SUCCESS, "取消成功", record.getId());
                         }else {
                             return new APIResponseModel(Globals.API_FAIL);
@@ -178,6 +198,20 @@ public class PaymentInterfaceServiceImpl implements PaymentInterfaceService {
                                 String startTime = format(DateUtil.beginOfDay(DateUtil.parse(record.getOrderTime())), NORM_DATETIME_PATTERN);
                                 String endTime = format(DateUtil.endOfDay(DateUtil.parse(record.getOrderTime())), NORM_DATETIME_PATTERN);
                                 apiCommonService.updateBillData(new ServiceParams(accountShop.getToken(), startTime, endTime, orderNumber, record.getOrderAmount()));
+
+                                /**
+                                 * @author 马鹏昊
+                                 * @desc 取消订单之后退还用户优惠券（如果有用到的话）
+                                 */
+                                //获取这个订单用到的优惠券信息（只会找到一个）
+                                List<AccountTicketList> ticketLists = accountTicketListService.getTicketListByTokenAndCouponId( params.getToken(),record.getCouponId());
+                                //如果用到了的话
+                                if (ticketLists!=null&&ticketLists.size()>0) {
+                                    AccountTicketList coupon = ticketLists.get(0);
+                                    int nowQuantity = coupon.getQuantity();
+                                    accountTicketListService.updateTicketListByTokenAndCouponIdDAO(nowQuantity + 1, params.getToken(), record.getCouponId());
+                                }
+
                                 //推送消息到页面
                                 return new APIResponseModel<>(Globals.API_SUCCESS, "取消成功", record.getId());
                             } else {

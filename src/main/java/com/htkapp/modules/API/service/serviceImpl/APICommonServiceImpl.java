@@ -47,6 +47,9 @@ import static org.apache.commons.lang.time.DateFormatUtils.format;
 public class APICommonServiceImpl implements APICommonService {
 
     @Resource
+    private  TakeoutOrderService takeoutOrderService;
+
+    @Resource
     private OrderRecordService orderRecordService;
     @Resource
     private OrderProductService orderProductService;
@@ -84,7 +87,12 @@ public class APICommonServiceImpl implements APICommonService {
     @Transactional
     public void takeoutPaymentInterface(OrderRecord orderRecord) throws Exception {
         try {
+            //这是插入order_record表记录
             orderRecordService.paymentSuccessfullyCreatedOrder(orderRecord);
+
+            //这是插入takeout_order表记录(和order_record表关联)
+            takeoutOrderService.insertReminderStateByOrderId(orderRecord.getId());
+
             for (OrderProduct each : orderRecord.getProductLists()) {
                 each.setOrderId(orderRecord.getId());
                 //写入外卖产品购买记录
@@ -116,6 +124,10 @@ public class APICommonServiceImpl implements APICommonService {
             orderRecord.setVoucherNumber(voucherNumber);
             try {
                 orderRecordService.paymentSuccessfullyCreatedOrder(orderRecord);
+
+                //这是插入takeout_order表记录(和order_record表关联)
+                takeoutOrderService.insertReminderStateByOrderId(orderRecord.getId());
+
                 OrderBuyPackage orderBuyPackage = new OrderBuyPackage();
                 orderBuyPackage.setPackageId(buyPackage.getId()); //套餐id
                 orderBuyPackage.setLogoUrl(buyPackage.getImgUrl());  //套餐图片

@@ -31,7 +31,7 @@ public class AccountTicketListServiceImpl implements AccountTicketListService {
      *     @modified by 马鹏昊
      */
     @Override
-    public List<AccountTicketList> getTicketListByTokenAndCouponId(String token, String ticket_id) {
+    public List<AccountTicketList> getTicketListByTokenAndCouponId(String token, Integer ticket_id) {
         List<AccountTicketList> ticketList = accountTicketListDao.getTicketListByTokenAndCouponIdDAO(token, ticket_id);
         if(ticketList != null && ticketList.size() > 0){
             return ticketList;
@@ -40,7 +40,7 @@ public class AccountTicketListServiceImpl implements AccountTicketListService {
     }
 
     @Override
-    public void updateTicketListByTokenAndCouponIdDAO(int ticketQuantity, String token, String ticket_id) {
+    public void updateTicketListByTokenAndCouponIdDAO(int ticketQuantity, String token, Integer ticket_id) {
         int row = accountTicketListDao.updateTicketListByTokenAndCouponIdDAO(ticketQuantity,token,ticket_id);
         if(row <= 0){
             throw new InsertException(Globals.DEFAULT_EXCEPTION_INSERT_FAILED);

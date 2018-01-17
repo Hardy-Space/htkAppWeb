@@ -8,6 +8,10 @@ import java.util.List;
 public interface TakeoutProductServiceI {
 
 	/* ====================接口开始======================= */
+
+	//通过查出来的店铺类别id查找出店铺下的商品
+	TakeoutProduct getTakeoutProductByProductId(int productId) throws Exception;
+
 	//通过查出来的店铺类别id查找出店铺下的商品
 	List<TakeoutProduct> getTakeoutProductById(int categoryId) throws Exception;
 	//减库存操作(外卖产品id,产品数量)

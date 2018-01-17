@@ -10,6 +10,11 @@ public interface ShopServiceI {
 
 
 	/* ================接口开始====================== */
+
+	List<Shop> getShopListByCategoryList(Set<Integer> allCategoryIdSet);
+
+	Set<Integer> getAllChildCategoryIdList(int categoryId);
+
 	//根据条件搜索商家
 	List<Shop> getShopByCondition(String keyWord, int mark, int pageNo, int pageLimit)throws Exception;
 	//查询出所有商铺的经纬度
@@ -31,13 +36,13 @@ public interface ShopServiceI {
 	//通过商户id和mark标识查找商铺信息
 	Shop getShopByAccountShopIdAndMark(int accountShopId, int mark) throws Exception;
 	//通过一级分类id获取所有二级分类店铺
-	List<Shop> getShopListByChildCategoryIdsAndFocus(Set<String> childSId, Set<Integer> shopIdList, String token, int tag, int pageNo, int pageLimit);
+	List<Shop> getShopListByChildCategoryIdsAndFocus(int mark,Set<String> childSId, Set<Integer> shopIdList, String token, int tag, int pageNo, int pageLimit);
 	//通过分类id查询所有店铺(未关注tag是0，已关注tag是1)
-	List<Shop> getShopListByCategoryIdAndFocus(int categoryId, Set<Integer> shopIdList, String token, int tag,int pageNo, int pageLimit);
+	List<Shop> getShopListByCategoryIdAndFocus(int mark,int categoryId, Set<Integer> shopIdList, String token, int tag,int pageNo, int pageLimit);
 	//查找一级分类下的所有关注店铺数量
-	int getFocusCategoryShopListCount(Set<String> childSId, Set<Integer> shopIdList, String token, int tag);
+	int getFocusCategoryShopListCount(int mark,Set<String> childSId, Set<Integer> shopIdList, String token, int tag);
 	//查找二级分类下的所有关注店铺数量
-	int getFocusChildCategoryShopListCount(int categoryId, Set<Integer> shopIdList, String token, int tag);
+	int getFocusChildCategoryShopListCount(int mark,int categoryId, Set<Integer> shopIdList, String token, int tag);
 	//获取店铺总数量
 	int getAllShopCount(int mark);
 	//根据index查询店铺

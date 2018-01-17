@@ -36,6 +36,14 @@
             padding-left: 5px;
         }
 
+        .alipayAccountInput {
+            width: 100px;
+            border-radius: 2px;
+            border: 1px solid #ccccce;
+            height: 25px;
+            padding-left: 5px;
+        }
+
         .notEnterA:hover {
             color: #949498;
             cursor: not-allowed
@@ -106,7 +114,11 @@
                     <div class="layui-col-lg3 bac_col" style="border-left: 1px solid #f3f3f4;padding-bottom: 58px">
                         <div style="border-bottom: 1px solid #f3f3f4;padding-top: 37px">
                             <p class="right_text">结算信息</p>
-                            <p class="right_text">第三方账户：<a>支付宝(${shroffAccountNumber})</a></p>
+                            <p class="right_text">第三方账户：
+                                <a>${alipayAccount}(支付宝)</a>
+                                <button style="margin-left: 10px;display:block-inline" class="switchAccount">更改
+                                </button>
+                            </p>
                             <p class="right_text">结算方式：在线结算</p>
                         </div>
                     </div>
@@ -408,32 +420,35 @@
             , jump: function (obj, first) {
                 if (!first) {
                     var val = $(".butDate.sel > button").attr("data-date");
-                    if(val === undefined) {
+                    if (val === undefined) {
                         //取输入框的值
                         val = $("#startDate").val() + "~" + $("#endDate").val();
                     }
-                    window.location.href = baseUrl + "/merchant/bill/billMoney?date="+val+"&pageNum=" + obj.curr
+                    window.location.href = baseUrl + "/merchant/bill/billMoney?date=" + val + "&pageNum=" + obj.curr
                 }
             }
         });
     });
 
     var index;
+
     //提现弹窗口按钮绑定点击事件
     $("div.span_text_amount_down > button.withdrawDeposit").on("click", function () {
         var params = {
-            title: ["提现信息确认", "background-color:#1E9FFF;color:#fff"],
+            title: ["修改支付宝账户确认", "background-color:#1E9FFF;color:#fff"],
             content: "<div class=\"withdrawDepositContent\" style=\"padding: 20px 30px;\">\n" +
             "                    <div class=\"contentTop\" style=\"padding-bottom: 20px;\">\n" +
             "                        <div class=\"topDiv\">\n" +
             "                            <span class=\"textSpan\">\n" +
             "                                <span class=\"spanItem\" style=\"padding: 8px 0\">\n" +
             "                                    <span class=\"firstName\" style=\"font-size: 16px;\">第三方账户:</span>\n" +
-            "                                    <span style=\"margin-left: 10px;font-size: 15px;font-weight: bold\">支付宝&nbsp;&nbsp;&nbsp;&nbsp;(尾号6071)</span>\n" +
+            "                                    <span style=\"margin-left: 10px;font-size: 15px;font-weight: bold\">${alipayAccount}</span>\n" +
+//            "                                    <input style='ime-mode:disabled' type='hidden' onpaste=\"return false;\"  class=\"alipayAccountInput\" id=\"alipayAccount\" value=\"\">\n" +
+//            "                                    <button style='margin-left: 10px;display:block-inline' class='switchAccount'>更改支付宝账户</button>\n" +
             "                                </span>\n" +
             "                                <span class=\"spanItem\" style=\"display: block;padding: 8px 0\">\n" +
-            "                                    <span class=\"firstName\" style=\"font-size: 16px;\">账户可用余额:</span>\n" +
-            "                                    <span class='usableBalance' style=\"margin-left: 10px;font-size: 15px;font-weight: bold\">1971.00</span>\n" +
+            "                                    <span class=\"firstName\" style=\"font-size: 16px;\">可提现金额:</span>\n" +
+            "                                    <span class='usableBalance' style=\"margin-left: 10px;font-size: 15px;font-weight: bold\">${availableBalance}</span>\n" +
             "                                </span>\n" +
             "                            </span>\n" +
             "                        </div>\n" +
@@ -459,7 +474,7 @@
             "                            </span>\n" +
             "                        </div>\n" +
             "                        <div style=\"text-align: center;padding-top: 15px;\">\n" +
-            "                            <button class='layui-btn-disabled toConfirmWithdrawal' disabled='disabled' id='toConfirmWithdrawal'" +
+            "                            <button class='toConfirmWithdrawal layui-btn-disabled' disabled='disabled' id='toConfirmWithdrawal'" +
             " style=\"width: 200px;height: 40px;font-size: 20px;background-color: orange;border: 1px solid #fff; border-radius: 5px;font-weight: bold\">\n" +
             "                                确认提现\n" +
             "                            </button>\n" +
@@ -475,6 +490,67 @@
         };
         index = layer_pageTier(params);
     })
+
+    var index2;
+
+    //更改账户弹窗口按钮绑定点击事件
+    $("button.switchAccount").on("click", function () {
+        var params = {
+            title: ["更改支付宝账户确认", "background-color:#1E9FFF;color:#fff"],
+            content: "<div class=\"Content\" style=\"padding: 20px 30px;\">\n" +
+            "                    <div class=\"contentTop\" style=\"padding-bottom: 20px;\">\n" +
+            "                        <div class=\"topDiv\">\n" +
+            "                            <span class=\"textSpan\">\n" +
+            "                                <span class=\"spanItem\" style=\"padding: 8px 0\">\n" +
+            "                                    <span class=\"firstName\" style=\"font-size: 16px;\">第三方账户:</span>\n" +
+            "                                    <input style='ime-mode:disabled\"' onpaste=\"return false;\"  class=\"alipayAccountInput\" id=\"alipayAccount\" value=\"\">\n" +
+            "                                </span>\n" +
+            "                            </span>\n" +
+            "                        </div>\n" +
+            "                    </div>\n" +
+            "                    <div style=\"text-align: center;padding-top: 15px;\">\n" +
+            "                          <button class='toConfirmSwitch' id='toConfirmSwitch'" +
+            " style=\"width: 200px;height: 40px;font-size: 20px;background-color: orange;border: 1px solid #fff; border-radius: 5px;font-weight: bold\">\n" +
+            "                                确认修改\n" +
+            "                          </button>\n" +
+            "                    </div>\n" +
+            "          </div>",
+            offset: '150px',
+            fixed: true,
+            area: {
+                width: '550px',
+                height: '340px'
+            }
+        };
+        index2 = layer_pageTier(params);
+    })
+
+    //为确认修改支付宝账户按钮绑定点击事件
+    $(document).on("click", ".toConfirmSwitch", function () {
+        //@author 马鹏昊
+        // 向后台发起post请求，修改商户支付账户
+        var url = baseUrl + '/merchant/modifyAccount';
+        var getNewAccount = $(".alipayAccountInput").val();
+        var params = {newAccount: getNewAccount};
+        $.post(url, params, function (result, status) {
+            //关闭弹窗
+            layer_loadingClose(index2);
+            if (status === 'success') {
+                if (result && result.code === 0) {
+                    //获取最新数据
+                    location.reload();
+                    return false;
+                } else {
+                    layer_msg(result.message, 'error');
+                    return false;
+                }
+            } else {
+                layer_msg('网络连接失败', 'exception');
+                return false;
+            }
+        }, "json");
+    });
+
 
     //确认输入金额按钮
     $(document).on("click", ".enterA", function () {
@@ -492,7 +568,7 @@
                 if (subStrVal === '') {
                     //小数点后没有值
                     val += "00";
-                } else if (subStrVal.length > 0) {
+                } else if (subStrVal.length == 1) {
                     val += "0";
                 } else {
                     val += "";
@@ -502,7 +578,7 @@
                 val += ".00";
             }
             inputParentEle.prepend("<span style='margin-left: 30px;cursor: pointer;color:#337ab7' class='updateAmount'>修改金额</span>");
-            inputParentEle.prepend("<span style='margin-left: 10px;color: red'>" + val + "</span>");
+            inputParentEle.prepend("<span style='margin-left: 10px;color: red' class='finalMoney'>" + val + "</span>");
             inputEle.remove();  //删除输入框元素
             $(this).remove();  //删除被点击元素的本身
             //置确认提现按钮为可点击状态
@@ -511,12 +587,18 @@
                 btnEle.removeClass("layui-btn-disabled");
                 btnEle.attr("disabled", false);
             }
-        } else if (inputVal < 1) {
+        } else if (inputVal <= 1) {
             //输入数字无效
             var params = {
-                mes: "输入金额无效，请重新输入金额!",
+                mes: "提现金额必须大于1元!",
                 ele: "#withdrawDepositAmount"
             };
+            //置确认提现按钮为不可点击状态
+            var btnEle = $("#toConfirmWithdrawal");
+            if ($(btnEle).length > 0) {
+                btnEle.addClass("layui-btn-disabled");
+                btnEle.attr("disabled", true);
+            }
             layer_tips(params);
         } else if (inputVal > usableBalance) {
             //输入金额大于现有可用余额
@@ -524,6 +606,12 @@
                 mes: "输入金额大于现有可用余额,请重新输入!",
                 ele: "#withdrawDepositAmount"
             };
+            //置确认提现按钮为不可点击状态
+            var btnEle = $("#toConfirmWithdrawal");
+            if ($(btnEle).length > 0) {
+                btnEle.addClass("layui-btn-disabled");
+                btnEle.attr("disabled", true);
+            }
             layer_tips(params);
         }
     });
@@ -554,9 +642,30 @@
             icon: 1,
             offset: '80px'
         })
-        //ajax　向后台发起post请求，提现到商户支付账户
+        //ajax　
 
-
+        //@author 马鹏昊
+        // 向后台发起post请求，提现到商户支付账户
+        var url = baseUrl + '/merchant/withdraw';
+        var money = $(".finalMoney").text();
+        var params = {money:money};
+        $.post(url,params, function (result, status) {
+            //关闭弹窗
+            layer_loadingClose(index);
+            if (status === 'success') {
+                if (result && result.code === 0) {
+                    //改变页面元素显示值
+                    window.location.reload();
+                    return false;
+                } else {
+                    layer_msg(result.message, 'error');
+                    return false;
+                }
+            } else {
+                layer_msg('网络连接失败', 'exception');
+                return false;
+            }
+        }, "json");
 
     })
 
