@@ -378,7 +378,9 @@ public class OrderRecordServiceImpl implements OrderRecordService {
             if (result == null) {
                 return 0;
             } else {
-                return result.shortValue();
+                //数值太小显示不出营业额的原因
+//                return result.shortValue();
+                return result.doubleValue();
             }
         } catch (Exception e) {
             throw new Exception(Globals.CALL_DATABASE_ERROR);

@@ -348,7 +348,7 @@
         where
         account_shop.token = #{accountShopToken} and
         order_record.gmt_create > #{startTime}  and
-        order_record.gmt_create <![CDATA[<]]> #{endTime}
+        order_record.gmt_create <![CDATA[<]]> #{endTime} and order_state = 4
     </select>
     <select id="getTakeoutOrderListByTokenDAO" resultType="OrderRecord">
         select

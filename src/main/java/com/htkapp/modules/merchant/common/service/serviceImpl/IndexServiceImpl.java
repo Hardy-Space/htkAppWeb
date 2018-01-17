@@ -72,7 +72,7 @@ public class IndexServiceImpl implements IndexService {
             DateTime yBeginDate = DateUtil.beginOfDay(date);
             DateTime yEndDate = DateUtil.endOfDay(date);
 
-            DecimalFormat df = new DecimalFormat("######0.00");
+            DecimalFormat df = new DecimalFormat("0.00");
 
 
             //昨日订单数
