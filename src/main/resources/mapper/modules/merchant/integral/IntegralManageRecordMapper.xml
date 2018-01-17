@@ -22,7 +22,7 @@
                 integral_value,
             </if>
             <if test="state != null">
-                state,
+                integral_value,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">

@@ -13,8 +13,6 @@ import java.util.List;
 public interface AccountShopMapper {
 
     /* ======================接口开始========================== */
-    //修改转账账户
-    int changeBindedAccount(Integer id, String newAccount);
     //商户app端忘记密码，重置密码
     int changePasswordBySMSDAO(AccountShop accountShop);
     //通过token查询商户信息
@@ -50,8 +48,5 @@ public interface AccountShopMapper {
     int updatePasswordDAO(AccountShop accountShop);
     //修改手机号
     int updateShopPhoneDAO(AccountShop accountShop);
-
-    AccountShop getAlipayAccount(Integer id);
-
     /* ========================JSP页面接品结束=============================== */
 }

@@ -26,17 +26,11 @@
         from shop_category
         where id = #{0}
     </select>
-    <!--<select id="getCategoryListByIdDAO" resultType="ShopCategory">-->
-        <!--select-->
-        <!--<include refid="Base_Column_List" />-->
-        <!--from shop_category-->
-        <!--where parent_id = #{0}-->
-    <!--</select>-->
     <select id="getCategoryListByIdDAO" resultType="ShopCategory">
         select
         <include refid="Base_Column_List" />
         from shop_category
-        where id = #{0}
+        where parent_id = #{0}
     </select>
     <select id="getCategoryListByIdAndMarkDAO" resultType="com.htkapp.modules.API.dto.ChildCategoryInfo">
         select

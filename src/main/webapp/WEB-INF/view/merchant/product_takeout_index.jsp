@@ -10,7 +10,6 @@
 <%@ include file="/WEB-INF/view/common/url.jsp" %>
 <!DOCTYPE HTML>
 <%@include file="IE_lang.jsp" %>
-
 <head>
     <title>回头客商家首页</title>
     <meta charset="utf-8"/>
@@ -148,7 +147,6 @@
     var data_ = [];
 
     $(function () {
-        var selectedCategoryIndex = 0;
         //查询数据
         var data = ajax(baseUrl + "/merchant/takeout/product/getProductData", {actionName: 'getData'});
         setData(data);
@@ -158,7 +156,7 @@
                 var catHtml = "";
                 var goodsHtml = "";
                 $.each(data, function (index, item) {
-                    catHtml += '<a href="javascript:void(0)" data-des="' + item.description + '" class="cValue"  data-index="' +index+ '" data-id="'+item.categoryId+'" >' + item.categoryName + '</a>';
+                    catHtml += '<a href="javascript:void(0)" data-des="' + item.description + '" class="cValue"  data-id="'+item.categoryId+'" >' + item.categoryName + '</a>';
                     goodsHtml += '<div class="goodsContiner clearfix">';
                     if (item.takeoutProductList) {
                         $.each(item.takeoutProductList, function (indexb, itemb) {
@@ -213,14 +211,6 @@
             }
         }
 
-//        保存选择了的分类id
-        $(".cValue").click(function () {
-
-            var index = $(this).attr("data-index");
-            selectedCategoryIndex = index;
-
-        });
-
         //添加分类
         $("#addCat").submit(function () {
             var ele = $(this);
@@ -258,16 +248,14 @@
                 return false;
             }
         });
+
         //编辑分类
         $("#editCat").submit(function () {
             var url = baseUrl + "/merchant/takeout/product/saveCategory";
             var ele = $(this);
             var name = $(this).find("input[name='catName']").val();
             var des = $(this).find("input[name='catDes']").val();
-//            var categoryId = $(".cValue").attr("data-id");  //类别id
-            var childs = $(".catList").children();
-            var ind = selectedCategoryIndex;
-            var categoryId = childs.eq(selectedCategoryIndex).attr("data-id");
+            var categoryId = $(".cValue").attr("data-id");  //类别id
             var params = {categoryId : categoryId, categoryName: name};
             $.post(url,params,function (result, status) {
                 if(status === 'success'){
@@ -301,10 +289,7 @@
                 btn: ['确定','取消'] //按钮
             }, function(){
                 //异步调接口退出
-//                var categoryId = $(".cValue").attr("data-id");  //类别id
-                var childs = $(".catList").children();
-                var ind = selectedCategoryIndex;
-                var categoryId = childs.eq(selectedCategoryIndex).attr("data-id");
+                var categoryId = $(".cValue").attr("data-id");  //类别id
                 var url = baseUrl + "/merchant/takeout/product/delCategoryById";
                 var params = {categoryId :categoryId};
                 $.post(url,params,function (result, status) {

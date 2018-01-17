@@ -34,7 +34,6 @@ import sun.rmi.runtime.Log;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -97,28 +96,10 @@ public class IntegralManageServiceImpl implements IntegralManageService {
                 //先查出积分数量
                 int nowVal = integralService.getVal(accountFocus.getAccountToken(), accountFocus.getShopId());
                 int newVal = 0;
-
-
-
-                //0抵扣积分  1赠送积分
                 if (params.getOperationId()==0) {
                     newVal = (nowVal - params.getValue())<0?0:(nowVal - params.getValue());
-
-                    /**
-                     * @author 马鹏昊
-                     * @desc 修改最近消费时间（gmt_modified字段）
-                     */
-                    integralService.updateLatestConsumeTime(accountFocus.getAccountToken(), accountFocus.getShopId(),new Timestamp((new Date()).getTime()));
-
                 }else if (params.getOperationId()==1){
                     newVal = nowVal+params.getValue();
-
-                    /**
-                     * @author 马鹏昊
-                     * @desc 修改最近获得时间（gmt_latest_get字段）
-                     */
-                    integralService.updateLatestGetTime(accountFocus.getAccountToken(), accountFocus.getShopId(),new Timestamp((new Date()).getTime()));
-
                 }
                 integralService.updateIntegral(accountFocus.getAccountToken(), accountFocus.getShopId(), newVal);
 //                integralService.presentOrDeductionIntegralByToken(accountFocus.getAccountToken(), accountFocus.getShopId(), params.getValue(), params.getOperationId());
@@ -162,31 +143,6 @@ public class IntegralManageServiceImpl implements IntegralManageService {
             String imgUrl = FileUploadUtils.appUploadAvatarImg(file, "merchant/message/");
             return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION,"成功", imgUrl);
         }catch (Exception e){
-            return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
-        }
-    }
-    
-    //创建资讯图片上传
-    @Override
-    public String uploadNewsContentImg(MultipartFile file) {
-    	try {
-    		System.out.println("-----==================进入了uploadNewsContentImg");
-    		String imgUrl = FileUploadUtils.appUploadContentImg(file, "merchant/newContentImg/");
-    		return imgUrl;
-    	}catch(Exception e) {
-    		
-    		 return "{\"code\": 1,\"msg\": \"成功\"}";
-    	}
-    	
-    }
-
-    @Override
-    public AjaxResponseModel uploadMsgTitleImg(MultipartFile file) {
-        try {
-            System.out.println("-----==================进入了uploadNewsContentImg");
-            String imgUrl = FileUploadUtils.appUploadMsgTitleImg(file, "merchant/message/");
-            return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION,"成功", imgUrl);
-        }catch(Exception e) {
             return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
         }
     }

@@ -16,12 +16,6 @@ public class TakeoutProductServiceImpl implements TakeoutProductServiceI {
 	@Resource
 	private TakeoutProductMapper takeoutProductDao;
 
-	@Override
-	public TakeoutProduct getTakeoutProductByProductId(int productId) throws Exception {
-		TakeoutProduct takeoutProduct = takeoutProductDao.getTakeoutProductByProductId(productId);
-		return takeoutProduct;
-	}
-
 	/* ================接口开始======================== */
 	//通过查出来的店铺类别id查找出店铺下的商品
 	@Override
@@ -43,9 +37,9 @@ public class TakeoutProductServiceImpl implements TakeoutProductServiceI {
 	public void productReduceNumber(int productId, int quantity) throws OrderException {
 		try {
 			int row = takeoutProductDao.productReduceNumberDAO(productId, quantity);
-//			if(row <= 0){
-//				throw new OrderException("减库存失败");
-//			}
+			if(row <= 0){
+				throw new OrderException("减库存失败");
+			}
 		}catch (Exception e){
 			throw new OrderException(Globals.CALL_DATABASE_ERROR);
 		}

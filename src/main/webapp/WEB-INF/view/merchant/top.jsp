@@ -1,4 +1,4 @@
-<%@ page import="com.htkapp.modules.common.entity.LoginUser" %><%--
+<%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2017/9/9
@@ -7,17 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"
          pageEncoding="UTF-8" %>
-<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js?${date}"></script>
-<%
-    response.setHeader("Pragma","No-cache");
-    response.setHeader("Cache-Control","no-cache");
-    response.setDateHeader("Expires", 0);
-    response.flushBuffer();
-//    获取/login接口传过来的值
-//    String state = (String)request.getSession().getAttribute("status");
-    String status = (String)request.getSession().getAttribute("status");
-    String shopName = (String)request.getSession().getAttribute("shopName");
-%>
 <div class="layui-header">
     <div class="layui-row index">
         <div class="layui-col-md4 height">
@@ -46,27 +35,22 @@
             <div class="top clearfix height">
                 <div class="fright otherBut">
                     <div class="shopName">
-                        <%--${merchantUser.shopName}--%>
-                        ${shopName}
+                        ${merchantUser.shopName}
                     </div>
                     <div class="shopStatus">
                         <a href="javascript:void(0);" class="status">
-                            <%
-                                out.print(status.equals("1")?"营业中" : "停止营业");
-                            %>
-                            <%--${merchantUser.state == "1" ? "营业中" : "停止营业"}--%>
+                            ${merchantUser.state == 1 ? "营业中" : "停止营业"}
                             <i class="fa fa-angle-down"></i></a>
-                            <%--<i class="userId" type="hidden" value="${merchantUser.userId}"></i>--%>
                         <div class="statusSelect">
                             <div class="statusItem clearfix">
                                 <a href="javascript:void(0)"
-                                   class="${status == "1" ? 'cur' : ''} openState changeState"
+                                   class="${merchantUser.state == 1 ? 'cur' : ''} openState changeState"
                                    data-id="1">营业中</a>
                                 <p>当前餐厅处于设置的营业时间内，正常接受新订单</p>
                             </div>
                             <div class="statusItem clearfix">
                                 <a href="javascript:void(0)"
-                                   class="${status == "0" ? 'cur':'' } stopState changeState" data-id="0">停止营业</a>
+                                   class="${merchantUser.state == 1 ? '' : 'cur'} stopState changeState" data-id="0">停止营业</a>
                                 <p>适用于较长时间停止提供服务，不接受任何订单，手动恢复营业后可正常接受订单</p>
                             </div>
                             <div class="statusItem clearfix">营业时间：9:00-20:00</div>
@@ -161,7 +145,7 @@
                 <dd class="${int_mark_list ? "layui-this" : ""}"><a href="${sysPath}merchant/integral/list">积分列表</a>
                 </dd>
                 <dd class="${int_mark_active ? "layui-this" : ""}"><a href="${sysPath}merchant/integral/getNewActivePage">积分活动</a></dd>
-                <dd class="${int_mark_seatOrder ? "layui-this" : ""}"><a href="${sysPath}merchant/integral/seatOrder">订座订单</a></dd>
+                <!-- <dd class="${int_mark_seatOrder ? "layui-this" : ""}"><a href="${sysPath}merchant/integral/seatOrder">订座订单</a></dd> -->
             </dl>
         </li>
         <li class="layui-nav-item ${bil_mark ? "layui-nav-itemed" : ""}">
@@ -175,6 +159,7 @@
             <a><i class="fa fa-link" aria-hidden="true"></i>门店信息</a>
             <dl class="layui-nav-child">
                 <dd class="${sto_mark_s ? "layui-this" : ""}"><a href="${sysPath}merchant/shopInfo/store">店铺</a></dd>
+              <!--   <dd class="${sto_mark_seat_info ? "layui-this" : ""}"><a href="${sysPath}merchant/shopInfo/setSeatInfo">座位信息管理</a></dd>--> 
             </dl>
         </li>
     </ul>

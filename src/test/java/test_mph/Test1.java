@@ -1,12 +1,6 @@
 package test_mph;
 
-import com.alipay.api.AlipayApiException;
-import com.alipay.api.AlipayClient;
-import com.alipay.api.DefaultAlipayClient;
-import com.alipay.api.request.AlipayFundTransOrderQueryRequest;
-import com.alipay.api.response.AlipayFundTransOrderQueryResponse;
 import com.htkapp.core.MD5Utils;
-import com.htkapp.core.config.AlipayConfig;
 import com.htkapp.core.utils.Globals;
 import org.junit.Test;
 
@@ -28,31 +22,8 @@ public class Test1 {
 //            System.out.println(d);
 //        }
 
-//        test02();
+        test02();
 
-        testAplipayTradeState("1801163837510090");
-
-    }
-
-    public void testAplipayTradeState(String orderNo){
-        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APPID, AlipayConfig.RSA_PRIVATE_KEY, "json",
-                AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.SIGNTYPE);
-        AlipayFundTransOrderQueryRequest request2 = new AlipayFundTransOrderQueryRequest();
-        request2.setBizContent("{" +
-                "    \"out_biz_no\":"+"\""+orderNo +"\"," +
-//                            "    \"order_id\":"+"" +
-                "  }");
-        AlipayFundTransOrderQueryResponse response2 = null;
-        try {
-            response2 = alipayClient.execute(request2);
-        } catch (AlipayApiException e) {
-            e.printStackTrace();
-        }
-        if(response2.isSuccess()){
-            System.out.println("调用成功");
-        } else {
-            System.out.println("调用失败");
-        }
     }
 
     public void test02(){

@@ -53,7 +53,7 @@ public interface AccountServiceI {
     //qq登陆未绑定用户调起接口
     APIResponseModel qqLoginCallUpInterface(APIRequestParams params);
     //用户确认收货接口
-    APIResponseModel enterReceipt(APIRequestParams params,String orderNumber, String token);
+    APIResponseModel enterReceipt(String orderNumber, String token);
 
     /*=====================接口开始============================*/
     //注册新用户

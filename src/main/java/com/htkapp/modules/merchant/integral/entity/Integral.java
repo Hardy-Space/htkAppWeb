@@ -23,25 +23,7 @@ public class Integral {
 
     private String userPhone;  //用户手机号
 
-    private String lastConsumeTime;  //最新积分消费时间
-
-    private String lastGetTime;  //最新积分获得时间
-
-    public String getLastConsumeTime() {
-        return lastConsumeTime;
-    }
-
-    public void setLastConsumeTime(String lastConsumeTime) {
-        this.lastConsumeTime = lastConsumeTime;
-    }
-
-    public String getLastGetTime() {
-        return lastGetTime;
-    }
-
-    public void setLastGetTime(String lastGetTime) {
-        this.lastGetTime = lastGetTime;
-    }
+    private String lastUseTime;  //积分变动时间
 
     private Integer flag;  //状态标记: 1可见，已关注或加入店铺会员　　0: 之前关注过，取消关注后积分记录保存，但状态为0不可见
 
@@ -91,6 +73,14 @@ public class Integral {
 
     public void setUserPhone(String userPhone) {
         this.userPhone = userPhone;
+    }
+
+    public String getLastUseTime() {
+        return lastUseTime;
+    }
+
+    public void setLastUseTime(String lastUseTime) {
+        this.lastUseTime = lastUseTime;
     }
 
     public Integer getFlag() {

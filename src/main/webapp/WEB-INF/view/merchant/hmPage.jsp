@@ -211,10 +211,10 @@
                                                     <span>已创建</span>
                                                 </div>
                                                 <div class="panel-body-div-fg">
-                                                    <span style="font-size: 30px;font-weight: 500;">0</span>
+                                                    <span style="font-size: 30px;font-weight: 500;">11</span>
                                                 </div>
                                                 <div>
-                                                    <span>进行中(0)</span>
+                                                    <span>进行中(1)</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -225,7 +225,7 @@
                                                 <span>可报名</span>
                                             </div>
                                             <div>
-                                                <span style="font-size: 30px;font-weight: 500">0</span>
+                                                <span style="font-size: 30px;font-weight: 500">3</span>
                                             </div>
                                         </div>
                                     </div>
@@ -301,7 +301,6 @@
 </body>
 <%@include file="js.jsp"%>
 <script type="text/javascript">
-
     layui.use(['element','util','layer'], function () {
         var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
         var util = layui.util;

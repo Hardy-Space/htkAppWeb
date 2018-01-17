@@ -21,7 +21,11 @@ public class AjaxResponseModel<T> {
     private int pageNumber;
 
 
-    public AjaxResponseModel(int code){
+    public AjaxResponseModel() {
+		super();
+	}
+
+	public AjaxResponseModel(int code){
         this.code = code;
         if (code == -2) {
             setMessage("参数错误");

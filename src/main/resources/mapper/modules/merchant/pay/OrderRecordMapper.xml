@@ -8,14 +8,6 @@
     </sql>
 
     <!-- ===================接口开始===================== -->
-
-    <select id="getOrderProduct" resultType="com.htkapp.modules.merchant.pay.entity.OrderProduct">
-        select *
-        from order_product
-        where order_id = #{0}
-    </select>
-
-
     <insert id="paymentSuccessfullyCreatedOrderDAO" useGeneratedKeys="true" keyProperty="id">
         insert into order_record
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -73,9 +65,6 @@
             <if test="allNumber != null">
                 all_number
             </if>
-            <if test="couponId != null">
-                coupon_id
-            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="orderNumber != null">
@@ -131,9 +120,6 @@
             </if>
             <if test="allNumber != null">
                 #{allNumber},
-            </if>
-            <if test="couponId != null">
-                #{couponId},
             </if>
         </trim>
     </insert>
@@ -234,7 +220,7 @@
             and order_state = 1
         </if>
         <if test="mark == 1">
-            and (order_state = 3 or order_state = 2 or order_state = 4)
+            and order_state = 3 or order_state = 2 or order_state = 4
         </if>
         and mark = 0 order by ${orderDesc}
     </select>

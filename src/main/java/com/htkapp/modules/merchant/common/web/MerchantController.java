@@ -1,47 +1,46 @@
 package com.htkapp.modules.merchant.common.web;
 
-import com.alipay.api.AlipayApiException;
-import com.alipay.api.AlipayClient;
-import com.alipay.api.DefaultAlipayClient;
-import com.alipay.api.request.AlipayFundTransOrderQueryRequest;
-import com.alipay.api.request.AlipayFundTransToaccountTransferRequest;
-import com.alipay.api.response.AlipayFundTransOrderQueryResponse;
-import com.alipay.api.response.AlipayFundTransToaccountTransferResponse;
 import com.htkapp.core.OtherUtils;
-import com.htkapp.core.config.AlipayConfig;
 import com.htkapp.core.customShiro.CusTokenManage;
 import com.htkapp.core.jsAjax.AjaxResponseModel;
 import com.htkapp.core.params.RequestParams;
 import com.htkapp.core.shiro.common.utils.LoggerUtils;
 import com.htkapp.core.shiro.common.utils.StringUtils;
+import com.htkapp.core.shiro.core.shiro.token.manager.TokenManager;
 import com.htkapp.core.utils.Globals;
-import com.htkapp.core.utils.OrderNumGen;
 import com.htkapp.modules.common.dto.AjaxReturnLoginData;
 import com.htkapp.modules.common.entity.LoginUser;
+import com.htkapp.modules.merchant.common.service.IndexService;
 import com.htkapp.modules.merchant.common.service.MerchantService;
-import com.htkapp.modules.merchant.pay.service.BillBalanceSheetService;
 import com.htkapp.modules.merchant.shop.entity.AccountShop;
 import com.htkapp.modules.merchant.shop.entity.AccountShopReplyComments;
 import com.htkapp.modules.merchant.shop.entity.Shop;
-import com.htkapp.modules.merchant.shop.service.AccountShopServiceI;
 import com.htkapp.modules.merchant.shop.service.ShopServiceI;
+import com.sun.org.apache.bcel.internal.generic.FADD;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.lang.Base64;
-import org.apache.http.util.TextUtils;
+import org.directwebremoting.guice.RequestParameters;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import redis.clients.jedis.JedisPool;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.text.DecimalFormat;
+import javax.validation.Valid;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.xiaoleilu.hutool.date.DateUtil.*;
 
@@ -54,15 +53,6 @@ import static com.xiaoleilu.hutool.date.DateUtil.*;
 public class MerchantController {
 
     @Resource
-    private ShopServiceI shopService;
-
-    @Resource
-    private BillBalanceSheetService billBalanceSheetService;
-
-    @Resource
-    private AccountShopServiceI accountShopService;
-
-    @Resource
     private MerchantService merchantService;
     @Resource
     private OtherUtils otherUtilsMethod;
@@ -71,7 +61,6 @@ public class MerchantController {
 
 
     //==============================================================商户登陆、退出、主页
-
     //商户登陆页面GET
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String merchantLogin(String userName, Model model) {
@@ -80,15 +69,15 @@ public class MerchantController {
         }
         try {
             HttpServletRequest request = otherUtilsMethod.getRequestByMethod();
-            if (request != null) {
+            if(request != null){
                 HttpSession session = request.getSession();
                 Object object = session.getAttribute(Globals.MERCHANT_SESSION_USER);
-                if (object != null) {
+                if(object != null){
                     //重定向到主页
                     return "redirect:index";
                 }
             }
-        } catch (Exception e) {
+        }catch (Exception e){
             return mDirectory + "login";
         }
         model.addAttribute("date", new Date().getTime());
@@ -107,26 +96,10 @@ public class MerchantController {
                 loginUser = CusTokenManage.loginByUser(loginUser, loginUser.getRememberMe());
                 Date endTime = DateUtil.parse(loginUser.getUseEndTime());
                 Date nowTime = new Date();
-                if (nowTime.getTime() > endTime.getTime()) {
+                if(nowTime.getTime() > endTime.getTime()){
                     return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "帐号使用时间过期");
                 }
-
-                /**
-                 * @author 马鹏昊
-                 * @desc 返回店铺状态(因为店铺是否休息的标志位是存在shop表里，account_shop表并没有这个字段，
-                 * shop表里有三条一样的account_shop_id的记录，他们的state在后台切换营业状态的时候是同时更新的，
-                 * 所以只要随便写一个mark来获取一条记录就够用)
-                 */
-
-                Shop shop = shopService.getShopDataByAccountShopIdAndMark(loginUser.getUserId(), 0);
-                loginUser.setState(shop.getState());
-                loginUser.setShopName(shop.getShopName());
                 session.setAttribute(Globals.MERCHANT_SESSION_USER, loginUser);
-                //店铺名字
-                session.setAttribute("shopName", shop.getShopName().toString());
-                //店铺是否营业状态（0停止营业 1营业中）
-                session.setAttribute("status", shop.getState().toString());
-
                 AjaxReturnLoginData returnData = new AjaxReturnLoginData(loginUser.getUserName(), loginUser.getPassword(), loginUser.getRole(), "/merchant/index", loginUser.getToken());
                 return new AjaxResponseModel<>(Globals.COMMON_SUCCESS_AND_JUMP_URL, "成功", returnData, "/merchant/index");
             } else {
@@ -156,12 +129,12 @@ public class MerchantController {
             Map<String, Object> map = new HashMap<>();
             map.put("m_index", true);
             map.put("date", new Date().getTime());
-            map.put("cacheMessage", "缓存字符串");
+            map.put("cacheMessage","缓存字符串");
             OtherUtils.ReturnValByModel(model, map);
             params.setModel(model);
             merchantService.getHomePage(params);
-        } catch (Exception e) {
-            LoggerUtils.fmtError(getClass(), e, e.getMessage());
+        }catch (Exception e){
+            LoggerUtils.fmtError(getClass(),e,e.getMessage());
         }
         return mDirectory + "hmPage";
     }
@@ -200,7 +173,7 @@ public class MerchantController {
 
     //注册页面
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String registerPage(Model model) {
+    public String registerPage(Model model){
         model.addAttribute("date", new Date().getTime());
         return mDirectory + "register";
     }
@@ -236,8 +209,8 @@ public class MerchantController {
     //改变店铺状态接口
     @RequestMapping(value = "/changeShopState_Page", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResponseModel changeShopState(HttpServletRequest request, int stateId/*,int userId*/) {
-        return merchantService.changeShopState(request, stateId/*,userId*/);
+    public AjaxResponseModel changeShopState(HttpServletRequest request, int stateId) {
+        return merchantService.changeShopState(request, stateId);
     }
 
     //改变通知消息状态接口
@@ -308,11 +281,11 @@ public class MerchantController {
         map.put("ord_mark", true);
         map.put("ord_mark_t", true);
         map.put("date", new Date().getTime());
-        if (StringUtils.isNotEmpty(dateStart) && StringUtils.isNotEmpty(dateEnd)) {
+        if(StringUtils.isNotEmpty(dateStart) && StringUtils.isNotEmpty(dateEnd)){
             //判断开始时间是否大于结束时间
-            if (DateUtil.parse(dateStart).getTime() > DateUtil.parse(dateEnd).getTime()) {
+            if(DateUtil.parse(dateStart).getTime() > DateUtil.parse(dateEnd).getTime()){
                 model.addAttribute("messg", "开始时间不能大于结束时间,请重新选择时间");
-            } else {
+            }else {
                 startDate = dateStart;
                 endDate = dateEnd;
             }
@@ -335,7 +308,7 @@ public class MerchantController {
     //====外卖订单（实时订单）
     @RequestMapping(value = "/takeout/order/realTimeTakeoutOrder", method = RequestMethod.GET)
     public String realTimeTakeoutOrder(Model model,
-                                       @RequestParam(value = "statusCode", required = false, defaultValue = "0") Integer statusCode) throws Exception {
+                                       @RequestParam(value = "statusCode", required = false, defaultValue = "0") Integer statusCode) {
         //默认查找新订单,并返回数据给前台
         //前端点击事件处理，get方式请求后台查询数据，并把查询的条件返回给前台，显示上一请求后台的条件
 
@@ -360,14 +333,7 @@ public class MerchantController {
 
         String startDate = DateUtil.beginOfDay(new Date()).toString();
         String endDate = DateUtil.endOfDay(new Date()).toString();
-
-        //取到shopId
-        LoginUser user = OtherUtils.getLoginUserByRequest();
-        //此处是外卖，所以mark是0
-        Shop shop = shopService.getShopByAccountShopIdAndMark(user.getUserId(), 0);
-
-
-        merchantService.getTakeoutRealTimeOrderByCondition(model, shop.getShopId(), startDate, endDate, statusCode);
+        merchantService.getTakeoutRealTimeOrderByCondition(model, 1, startDate, endDate, statusCode);
         return mDirectory + "order_takeout_realTime";
     }
 
@@ -403,7 +369,7 @@ public class MerchantController {
 
     //====自助点餐订单处理(新订单)
     @RequestMapping(value = "/buffetFood/order/new", method = RequestMethod.GET)
-    public String buffetFoodOrderNew(Model model, RequestParams params,
+    public String buffetFoodOrderNew(Model model,RequestParams params,
                                      @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
         Map<String, Object> map = new HashMap<>();
         map.put("date", new Date().getTime());
@@ -721,16 +687,16 @@ public class MerchantController {
         return mDirectory + "integral_list";
     }
 
-    //=====订座订单
-    @RequestMapping(value = "/integral/seatOrder", method = RequestMethod.GET)
-    public String integralSeatOrder(Model model) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("date", new Date().getTime());
-        map.put("int_mark", true);
-        map.put("int_mark_seatOrder", true);
-        OtherUtils.ReturnValByModel(model, map);
-        return mDirectory + "integral_seatOrder";
-    }
+//    //=====订座订单
+//    @RequestMapping(value =  "/integral/seatOrder", method = RequestMethod.GET)
+//    public String integralSeatOrder(Model model) {
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("date", new Date().getTime());
+//        map.put("int_mark", true);
+//        map.put("int_mark_seatOrder", true);
+//        OtherUtils.ReturnValByModel(model, map);
+//        return mDirectory + "integral_seatOrder";
+//    }
 
 
     //财务管理
@@ -763,119 +729,9 @@ public class MerchantController {
         return mDirectory + "bill_manage";
     }
 
-    /**
-     * 修改转账账户
-     *
-     * @param newAccount
-     * @return
-     * @author 马鹏昊
-     */
-    @RequestMapping(value = "/modifyAccount", method = RequestMethod.POST)
-    @ResponseBody
-    public AjaxResponseModel modifyAccount(String newAccount) {
-        try {
-            if (!TextUtils.isEmpty(newAccount)) {
-                HttpServletRequest request = otherUtilsMethod.getRequestByMethod();
-                HttpSession session = request.getSession();
-                LoginUser user = (LoginUser) session.getAttribute(Globals.MERCHANT_SESSION_USER);
-                accountShopService.changeBindedAccount(user.getUserId(), newAccount);
-            }
-            return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION, "成功");
-        } catch (Exception e) {
-            return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, e.getMessage());
-        }
-    }
-
-
-    /**
-     * 提现(转账)
-     *
-     * @return
-     * @author 马鹏昊
-     */
-    @RequestMapping(value = "/withdraw", method = RequestMethod.POST)
-    @ResponseBody
-    public AjaxResponseModel withdraw(String money) {
-        try {
-            HttpServletRequest re = otherUtilsMethod.getRequestByMethod();
-            HttpSession session = re.getSession();
-            LoginUser user = (LoginUser) session.getAttribute(Globals.MERCHANT_SESSION_USER);
-            AccountShop accountShop = accountShopService.getAlipayAccount(user.getUserId());
-
-            float moneyF = Float.parseFloat(money);
-            DecimalFormat decimalFormat=new DecimalFormat("0.00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
-            String p = decimalFormat.format(moneyF);//format 返回的是字符串
-
-            if (accountShop != null) {
-
-                AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APPID, AlipayConfig.RSA_PRIVATE_KEY, "json",
-                        AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.SIGNTYPE);
-                AlipayFundTransToaccountTransferRequest request = new AlipayFundTransToaccountTransferRequest();
-                String out_trade_no = OrderNumGen.next().toString();
-                if (TextUtils.isEmpty(out_trade_no)){
-                    return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "订单号为空");
-                }
-                if (TextUtils.isEmpty(accountShop.getAlipayAccountType())){
-                    return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "第三方账户类型payee_type为空");
-                }
-                if (TextUtils.isEmpty(accountShop.getAlipayAccount())){
-                    return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "第三方账户类型payee_account为空");
-                }
-                request.setBizContent("{" +
-                        "\"out_biz_no\":" + "\""+out_trade_no+"\"," +
-                        "\"payee_type\":" + "\""+accountShop.getAlipayAccountType() + "\"," +
-                        "\"payee_account\":" +"\""+ accountShop.getAlipayAccount() + "\"," +
-                        "\"amount\":" +"\""+ p +  "\"," +
-                        "\"payer_show_name\":\"青岛华凌科技有限公司\"," +
-                        //收款方真实姓名（如果传了该值则会校验真实姓名和收款方账户是否一致）
-//                        "\"payee_real_name\":" +"\""+ accountShop.getUserName() +"\"," +
-//                    "\"remark\":\"转账备注\"" +
-                        "\"remark\":\"商家提现\"" +
-                        "}");
-                AlipayFundTransToaccountTransferResponse response = alipayClient.execute(request);
-                if (response.isSuccess()) {
-                    System.out.println("调用成功");
-//                    callAplipayQuery(alipayClient,out_trade_no);
-
-                    //修改数据库里的商家账户余额
-                    double oldBalance = billBalanceSheetService.getAccountBalance(accountShop.getToken());
-                    double newBalance = oldBalance - Double.valueOf(money);
-                    int row = billBalanceSheetService.updateAccountBalance(accountShop.getToken(), newBalance);
-                } else {
-                    System.out.println("调用失败");
-//                    callAplipayQuery(alipayClient,out_trade_no);
-                }
-            }
-            return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION, "成功");
-        } catch (Exception e) {
-            return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, e.getMessage());
-        }
-    }
-
-    public void callAplipayQuery(AlipayClient alipayClient,String orderNo){
-        //调用查询接口
-        AlipayFundTransOrderQueryRequest request2 = new AlipayFundTransOrderQueryRequest();
-        request2.setBizContent("{" +
-                "    \"out_biz_no\":"+"\""+orderNo +"\"," +
-//                            "    \"order_id\":"+"" +
-                "  }");
-        AlipayFundTransOrderQueryResponse response2 = null;
-        try {
-            response2 = alipayClient.execute(request2);
-        } catch (AlipayApiException e) {
-            e.printStackTrace();
-        }
-        if(response2.isSuccess()){
-            System.out.println("调用成功");
-        } else {
-            System.out.println("调用失败");
-        }
-    }
-
     //====账单记录
     @RequestMapping(value = "/bill/billRecord", method = RequestMethod.GET)
-    public String billRecord(Model
-                                     model, @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+    public String billRecord(Model model, @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                              @RequestParam(value = "date", required = false, defaultValue = "1") String date,
                              @RequestParam(value = "type", required = false, defaultValue = "0") Integer type) {
         Map<String, Object> map = new HashMap<>();
@@ -923,6 +779,17 @@ public class MerchantController {
         merchantService.storeHomePage(params);
         return mDirectory + "shop_shopInfo";
     }
-
+    //座位信息管理
+    @RequestMapping(value = "/shopInfo/setSeatInfo", method = RequestMethod.GET)
+    public String setSeatInfo(Model model, RequestParams params) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("sto_mark", true);
+        map.put("sto_mark_seat_info", true);
+        map.put("date", new Date().getTime());
+        OtherUtils.ReturnValByModel(model, map);
+        params.setModel(model);
+        merchantService.getSeatInfo(params);
+        return mDirectory + "set_Seat_Info";
+    }
     //======================================top菜单栏url结束
 }

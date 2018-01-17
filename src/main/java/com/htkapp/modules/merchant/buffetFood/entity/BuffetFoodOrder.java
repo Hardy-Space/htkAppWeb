@@ -267,4 +267,18 @@ public class BuffetFoodOrder {
     public void setSum(int sum) {
         this.sum = sum;
     }
+
+	@Override
+	public String toString() {
+		return "BuffetFoodOrder [id=" + id + ", orderNumber=" + orderNumber + ", orderAmount=" + orderAmount
+				+ ", discountAmount=" + discountAmount + ", shopAddress=" + shopAddress + ", orderBody=" + orderBody
+				+ ", seatName=" + seatName + ", paymentMethod=" + paymentMethod + ", orderState=" + orderState
+				+ ", productLists=" + productLists + ", jsonProductList=" + jsonProductList + ", token=" + token
+				+ ", shopId=" + shopId + ", orderTime=" + orderTime + ", orderHandle=" + orderHandle + ", shopName="
+				+ shopName + ", adjustOrderJson=" + adjustOrderJson + ", adjustOrderProductJson="
+				+ adjustOrderProductJson + ", remark=" + remark + ", payState=" + payState + ", serialNumber="
+				+ serialNumber + ", allSerialNumber=" + allSerialNumber + ", discountCouponId=" + discountCouponId
+				+ ", minute=" + minute + ", sum=" + sum + "]";
+	}
+    
 }
