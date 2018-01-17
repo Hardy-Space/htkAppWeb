@@ -836,6 +836,8 @@ public class MerchantController {
                 if (response.isSuccess()) {
                     System.out.println("调用成功");
 //                    callAplipayQuery(alipayClient,out_trade_no);
+
+                    //修改数据库里的商家账户余额
                     double oldBalance = billBalanceSheetService.getAccountBalance(accountShop.getToken());
                     double newBalance = oldBalance - Double.valueOf(money);
                     int row = billBalanceSheetService.updateAccountBalance(accountShop.getToken(), newBalance);

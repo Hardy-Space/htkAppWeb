@@ -45,6 +45,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.xiaoleilu.hutool.date.DateUtil.NORM_DATETIME_PATTERN;
@@ -155,7 +156,8 @@ public class PaymentInterfaceServiceImpl implements PaymentInterfaceService {
                              * @author 马鹏昊
                              * @desc 取消订单之后退还用户优惠券（如果有用到的话）
                              */
-//                            accountTicketListService.getTicketListByTokenAndCouponId()
+                            //获取这个订单用到的优惠券id
+//                            List<AccountTicketList> ticketLists = accountTicketListService.getTicketListByTokenAndCouponId( ,record.getCouponId());
 
                             return new APIResponseModel<>(Globals.API_SUCCESS, "取消成功", record.getId());
                         }else {

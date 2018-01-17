@@ -73,6 +73,9 @@
             <if test="allNumber != null">
                 all_number
             </if>
+            <if test="couponId != null">
+                coupon_id
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="orderNumber != null">
@@ -128,6 +131,9 @@
             </if>
             <if test="allNumber != null">
                 #{allNumber},
+            </if>
+            <if test="couponId != null">
+                #{couponId},
             </if>
         </trim>
     </insert>
