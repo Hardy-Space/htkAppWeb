@@ -145,5 +145,17 @@ public class BillRecordServiceImpl implements BillRecordService {
         }
     }
 
+    @Override
+    public void updateBillStatus(String accountShopToken, String orderNumber,String status) throws Exception {
+        try {
+            int row = billRecordDAO.updateBillStatus(accountShopToken, orderNumber,status);
+            if (row <= 0) {
+                throw new Exception("删除记录失败");
+            }
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+    }
+
     /* ==================接口结束==================== */
 }

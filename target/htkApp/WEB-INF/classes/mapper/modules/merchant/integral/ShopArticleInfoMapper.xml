@@ -22,7 +22,7 @@
         select
         <include refid="Base_Column_List" />, gmt_create as createTime
         from shop_article_info
-        where shop_id = #{0} and state = 0
+        where shop_id = #{0} and state = 0 order by gmt_create desc
     </select>
 
     <insert id="insertShopArticleInfoDAO">

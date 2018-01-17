@@ -7,6 +7,14 @@
     </sql>
 
     <!-- =======================接口开始========================= -->
+
+    <update id="updateBillStatus">
+        update bill_record
+        set status = #{status}
+        where order_number = #{orderNumber} and account_shop_token=#{accountShopToken}
+    </update>
+
+
     <insert id="insertBillRecordByTokenDA0">
         insert into bill_record
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -103,11 +111,11 @@
         </if>
         order by ${descStr}
     </select>
-    <update id="changeRecordStatusByOrderNumberDAO">
-        update bill_record
-        set status = #{status}
-        where order_number = #{orderNumber}
-    </update>
+    <!--<update id="changeRecordStatusByOrderNumberDAO">-->
+        <!--update bill_record-->
+        <!--set status = #{status}-->
+        <!--where order_number = #{orderNumber}-->
+    <!--</update>-->
     <select id="getTodayIncomeByDateDAO" resultType="Double">
         select
         sum(amount)

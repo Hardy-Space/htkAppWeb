@@ -170,7 +170,12 @@ public class APICommonServiceImpl implements APICommonService {
                 //减入账金额
                 billRecordStatisticsService.updateBillRecordStatisticsByDate(serviceParams.getAccountShopToken(), serviceParams.getStartTime(), serviceParams.getEndTime(), serviceParams.getOrderAmount());
                 //减入帐记录
-                billRecordService.deleteRecordByOrderNumberAndDate(serviceParams.getAccountShopToken(), serviceParams.getOrderNumber());
+//                billRecordService.deleteRecordByOrderNumberAndDate(serviceParams.getAccountShopToken(), serviceParams.getOrderNumber());
+                /**
+                 * @author 马鹏昊
+                 * @desc 改为修改status为未入账(1)，但不删除账单记录，因为需求要求账单记录页详情里能看到取消订单的信息
+                 */
+                billRecordService.updateBillStatus(serviceParams.getAccountShopToken(), serviceParams.getOrderNumber(),"1");
             } catch (Exception e) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 throw new Exception("修改账单失败");

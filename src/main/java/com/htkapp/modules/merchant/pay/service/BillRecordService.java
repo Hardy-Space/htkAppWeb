@@ -26,6 +26,8 @@ public interface BillRecordService {
     List<BillRecord> getBillRecordListByDate(String accountShopToken, String startTime, String endTime);
     //取消订单要删除记录
     void deleteRecordByOrderNumberAndDate(String accountShopToken, String orderNumber) throws Exception;
+
+    void updateBillStatus(String accountShopToken, String orderNumber,String status)throws Exception;
     /* =====================接口结束======================= */
 
 }

@@ -759,8 +759,8 @@ public class AccountServiceImpl implements AccountServiceI {
                 Shop shop = shopService.getShopDataById(orderRecord.getShopId());
                 AccountShop accountShop = accountShopService.getAccountShopDataById(shop.getAccountShopId());
                 orderRecordService.changeOrderStateByOrderNumber(orderNumber, Globals.DEFAULT_T_ENTER_RECEIVING);
-                //改变记录状态为已入账
-                billRecordService.changeRecordStatusByOrderNumber(orderNumber, 2);
+                //改变记录状态为已入账(2为已入账)
+                billRecordService.updateBillStatus(accountShop.getToken(),orderNumber, "2");
                 //TODO 记录收入记录
                 BillBalanceSheet balanceSheet = new BillBalanceSheet();
                 balanceSheet.setSumAmount(orderRecord.getOrderAmount());

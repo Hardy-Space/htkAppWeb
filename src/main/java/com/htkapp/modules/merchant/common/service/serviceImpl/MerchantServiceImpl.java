@@ -58,7 +58,9 @@ import redis.clients.jedis.JedisPool;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -661,6 +663,18 @@ public class MerchantServiceImpl implements MerchantService {
             Double orderIncome = billRecordService.getTodayOrderIncomeByDate(accountShopToken, startTime, endTime);
             Double spendingOnOrder = billRecordService.getSpendingOnOrderByDate(accountShopToken, startTime, endTime);
             List<BillRecord> billRecordList = billRecordService.getBillRecordListByDate(accountShopToken, startTime, endTime);
+
+            /**
+             * @author 马鹏昊
+             * @desc 去掉时间.0后缀（java接收DateTime类型字段值原因）
+             */
+            for (BillRecord bill :billRecordList){
+                String trueGmtCreate = bill.getGmtCreate();
+                String trueGmtModified = bill.getGmtModified();
+                bill.setGmtCreate(trueGmtCreate.substring(0,trueGmtCreate.length()-2));
+                bill.setGmtModified(trueGmtModified.substring(0,trueGmtModified.length()-2));
+            }
+
             model.addAttribute("queryDate", date);
             model.addAttribute("data", billRecordList);
             model.addAttribute("todayIncome", todayIncome);

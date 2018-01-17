@@ -32,5 +32,7 @@ public interface BillRecordMapper {
     int deleteRecordByOrderNumberAndDateDAO(String accountShopToken, String orderNumber);
     //查找当天是否存在记录
     BillRecord getBillRecordByDateAndTokenDAO(String accountShopToken, String startTime, String endTime);
+
+    int updateBillStatus(@Param("accountShopToken") String accountShopToken, @Param("orderNumber") String orderNumber,@Param("status") String status);
     /* =====================接口结束===================== */
 }
