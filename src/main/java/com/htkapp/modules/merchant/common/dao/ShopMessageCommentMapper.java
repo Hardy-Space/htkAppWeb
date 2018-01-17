@@ -1,6 +1,9 @@
 package com.htkapp.modules.merchant.common.dao;
 
-import com.htkapp.modules.merchant.common.dto.*;
+import com.htkapp.modules.merchant.common.dto.CommentListInfo;
+import com.htkapp.modules.merchant.common.dto.GroupBuyCommentList;
+import com.htkapp.modules.merchant.common.dto.ReturnCommentInfo;
+import com.htkapp.modules.merchant.common.dto.TakeoutCommentList;
 import com.htkapp.modules.merchant.common.entity.ShopMessageComment;
 import org.apache.ibatis.annotations.Param;
 
@@ -42,7 +45,5 @@ public interface ShopMessageCommentMapper {
     int getDateCountByDateValDAO(@Param("accountShopToken") String accountShopToken, @Param("cMark") int cMark, @Param("comMark") int comMark, @Param("startTime") String startTime, @Param("endTime") String endTime);
     //通过传入星级，获取该星级的总值, comStar传入0则代表获取全部值
     double getStarValByStarNumDAO(@Param("accountShopToken") String accountShopToken, @Param("cMark") int cMark, @Param("comStar") int comStar);
-
-    List<MerchantReplyInfo> getMerchantReplyListByUserCommentId(Integer userCommentId);
     /* ===================JSP页面接口结束========================= */
 }

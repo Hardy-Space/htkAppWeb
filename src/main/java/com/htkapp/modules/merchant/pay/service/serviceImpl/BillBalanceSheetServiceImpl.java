@@ -33,16 +33,6 @@ public class BillBalanceSheetServiceImpl implements BillBalanceSheetService {
         }
     }
 
-    @Override
-    public int updateAccountBalance(String accountShopToken, double newBalance) {
-        try {
-            int row = billBalanceSheetDAO.updateAccountBalance(accountShopToken,newBalance);
-            return row;
-        } catch (Exception e) {
-            return 0;
-        }
-    }
-
     //查找收支记录
     @Override
     public List<BillBalanceSheet> getBalanceSheetRecordListByAccountShopToken(String token, String startTime, String endTime, Integer type, int pageNum, int pageLimit) {

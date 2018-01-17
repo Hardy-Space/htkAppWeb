@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -29,43 +27,6 @@ public class ShopServiceImpl implements ShopServiceI {
 
     /* ===============接口开始===================== */
 
-
-    /**
-     * @desc 获取此分类集合下的所有shop
-     * @param allCategoryIdSet
-     * @author 马鹏昊
-     */
-    @Override
-    public List<Shop> getShopListByCategoryList(Set<Integer> allCategoryIdSet) {
-        List<Shop> result ;
-        try{
-            result = shopDao.getShopListByCategoryList(allCategoryIdSet);
-        }catch (Exception e){
-            //sql查询集合不能为空
-            result = new ArrayList<>();
-            Shop shop = new Shop();
-            shop.setShopId(-1);
-            result.add(shop);
-        }
-        return result;
-    }
-
-    /**
-     * @desc 获取此大分类下的所有子分类
-     * @author 马鹏昊
-     */
-    @Override
-    public Set<Integer> getAllChildCategoryIdList(int categoryId) {
-        Set<Integer> allChildCategoryIdList;
-        try {
-            allChildCategoryIdList = shopDao.getAllChildCategoryIdList(categoryId);
-        } catch (Exception e) {
-            Set<Integer> noValueDataSet = new HashSet<>();
-            noValueDataSet.add(-1);
-            return noValueDataSet ;
-        }
-        return allChildCategoryIdList;
-    }
 
     @Override
     public int initShopMessage(int shopId) {
@@ -224,9 +185,9 @@ public class ShopServiceImpl implements ShopServiceI {
 
     //通过一级分类id获取所有二级分类店铺
     @Override
-    public List<Shop> getShopListByChildCategoryIdsAndFocus(int mark, Set<String> childSId, Set<Integer> shopIdList, String token, int tag, int pageNo, int pageLimit) {
+    public List<Shop> getShopListByChildCategoryIdsAndFocus(Set<String> childSId, Set<Integer> shopIdList, String token, int tag, int pageNo, int pageLimit) {
         PageHelper.startPage(pageNo, pageLimit);
-        List<Shop> shops = shopDao.getShopListByChildCategoryIdsAndFocusDAO(mark, childSId, shopIdList, token, tag);
+        List<Shop> shops = shopDao.getShopListByChildCategoryIdsAndFocusDAO(childSId, shopIdList, token, tag);
         if (shops != null) {
             return shops;
         }
@@ -235,9 +196,9 @@ public class ShopServiceImpl implements ShopServiceI {
 
     //通过分类id查询所有已关注店铺
     @Override
-    public List<Shop> getShopListByCategoryIdAndFocus(int mark, int categoryId, Set<Integer> shopIdList, String token, int tag, int pageNo, int pageLimit) {
+    public List<Shop> getShopListByCategoryIdAndFocus(int categoryId, Set<Integer> shopIdList, String token, int tag, int pageNo, int pageLimit) {
         PageHelper.startPage(pageNo, pageLimit);
-        List<Shop> shops = shopDao.getShopListByCategoryIdAndFocusDAO(mark, categoryId, shopIdList, token, tag);
+        List<Shop> shops = shopDao.getShopListByCategoryIdAndFocusDAO(categoryId,shopIdList, token,tag);
         if (shops != null) {
             return shops;
         }
@@ -246,9 +207,9 @@ public class ShopServiceImpl implements ShopServiceI {
 
     //查找分类下的所有关注店铺数量(子分类是0:代表全部)
     @Override
-    public int getFocusCategoryShopListCount(int mark, Set<String> childSId, Set<Integer> shopIdList, String token, int tag) {
-        List<Shop> resultList = shopDao.getShopListByChildCategoryIdsAndFocusDAO(mark, childSId, shopIdList, token, tag);
-        if (resultList != null && resultList.size() > 0) {
+    public int getFocusCategoryShopListCount(Set<String> childSId, Set<Integer> shopIdList, String token, int tag) {
+        List<Shop> resultList = shopDao.getShopListByChildCategoryIdsAndFocusDAO(childSId,shopIdList,token,tag);
+        if(resultList != null && resultList.size() > 0){
             return resultList.size();
         }
         return 0;
@@ -256,9 +217,9 @@ public class ShopServiceImpl implements ShopServiceI {
 
     //查找二级分类下的所有关注店铺数量
     @Override
-    public int getFocusChildCategoryShopListCount(int mark, int categoryId, Set<Integer> shopIdList, String token, int tag) {
-        List<Shop> shops = shopDao.getShopListByCategoryIdAndFocusDAO(mark, categoryId, shopIdList, token, tag);
-        if (shops != null && shops.size() > 0) {
+    public int getFocusChildCategoryShopListCount(int categoryId, Set<Integer> shopIdList, String token, int tag) {
+        List<Shop> shops = shopDao.getShopListByCategoryIdAndFocusDAO(categoryId,shopIdList, token, tag);
+        if(shops != null && shops.size() > 0){
             return shops.size();
         }
         return 0;
@@ -272,19 +233,19 @@ public class ShopServiceImpl implements ShopServiceI {
 
     //根据index查询店铺
     @Override
-    public Shop getShopByIndex(int index, int mark) {
-        return shopDao.getShopByIndexDAO(index, mark);
+    public Shop getShopByIndex(int index,int mark) {
+        return shopDao.getShopByIndexDAO(index,mark);
     }
 
     //通过商户ID改变店铺状态
     @Override
     public void changeShopOpenStateById(int stateId, int accountShopId) throws Exception {
         try {
-            int row = shopDao.changeShopStateByIdDAO(accountShopId, stateId);
-            if (row <= 0) {
+            int row = shopDao.changeShopStateByIdDAO(accountShopId,stateId);
+            if(row <= 0){
                 throw new Exception("更改失败");
             }
-        } catch (Exception e) {
+        }catch (Exception e){
             throw new Exception(e.getMessage());
         }
     }
@@ -293,7 +254,7 @@ public class ShopServiceImpl implements ShopServiceI {
     @Override
     public void updateShopQRCode(String qrImgUrl, int shopId) {
         int row = shopDao.updateShopQRCodeDAO(qrImgUrl, shopId);
-        if (row <= 0) {
+        if(row <= 0){
             throw new UpdateException(Globals.DEFAULT_EXCEPTION_UPDATE_FAILED);
         }
     }
@@ -311,12 +272,11 @@ public class ShopServiceImpl implements ShopServiceI {
             throw new Exception(Globals.CALL_DATABASE_ERROR);
         }
     }
-
     //根据商户id查询店铺id
     @Override
-    public Shop getShopIdByAccountShopId(int accountShopId, int mark) throws Exception {
+    public Shop getShopIdByAccountShopId(int accountShopId,int mark) throws Exception {
         try {
-            return shopDao.getShopIdByAccountShopId(accountShopId, mark);
+            return shopDao.getShopIdByAccountShopId(accountShopId,mark);
         } catch (Exception e) {
             throw new Exception(Globals.CALL_DATABASE_ERROR);
         }
@@ -364,7 +324,7 @@ public class ShopServiceImpl implements ShopServiceI {
     @Override
     public void updateShopImg(Shop shop) {
         int row = shopDao.updateShopImgDAO(shop);
-        if (row <= 0) {
+        if(row <= 0){
             throw new UpdateException(Globals.DEFAULT_EXCEPTION_UPDATE_FAILED);
         }
     }
@@ -373,7 +333,7 @@ public class ShopServiceImpl implements ShopServiceI {
     @Override
     public void updateOpeningTime(Shop shop) {
         int row = shopDao.updateOpeningTimeDAO(shop);
-        if (row <= 0) {
+        if(row <= 0){
             throw new UpdateException(Globals.DEFAULT_EXCEPTION_UPDATE_FAILED);
         }
     }
@@ -382,7 +342,7 @@ public class ShopServiceImpl implements ShopServiceI {
     @Override
     public void updatePhone(Shop shop) {
         int row = shopDao.updatePhoneDAO(shop);
-        if (row <= 0) {
+        if(row <= 0){
             throw new UpdateException(Globals.DEFAULT_EXCEPTION_UPDATE_FAILED);
         }
     }
@@ -391,7 +351,7 @@ public class ShopServiceImpl implements ShopServiceI {
     @Override
     public void updateIntro(Shop shop) {
         int row = shopDao.updateIntroDAO(shop);
-        if (row <= 0) {
+        if(row <= 0){
             throw new UpdateException(Globals.DEFAULT_EXCEPTION_UPDATE_FAILED);
         }
     }
@@ -400,7 +360,7 @@ public class ShopServiceImpl implements ShopServiceI {
     @Override
     public void updateDes(Shop shop) {
         int row = shopDao.updateDesDAO(shop);
-        if (row <= 0) {
+        if(row <= 0){
             throw new UpdateException(Globals.DEFAULT_EXCEPTION_UPDATE_FAILED);
         }
     }
@@ -409,7 +369,7 @@ public class ShopServiceImpl implements ShopServiceI {
     @Override
     public void updateDeliveryFee(Shop shop) {
         int row = shopDao.updateDeliveryFeeDAO(shop);
-        if (row <= 0) {
+        if(row <= 0){
             throw new UpdateException(Globals.DEFAULT_EXCEPTION_UPDATE_FAILED);
         }
     }

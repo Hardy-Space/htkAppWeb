@@ -21,7 +21,5 @@ public interface BillBalanceSheetMapper {
     int insetBalanceSheetRecordDAO(BillBalanceSheet obj);
     //查找数据库中的最新的一条记录
     BillBalanceSheet getBalanceSheetRecordByLastDateDAO(String token);
-
-    int updateAccountBalance(String accountShopToken, double newBalance);
     /* ============================JSP接口结束================================ */
 }

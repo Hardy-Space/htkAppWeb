@@ -8,14 +8,6 @@
     </sql>
 
     <!-- ===================接口开始===================== -->
-
-    <select id="getOrderProduct" resultType="com.htkapp.modules.merchant.pay.entity.OrderProduct">
-        select *
-        from order_product
-        where order_id = #{0}
-    </select>
-
-
     <insert id="paymentSuccessfullyCreatedOrderDAO" useGeneratedKeys="true" keyProperty="id">
         insert into order_record
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -228,7 +220,7 @@
             and order_state = 1
         </if>
         <if test="mark == 1">
-            and (order_state = 3 or order_state = 2 or order_state = 4)
+            and order_state = 3 or order_state = 2 or order_state = 4
         </if>
         and mark = 0 order by ${orderDesc}
     </select>

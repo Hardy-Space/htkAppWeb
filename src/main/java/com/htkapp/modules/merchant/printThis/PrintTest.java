@@ -1,12 +1,12 @@
 package com.htkapp.modules.merchant.printThis;
 
-import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrderProduct;
-
 import java.awt.*;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.util.List;
+
+import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrderProduct;
 
 public class PrintTest implements Printable {
 	private List<BuffetFoodOrderProduct> list;

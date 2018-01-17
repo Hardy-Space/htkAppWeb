@@ -104,4 +104,12 @@ public class BuffetFoodOrderProduct {
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
+
+	@Override
+	public String toString() {
+		return "BuffetFoodOrderProduct [id=" + id + ", productId=" + productId + ", productName=" + productName
+				+ ", quantity=" + quantity + ", price=" + price + ", imgUrl=" + imgUrl + ", orderId=" + orderId
+				+ ", state=" + state + ", categoryId=" + categoryId + ", categoryName=" + categoryName + "]";
+	}
+    
 }

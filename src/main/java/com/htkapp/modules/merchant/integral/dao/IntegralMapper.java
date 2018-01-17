@@ -4,7 +4,6 @@ import com.htkapp.modules.merchant.integral.dto.AccountIntegralList;
 import com.htkapp.modules.merchant.integral.entity.Integral;
 import org.apache.ibatis.annotations.Param;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -37,9 +36,5 @@ public interface IntegralMapper {
     int updateIntegralFlagByTokenDAO(String token, int flagId);
     //插入积分记录
     int insertUserIntegralDAO(Integral integral);
-
-    int updateLatestConsumeTime(String token, Integer shopId , Timestamp time);
-
-    int updateLatestGetTime(String token, Integer shopId, Timestamp time);
     /* ==========================JSP页面接口结束================================ */
 }

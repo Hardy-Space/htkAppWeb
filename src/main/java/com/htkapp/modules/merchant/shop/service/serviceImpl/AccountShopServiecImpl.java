@@ -101,25 +101,7 @@ public class AccountShopServiecImpl implements AccountShopServiceI {
         }
     }
 
-    @Override
-    public int changeBindedAccount(Integer id, String newAccount) throws Exception {
-        try {
-            return accountShopDao.changeBindedAccount(id,newAccount);
-        } catch (Exception e) {
-            throw new Exception(Globals.CALL_DATABASE_ERROR);
-        }
-    }
-
-    @Override
-    public AccountShop getAlipayAccount(Integer id)  {
-        try {
-            return accountShopDao.getAlipayAccount(id);
-        } catch (Exception e) {
-           return  null;
-        }
-    }
-
-/* =====================接口结束============================== */
+	/* =====================接口结束============================== */
 
     /* ====================JSP页面接口开始============================== */
     //通过条件获取商户列表

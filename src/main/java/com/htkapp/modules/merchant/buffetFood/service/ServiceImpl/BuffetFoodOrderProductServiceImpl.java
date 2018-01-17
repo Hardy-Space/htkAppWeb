@@ -33,7 +33,7 @@ public class BuffetFoodOrderProductServiceImpl implements BuffetFoodOrderProduct
         }
     }
 
-    //根据订单号查询该订单所购买商品列表
+    //根据订单id查询该订单所购买商品列表
     @Override
     public List<BuffetFoodOrderProduct> getOrderProductListById(int orderId) throws Exception {
         try {

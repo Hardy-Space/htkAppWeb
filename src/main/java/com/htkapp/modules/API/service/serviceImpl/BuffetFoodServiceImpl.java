@@ -32,6 +32,7 @@ import com.htkapp.modules.merchant.shop.service.ShopServiceI;
 import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.json.JSONUtil;
 import io.goeasy.GoEasy;
+import jdk.nashorn.internal.objects.Global;
 import net.sf.json.JsonConfig;
 import net.sf.json.util.JSONUtils;
 import org.json.JSONArray;
@@ -178,7 +179,7 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
                 if (resultList != null) {
                     return new APIResponseModel<List<SeatInformation>>(Globals.API_SUCCESS, "成功", resultList);
                 } else {
-                    return new APIResponseModel<String>(Globals.API_SUCCESS, "成功", null);
+                    return new APIResponseModel<String>(Globals.API_SUCCESS, "失败", null);
                 }
             } catch (Exception e) {
                 return new APIResponseModel(Globals.API_FAIL, e.getMessage());
@@ -401,12 +402,20 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
                         orderAmount += each.getPrice() * each.getQuantity();
                     }
                 }
+                //设置订单的金额
                 order.setOrderAmount(orderAmount);
+                //新增订单信息
                 buffetFoodOrderService.confirmOrderButton(order);
+                //变更座位状态信息
+                //TODO
+                int a=seatInformationService.updataSeatInfoByOrder(order);
+                if(a<=0) {
+                	 return new APIResponseModel(Globals.COMMON_OPERATION_FAILED, "座位已满");
+                }
+              //根据店铺id查找店铺信息
                 Shop shop = shopService.getShopDataById(buffetFoodOrder.getShopId());
-                System.out.println("shop is:"+shop.toString());
+              //通过商户店铺id查找商户信息
                 AccountShop user = accountShopService.getAccountShopDataById(shop.getAccountShopId());
-                System.out.println("accountShop is:"+user.toString());
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("orderNumber", buffetFoodOrder.getOrderNumber());
                 jsonObject.put("orderState", buffetFoodOrder.getOrderState());

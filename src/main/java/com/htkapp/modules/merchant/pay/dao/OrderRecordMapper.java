@@ -1,7 +1,6 @@
 package com.htkapp.modules.merchant.pay.dao;
 
 import com.htkapp.modules.merchant.pay.dto.AllOrderList;
-import com.htkapp.modules.merchant.pay.entity.OrderProduct;
 import com.htkapp.modules.merchant.pay.entity.OrderRecord;
 import org.apache.ibatis.annotations.Param;
 
@@ -93,7 +92,5 @@ public interface OrderRecordMapper {
     int statisticalQuantityByStateIdAndDateDAO(Integer shopId, Integer stateId, String startTime, String endTime);
     //根据商铺id和排序条件查询订单列表
     List<OrderRecord> getOrderRecordListByDescAndShopIdDAO(@Param("shopId") int shopId, @Param("orderDesc") String orderDesc, @Param("keyWord") String keyWord);
-
-    OrderProduct getOrderProduct(Integer id);
     /* =====================JSP页面接口结束====================== */
 }

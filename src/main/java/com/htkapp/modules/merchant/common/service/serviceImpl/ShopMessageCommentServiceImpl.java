@@ -4,7 +4,10 @@ import com.github.pagehelper.PageHelper;
 import com.htkapp.core.LogUtil;
 import com.htkapp.core.utils.Globals;
 import com.htkapp.modules.merchant.common.dao.ShopMessageCommentMapper;
-import com.htkapp.modules.merchant.common.dto.*;
+import com.htkapp.modules.merchant.common.dto.CommentListInfo;
+import com.htkapp.modules.merchant.common.dto.GroupBuyCommentList;
+import com.htkapp.modules.merchant.common.dto.ReturnCommentInfo;
+import com.htkapp.modules.merchant.common.dto.TakeoutCommentList;
 import com.htkapp.modules.merchant.common.entity.ShopMessageComment;
 import com.htkapp.modules.merchant.common.service.ShopMessageCommentService;
 import org.springframework.stereotype.Service;
@@ -31,26 +34,6 @@ public class ShopMessageCommentServiceImpl implements ShopMessageCommentService 
         try {
             PageHelper.startPage(pageNo, pageLimit);
             List<ReturnCommentInfo> resultList = shopMessageCommentDao.getTakeoutCommentByIdDAO(shopId);
-            if (resultList != null && resultList.size() > 0) {
-                return resultList;
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            throw new Exception(Globals.CALL_DATABASE_ERROR);
-        }
-    }
-
-    /**
-     * 根据用户评论的id获取商家回复的评论
-     * @param userCommentId
-     * @return
-     * @throws Exception
-     */
-    @Override
-    public List<MerchantReplyInfo> getMerchantReplyListByUserCommentId(Integer userCommentId) throws Exception{
-        try {
-            List<MerchantReplyInfo> resultList = shopMessageCommentDao.getMerchantReplyListByUserCommentId(userCommentId);
             if (resultList != null && resultList.size() > 0) {
                 return resultList;
             } else {

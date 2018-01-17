@@ -5,17 +5,21 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.htkapp.core.MoreMethodsUtils;
 import com.htkapp.core.OtherUtils;
+import com.htkapp.core.API.APIRequestParams;
 import com.htkapp.core.jsAjax.AjaxResponseModel;
 import com.htkapp.core.params.AjaxRequestParams;
+import com.htkapp.core.params.RequestParams;
 import com.htkapp.core.utils.Globals;
 import com.htkapp.core.utils.Jpush;
 import com.htkapp.core.utils.StringUtils;
+import com.htkapp.modules.API.service.BuffetFoodService;
 import com.htkapp.modules.common.entity.LoginUser;
 import com.htkapp.modules.merchant.buffetFood.dao.BuffetFoodOrderMapper;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodCategory;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrder;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrderProduct;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodProduct;
+import com.htkapp.modules.merchant.buffetFood.entity.SeatInformation;
 import com.htkapp.modules.merchant.buffetFood.service.*;
 import com.htkapp.modules.merchant.shop.entity.AccountShop;
 import com.htkapp.modules.merchant.shop.entity.Shop;
@@ -30,7 +34,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.htkapp.modules.merchant.takeout.web.TakeoutController.mTakeoutDirectory;
 
@@ -56,6 +63,8 @@ public class BuffetFoodController {
     private MoreMethodsUtils moreMethodsUtils;
     @Resource
     private AccountShopServiceI accountShopService;
+    @Resource
+    private SeatInformationService seatInofService;
 
     //========================================================商品
     //==== 页面
@@ -92,6 +101,23 @@ public class BuffetFoodController {
             return "redirect:editProduct?productId=" + product.getId();
         }
     }
+//    //获得所有跟店铺相关的催单
+//    @RequestMapping(value="getReminderList",method=RequestMethod.POST)
+//    @ResponseBody
+//    public AjaxResponseModel getReminderList(RequestParams params) {
+//        LoginUser user;
+//		try {
+//			user = OtherUtils.getLoginUserByRequest();
+//			Shop shop = shopService.getShopByAccountShopIdAndMark(user.getUserId(),2);
+//	    	String orderDesc = "gmt_create desc";
+//	    	Integer shopId=shop.getShopId();
+//	    	List<BuffetFoodOrder> resultList =buffetFoodOrderService.getReminderOrderList(shopId, orderDesc,Globals.DEFAULT_PAGE_NO, Globals.DEFAULT_PAGE_LIMIT);
+//	    	return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION,"获取催单信息成功",resultList);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED,"获取订单信息失败");
+//		}
+//    }
 
     //====　接口
     //获取自助点餐商品页面接口
@@ -233,22 +259,37 @@ public class BuffetFoodController {
     public AjaxResponseModel enterAdjust(AjaxRequestParams params){
         return buffetFoodControllerService.enterAdjust(params);
     }
-
+    
     //打印各种单据接口
     @RequestMapping("/print")
     @ResponseBody
-    public AjaxResponseModel printOrder(Model model,AjaxRequestParams params){
-        if(params!=null&&params.getOrderNumber()!=null) {
-//    		 Map<String, Object> map = new HashMap<>();
-//    	        map.put("date", new Date().getTime());
-//    	        map.put("ord_mark", true);
-//    	        map.put("ord_mark_b_h", true);
-//    	        OtherUtils.ReturnValByModel(model, map);
-            return  buffetFoodControllerService.printOrder(params);
-        }
-        return buffetFoodControllerService.printOrder(params);
+    public AjaxResponseModel printOrder(AjaxRequestParams params){
+    	if(params!=null&&params.getOrderNumber()!=null) {
+    	        return  buffetFoodControllerService.printOrder(params);
+    	}
+    	return buffetFoodControllerService.printOrder(params);
     }
-
+    //为店铺增加座位
+    @RequestMapping("/addaddSeatInfo")
+    @ResponseBody
+    public AjaxResponseModel addSeatInfoByShopId(
+    		String shopId,String seatName,String numberSeat
+    		) {
+    	SeatInformation seat=new SeatInformation();
+    	seat.setSeatName(seatName);
+    	seat.setNumberSeat(Integer.parseInt(numberSeat));
+    	seat.setShopId(Integer.parseInt(shopId));
+    	if(seat.getSeatStatus()==null) {
+    		seat.setSeatStatus(0);
+    	}
+    	AjaxResponseModel<?> ajx=new AjaxResponseModel<>();
+    	try {
+			ajx=seatInofService.addSeatInfoByShopId(seat);
+		} catch (Exception e) {
+			return ajx;
+		}
+		return ajx;
+    }
 
     //核退
     @RequestMapping("/replyFalse")

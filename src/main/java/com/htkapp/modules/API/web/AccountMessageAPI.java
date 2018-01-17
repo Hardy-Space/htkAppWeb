@@ -145,8 +145,8 @@ public class AccountMessageAPI {
 
     //用户确认收货接口
     @RequestMapping("/enterReceipt")
-    public APIResponseModel enterReceipt(APIRequestParams params,String orderNumber, String token){
-        return accountService.enterReceipt(params,orderNumber, token);
+    public APIResponseModel enterReceipt(String orderNumber, String token){
+        return accountService.enterReceipt(orderNumber, token);
     }
 
     //解绑第三方账号
