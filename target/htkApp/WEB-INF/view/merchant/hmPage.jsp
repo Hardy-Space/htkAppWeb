@@ -211,23 +211,23 @@
                                                     <span>已创建</span>
                                                 </div>
                                                 <div class="panel-body-div-fg">
-                                                    <span style="font-size: 30px;font-weight: 500;">0</span>
+                                                    <span style="font-size: 30px;font-weight: 500;">${data.hasBeenCreatedActives}</span>
                                                 </div>
                                                 <div>
-                                                    <span>进行中(0)</span>
+                                                    <span>进行中(${data.nowActives})</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="layui-col-md6">
-                                        <div class="panel-body-div">
-                                            <div>
-                                                <span>可报名</span>
-                                            </div>
-                                            <div>
-                                                <span style="font-size: 30px;font-weight: 500">0</span>
-                                            </div>
-                                        </div>
+                                        <%--<div class="panel-body-div">--%>
+                                            <%--<div>--%>
+                                                <%--<span>可报名</span>--%>
+                                            <%--</div>--%>
+                                            <%--<div>--%>
+                                                <%--<span style="font-size: 30px;font-weight: 500">0</span>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
                                     </div>
                                 </div>
                             </div>

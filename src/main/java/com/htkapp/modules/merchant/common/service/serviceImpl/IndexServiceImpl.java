@@ -6,8 +6,11 @@ import com.htkapp.core.utils.Globals;
 import com.htkapp.modules.common.dto.IndexInfo;
 import com.htkapp.modules.common.entity.LoginUser;
 import com.htkapp.modules.merchant.common.service.IndexService;
+import com.htkapp.modules.merchant.integral.entity.AccountSaverTicket;
+import com.htkapp.modules.merchant.integral.service.AccountSaverTicketService;
 import com.htkapp.modules.merchant.pay.service.OrderRecordService;
 import com.htkapp.modules.merchant.pay.service.OrderRefundService;
+import com.htkapp.modules.merchant.shop.entity.AccountShop;
 import com.htkapp.modules.merchant.shop.entity.Shop;
 import com.htkapp.modules.merchant.shop.service.AccountShopLoginLogService;
 import com.htkapp.modules.merchant.shop.service.AccountShopReplyCommentsService;
@@ -22,7 +25,10 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static com.xiaoleilu.hutool.date.DatePattern.NORM_DATETIME_PATTERN;
 import static com.xiaoleilu.hutool.date.DateUtil.format;
@@ -36,6 +42,10 @@ public class IndexServiceImpl implements IndexService {
 
     @Resource
     private OrderRecordService orderRecordService;
+    @Resource
+    private AccountSaverTicketService accountSaverTicketService;
+    @Resource
+    private AccountShopServiceI accountShopService;
     @Resource
     private AccountShopLoginLogService loginLogService;
     @Resource
@@ -58,10 +68,28 @@ public class IndexServiceImpl implements IndexService {
             String signOutTime = loginLogService.getLastLoginLogByToken(accountShopToken);
             //商户使用剩余时间
             String useRemainingTime = DateUtil.formatBetween(new Date(), DateUtil.parse(user.getUseEndTime()), BetweenFormater.Level.MINUTE);
+
+            /**
+             * @author 马鹏昊
+             * @desc 因为评论表里和商家关联的只有shopId，所以不能用accountShopToken去比较关联,得先获取Shop（外卖团购和自助的都得有）
+             */
+            AccountShop accountShop = accountShopService.getUseTimeByToken(accountShopToken);
+            List<Shop> shops = shopService.getShopListByAccountShopId(accountShop.getId());
+            List<Integer> shopIds = new ArrayList<>();
+            if (shops != null) {
+                for (Shop s : shops) {
+                    shopIds.add(s.getShopId());
+                }
+            }
+
             //未回复差评数
-            int badCommentNumber = replyCommentsService.getBadCommentNumber(accountShopToken);
+//            int badCommentNumber = replyCommentsService.getBadCommentNumber(accountShopToken);
+            int badCommentNumber = replyCommentsService.getBadCommentCounts(shopIds);
+
             //未回复评价数
-            int noCommentNumber = replyCommentsService.getNoCommentNumber(accountShopToken);
+//            int noCommentNumber = replyCommentsService.getNoCommentNumber(accountShopToken);
+            int noCommentNumber = replyCommentsService.getNoCommentCounts(shopIds);
+
             //新订单
             int newOrderNumber = orderRecordService.getNewOrderNumber(accountShopToken);
             //退单
@@ -82,7 +110,7 @@ public class IndexServiceImpl implements IndexService {
 
             /**
              * @author 马鹏昊
-             * @desc             防止精度溢出
+             * @desc 防止精度溢出
              */
             String yesterdayRevenueStr = df.format(yesterdayRevenue);
 
@@ -96,16 +124,38 @@ public class IndexServiceImpl implements IndexService {
 
             /**
              * @author 马鹏昊
-             * @desc             防止精度溢出
+             * @desc 防止精度溢出
              */
             String todayRevenueStr = df.format(todayRevenue);
+
+            /**
+             * @author 马鹏昊
+             * @desc 查询积分兑换活动数量（所有的和进行中的）
+             */
+            //所有的
+            int hasBeenCreatedActives = accountSaverTicketService.getTicketActiveCounts(shopIds);
+            //进行中的
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+            Date currentDate = new Date();
+
+            List<AccountSaverTicket> allActives = accountSaverTicketService.getTicketActiveUnderWayCounts(shopIds);
+            int nowActives = 0;
+            for (AccountSaverTicket active : allActives) {
+
+                Date startTime = DateUtil.parse(active.gettStartTime());
+                Date expireTime = DateUtil.parse(active.gettExpiration());
+                //如果在有效期内就算作进行中的活动
+                if (currentDate.after(startTime) && currentDate.before(expireTime)) {
+                    nowActives++;
+                }
+            }
 
             Shop shop = shopService.getShopByAccountShopId(user.getUserId());
             IndexInfo indexInfo = new IndexInfo(
                     loginTime, signOutTime, useRemainingTime,
                     newOrderNumber, 0, currentRefundNumber,
                     badCommentNumber, noCommentNumber, yesterdayNumber,
-                    yesterdayRevenueStr, 0, todayNumber, todayRevenueStr);
+                    yesterdayRevenueStr, 0, todayNumber, todayRevenueStr, hasBeenCreatedActives, nowActives);
             indexInfo.setUseRemainingTime(useRemainingTime);
             indexInfo.setShopState(shop.getState());
             indexInfo.setShopName(shop.getShopName());
@@ -114,6 +164,7 @@ public class IndexServiceImpl implements IndexService {
             return null;
         }
     }
+
 
     //首页店铺停止营业
     @Override

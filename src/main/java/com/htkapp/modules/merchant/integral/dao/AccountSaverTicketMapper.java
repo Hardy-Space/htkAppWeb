@@ -22,4 +22,8 @@ public interface AccountSaverTicketMapper {
     int updateActiveOpenTimeDAO(int id, String startTime);
     //作废活动
     int updateActiveCloseTimeDAO(int id, String endTime);
+
+    int getTicketActiveCounts(@Param("shopIdList") List<Integer> shopIds);
+
+    List<AccountSaverTicket> getTicketActiveUnderWayCounts(@Param("shopIdList") List<Integer> shopIds);
 }

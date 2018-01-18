@@ -7,6 +7,8 @@ import com.htkapp.modules.merchant.shop.service.AccountShopReplyCommentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AccountShopReplyCommentsServiceImpl implements AccountShopReplyCommentsService {
 
@@ -23,6 +25,14 @@ public class AccountShopReplyCommentsServiceImpl implements AccountShopReplyComm
             throw new Exception(Globals.CALL_DATABASE_ERROR);
         }
     }
+    @Override
+    public int getNoCommentCounts(List<Integer> shopIds) throws Exception {
+        try {
+            return replyCommentsDao.getNoCommentCounts(shopIds);
+        } catch (Exception e) {
+            throw new Exception(Globals.CALL_DATABASE_ERROR);
+        }
+    }
 
     //查找商户未回复差评数量
 
@@ -30,6 +40,15 @@ public class AccountShopReplyCommentsServiceImpl implements AccountShopReplyComm
     public int getBadCommentNumber(String accountShopToken) throws Exception {
         try {
             return replyCommentsDao.getBadCommentNumberDAO(accountShopToken);
+        } catch (Exception e) {
+            throw new Exception(Globals.CALL_DATABASE_ERROR);
+        }
+    }
+
+    @Override
+    public int getBadCommentCounts(List<Integer> shopIds) throws Exception {
+        try {
+            return replyCommentsDao.getBadCommentCounts(shopIds);
         } catch (Exception e) {
             throw new Exception(Globals.CALL_DATABASE_ERROR);
         }

@@ -57,8 +57,7 @@
     where user_name = #{phone} and phone = #{phone}
   </select>
   <select id="getUseTimeByTokenDAO" resultType="AccountShop">
-    select
-    register_time, use_start_time, use_end_time
+    select *
     from account_shop
     where token = #{token}
   </select>

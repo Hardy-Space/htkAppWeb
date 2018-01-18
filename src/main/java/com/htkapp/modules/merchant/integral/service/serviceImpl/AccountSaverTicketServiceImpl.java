@@ -80,4 +80,16 @@ public class AccountSaverTicketServiceImpl implements AccountSaverTicketService 
             throw new UpdateException(Globals.DEFAULT_EXCEPTION_UPDATE_FAILED);
         }
     }
+
+    @Override
+    public int getTicketActiveCounts(List<Integer> shopIds) {
+        int counts = saverTicketDao.getTicketActiveCounts(shopIds);
+        return  counts;
+    }
+
+    @Override
+    public List<AccountSaverTicket> getTicketActiveUnderWayCounts(List<Integer> shopIds) {
+        List<AccountSaverTicket> results = saverTicketDao.getTicketActiveUnderWayCounts(shopIds);
+        return  results;
+    }
 }

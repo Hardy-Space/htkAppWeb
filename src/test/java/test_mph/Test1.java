@@ -10,6 +10,8 @@ import com.htkapp.core.config.AlipayConfig;
 import com.htkapp.core.utils.Globals;
 import org.junit.Test;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -30,8 +32,11 @@ public class Test1 {
 
 //        test02();
 
-        testAplipayTradeState("1801163837510090");
+//        testAplipayTradeState("1801163837510090");
 
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+        Date d = new Date();
+        String date = df.format(d);
     }
 
     public void testAplipayTradeState(String orderNo){

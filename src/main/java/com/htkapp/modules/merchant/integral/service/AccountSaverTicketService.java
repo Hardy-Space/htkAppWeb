@@ -20,4 +20,8 @@ public interface AccountSaverTicketService {
     void updateActiveOpenTime(int id, String startTime);
     //作废活动
     void updateActiveCloseTime(int id, String endTime);
+
+    int getTicketActiveCounts(List<Integer> shopIds);
+
+    List<AccountSaverTicket> getTicketActiveUnderWayCounts(List<Integer> shopIds);
 }

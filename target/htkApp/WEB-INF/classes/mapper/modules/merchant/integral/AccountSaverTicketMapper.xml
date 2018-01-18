@@ -6,13 +6,35 @@
         id, t_name, t_start_time, t_expiration, t_money, t_use_money, integral_value, state, shop_id
     </sql>
     
+    <select id="getTicketActiveCounts" resultType="java.lang.Integer">
+        select count(0)
+        from account_saver_ticket
+        where
+        <foreach collection="shopIdList" index="index" item="every" open="" separator="or" close="">
+            shop_id = #{every}
+        </foreach>
+    </select>
+
+
+    <select id="getTicketActiveUnderWayCounts" resultType="AccountSaverTicket">
+        select
+        <include refid="Base_Column_List" />
+        from account_saver_ticket
+        where
+        <foreach collection="shopIdList" index="index" item="every" open="" separator="or" close="">
+            shop_id = #{every}
+        </foreach>
+    </select>
+
+
+
     <select id="getTicketMesByIdAndShopIdDAO" resultType="AccountSaverTicket">
         select
         <include refid="Base_Column_List" />
         from account_saver_ticket
         where id = #{0} and shop_id = #{1}
     </select>
-    
+
     <select id="getSaverTicketListByShopIdDAO" resultType="AccountSaverTicket">
         select
         <include refid="Base_Column_List" />

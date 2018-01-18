@@ -779,7 +779,7 @@ public class AccountServiceImpl implements AccountServiceI {
                 if (accountShop != null) {
 
                     //先查出积分数量
-                    int nowVal = integralService.getVal(orderRecord.getToken(), shop.getShopId());
+                    int nowVal = integralService.getVal(token, shop.getShopId());
                     int newVal = nowVal;
                     int sumAddedInteger = 0;
                     List<OrderProduct> allBuyedProducts = orderProductService.getProductListByOrderId(orderRecord.getId());
@@ -792,11 +792,11 @@ public class AccountServiceImpl implements AccountServiceI {
 
                     //如果新积分数和旧积分数不一样，说明购买的商品携带了返还积分，需要更新积分
                     if (newVal != nowVal) {
-                        integralService.updateIntegral(orderRecord.getToken(), shop.getShopId(), newVal);
+                        integralService.updateIntegral(token, shop.getShopId(), newVal);
                         //通过商铺id查找商铺信息
                         //记录积分变动记录
                         String recordTypeStr = "消费返还积分";
-                        IntegralManageRecord record = new IntegralManageRecord(recordTypeStr, accountShop.getToken(), orderRecord.getToken(), sumAddedInteger);
+                        IntegralManageRecord record = new IntegralManageRecord(recordTypeStr, accountShop.getToken(), token, sumAddedInteger);
                         integralManageRecordService.insertRecordByToken(record);
 
                         /**

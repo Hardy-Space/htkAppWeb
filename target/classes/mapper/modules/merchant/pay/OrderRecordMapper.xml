@@ -151,7 +151,8 @@
         where account_token = #{token} and mark = #{mark} order by ${orderByDesc}
     </select>
     <select id="getOrderRecordByOrderNumberDAO" resultType="OrderRecord">
-        select *
+        select
+        <include refid="Base_Column_List"/>
         from order_record
         where order_number = #{orderNumber}
     </select>

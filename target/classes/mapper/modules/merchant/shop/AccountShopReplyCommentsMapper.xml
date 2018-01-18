@@ -24,6 +24,31 @@
         and
         shop_message_comment.comments_stars > 1
     </select>
+
+    <!--马鹏昊修改,星级小于3颗星的算差评-->
+    <select id="getBadCommentCounts" resultType="java.lang.Integer">
+        select count(0)
+        from shop_message_comment  where id not in
+        (select comment_id from account_shop_reply_comments)
+        and
+        comments_stars  &lt;= 2
+        and
+        <foreach collection="shopIdList" index="index" item="each" open="" separator="or" close="">
+            shop_id = #{each}
+        </foreach>
+    </select>
+
+    <!--马鹏昊修改,查询未回复的所有评价，不考虑是否是差评-->
+    <select id="getNoCommentCounts" resultType="java.lang.Integer">
+        select count(0)
+        from shop_message_comment  where id not in
+        (select comment_id from account_shop_reply_comments)
+        and
+        <foreach collection="shopIdList" index="index" item="each" open="" separator="or" close="">
+            shop_id = #{each}
+        </foreach>
+    </select>
+
     <select id="getReplyContentByIdDAO" resultType="AccountShopReplyComments" >
         select *
         from account_shop_reply_comments

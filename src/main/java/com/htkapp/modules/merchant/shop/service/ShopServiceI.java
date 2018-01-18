@@ -80,6 +80,7 @@ public interface ShopServiceI {
 	int initShopMessage(int shopId);
 	//配送费
 	void updateDeliveryFee(Shop shop);
+
 	/* ====================JSP页面接口结束========================= */
 
 }

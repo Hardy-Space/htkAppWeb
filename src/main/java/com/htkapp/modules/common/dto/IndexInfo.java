@@ -47,13 +47,34 @@ public class IndexInfo {
 
     private Integer memberActiveNumber;  //会员尊享平台活动数量
 
+
+    private Integer hasBeenCreatedActives;  //已创建的积分兑换活动数量（所有的）,不包括咨讯数量
+
+    private Integer nowActives;  //已创建的且在有效期内的积分兑换活动数量
+
+    public Integer getHasBeenCreatedActives() {
+        return hasBeenCreatedActives;
+    }
+
+    public void setHasBeenCreatedActives(Integer hasBeenCreatedActives) {
+        this.hasBeenCreatedActives = hasBeenCreatedActives;
+    }
+
+    public Integer getNowActives() {
+        return nowActives;
+    }
+
+    public void setNowActives(Integer nowActives) {
+        this.nowActives = nowActives;
+    }
+
     public IndexInfo() {
     }
 
     public IndexInfo(String currentLoginTime, String lastExitTime, String useRemainingTime,
                      Integer newOrderNumber, Integer exceptionOrderNumber, Integer returnOrderNumber,
                      Integer badCommentNumber, Integer noCommentNumber, Integer yesterdayOrderCount,
-                     String yesterdayRevenue, Integer memberActiveNumber,Integer todayOrderCount, String todayRevenue) {
+                     String yesterdayRevenue, Integer memberActiveNumber,Integer todayOrderCount, String todayRevenue,Integer hasBeenCreatedActives,Integer nowActives) {
         this.currentLoginTime = currentLoginTime;
         this.lastExitTime = lastExitTime;
         this.useRemainingTime = useRemainingTime;
@@ -67,6 +88,8 @@ public class IndexInfo {
         this.memberActiveNumber = memberActiveNumber;
         this.todayOrderCount = todayOrderCount;
         this.todayRevenue = todayRevenue;
+        this.hasBeenCreatedActives = hasBeenCreatedActives;
+        this.nowActives = nowActives;
     }
 
     public String getCurrentLoginTime() {
