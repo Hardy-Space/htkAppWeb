@@ -73,6 +73,17 @@ public class IntegralServiceImpl implements IntegralService {
         return null;
     }
 
+    @Override
+    public List<Integral> getIntegralUserListByShopIds(List<Integer> shopIds, int pageNumber, int pageLimit) {
+        String orderDesc = "gmt_create desc";
+        PageHelper.startPage(pageNumber, pageLimit);
+        List<Integral> resultList = integralDao.getIntegralUserListByShopIds(shopIds, orderDesc);
+        if (resultList != null && resultList.size() > 0) {
+            return resultList;
+        }
+        return null;
+    }
+
     //抵扣或赠送积分
     @Override
     public void presentOrDeductionIntegralByToken(String accountToken, int shopId, int val, int operationId) {
@@ -105,7 +116,7 @@ public class IntegralServiceImpl implements IntegralService {
     }
 
     @Override
-    public void updateLatestConsumeTime(String token, Integer shopId, Timestamp time) {
+    public void updateLatestConsumeTime(String token, Integer shopId, String time) {
         int row = integralDao.updateLatestConsumeTime(token, shopId, time);
         if (row <= 0) {
             throw new UpdateException(Globals.DEFAULT_EXCEPTION_UPDATE_FAILED);
@@ -113,7 +124,7 @@ public class IntegralServiceImpl implements IntegralService {
     }
 
     @Override
-    public void updateLatestGetTime(String token, Integer shopId, Timestamp time) {
+    public void updateLatestGetTime(String token, Integer shopId, String time) {
         int row = integralDao.updateLatestGetTime(token, shopId, time);
         if (row <= 0) {
             throw new UpdateException(Globals.DEFAULT_EXCEPTION_UPDATE_FAILED);

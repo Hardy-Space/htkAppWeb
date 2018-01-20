@@ -190,6 +190,9 @@
         where buyPackageProduct.id is null and buffet_food_product.shop_id = #{0}
 
     </select>
+ <select id="getAllProductByShopId" resultType="BuffetFoodProduct">
+    	select * from buffet_food_product where shop_id=#{shopId} order by #{orderBy}
+    </select>
     <!-- ==================JSP页面接口结束======================= -->
 
 </mapper>

@@ -69,11 +69,13 @@
             </if>
         </trim>
     </insert>
+<!-- 修改订单操作状态 -->
     <update id="changeOrderStateDAO">
         update buffet_food_order
         set order_state = #{stateId}
         where order_number = #{orderNumber}
     </update>
+ <!-- 修改订单支付状态状态 -->
     <update id="changeOrderStateByAccountShopTokenDAO">
         update buffet_food_order
         set pay_state = #{1}
@@ -229,6 +231,7 @@
         left join account_shop on shop.account_shop_id = account_shop.id
         where account_shop.token = #{accountShopToken} and buffet_food_order.order_number = #{orderNumber}
     </select>
+ <!-- 这是查询订单列表 -->
     <select id="getBuffetFoodOrderListByTokenAndConditionDAO" resultType="BuffetFoodOrder">
         select
         buffet_food_order.id, buffet_food_order.order_number,
@@ -280,7 +283,7 @@
     <select id="getAdjustOrderListDAO" resultType="BuffetFoodOrder">
         select id, order_number, order_amount, discount_amount, order_body,seat_name,
         payment_method, order_state, account_token, shop_id, mark, reminder_state,
-        adjust_order_json, remark, serial_number, all_serial_number, gmt_create as orderTime
+        adjust_order_json,adjust_order_product_json adjustOrderProductJson, remark, serial_number, all_serial_number, gmt_create as orderTime
         from buffet_food_order
         where shop_id = #{shopId} and adjust_order_product_json is not null order by ${orderDesc}
     </select>

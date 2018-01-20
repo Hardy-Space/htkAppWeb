@@ -38,5 +38,7 @@ public interface TakeoutProductMapper {
     List<TakeoutProduct> getNotInGroupBuyProductListDataDAO(int shopId);
 
     TakeoutProduct getTakeoutProductByProductId(int productId);
+
+    List<TakeoutProduct> getTakeoutProductByCategoryIdAndIfCanBuy(int categoryId);
     /* ====================JSP页面接口结束========================== */
 }	

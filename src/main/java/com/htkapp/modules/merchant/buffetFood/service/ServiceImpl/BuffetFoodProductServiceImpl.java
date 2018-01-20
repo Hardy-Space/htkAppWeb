@@ -168,5 +168,14 @@ public class BuffetFoodProductServiceImpl implements BuffetFoodProductService {
         return null;
     }
 
+    @Override
+    public List<BuffetFoodProduct> getAllProductByShopId(int shopId, String orderBy) {
+        List<BuffetFoodProduct> resultList=buffetFoodProductDao.getAllProductByShopId(shopId, orderBy);
+        if(resultList != null && resultList.size() > 0){
+            return resultList;
+        }
+        return null;
+    }
+
     /* ======================JSP接口结束========================== */
 }

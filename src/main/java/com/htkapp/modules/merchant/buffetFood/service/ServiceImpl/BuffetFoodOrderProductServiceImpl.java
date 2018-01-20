@@ -99,5 +99,11 @@ public class BuffetFoodOrderProductServiceImpl implements BuffetFoodOrderProduct
         return null;
     }
 
+    //根据产品信息修改bz在数据库中的状态
+    @Override
+    public int updataOrderProductBzById(BuffetFoodOrderProduct product, int bz) {
+        return boPDao.updataOrderProductBzById(product, bz);
+    }
+
     /* =============================接口结束============================== */
 }

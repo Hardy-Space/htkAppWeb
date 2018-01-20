@@ -41,5 +41,7 @@ public interface BuffetFoodProductMapper {
     int delProductByCIdDAO(int categoryId);
     //关联团购添加产品表，只查询出未添加到团购产品表中的数据
     List<BuffetFoodProduct> getNotInGroupBuyProductListDataDAO(int shopId);
+//通过店铺id查询店铺下的所有自助点餐产品列表
+    List<BuffetFoodProduct> getAllProductByShopId(@Param("shopId")int shopId,@Param("orderBy")String orderBy);
     /* ==========================JSP页面接口结束=============================== */
 }

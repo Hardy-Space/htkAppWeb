@@ -39,5 +39,9 @@ public interface BuffetFoodProductService {
     void delProductByCId(int categoryId) throws Exception;
     //关联团购添加产品表，只查询出未添加到团购产品表中的数据
     List<BuffetFoodProduct> getNotInGroupBuyProductListData(int shopId);
+
+    //根据店铺id查询其名下所有的产品详情
+    List<BuffetFoodProduct> getAllProductByShopId(int shopId,String orderBy);
+
     /* ==========================JSP接口结束=============================== */
 }

@@ -35,6 +35,8 @@ import sun.rmi.runtime.Log;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -58,6 +60,8 @@ public class IntegralManageServiceImpl implements IntegralManageService {
     private ShopArticleInfoService shopArticleInfoService;
     @Resource
     private AccountSaverTicketService accountSaverTicketService;
+    @Resource
+    private AccountShopServiceI accountShopService;
 
     /* =====================接口开始========================= */
     //获取用户积分列表数据
@@ -99,25 +103,30 @@ public class IntegralManageServiceImpl implements IntegralManageService {
                 int newVal = 0;
 
 
-
                 //0抵扣积分  1赠送积分
-                if (params.getOperationId()==0) {
-                    newVal = (nowVal - params.getValue())<0?0:(nowVal - params.getValue());
+//                Date date = new Date();
+//                Timestamp timestamp = new Timestamp(date.getTime());
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+                Date d = new Date();
+                String dateStr = df.format(d);
+
+                if (params.getOperationId() == 0) {
+                    newVal = (nowVal - params.getValue()) < 0 ? 0 : (nowVal - params.getValue());
 
                     /**
                      * @author 马鹏昊
                      * @desc 修改最近消费时间（gmt_modified字段）
                      */
-                    integralService.updateLatestConsumeTime(accountFocus.getAccountToken(), accountFocus.getShopId(),new Timestamp((new Date()).getTime()));
+                    integralService.updateLatestConsumeTime(accountFocus.getAccountToken(), accountFocus.getShopId(), dateStr);
 
-                }else if (params.getOperationId()==1){
-                    newVal = nowVal+params.getValue();
+                } else if (params.getOperationId() == 1) {
+                    newVal = nowVal + params.getValue();
 
                     /**
                      * @author 马鹏昊
                      * @desc 修改最近获得时间（gmt_latest_get字段）
                      */
-                    integralService.updateLatestGetTime(accountFocus.getAccountToken(), accountFocus.getShopId(),new Timestamp((new Date()).getTime()));
+                    integralService.updateLatestGetTime(accountFocus.getAccountToken(), accountFocus.getShopId(), dateStr);
 
                 }
                 integralService.updateIntegral(accountFocus.getAccountToken(), accountFocus.getShopId(), newVal);
@@ -140,17 +149,17 @@ public class IntegralManageServiceImpl implements IntegralManageService {
     //创建资讯
     @Override
     public AjaxResponseModel createNewActive(ShopArticleInfo articleInfo) {
-        if(articleInfo != null){
+        if (articleInfo != null) {
             try {
                 LoginUser user = OtherUtils.getLoginUserByRequest();
                 Shop shop = shopService.getShopDataByAccountShopIdAndMark(user.getUserId(), 0);
                 articleInfo.setShopId(shop.getShopId());
                 shopArticleInfoService.insertShopArticleInfoDAO(articleInfo);
                 return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
-            }catch (Exception e){
+            } catch (Exception e) {
                 return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
             }
-        }else {
+        } else {
             return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
         }
     }
@@ -160,24 +169,24 @@ public class IntegralManageServiceImpl implements IntegralManageService {
     public AjaxResponseModel uploadMsgImg(MultipartFile file) {
         try {
             String imgUrl = FileUploadUtils.appUploadAvatarImg(file, "merchant/message/");
-            return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION,"成功", imgUrl);
-        }catch (Exception e){
+            return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION, "成功", imgUrl);
+        } catch (Exception e) {
             return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
         }
     }
-    
+
     //创建资讯图片上传
     @Override
     public String uploadNewsContentImg(MultipartFile file) {
-    	try {
-    		System.out.println("-----==================进入了uploadNewsContentImg");
-    		String imgUrl = FileUploadUtils.appUploadContentImg(file, "merchant/newContentImg/");
-    		return imgUrl;
-    	}catch(Exception e) {
-    		
-    		 return "{\"code\": 1,\"msg\": \"成功\"}";
-    	}
-    	
+        try {
+            System.out.println("-----==================进入了uploadNewsContentImg");
+            String imgUrl = FileUploadUtils.appUploadContentImg(file, "merchant/newContentImg/");
+            return imgUrl;
+        } catch (Exception e) {
+
+            return "{\"code\": 1,\"msg\": \"成功\"}";
+        }
+
     }
 
     @Override
@@ -185,8 +194,8 @@ public class IntegralManageServiceImpl implements IntegralManageService {
         try {
             System.out.println("-----==================进入了uploadNewsContentImg");
             String imgUrl = FileUploadUtils.appUploadMsgTitleImg(file, "merchant/message/");
-            return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION,"成功", imgUrl);
-        }catch(Exception e) {
+            return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION, "成功", imgUrl);
+        } catch (Exception e) {
             return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
         }
     }
@@ -194,7 +203,7 @@ public class IntegralManageServiceImpl implements IntegralManageService {
     //创建兑换活动
     @Override
     public AjaxResponseModel createExchangeActivity(AccountSaverTicket saverTicket, String startTime, String endTime) {
-        if(saverTicket != null){
+        if (saverTicket != null) {
             //插入兑换活动
             try {
                 saverTicket.settStartTime(startTime);
@@ -205,10 +214,10 @@ public class IntegralManageServiceImpl implements IntegralManageService {
                 saverTicket.setShopId(shop.getShopId());
                 accountSaverTicketService.insertSaverTicketByShopId(saverTicket);
                 return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
-            }catch (Exception e){
+            } catch (Exception e) {
                 return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
             }
-        }else {
+        } else {
             return new AjaxResponseModel(Globals.COMMON_PARAMETER_ERROR);
         }
     }
@@ -217,23 +226,23 @@ public class IntegralManageServiceImpl implements IntegralManageService {
     @Override
     public void getExitsActiveNoStartPage(RequestParams params) {
         //标识-判断
-        if(params != null){
+        if (params != null) {
             try {
                 LoginUser user = OtherUtils.getLoginUserByRequest();
                 Shop shop = shopService.getShopByAccountShopIdAndMark(user.getUserId(), 0);
                 String orderDesc = "gmt_create desc";
                 String time = format(new Date(), NORM_DATETIME_PATTERN);
-                List<AccountSaverTicket> resultList = accountSaverTicketService.getSaverTicketListByCondition(shop.getShopId(),orderDesc,time,0);
-                if(resultList != null){
+                List<AccountSaverTicket> resultList = accountSaverTicketService.getSaverTicketListByCondition(shop.getShopId(), orderDesc, time, 0);
+                if (resultList != null) {
                     Gson gson = new Gson();
-                    for (AccountSaverTicket each : resultList){
+                    for (AccountSaverTicket each : resultList) {
                         each.setJsonStr(gson.toJson(each));
                     }
                 }
                 Model model = params.getModel();
                 System.out.println("未开始活动");
                 model.addAttribute("data", resultList);
-            }catch (Exception e){
+            } catch (Exception e) {
                 return;
             }
         }
@@ -242,23 +251,23 @@ public class IntegralManageServiceImpl implements IntegralManageService {
     //进行中活动
     @Override
     public void getExitsActiveProcessPage(RequestParams params) {
-        if(params != null){
+        if (params != null) {
             try {
                 LoginUser user = OtherUtils.getLoginUserByRequest();
                 Shop shop = shopService.getShopByAccountShopIdAndMark(user.getUserId(), 0);
                 String orderDesc = "gmt_create desc";
                 String time = format(new Date(), NORM_DATETIME_PATTERN);
                 List<AccountSaverTicket> resultList = accountSaverTicketService.getSaverTicketListByCondition(shop.getShopId(), orderDesc, time, 1);
-                if(resultList != null){
+                if (resultList != null) {
                     Gson gson = new Gson();
-                    for (AccountSaverTicket each : resultList){
+                    for (AccountSaverTicket each : resultList) {
                         each.setJsonStr(gson.toJson(each));
                     }
                 }
                 Model model = params.getModel();
                 System.out.println("进行中活动");
                 model.addAttribute("data", resultList);
-            }catch (Exception e){
+            } catch (Exception e) {
                 return;
             }
         }
@@ -267,23 +276,23 @@ public class IntegralManageServiceImpl implements IntegralManageService {
     //已停止活动
     @Override
     public void getExitsActiveStopPage(RequestParams params) {
-        if(params != null){
+        if (params != null) {
             try {
                 LoginUser user = OtherUtils.getLoginUserByRequest();
                 Shop shop = shopService.getShopByAccountShopIdAndMark(user.getUserId(), 0);
                 String orderDesc = "gmt_create desc";
                 String time = format(new Date(), NORM_DATETIME_PATTERN);
                 List<AccountSaverTicket> resultList = accountSaverTicketService.getSaverTicketListByCondition(shop.getShopId(), orderDesc, time, 2);
-                if(resultList != null){
+                if (resultList != null) {
                     Gson gson = new Gson();
-                    for (AccountSaverTicket each : resultList){
+                    for (AccountSaverTicket each : resultList) {
                         each.setJsonStr(gson.toJson(each));
                     }
                 }
                 Model model = params.getModel();
                 System.out.println("已停止活动");
                 model.addAttribute("data", resultList);
-            }catch (Exception e){
+            } catch (Exception e) {
                 return;
             }
         }
@@ -292,20 +301,20 @@ public class IntegralManageServiceImpl implements IntegralManageService {
     //资讯
     @Override
     public void getExitsActiveMessagePage(RequestParams params) {
-        if(params != null){
+        if (params != null) {
             Model model = params.getModel();
             try {
                 int pageNumber = Globals.DEFAULT_PAGE_NO;
                 int pageLimit = Globals.DEFAULT_PAGE_LIMIT;
-                if(params.getPageNum() > 1){
+                if (params.getPageNum() > 1) {
                     pageNumber = params.getPageNum();
                 }
                 LoginUser user = OtherUtils.getLoginUserByRequest();
                 String orderDesc = "shop_article_info.gmt_create desc";
                 List<ShopArticleInfo> resultList = shopArticleInfoService.getShopArticleInfoById(user.getUserId(), orderDesc, pageNumber, pageLimit);
-                if(resultList != null){
+                if (resultList != null) {
                     Gson gson = new Gson();
-                    for (ShopArticleInfo each : resultList){
+                    for (ShopArticleInfo each : resultList) {
                         each.setImgUrl(OtherUtils.getRootDirectory() + each.getImgUrl());
                         each.setJsonStr(gson.toJson(each));
                     }
@@ -314,7 +323,7 @@ public class IntegralManageServiceImpl implements IntegralManageService {
                 model.addAttribute("data", resultList);
                 PageInfo pageInfo = new PageInfo<>(resultList);
                 model.addAttribute("pageInfo", pageInfo);
-            }catch (Exception e){
+            } catch (Exception e) {
                 return;
             }
         }
@@ -323,15 +332,15 @@ public class IntegralManageServiceImpl implements IntegralManageService {
     //作废活动接口
     @Override
     public AjaxResponseModel obsoleteActivity(AjaxRequestParams params) {
-        if(params != null){
+        if (params != null) {
             try {
                 String time = format(new Date(), NORM_DATETIME_PATTERN);
                 accountSaverTicketService.updateActiveCloseTime(params.getId(), time);
                 return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
-            }catch (Exception e){
+            } catch (Exception e) {
                 return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
             }
-        }else {
+        } else {
             return new AjaxResponseModel(Globals.COMMON_PARAMETER_ERROR);
         }
     }
@@ -339,25 +348,25 @@ public class IntegralManageServiceImpl implements IntegralManageService {
     //资讯关闭显示接口
     @Override
     public AjaxResponseModel closeTheDisplay(AjaxRequestParams params) {
-        if(params != null){
+        if (params != null) {
             try {
                 ShopArticleInfo shopArticleInfo = shopArticleInfoService.getShopArticleInfoById(params.getId());
-                if(shopArticleInfo == null){
-                 return new AjaxResponseModel(Globals.COMMON_PARAMETER_ERROR);
+                if (shopArticleInfo == null) {
+                    return new AjaxResponseModel(Globals.COMMON_PARAMETER_ERROR);
                 }
                 int stateId;
-                if(shopArticleInfo.getState() == -1){
+                if (shopArticleInfo.getState() == -1) {
                     stateId = 0;
-                }else {
+                } else {
                     stateId = -1;
                 }
                 //关闭显示
-                shopArticleInfoService.updateArticleInfoShowState(params.getId(),stateId);
+                shopArticleInfoService.updateArticleInfoShowState(params.getId(), stateId);
                 return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
-            }catch (Exception e){
+            } catch (Exception e) {
                 return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
             }
-        }else {
+        } else {
             return new AjaxResponseModel(Globals.COMMON_PARAMETER_ERROR);
         }
     }
@@ -365,15 +374,15 @@ public class IntegralManageServiceImpl implements IntegralManageService {
     //开启活动
     @Override
     public AjaxResponseModel openActivity(AjaxRequestParams params) {
-        if(params != null){
+        if (params != null) {
             try {
                 String time = format(new Date(), NORM_DATETIME_PATTERN);
-                accountSaverTicketService.updateActiveOpenTime(params.getId(),time);
+                accountSaverTicketService.updateActiveOpenTime(params.getId(), time);
                 return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
-            }catch (Exception e){
+            } catch (Exception e) {
                 return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
             }
-        }else {
+        } else {
             return new AjaxResponseModel(Globals.COMMON_PARAMETER_ERROR);
         }
     }
@@ -381,14 +390,14 @@ public class IntegralManageServiceImpl implements IntegralManageService {
     //修改资讯
     @Override
     public AjaxResponseModel updateMes(ShopArticleInfo shopArticleInfo) {
-        if(shopArticleInfo != null){
+        if (shopArticleInfo != null) {
             try {
                 shopArticleInfoService.updateMesById(shopArticleInfo);
                 return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
-            }catch (Exception e){
+            } catch (Exception e) {
                 return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
             }
-        }else {
+        } else {
             return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
         }
     }

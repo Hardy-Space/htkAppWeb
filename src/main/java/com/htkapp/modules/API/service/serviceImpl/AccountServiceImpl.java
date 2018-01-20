@@ -47,6 +47,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -803,7 +804,10 @@ public class AccountServiceImpl implements AccountServiceI {
                          * @author 马鹏昊
                          * @desc 修改最近获得时间（gmt_latest_get字段）
                          */
-                        integralService.updateLatestGetTime(orderRecord.getToken(), shop.getShopId(), new Timestamp((new Date()).getTime()));
+                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+                        Date d = new Date();
+                        String dateStr = df.format(d);
+                        integralService.updateLatestGetTime(orderRecord.getToken(), shop.getShopId(), dateStr);
                     }
 
                 }

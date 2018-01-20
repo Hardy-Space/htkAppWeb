@@ -8,6 +8,13 @@
 
     <!-- ==================接口开始======================= -->
 
+    <select id="getTakeoutProductByCategoryIdAndIfCanBuy" resultType="TakeoutProduct">
+        select
+        <include refid="Base_Column_List"/>
+        from takeout_product
+        where category_id = #{categoryId} and if_can_buy = 1
+    </select>
+
     <select id="getTakeoutProductByProductId" resultType="TakeoutProduct">
         select *
         from takeout_product

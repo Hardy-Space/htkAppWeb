@@ -66,6 +66,8 @@ public interface MerchantService {
     void buffetFoodNewOrder(RequestParams params);
     //门店信息
     void storeHomePage(RequestParams params);
+//获取门店座位信息
+    void getSeatInfo(RequestParams params);
     //自助点餐订单处理(订单调整)
     void buffetFoodOrderEdit(RequestParams params);
     //自助点餐订单处理(催单)

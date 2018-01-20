@@ -19,6 +19,9 @@ public class AjaxResponseModel<T> {
     private T data;
 
     private int pageNumber;
+    public AjaxResponseModel() {
+		super();
+	}
 
 
     public AjaxResponseModel(int code){

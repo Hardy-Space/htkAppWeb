@@ -95,5 +95,10 @@
         on buffet_food_order_product.order_id = buffet_food_order.id
         where buffet_food_order.order_number = #{0}
     </select>
+	<update id="updataOrderProductBzById">
+    	update  buffet_food_order_product 
+		set bz=#{bz}
+		where order_id=#{product.orderId} and product_name=#{product.productName}
+    </update>
     <!-- ==============================接口结束================================== -->
 </mapper>

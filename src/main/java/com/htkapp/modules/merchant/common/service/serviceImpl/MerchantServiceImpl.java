@@ -1,6 +1,9 @@
 package com.htkapp.modules.merchant.common.service.serviceImpl;
 
+import com.alibaba.druid.pool.vendor.SybaseExceptionSorter;
 import com.github.pagehelper.PageInfo;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.htkapp.core.MD5Utils;
 import com.htkapp.core.OtherUtils;
 import com.htkapp.core.jsAjax.AjaxResponseModel;
@@ -19,12 +22,15 @@ import com.htkapp.modules.admin.shopCategory.entity.ShopCategory;
 import com.htkapp.modules.admin.shopCategory.service.ShopCategoryService;
 import com.htkapp.modules.common.dto.IndexInfo;
 import com.htkapp.modules.common.entity.LoginUser;
+import com.htkapp.modules.merchant.buffetFood.dao.BuffetFoodProductMapper;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrder;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrderProduct;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodProduct;
+import com.htkapp.modules.merchant.buffetFood.entity.SeatInformation;
 import com.htkapp.modules.merchant.buffetFood.service.BuffetFoodOrderProductService;
 import com.htkapp.modules.merchant.buffetFood.service.BuffetFoodOrderService;
 import com.htkapp.modules.merchant.buffetFood.service.BuffetFoodProductService;
+import com.htkapp.modules.merchant.buffetFood.service.SeatInformationService;
 import com.htkapp.modules.merchant.common.dto.CommentListInfo;
 import com.htkapp.modules.merchant.common.dto.TakeoutCommentList;
 import com.htkapp.modules.merchant.common.entity.AccountShopNotice;
@@ -60,11 +66,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.*;
 
 import static com.xiaoleilu.hutool.date.DatePattern.NORM_DATETIME_MINUTE_PATTERN;
 import static com.xiaoleilu.hutool.date.DateUtil.*;
@@ -121,6 +130,8 @@ public class MerchantServiceImpl implements MerchantService {
     private ShopCategoryService shopCategoryService;
     @Resource
     private IndexService indexService;
+	@Resource
+private SeatInformationService seatInofService;
 
     /* ===================接口开始================== */
     //异步验证商户账号是否存在
@@ -931,7 +942,25 @@ public class MerchantServiceImpl implements MerchantService {
                     return;
                 }
             }
+
+
+
             List<Integral> integralList = integralService.getIntegralUserListByShopToken(accountShopToken, condition, pageNumber, pageLimit);
+
+            /**
+             * @author 马鹏昊
+             * @desc 因为评论表里和商家关联的只有shopId，所以不能用accountShopToken去比较关联,得先获取Shop（外卖团购和自助的都得有）
+             */
+//            AccountShop accountShop = accountShopService.getUseTimeByToken(accountShopToken);
+//            List<Shop> shops = shopService.getShopListByAccountShopId(accountShop.getId());
+//            List<Integer> shopIds = new ArrayList<>();
+//            if (shops != null) {
+//                for (Shop s : shops) {
+//                    shopIds.add(s.getShopId());
+//                }
+//            }
+//
+//            List<Integral> integralList = integralService.getIntegralUserListByShopIds(shopIds, pageNumber, pageLimit);
             if (integralList != null) {
                 for (Integral each : integralList) {
                     if (each.getJoinTime() != null) {
@@ -1033,46 +1062,172 @@ public class MerchantServiceImpl implements MerchantService {
         }
     }
 
-    //自助点餐订单处理(订单调整)
-    @Override
-    public void buffetFoodOrderEdit(RequestParams params) {
-        if (params != null) {
-            try {
-                Model model = params.getModel();
-                LoginUser user = OtherUtils.getLoginUserByRequest();
-                Shop shop = shopService.getShopByAccountShopIdAndMark(user.getUserId(), 2);
-                int pageNumber = Globals.DEFAULT_PAGE_NO;
-                int pageLimit = Globals.DEFAULT_PAGE_LIMIT;
-                if (params.getPageNum() > 1) {
-                    pageNumber = params.getPageNum();
-                }
-                String orderDesc = "gmt_create desc";
-                List<BuffetFoodOrder> result = buffetFoodOrderService.getAdjustOrderList(shop.getShopId(), orderDesc, pageNumber, pageLimit);
-                if (result != null) {
-                    int quantity = 0;
-                    for (BuffetFoodOrder each : result) {
-                        quantity = 0;
-                        List<BuffetFoodOrderProduct> orderProductList = buffetFoodOrderProductService.getOrderProductListById(each.getId());
-                        each.setProductLists(orderProductList);
-                        System.out.println("自助新订单");
-                        Date date = new Date();
-                        long time = date.getTime() - DateUtil.parse(each.getOrderTime()).getTime();
-                        String commitMinute = DateUtil.formatBetween(time, BetweenFormater.Level.MINUTE);
-                        each.setMinute(commitMinute);
-                        if (orderProductList != null) {
-                            for (BuffetFoodOrderProduct every : orderProductList) {
-                                quantity += every.getQuantity();
-                            }
-                        }
-                        each.setSum(quantity);
-                    }
-                }
-                model.addAttribute("data", result);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
+	//		//自助点餐订单处理(订单调整)
+	//		@Override
+	//		public void buffetFoodOrderEdit(RequestParams params) {
+	//			System.out.println("帮忙进入");
+	//			if (params != null) {
+	//				try {
+	//					//获得model
+	//					Model model = params.getModel();
+	//					//通过model获取用户
+	//					LoginUser user = OtherUtils.getLoginUserByRequest();
+	//					//通过用户id跟mark标记获得商铺信息
+	//					Shop shop = shopService.getShopByAccountShopIdAndMark(user.getUserId(), 2);
+	//					int pageNumber = Globals.DEFAULT_PAGE_NO;
+	//					int pageLimit = Globals.DEFAULT_PAGE_LIMIT;
+	//					if (params.getPageNum() > 1) {
+	//						pageNumber = params.getPageNum();
+	//					}
+	//					String orderDesc = "gmt_create desc";
+	//					//通过店铺id查询订单列表
+	//					List<BuffetFoodOrder> result = buffetFoodOrderService.getAdjustOrderList(shop.getShopId(), orderDesc, pageNumber, pageLimit);
+	//					List<BuffetFoodOrderProduct> productLists=new ArrayList<BuffetFoodOrderProduct>();
+	//					Integer a=0;
+	//					if (result != null) {
+	//						int quantity = 0;
+	//						for (BuffetFoodOrder each : result) {
+	//							quantity = 0;
+	//							Gson gson=new Gson();
+	//							//通过每个订单id查询订单下的商品列表
+	//							productLists = gson.fromJson(each.getAdjustOrderProductJson(), new TypeToken<List<BuffetFoodOrderProduct>>() {
+	//							}.getType());
+	//							List<BuffetFoodOrderProduct> orderProductList = buffetFoodOrderProductService.getOrderProductListById(each.getId());
+	//							each.setProductLists(orderProductList);
+	//							Date date = new Date();
+	//							long time = date.getTime() - DateUtil.parse(each.getOrderTime()).getTime();
+	//							String commitMinute = DateUtil.formatBetween(time, BetweenFormater.Level.MINUTE);
+	//							each.setMinute(commitMinute);
+	//							if (orderProductList != null) {
+	//								for (BuffetFoodOrderProduct every : orderProductList) {
+	//									quantity += every.getQuantity();
+	//								}
+	//							}
+	//							each.setSum(quantity);
+	//							model.addAttribute("change"+a,productLists);
+	//							a++;
+	//						}
+	//					}
+	//					model.addAttribute("count",a);
+	//					model.addAttribute("data", result);
+	//				} catch (Exception e) {
+	//					e.printStackTrace();
+	//				}
+	//			}
+	//		}
+	
+	//自助点餐订单处理(订单调整)
+	@Override
+	public void buffetFoodOrderEdit(RequestParams params) {
+		System.out.println("帮忙进入");
+		if (params != null) {
+			try {
+				//获得model
+				Model model = params.getModel();
+				//通过model获取用户
+				LoginUser user = OtherUtils.getLoginUserByRequest();
+				//通过用户id跟mark标记获得商铺信息
+				Shop shop = shopService.getShopByAccountShopIdAndMark(user.getUserId(), 2);
+				int pageNumber = Globals.DEFAULT_PAGE_NO;
+				int pageLimit = Globals.DEFAULT_PAGE_LIMIT;
+				if (params.getPageNum() > 1) {
+					pageNumber = params.getPageNum();
+				}
+				String orderDesc = "gmt_create desc";
+				Integer bz=null;
+				//通过店铺id查询订单列表
+				List<BuffetFoodOrder> result = buffetFoodOrderService.getAdjustOrderList(shop.getShopId(), orderDesc, pageNumber, pageLimit);
+				List<BuffetFoodOrderProduct> productLists=new ArrayList<BuffetFoodOrderProduct>();
+				if (result != null) {
+					Map<String, Integer> map=new HashMap<String, Integer>();
+					int quantity = 0;
+					for (BuffetFoodOrder each : result) {
+						quantity = 0;
+						Gson gson=new Gson();
+						//提取订单当中用来调单的json串并转变成产品列表
+						productLists = gson.fromJson(each.getAdjustOrderProductJson(), new TypeToken<List<BuffetFoodOrderProduct>>() {
+						}.getType());
+						//通过每个订单id查询订单下的商品列表
+						List<BuffetFoodOrderProduct> orderProductList = buffetFoodOrderProductService.getOrderProductListById(each.getId());
+						String orderBy="gmt_create";
+						//通过店铺id查询店铺下所有的商品
+						List<BuffetFoodProduct> allProductList=buffetFoodProductService.getAllProductByShopId(each.getShopId(), orderBy);
+						String productName="";
+						for(BuffetFoodProduct bfp:allProductList) {
+							productName=bfp.getProductName();
+							map.put(productName, 0);
+							productName="";
+						}
+						for(int a=0;a<orderProductList.size();a++) {
+							if(map.containsKey(orderProductList.get(a).getProductName())) {
+								productName=orderProductList.get(a).getProductName();
+								map.put(productName,orderProductList.get(a).getQuantity());
+							}
+						}
+						for(int a=0;a<productLists.size();a++) {
+							if(map.containsKey(productLists.get(a).getProductName())&&map.get(productLists.get(a).getProductName())!=0) {
+								if(map.get(productLists.get(a).getProductName())<productLists.get(a).getQuantity()) {
+									bz=2;
+									buffetFoodOrderProductService.updataOrderProductBzById(productLists.get(a), bz);
+								}else if(map.get(productLists.get(a).getProductName())>productLists.get(a).getQuantity()){
+									bz=1;
+									buffetFoodOrderProductService.updataOrderProductBzById(productLists.get(a), bz);
+								}else {
+									bz=0;
+									buffetFoodOrderProductService.updataOrderProductBzById(productLists.get(a), bz);
+								}
+							}else if(map.containsKey(productLists.get(a).getProductName())&&map.get(productLists.get(a).getProductName())==0){
+								map.put(productLists.get(a).getProductName(), productLists.get(a).getQuantity());
+								bz=2;
+								buffetFoodOrderProductService.updataOrderProductBzById(productLists.get(a), bz);
+							}
+						}
+						//判断老订单中是否包含调整订单的每一项，如果有一个不包含，就添加进去
+						for(int b=0;b<orderProductList.size();b++) {
+							for(int a=0;a<productLists.size();a++) {
+//								if(orderProductList.get(b).getProductName().equals(productLists.get(a).getProductName())
+//										&&
+//										orderProductList.get(b).getQuantity()!=productLists.get(a).getQuantity()) {
+//								}
+								if(!(productLists.get(b).getProductName().equals(orderProductList.get(a).getProductName()))) {
+									orderProductList.get(a).setQuantity(0);
+									productLists.add(orderProductList.get(a));
+								}
+							}
+						}
+						//将查询到的商品详情储存到订单当中
+						each.setProductLists(productLists);
+						//为订单添加时间
+						Date date = new Date();
+						long time = date.getTime() - DateUtil.parse(each.getOrderTime()).getTime();
+						String commitMinute = DateUtil.formatBetween(time, BetweenFormater.Level.MINUTE);
+						each.setMinute(commitMinute);
+						//为订单添加总价
+						if (orderProductList != null) {
+							for (BuffetFoodOrderProduct every : orderProductList) {
+								quantity += every.getQuantity();
+							}
+						}
+						each.setSum(quantity);
+					}
+				}
+				model.addAttribute("data", result);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
 
     //自助点餐订单处理(催单)
     @Override
@@ -1167,6 +1322,29 @@ public class MerchantServiceImpl implements MerchantService {
             }
         }
     }
+	//根据店铺id查询店铺名下的所有座位信息
+	@Override
+	public void getSeatInfo(RequestParams params) {
+		if(params!=null) {
+			LoginUser user;
+			try {
+				user = OtherUtils.getLoginUserByRequest();
+				AccountShop accountShop = accountShopService.getAccountShopDataById(user.getUserId());
+				Shop shop = shopService.getShopMessageById(user.getUserId(), 2);
+				Model model = params.getModel();
+				List<SeatInformation> list=new ArrayList<SeatInformation>();
+				if(shop!=null) {
+					list=seatInofService.getSeatInformationAllByShopId(shop.getShopId());
+				}
+				model.addAttribute("data",shop);
+				model.addAttribute("list",list);
+			} catch (Exception e) {
+				return;
+			}
+		}
 
-    /* ===================JSP接口结束======================= */
+	}
+
+	/* ===================JSP接口结束======================= */
 }
+

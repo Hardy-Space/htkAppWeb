@@ -14,10 +14,12 @@ import com.htkapp.core.jsAjax.AjaxResponseModel;
 import com.htkapp.core.params.RequestParams;
 import com.htkapp.core.shiro.common.utils.LoggerUtils;
 import com.htkapp.core.shiro.common.utils.StringUtils;
+import com.htkapp.core.shiro.core.shiro.token.manager.TokenManager;
 import com.htkapp.core.utils.Globals;
 import com.htkapp.core.utils.OrderNumGen;
 import com.htkapp.modules.common.dto.AjaxReturnLoginData;
 import com.htkapp.modules.common.entity.LoginUser;
+import com.htkapp.modules.merchant.common.service.IndexService;
 import com.htkapp.modules.merchant.common.service.MerchantService;
 import com.htkapp.modules.merchant.pay.service.BillBalanceSheetService;
 import com.htkapp.modules.merchant.shop.entity.AccountShop;
@@ -25,23 +27,34 @@ import com.htkapp.modules.merchant.shop.entity.AccountShopReplyComments;
 import com.htkapp.modules.merchant.shop.entity.Shop;
 import com.htkapp.modules.merchant.shop.service.AccountShopServiceI;
 import com.htkapp.modules.merchant.shop.service.ShopServiceI;
+import com.sun.org.apache.bcel.internal.generic.FADD;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.lang.Base64;
+import org.directwebremoting.guice.RequestParameters;
 import org.apache.http.util.TextUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import redis.clients.jedis.JedisPool;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.xiaoleilu.hutool.date.DateUtil.*;
 
@@ -841,12 +854,14 @@ public class MerchantController {
                     double oldBalance = billBalanceSheetService.getAccountBalance(accountShop.getToken());
                     double newBalance = oldBalance - Double.valueOf(money);
                     int row = billBalanceSheetService.updateAccountBalance(accountShop.getToken(), newBalance);
+                    return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION, "转账成功");
                 } else {
                     System.out.println("调用失败");
 //                    callAplipayQuery(alipayClient,out_trade_no);
+                    return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, response.getSubMsg());
                 }
             }
-            return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION, "成功");
+            return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "转账失败");
         } catch (Exception e) {
             return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, e.getMessage());
         }
@@ -874,8 +889,7 @@ public class MerchantController {
 
     //====账单记录
     @RequestMapping(value = "/bill/billRecord", method = RequestMethod.GET)
-    public String billRecord(Model
-                                     model, @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+    public String billRecord(Model model, @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
                              @RequestParam(value = "date", required = false, defaultValue = "1") String date,
                              @RequestParam(value = "type", required = false, defaultValue = "0") Integer type) {
         Map<String, Object> map = new HashMap<>();
@@ -924,5 +938,18 @@ public class MerchantController {
         return mDirectory + "shop_shopInfo";
     }
 
-    //======================================top菜单栏url结束
+//座位信息管理
+//座位信息管理
+    @RequestMapping(value = "/shopInfo/setSeatInfo", method = RequestMethod.GET)
+    public String setSeatInfo(Model model, RequestParams params) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("sto_mark", true);
+        map.put("sto_mark_seat_info", true);
+        map.put("date", new Date().getTime());
+        OtherUtils.ReturnValByModel(model, map);
+        params.setModel(model);
+        merchantService.getSeatInfo(params);
+        return mDirectory + "set_Seat_Info";
+    }
+
 }

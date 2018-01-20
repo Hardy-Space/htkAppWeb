@@ -160,5 +160,14 @@ public class TakeoutProductServiceImpl implements TakeoutProductServiceI {
 		return null;
 	}
 
+	@Override
+	public List<TakeoutProduct> getTakeoutProductByCategoryIdAndIfCanBuy(Integer categoryId) {
+		List<TakeoutProduct> resultList = takeoutProductDao.getTakeoutProductByCategoryIdAndIfCanBuy(categoryId);
+		if(resultList != null && resultList.size() > 0){
+			return resultList;
+		}
+		return null;
+	}
+
 	/* ======================JSP页面接口结束============================ */
 }

@@ -348,7 +348,15 @@ public class ShopDataServiceImpl implements ShopDataService {
                 if (resultList != null && resultList.size() > 0) {
                     try {
                         for (TakeoutCategory each : resultList) {
-                            List<TakeoutProduct> productList = takeoutProductService.getTakeoutProductById(each.getId());
+//                            List<TakeoutProduct> productList = takeoutProductService.getTakeoutProductById(each.getId());
+
+                            /**
+                             * @author 马鹏昊
+                             * @desc 通过删选是否下架来决定是否返回该商品信息
+                             */
+                            List<TakeoutProduct> productList = takeoutProductService.getTakeoutProductByCategoryIdAndIfCanBuy(each.getId());
+
+
                             try {
                                 if (productList != null && productList.size() > 0) {
                                     for (TakeoutProduct every : productList) {

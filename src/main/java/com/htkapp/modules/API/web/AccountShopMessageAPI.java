@@ -120,7 +120,7 @@ public class AccountShopMessageAPI {
 //        return accountShopMessageAPIService.groupBuyConsumption(token, orderNumber);
 //    }
 
-    //回复催单接口
+//    回复催单接口
 //    @RequestMapping("/replyReminder")
 //    public AjaxResponseModel replyReminder(String orderNumber) {
 //        return accountShopMessageAPIService.replyReminder(orderNumber);

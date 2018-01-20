@@ -30,6 +30,7 @@ public interface IntegralService {
     /* ==========================JSP页面接口开始============================= */
     //根据商户token查找积分用户列表
     List<Integral> getIntegralUserListByShopToken(String token, String condition, int pageNumber, int pageLimit);
+    List<Integral> getIntegralUserListByShopIds(List<Integer> shopIds,  int pageNumber, int pageLimit);
     //抵扣或赠送积分
     void presentOrDeductionIntegralByToken(String accountToken, int shopId, int val, int operationId);
     //根据用户token获取数据
@@ -39,9 +40,11 @@ public interface IntegralService {
     //更改用户积分状态
     void updateIntegralFlagByToken(String token, int flagId);
 
-    void updateLatestConsumeTime(String token, Integer shopId, Timestamp time);
+//    void updateLatestConsumeTime(String token, Integer shopId, String time);
+    void updateLatestConsumeTime(String token, Integer shopId, String time);
 
-    void updateLatestGetTime(String token, Integer shopId, Timestamp timestamp);
+//    void updateLatestGetTime(String token, Integer shopId, String timestamp);
+    void updateLatestGetTime(String token, Integer shopId, String timestamp);
 
     /* =======================JSP页面接口结束=============================== */
 }

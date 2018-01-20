@@ -40,5 +40,7 @@ public interface TakeoutProductServiceI {
 	void delProductByCId(int categoryId) throws Exception;
 	//关联团购添加产品表，只查询出未添加到团购产品表中的数据
 	List<TakeoutProduct> getNotInGroupBuyProductListData(int shopId);
+
+    List<TakeoutProduct> getTakeoutProductByCategoryIdAndIfCanBuy(Integer id);
 	/* ====================JSP页面接口结束========================== */
 }

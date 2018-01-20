@@ -29,6 +29,7 @@ public interface IntegralMapper {
     /* ==========================JSP页面接口开始================================ */
     //根据商户token查找积分用户列表
     List<Integral> getIntegralUserListByShopTokenDAO(@Param("token") String token, @Param("condition") String condition, @Param("orderDesc") String orderDesc);
+    List<Integral> getIntegralUserListByShopIds(@Param("shopIdList") List<Integer> shopIds,@Param("orderDesc") String orderDesc);
     //抵扣积分
     int presentOrDeductionIntegralByTokenDAO(@Param("accountToken") String accountToken, @Param("shopId") int shopId, @Param("val") int val, @Param("operationId") int operationId);
     //根据用户token获取数据
@@ -38,8 +39,8 @@ public interface IntegralMapper {
     //插入积分记录
     int insertUserIntegralDAO(Integral integral);
 
-    int updateLatestConsumeTime(String token, Integer shopId , Timestamp time);
+    int updateLatestConsumeTime(String token, Integer shopId , String time);
 
-    int updateLatestGetTime(String token, Integer shopId, Timestamp time);
+    int updateLatestGetTime(String token, Integer shopId, String time);
     /* ==========================JSP页面接口结束================================ */
 }

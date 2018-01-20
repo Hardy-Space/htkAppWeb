@@ -8,8 +8,10 @@ import com.alipay.api.response.AlipayFundTransOrderQueryResponse;
 import com.htkapp.core.MD5Utils;
 import com.htkapp.core.config.AlipayConfig;
 import com.htkapp.core.utils.Globals;
+import com.xiaoleilu.hutool.date.DateTime;
 import org.junit.Test;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -37,6 +39,12 @@ public class Test1 {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
         Date d = new Date();
         String date = df.format(d);
+
+//        Date date = new Date();
+//        Timestamp timestamp = new Timestamp(date.getTime());
+        Timestamp timestamp = Timestamp.valueOf(date);
+        DateTime dateTime = DateTime.of(d.toString(),"yyyy-MM-dd HH:mm:ss");
+
     }
 
     public void testAplipayTradeState(String orderNo){

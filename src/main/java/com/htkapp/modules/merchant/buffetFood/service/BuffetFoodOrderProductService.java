@@ -21,5 +21,9 @@ public interface BuffetFoodOrderProductService {
     void deleteOrderProductByOrderId(int orderId);
     //根据订单号查询订单下的商口列表
     List<BuffetFoodOrderProduct> getOrderProductListByOrderNumber(String orderNumber);
+
+    //根据产品信息修改bz在数据库中的状态
+    int updataOrderProductBzById(BuffetFoodOrderProduct product,int bz);
+
     /* =========================接口结束======================== */
 }

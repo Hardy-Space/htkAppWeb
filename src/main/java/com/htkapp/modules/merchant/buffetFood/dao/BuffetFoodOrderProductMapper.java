@@ -22,5 +22,7 @@ public interface BuffetFoodOrderProductMapper {
     int deleteOrderProductByOrderIdDAO(int orderId);
     //根据订单号查询订单下的商口列表
     List<BuffetFoodOrderProduct> getOrderProductListByOrderNumberDAO(String orderNumber);
+	//根据订单id修改bz数据
+    int updataOrderProductBzById(@Param("product")BuffetFoodOrderProduct product,@Param("bz")int bz);
     /* ====================接口结束====================== */
 }

@@ -32,6 +32,7 @@ import com.htkapp.modules.merchant.shop.service.ShopServiceI;
 import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.json.JSONUtil;
 import io.goeasy.GoEasy;
+import jdk.nashorn.internal.objects.Global;
 import net.sf.json.JsonConfig;
 import net.sf.json.util.JSONUtils;
 import org.json.JSONArray;
@@ -178,7 +179,7 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
                 if (resultList != null) {
                     return new APIResponseModel<List<SeatInformation>>(Globals.API_SUCCESS, "成功", resultList);
                 } else {
-                    return new APIResponseModel<String>(Globals.API_SUCCESS, "成功", null);
+                    return new APIResponseModel<String>(Globals.API_SUCCESS, "失败", null);
                 }
             } catch (Exception e) {
                 return new APIResponseModel(Globals.API_FAIL, e.getMessage());
@@ -358,7 +359,7 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
     }
 
     //下单按钮
-    @Override
+@Override
     public APIResponseModel enterOrderButton(APIRequestParams params, BuffetFoodOrder order) {
         //通过订单号更新订单内商品列表
         if (params != null && params.getOrderNumber() != null && order != null) {
@@ -381,7 +382,7 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
         }
     }
 
-    //确认下单按钮
+   /* //确认下单按钮
     @Override
     public APIResponseModel confirmOrderButton(APIRequestParams params, BuffetFoodOrder order) {
         //改变订单状态，订单已下单
@@ -407,6 +408,64 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
                 System.out.println("shop is:"+shop.toString());
                 AccountShop user = accountShopService.getAccountShopDataById(shop.getAccountShopId());
                 System.out.println("accountShop is:"+user.toString());
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("orderNumber", buffetFoodOrder.getOrderNumber());
+                jsonObject.put("orderState", buffetFoodOrder.getOrderState());
+                jsonObject.put("orderId", buffetFoodOrder.getId());
+                System.out.println("token :"+buffetFoodOrder.getToken()+""+"user token:"+user.getToken()+"");
+                if(buffetFoodOrder.getToken() == null){
+                    Jpush.jPushMethodToMerchant(user.getToken(),"有一个自助点餐订单","ALERT", "商家版");
+                    Jpush.jPushMethodToMerchant(user.getToken(),"有一个自助点餐订单","","");
+                }else {
+                    moreMethodsUtils.jPushToMerAndAccount(buffetFoodOrder.getToken(),"自助点餐订单下单成功", jsonObject.toJSONString(), user.getToken(),"有一个自助点餐订单", jsonObject.toJSONString(), 2);
+                }
+                System.out.println("buffetFoodOrderState 是:"+buffetFoodOrder.getOrderState()+""+"user id is:"+user.getId());
+                moreMethodsUtils.pushMesToManagePage(new PushMesEntity("自助点餐订单消息", "b", "自助点餐订单下单成功", user.getToken(), 'b', buffetFoodOrder.getOrderState(), "您有一个的自助点餐订单消息", user.getId()));
+            }catch (Exception e){
+                System.out.println("确认下单异常"+e.getMessage());
+                return new APIResponseModel(Globals.API_FAIL);
+            }
+            return new APIResponseModel(Globals.API_SUCCESS, "成功");
+        } else {
+            return new APIResponseModel(Globals.API_REQUEST_BAD);
+        }
+   }*/
+   
+    //确认下单按钮
+    @Override
+    public APIResponseModel confirmOrderButton(APIRequestParams params, BuffetFoodOrder order) {
+        //改变订单状态，订单已下单
+        //备注、使用优惠券、最后总金额
+        if (params != null && params.getOrderNumber() != null) {
+            //插入备注、插入桌号、修改订单总金额、抵扣金额
+            System.out.println(params.toString()+order.toString());
+            try {
+                //下单成功，推消息
+                System.out.println("下单成功");
+                BuffetFoodOrder buffetFoodOrder = buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(params.getOrderNumber());
+                //查询出订单中的商品
+                List<BuffetFoodOrderProduct> resultList = buffetFoodOrderProductService.getOrderProductListById(buffetFoodOrder.getId());
+                double orderAmount = 0.00;
+                if(resultList != null){
+                    for (BuffetFoodOrderProduct each : resultList){
+                        orderAmount += each.getPrice() * each.getQuantity();
+                    }
+                }
+                //设置订单的金额
+                order.setOrderAmount(orderAmount);
+                //新增订单信息
+                buffetFoodOrderService.confirmOrderButton(order);
+                //变更座位状态信息
+                //TODO
+                int b=1;
+                int a=seatInformationService.updataSeatInfoByOrder(order,b);
+                if(a<=0) {
+                	 return new APIResponseModel(Globals.API_FAIL, "座位已满");
+                }
+              //根据店铺id查找店铺信息
+                Shop shop = shopService.getShopDataById(buffetFoodOrder.getShopId());
+              //通过商户店铺id查找商户信息
+                AccountShop user = accountShopService.getAccountShopDataById(shop.getAccountShopId());
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("orderNumber", buffetFoodOrder.getOrderNumber());
                 jsonObject.put("orderState", buffetFoodOrder.getOrderState());

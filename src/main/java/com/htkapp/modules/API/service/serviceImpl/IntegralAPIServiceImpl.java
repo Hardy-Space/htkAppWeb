@@ -40,6 +40,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -416,7 +417,10 @@ public class IntegralAPIServiceImpl implements IntegralAPIService {
                          * @author 马鹏昊
                          * @desc 修改最近消费时间（gmt_modified字段）
                          */
-                        integralService.updateLatestConsumeTime(params.getToken(), params.getShopId(),new Timestamp((new Date()).getTime()));
+                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+                        Date d = new Date();
+                        String dateStr = df.format(d);
+                        integralService.updateLatestConsumeTime(params.getToken(), params.getShopId(),dateStr);
 
 
                         return new APIResponseModel(Globals.API_SUCCESS);
