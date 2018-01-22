@@ -35,7 +35,7 @@ public class ShopInfoController {
     //获取商铺分类列表（商家注册页面）
     @RequestMapping(value = "/getShopCategoryList", method = RequestMethod.POST)
     @ResponseBody
-    public AjaxResponseModel uploadAlbumInterface(){
+    public AjaxResponseModel getShopCategoryList(){
         return controllerService.getShopCategoryList();
     }
 

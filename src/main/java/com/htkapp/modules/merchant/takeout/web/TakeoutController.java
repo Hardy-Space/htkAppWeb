@@ -27,6 +27,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/merchant/takeout")
@@ -69,6 +72,29 @@ public class TakeoutController {
         takeoutService.addProduct(takeoutProduct, imgFile, label, productList, propertyList);
         return "redirect:/merchant/takeout/product/homePage";
     }
+
+
+    //外卖商品上架页面
+    @RequestMapping(value = "/product/takeOn", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResponseModel takeOn(Model model, String selectedIds) {
+        try {
+            return  takeoutService.takeOnProduct(model, selectedIds);
+        } catch (Exception e) {
+            return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "下架失败");
+        }
+    }
+    //外卖商品下架页面
+    @RequestMapping(value = "/product/takeOff", method = RequestMethod.POST)
+    @ResponseBody
+    public AjaxResponseModel takeOff(Model model, String selectedIds) {
+        try {
+                return takeoutService.takeOffProduct(model, selectedIds);
+        } catch (Exception e) {
+            return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "下架失败");
+        }
+    }
+
 
     //编辑商品页面
     @RequestMapping(value = "/product/editProduct", method = RequestMethod.GET)

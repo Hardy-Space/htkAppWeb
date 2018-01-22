@@ -40,5 +40,9 @@ public interface TakeoutProductMapper {
     TakeoutProduct getTakeoutProductByProductId(int productId);
 
     List<TakeoutProduct> getTakeoutProductByCategoryIdAndIfCanBuy(int categoryId);
+
+    int setProductTakeOn(@Param("productIds") List<Integer> idInts);
+
+    int setProductTakeOff(@Param("productIds") List<Integer> idInts);
     /* ====================JSP页面接口结束========================== */
 }	

@@ -56,6 +56,16 @@ public class TakeoutProduct {
 
     private List<TakeoutCategory> categoryList;
 
+    private Integer ifCanBuy ;
+
+    public Integer getIfCanBuy() {
+        return ifCanBuy;
+    }
+
+    public void setIfCanBuy(Integer ifCanBuy) {
+        this.ifCanBuy = ifCanBuy;
+    }
+
     public String getDescription() {
         return description;
     }

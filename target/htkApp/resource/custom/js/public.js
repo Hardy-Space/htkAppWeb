@@ -60,50 +60,6 @@ $(function(){
     });
 
 
-    // @author 马鹏昊
-    // @desc 上架点击事件
-    $(".goodsList .action .on").click(function(){
-
-        var allGoodItems = $(".goodsItem input[type='checkbox']");
-        var selectedIds = "";
-        $.each(allGoodItems, function (inde, item) {
-            var ifChecked = item.find("input").attr("checked");
-            if (ifChecked){
-                selectedIds = selectedIds+","+item.find(".filledUpProduct").attr("data-id");
-            }
-        });
-        var url = baseUrl + "/merchant/takeout/product/takeOn";
-        var params = {"selectedIds":selectedIds};
-        $.post(url,params,function (result, status) {
-            if(status === 'success'){
-                if (result && result.code === 0){
-                    $(this).siblings("a").css("display","none");
-                    $(".goodsItem input[type='checkbox']").attr("checked",false).hide();
-                    $(this).removeClass("edit");
-                    location.reload();
-                    return false;
-                }else {
-                    layer_msg(result.message,'error');
-                    return false;
-                }
-            }else {
-                layer_msg('网络连接异常','exception');
-                return false;
-            }
-        },"json");
-
-
-    });
-
-    // @author 马鹏昊
-    // @desc 下架点击事件
-    $(".goodsList .action .off").click(function(){
-
-
-
-    });
-
-
     //字数变化
     $(".fontNum input,.fontNum textarea").keyup(function(){
         var l=$(this).val().length;

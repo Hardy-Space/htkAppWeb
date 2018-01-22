@@ -47,5 +47,9 @@ public interface TakeoutService {
     AjaxResponseModel itemsToShip(String orderNumber);
     //回复催单接口
     AjaxResponseModel replyMessage(AjaxRequestParams params);
+
+    AjaxResponseModel takeOnProduct(Model model, String productIds);
+
+    AjaxResponseModel takeOffProduct(Model model, String productIds);
     /* ====================JSP页面接口结束========================== */
 }

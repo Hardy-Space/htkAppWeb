@@ -3,10 +3,32 @@
 <mapper namespace="com.htkapp.modules.merchant.takeout.dao.TakeoutProductMapper">
 
     <sql id="Base_Column_List">
-    id, img_url, product_name, price, price_canhe, property, inventory, inventory_count, integral, category_id, description, time, label, shop_id
+    id, img_url, product_name, price, price_canhe, property, inventory, inventory_count, integral, category_id, description, time, label, shop_id,if_can_buy
   </sql>
 
     <!-- ==================接口开始======================= -->
+
+
+    <update id="setProductTakeOn">
+        update
+        takeout_product
+        set if_can_buy = 1
+        where
+        <foreach collection="productIds" item="each" index="index" open="" separator="or" close="">
+            id = #{each}
+        </foreach>
+    </update>
+
+    <update id="setProductTakeOff">
+        update
+        takeout_product
+        set if_can_buy = 0
+        where
+        <foreach collection="productIds" item="each" index="index" open="" separator="or" close="">
+            id = #{each}
+        </foreach>
+    </update>
+
 
     <select id="getTakeoutProductByCategoryIdAndIfCanBuy" resultType="TakeoutProduct">
         select

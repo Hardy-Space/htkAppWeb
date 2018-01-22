@@ -139,7 +139,7 @@ public class TakeoutServiceImpl implements TakeoutService {
                 }
             }
             LoginUser user = OtherUtils.getLoginUserByRequest();
-            Shop shop = shopService.getShopIdByAccountShopId(user.getUserId(),takeoutProduct.getMark());
+            Shop shop = shopService.getShopIdByAccountShopId(user.getUserId(), takeoutProduct.getMark());
             if (productList != null && productList.getList().size() > 0) {
                 for (ListProperty each : productList.getList()) {
                     takeoutProduct.setShopId(shop.getShopId());
@@ -363,23 +363,58 @@ public class TakeoutServiceImpl implements TakeoutService {
     //回复催单接口
     @Override
     public AjaxResponseModel replyMessage(AjaxRequestParams params) {
-        if(params != null && params.getOrderNumber() != null){
+        if (params != null && params.getOrderNumber() != null) {
             try {
                 //查找订单
                 OrderRecord orderRecord = orderRecordService.getOrderRecordByOrderNumber(params.getOrderNumber());
-                if (orderRecord != null){
+                if (orderRecord != null) {
                     //改变订单催单状态
                     takeoutOrderService.updateReminderStateByOrderId(orderRecord.getId(), 0);
-                    Jpush.jPushMethod(orderRecord.getToken(),"商家正在处理中，请稍等。。", "ALERT");
+                    Jpush.jPushMethod(orderRecord.getToken(), "商家正在处理中，请稍等。。", "ALERT");
                     return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
-                }else {
-                   return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
+                } else {
+                    return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
             }
-        }else {
+        } else {
             return new AjaxResponseModel(Globals.COMMON_PARAMETER_ERROR);
+        }
+    }
+
+    @Override
+    public AjaxResponseModel takeOnProduct(Model model, String selectedIds) {
+        //查找商品信息 model返回给前台
+        try {
+            //转成int型id
+            String[] idStrs = selectedIds.split(",");
+            List<Integer> idInts = new ArrayList<>();
+            for (String idStr : idStrs) {
+                Integer i = Integer.parseInt(idStr);
+                idInts.add(i);
+            }
+            return takeoutProductService.setProductTakeOn(idInts);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "上架失败");
+        }
+    }
+
+    @Override
+    public AjaxResponseModel takeOffProduct(Model model, String productIds) {
+        try {
+            //转成int型id
+            String[] idStrs = productIds.split(",");
+            List<Integer> idInts = new ArrayList<>();
+            for (String idStr : idStrs) {
+                Integer i = Integer.parseInt(idStr);
+                idInts.add(i);
+            }
+            return takeoutProductService.setProductTakeOff(idInts);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "下架失败");
         }
     }
 

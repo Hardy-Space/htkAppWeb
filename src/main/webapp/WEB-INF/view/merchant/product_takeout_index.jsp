@@ -62,7 +62,7 @@
                     <div class="category">
                         <div style="background-color: #fff;height: 100%;">
                             <div class="goodsSearch clearfix">
-                                <input type="text" id="search" placeholder="搜索商品" autocomplete="off" />
+                                <input type="text" id="search" placeholder="搜索商品" autocomplete="off"/>
                                 <a href="javascript:;;">搜索</a>
                             </div>
                             <div class="catList">
@@ -96,42 +96,44 @@
             </div>
         </div>
     </div>
-        <div class="layer">
-            <div class="layerCont addCats">
-                <h1>添加分类<a href="javascript:void(0);" class="fa fa-remove close"></a></h1>
-                <form method="post" id="addCat">
-                    <div class="layerItem">
-                        <p><i>*</i>分类名称</p>
-                        <input type="text" placeholder="请输入20字以内的分类名称" name="catName" maxlength="20" autocomplete="off" />
-                    </div>
-                    <div class="layerItem">
-                        <p>分类描述</p>
-                        <input type="text" placeholder="请输入50字以内的分类描述（非必填）" name="catDes" maxlength="50" autocomplete="off" />
-                    </div>
-                    <div class="layerButton">
-                        <input type="submit" value="保存"/>
-                    </div>
-                </form>
-            </div>
-            <div class="layerCont editCats">
-                <h1>编辑分类<a href="javascript:void(0);" class="fa fa-remove close"></a></h1>
-                <form method="post" id="editCat">
-                    <div class="layerItem">
-                        <p><i>*</i>分类名称</p>
-                        <input type="text" placeholder="请输入20字以内的分类名称" name="catName" maxlength="20" autocomplete="off"/>
-                    </div>
-                    <div class="layerItem">
-                        <p>分类描述</p>
-                        <input type="text" placeholder="请输入50字以内的分类描述（非必填）" name="catDes" maxlength="50" autocomplete="off" />
-                    </div>
-                    <div class="layerButton">
-                        <input type="button" value="删除分类" id="delCat"/>
-                        <input type="submit" value="保存修改" />
-                    </div>
-                </form>
-            </div>
-    <%@include file="footer.jsp" %>
-</div>
+    <div class="layer">
+        <div class="layerCont addCats">
+            <h1>添加分类<a href="javascript:void(0);" class="fa fa-remove close"></a></h1>
+            <form method="post" id="addCat">
+                <div class="layerItem">
+                    <p><i>*</i>分类名称</p>
+                    <input type="text" placeholder="请输入20字以内的分类名称" name="catName" maxlength="20" autocomplete="off"/>
+                </div>
+                <div class="layerItem">
+                    <p>分类描述</p>
+                    <input type="text" placeholder="请输入50字以内的分类描述（非必填）" name="catDes" maxlength="50"
+                           autocomplete="off"/>
+                </div>
+                <div class="layerButton">
+                    <input type="submit" value="保存"/>
+                </div>
+            </form>
+        </div>
+        <div class="layerCont editCats">
+            <h1>编辑分类<a href="javascript:void(0);" class="fa fa-remove close"></a></h1>
+            <form method="post" id="editCat">
+                <div class="layerItem">
+                    <p><i>*</i>分类名称</p>
+                    <input type="text" placeholder="请输入20字以内的分类名称" name="catName" maxlength="20" autocomplete="off"/>
+                </div>
+                <div class="layerItem">
+                    <p>分类描述</p>
+                    <input type="text" placeholder="请输入50字以内的分类描述（非必填）" name="catDes" maxlength="50"
+                           autocomplete="off"/>
+                </div>
+                <div class="layerButton">
+                    <input type="button" value="删除分类" id="delCat"/>
+                    <input type="submit" value="保存修改"/>
+                </div>
+            </form>
+        </div>
+        <%@include file="footer.jsp" %>
+    </div>
 </body>
 <%@include file="js.jsp" %>
 <%--<script src="${sysPath}resource/custom/plugins/layui/lay/modules/layer.js"></script>--%>
@@ -143,6 +145,83 @@
         var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
         var util = layui.util;
     });
+
+
+    // @author 马鹏昊
+    // @desc 上架点击事件
+    $(".goodsList .action .on").click(function(){
+
+        var allGoodItems = $(".goodsItem");
+        var selectedIds = "";
+        for(var i=0;i<allGoodItems.length;i++){
+            var single = allGoodItems[i];
+            var ifChecked = single.firstChild.lastChild.checked;
+            if (ifChecked){
+                selectedIds = selectedIds+","+single.children[0].children[2].children[0].dataset.id;
+            }
+        }
+        //如果没有选中的则什么也不做
+        if(selectedIds=="")
+            return false;
+        var url = baseUrl + "/merchant/takeout/product/takeOn";
+        var params = {"selectedIds":selectedIds.substring(1,selectedIds.length)};
+        $.post(url,params,function (result, status) {
+            if(status === 'success'){
+                if (result && result.code === 0){
+                    // $(this).siblings("a").css("display","none");
+                    // $(".goodsItem input[type='checkbox']").attr("checked",false).hide();
+                    // $(this).removeClass("edit");
+                    location.reload();
+                    return false;
+                }else {
+                    layer_msg(result.message,'error');
+                    return false;
+                }
+            }else {
+                layer_msg('网络连接异常','exception');
+                return false;
+            }
+        },"json");
+    });
+
+    // @author 马鹏昊
+    // @desc 下架点击事件
+    $(".goodsList .action .off").click(function(){
+
+        var allGoodItems = $(".goodsItem");
+        var selectedIds = "";
+        for(var i=0;i<allGoodItems.length;i++){
+            var single = allGoodItems[i];
+            var ifChecked = single.firstChild.lastChild.checked;
+            if (ifChecked){
+                selectedIds = selectedIds+","+single.children[0].children[2].children[0].dataset.id;
+            }
+        }
+        //如果没有选中的则什么也不做
+        if(selectedIds=="")
+            return false;
+        var url = baseUrl + "/merchant/takeout/product/takeOff";
+        var params = {"selectedIds":selectedIds.substring(1,selectedIds.length)};
+        $.post(url,params,function (result, status) {
+            if(status === 'success'){
+                if (result && result.code === 0){
+                    // $(this).siblings("a").css("display","none");
+                    // $(".goodsItem input[type='checkbox']").attr("checked",false).hide();
+                    // $(this).removeClass("edit");
+                    location.reload();
+                    return false;
+                }else {
+                    layer_msg(result.message,'error');
+                    return false;
+                }
+            }else {
+                layer_msg('网络连接异常','exception');
+                return false;
+            }
+        },"json");
+
+    });
+
 
     //全局变量
     var data_ = [];
@@ -158,12 +237,17 @@
                 var catHtml = "";
                 var goodsHtml = "";
                 $.each(data, function (index, item) {
-                    catHtml += '<a href="javascript:void(0)" data-des="' + item.description + '" class="cValue"  data-index="' +index+ '" data-id="'+item.categoryId+'" >' + item.categoryName + '</a>';
+                    catHtml += '<a href="javascript:void(0)" data-des="' + item.description + '" class="cValue"  data-index="' + index + '" data-id="' + item.categoryId + '" >' + item.categoryName + '</a>';
                     goodsHtml += '<div class="goodsContiner clearfix">';
                     if (item.takeoutProductList) {
                         $.each(item.takeoutProductList, function (indexb, itemb) {
+
+                            var ifCanBuyStr = (itemb.ifCanBuy == 1)?"已上架":"已下架";
+
                             goodsHtml += '<div class="goodsItem">' +
                                 '<div class="goodsDetail">' +
+                                //是否上架
+                                '<p class="ifCanBuy" style="background-color:#FF7F24;color:white;margin-bottom:10px;padding:10px">'+ifCanBuyStr+'</p>' +
                                 '<div class="info clearfix">' +
                                 '<div class="fleft">' +
                                 '<h3>' + itemb.productName + '</h3>' +
@@ -175,9 +259,9 @@
                                 '</div>' +
                                 '</div>' +
                                 '<div class="goodsButton clearfix">' +
-                                '<a href="javascript:void(0)" class="filledUpProduct" data-id="'+itemb.id+'">置满</a>' +
-                                '<a href="javascript:void(0)" class="emptyProduct" data-id="'+ itemb.id +'">沽清</a>' +
-                                '<a href="${sysPath}/merchant/takeout/product/editProduct?productId='+itemb.id+'">编辑</a>' +
+                                '<a href="javascript:void(0)" class="filledUpProduct" data-id="' + itemb.id + '">置满</a>' +
+                                '<a href="javascript:void(0)" class="emptyProduct" data-id="' + itemb.id + '">沽清</a>' +
+                                '<a href="${sysPath}/merchant/takeout/product/editProduct?productId=' + itemb.id + '">编辑</a>' +
                                 '</div>' +
                                 '<input name="checkGoods" value="1" type="checkbox">' +
                                 '</div>' +
@@ -228,14 +312,14 @@
             var name = ele.find("input[name='catName']").val();
             var des = ele.find("input[name='catDes']").val();
 //            var params = {categoryName: name};
-            var params = {categoryName: name,mark:0};
+            var params = {categoryName: name, mark: 0};
             if (ele.find("input[name='catName']").val() === "") {
                 ele.find("input[name='catName']").focus();
                 return false;
-            }else {
-                $.post(url,params,function (result, status) {
-                    if(status === 'success'){
-                        if(result && result.code === 0){
+            } else {
+                $.post(url, params, function (result, status) {
+                    if (status === 'success') {
+                        if (result && result.code === 0) {
 //                            $(".catList").append("<a href='javascript:void(0);' data-des='" + des + "'>" + name + "</a>");
 //                            var next = $(".catList a").eq(0).text();
 //                            $(".goodsList .add").before('<div class="goodsContiner clearfix"><p class="emptyGoods">暂无数据</p><div class="pageNotice">已在当前分类底部，<a href="">下一个分类:' + next + '</a></div></div>');
@@ -246,15 +330,15 @@
 //                            $(".layer input[type='text']").val("");
                             location.reload();
                             return false;
-                        }else {
-                            layer_msg(result.code,'error');
+                        } else {
+                            layer_msg(result.code, 'error');
                             return false;
                         }
-                    }else {
-                        layer_msg("网络连接异常","exception");
+                    } else {
+                        layer_msg("网络连接异常", "exception");
                         return false;
                     }
-                },"json");
+                }, "json");
                 return false;
             }
         });
@@ -268,10 +352,10 @@
             var childs = $(".catList").children();
             var ind = selectedCategoryIndex;
             var categoryId = childs.eq(selectedCategoryIndex).attr("data-id");
-            var params = {categoryId : categoryId, categoryName: name};
-            $.post(url,params,function (result, status) {
-                if(status === 'success'){
-                    if (result && result.code === 0){
+            var params = {categoryId: categoryId, categoryName: name};
+            $.post(url, params, function (result, status) {
+                if (status === 'success') {
+                    if (result && result.code === 0) {
 //                        if (ele.find("input[name='catName']").val() === "") {
 //                            ele.find("input[name='catName']").focus();
 //                            return false;
@@ -282,15 +366,15 @@
 //                        $(".layer input[type='text']").val("");
                         location.reload();
                         return false;
-                    }else {
-                        layer_msg(result.message,'error');
+                    } else {
+                        layer_msg(result.message, 'error');
                         return false;
                     }
-                }else {
-                    layer_msg('网络连接异常','exception');
+                } else {
+                    layer_msg('网络连接异常', 'exception');
                     return false;
                 }
-            },"json");
+            }, "json");
             //return  false  阻止表单提交 　　不然表单会提交
             return false;
         });
@@ -298,18 +382,18 @@
         //删除分类
         $("#delCat").click(function () {
             layer.confirm('确定删除该分类吗？此操作会删除分类下数据', {
-                btn: ['确定','取消'] //按钮
-            }, function(){
+                btn: ['确定', '取消'] //按钮
+            }, function () {
                 //异步调接口退出
 //                var categoryId = $(".cValue").attr("data-id");  //类别id
                 var childs = $(".catList").children();
                 var ind = selectedCategoryIndex;
                 var categoryId = childs.eq(selectedCategoryIndex).attr("data-id");
                 var url = baseUrl + "/merchant/takeout/product/delCategoryById";
-                var params = {categoryId :categoryId};
-                $.post(url,params,function (result, status) {
-                    if(status === 'success'){
-                        if(result && result.code === 0){
+                var params = {categoryId: categoryId};
+                $.post(url, params, function (result, status) {
+                    if (status === 'success') {
+                        if (result && result.code === 0) {
 //                            $(".catList .cur").remove();
 //                            $(".goodsList .goodsContiner.cur").remove();
 //                            $(".catTitle>span").text("").attr("title", "");
@@ -320,100 +404,100 @@
 //                            $(".layer input[type='text']").val("");
                             location.reload();
                             layer.closeAll('dialog'); //关闭信息框
-                        }else {
-                            layer_msg(result.message,'error');
+                        } else {
+                            layer_msg(result.message, 'error');
                             layer.closeAll('dialog'); //关闭信息框
                         }
-                    }else {
-                        layer_msg("网络连接异常",'exception');
+                    } else {
+                        layer_msg("网络连接异常", 'exception');
                         layer.closeAll('dialog'); //关闭信息框
                     }
-                },"json");
+                }, "json");
                 return false;
-            }, function(){
+            }, function () {
 
             });
         });
 
         //置满库存
-        $(".filledUpProduct").on('click',function () {
+        $(".filledUpProduct").on('click', function () {
             var productId = $(this).attr('data-id');
             var url = baseUrl + '/merchant/takeout/product/filledUpProductInventoryById';
-            var params = {productId : productId};
+            var params = {productId: productId};
             var eleM = $(this);
-            $.post(url,params,function (result,status) {
-                if(status === 'success'){
-                    if(result && result.code === 0){
+            $.post(url, params, function (result, status) {
+                if (status === 'success') {
+                    if (result && result.code === 0) {
                         //改变页面元素显示值
-                        var ele =  eleM.parent().prevAll("div:first").find('.num');
+                        var ele = eleM.parent().prevAll("div:first").find('.num');
                         var arr = new Array();
                         arr = ele.text().split("/");
-                        ele.text(arr[1]+""+"/"+""+arr[1]);
+                        ele.text(arr[1] + "" + "/" + "" + arr[1]);
                         return false;
-                    }else {
-                        layer_msg(result.message,'error');
+                    } else {
+                        layer_msg(result.message, 'error');
                         return false;
                     }
-                }else {
-                    layer_msg('网络连接失败','exception');
+                } else {
+                    layer_msg('网络连接失败', 'exception');
                     return false;
                 }
-            },"json");
+            }, "json");
         });
 
         //清空库存
-        $(".emptyProduct").on('click',function () {
+        $(".emptyProduct").on('click', function () {
             var productId = $(this).attr('data-id');
             var url = baseUrl + '/merchant/takeout/product/emptyProductInventoryById';
-            var params = {productId : productId};
+            var params = {productId: productId};
             var eleM = $(this);
-            $.post(url,params,function (result,status) {
-                if(status === 'success'){
-                    if(result && result.code === 0){
+            $.post(url, params, function (result, status) {
+                if (status === 'success') {
+                    if (result && result.code === 0) {
                         //改变页面元素显示值
-                        var ele =  eleM.parent().prevAll("div:first").find('.num');
+                        var ele = eleM.parent().prevAll("div:first").find('.num');
                         var arr = new Array();
                         arr = ele.text().split("/");
-                        ele.text(0+""+"/"+""+arr[1]);
+                        ele.text(0 + "" + "/" + "" + arr[1]);
                         return false;
-                    }else {
-                        layer_msg(result.message,'error');
+                    } else {
+                        layer_msg(result.message, 'error');
                         return false;
                     }
-                }else {
-                    layer_msg('网络连接失败','exception');
+                } else {
+                    layer_msg('网络连接失败', 'exception');
                     return false;
                 }
-            },"json");
+            }, "json");
         });
 
         //搜索
         $(".goodsSearch a").click(function () {
             var searchVal = $("#search").val();
-            if(searchVal === ''){
+            if (searchVal === '') {
                 return false;
-            }else if (searchVal.length > 10){
+            } else if (searchVal.length > 10) {
                 return false;
-            }else {
+            } else {
                 var productList = [];
                 var row = "";
-                $.each(data_,function (index,item) {
-                    if(item.takeoutProductList){
-                        $.each(item.takeoutProductList,function (index_,item_) {
-                            if(item_.productName === searchVal){
+                $.each(data_, function (index, item) {
+                    if (item.takeoutProductList) {
+                        $.each(item.takeoutProductList, function (index_, item_) {
+                            if (item_.productName === searchVal) {
                                 row = index;
                             }
                             productList.push(item_);
                         })
                     }
                 });
-                $.each(productList,function (index,item) {
-                    if(item.productName === searchVal && row !== ""){
+                $.each(productList, function (index, item) {
+                    if (item.productName === searchVal && row !== "") {
                         $(".catList a").eq(row).click();
                         return false;
-                    }else {
-                        if(productList.length === index + 1){
-                            layer_msg("未查找到商品","error");
+                    } else {
+                        if (productList.length === index + 1) {
+                            layer_msg("未查找到商品", "error");
                             return false;
                         }
                         return true;

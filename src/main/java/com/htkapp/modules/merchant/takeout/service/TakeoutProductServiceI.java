@@ -1,6 +1,7 @@
 package com.htkapp.modules.merchant.takeout.service;
 
 import com.htkapp.core.exception.order.OrderException;
+import com.htkapp.core.jsAjax.AjaxResponseModel;
 import com.htkapp.modules.merchant.takeout.entity.TakeoutProduct;
 
 import java.util.List;
@@ -42,5 +43,9 @@ public interface TakeoutProductServiceI {
 	List<TakeoutProduct> getNotInGroupBuyProductListData(int shopId);
 
     List<TakeoutProduct> getTakeoutProductByCategoryIdAndIfCanBuy(Integer id);
+
+	AjaxResponseModel setProductTakeOn(List<Integer> idInts);
+
+	AjaxResponseModel setProductTakeOff(List<Integer> idInts);
 	/* ====================JSP页面接口结束========================== */
 }

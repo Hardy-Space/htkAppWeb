@@ -1,6 +1,7 @@
 package com.htkapp.modules.merchant.takeout.service.serviceImpl;
 
 import com.htkapp.core.exception.order.OrderException;
+import com.htkapp.core.jsAjax.AjaxResponseModel;
 import com.htkapp.core.utils.Globals;
 import com.htkapp.modules.merchant.takeout.dao.TakeoutProductMapper;
 import com.htkapp.modules.merchant.takeout.entity.TakeoutProduct;
@@ -167,6 +168,30 @@ public class TakeoutProductServiceImpl implements TakeoutProductServiceI {
 			return resultList;
 		}
 		return null;
+	}
+
+	@Override
+	public AjaxResponseModel setProductTakeOn(List<Integer> idInts) {
+		try {
+			int row = takeoutProductDao.setProductTakeOn(idInts);
+//			if (row<0)
+//				return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "所选商品已经上架了");
+			return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION, "上架成功");
+		}catch (Exception e) {
+			return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "上架失败");
+		}
+	}
+
+	@Override
+	public AjaxResponseModel setProductTakeOff(List<Integer> idInts) {
+		try {
+			int row = takeoutProductDao.setProductTakeOff(idInts);
+//			if (row<0)
+//				return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "所选商品已经下架了");
+			return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION, "上架成功");
+		}catch (Exception e) {
+			return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "上架失败");
+		}
 	}
 
 	/* ======================JSP页面接口结束============================ */
