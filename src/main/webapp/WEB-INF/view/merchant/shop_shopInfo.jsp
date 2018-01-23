@@ -343,7 +343,9 @@
             ,url: baseUrl + '/merchant/shopInfo/updateShopImg' //上传接口
             ,done: function(res){
                 //上传完毕回调,改变店铺图片
-                $("#shopImg").attr("src", baseUrl + "/" + res);
+//                $("#shopImg").attr("src", baseUrl + "/" + res);
+                $("#shopImg").attr("src", "http://120.27.5.36:8500/" + res.data);
+
             }
             ,error: function(error){
                 //请求异常回调

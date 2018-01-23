@@ -325,7 +325,8 @@
             ,done: function(res){
                 //上传完毕回调
                 $("#imgUrl_").val(res.data);
-                const rootDirectory = "${staticFilePath}";
+                <%--const rootDirectory = "${staticFilePath}";--%>
+                const rootDirectory = "http://120.27.5.36:8500/htkApp/";
                 $(ele).attr('src',rootDirectory.replace("htkApp", "") + res.data);
             }
             ,error: function(){

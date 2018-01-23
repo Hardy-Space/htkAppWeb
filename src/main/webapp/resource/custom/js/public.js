@@ -21,7 +21,9 @@ $(function(){
 
     //选项卡
     // $(".tab a").click(function(){
+    //     //选择状态改变
     //     $(this).addClass("cur").siblings().removeClass("cur");
+    //
     //     return false;
     // });
 

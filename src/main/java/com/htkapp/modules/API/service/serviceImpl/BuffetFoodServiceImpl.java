@@ -179,7 +179,8 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
                 if (resultList != null) {
                     return new APIResponseModel<List<SeatInformation>>(Globals.API_SUCCESS, "成功", resultList);
                 } else {
-                    return new APIResponseModel<String>(Globals.API_SUCCESS, "失败", null);
+//                    return new APIResponseModel<String>(Globals.API_SUCCESS, "失败", null);
+                    return new APIResponseModel<String>(Globals.API_SUCCESS, "商家尚未设置座位", null);
                 }
             } catch (Exception e) {
                 return new APIResponseModel(Globals.API_FAIL, e.getMessage());
