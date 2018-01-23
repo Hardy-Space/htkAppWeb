@@ -60,7 +60,7 @@
                         <div class="statusSelect">
                             <div class="statusItem clearfix">
                                 <a href="javascript:void(0)"
-                                   class="${status == "1" ? 'cur' : ''} openState changeState"
+                                   class="${status =="1" ? 'cur' : ''} openState changeState"
                                    data-id="1">营业中</a>
                                 <p>当前餐厅处于设置的营业时间内，正常接受新订单</p>
                             </div>

@@ -199,4 +199,13 @@ public class AjaxRequestParams {
     public void setToken(String token) {
         this.token = token;
     }
+
+	@Override
+	public String toString() {
+		return "AjaxRequestParams [userPhone=" + userPhone + ", value=" + value + ", operationId=" + operationId
+				+ ", OperationContent=" + OperationContent + ", loginVCode=" + loginVCode + ", id=" + id + ", phone="
+				+ phone + ", roleId=" + roleId + ", orderNumber=" + orderNumber + ", file=" + file + ", flag=" + flag
+				+ ", password=" + password + ", imgUrl=" + imgUrl + ", openingTime=" + openingTime + ", intro=" + intro
+				+ ", des=" + des + ", deliveryFee=" + deliveryFee + ", time=" + time + ", token=" + token + "]";
+	}
 }

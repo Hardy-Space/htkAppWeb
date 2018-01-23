@@ -24,8 +24,19 @@ public class BuffetFoodOrderProduct {
     private Integer categoryId;  //所属分类id
 
     private String categoryName;  //分类名
+    
+    private int bz;//调整订单的状态码
 
-    public Integer getId() {
+
+	public int getBz() {
+		return bz;
+	}
+
+	public void setBz(int bz) {
+		this.bz = bz;
+	}
+
+	public Integer getId() {
         return id == null ? 0 : id;
     }
 

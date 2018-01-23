@@ -7,6 +7,7 @@ import com.htkapp.core.MoreMethodsUtils;
 import com.htkapp.core.OtherUtils;
 import com.htkapp.core.jsAjax.AjaxResponseModel;
 import com.htkapp.core.params.AjaxRequestParams;
+import com.htkapp.core.params.RequestParams;
 import com.htkapp.core.utils.Globals;
 import com.htkapp.core.utils.Jpush;
 import com.htkapp.core.utils.StringUtils;
@@ -30,7 +31,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.htkapp.modules.merchant.takeout.web.TakeoutController.mTakeoutDirectory;
 
@@ -201,10 +204,10 @@ public class BuffetFoodController {
             jsonObject.put("orderId", order.getId());
             //推送消息
             if(order.getToken() == null){
-                Jpush.jPushMethodToMerchant(order.getToken(),"有一个自助点餐订单","ALERT", "商家版");
-                Jpush.jPushMethodToMerchant(order.getToken(),"有一个自助点餐订单","","");
+                Jpush.jPushMethodToMerchant(accountShopToken,"有一个自助点餐订单","ALERT", "商家版");
+                Jpush.jPushMethodToMerchant(accountShopToken,"有一个自助点餐订单","","");
             }else {
-                moreMethodsUtils.jPushToMerAndAccount(order.getToken(),"自助点餐订单下单成功", jsonObject.toJSONString(),
+                moreMethodsUtils.jPushToMerAndAccount(accountShopToken,"自助点餐订单下单成功", jsonObject.toJSONString(),
                         user.getToken(),"有一个自助点餐订单", jsonObject.toJSONString(), 2);
             }
             return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
@@ -237,16 +240,15 @@ public class BuffetFoodController {
     //打印各种单据接口
     @RequestMapping("/print")
     @ResponseBody
-    public AjaxResponseModel printOrder(Model model,AjaxRequestParams params){
+    public AjaxResponseModel printOrder(Model model,AjaxRequestParams params, RequestParams Rparams,Integer state){
         if(params!=null&&params.getOrderNumber()!=null) {
-//    		 Map<String, Object> map = new HashMap<>();
-//    	        map.put("date", new Date().getTime());
-//    	        map.put("ord_mark", true);
-//    	        map.put("ord_mark_b_h", true);
-//    	        OtherUtils.ReturnValByModel(model, map);
-            return  buffetFoodControllerService.printOrder(params);
+        	Map<String, Object> map = new HashMap<>();
+        	OtherUtils.ReturnValByModel(model, map);
+        	Rparams.setModel(model);
+        		return  buffetFoodControllerService.printOrder(params,Rparams,state);
         }
-        return buffetFoodControllerService.printOrder(params);
+        return buffetFoodControllerService.printOrder(params,Rparams,state);
+//    return new AjaxResponseModel<>(100);
     }
 
 

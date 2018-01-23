@@ -1117,39 +1117,177 @@ private SeatInformationService seatInofService;
 	//		}
 	
 	//自助点餐订单处理(订单调整)
-	@Override
-	public void buffetFoodOrderEdit(RequestParams params) {
-		System.out.println("帮忙进入");
-		if (params != null) {
-			try {
-				//获得model
-				Model model = params.getModel();
-				//通过model获取用户
-				LoginUser user = OtherUtils.getLoginUserByRequest();
-				//通过用户id跟mark标记获得商铺信息
-				Shop shop = shopService.getShopByAccountShopIdAndMark(user.getUserId(), 2);
-				int pageNumber = Globals.DEFAULT_PAGE_NO;
-				int pageLimit = Globals.DEFAULT_PAGE_LIMIT;
-				if (params.getPageNum() > 1) {
-					pageNumber = params.getPageNum();
-				}
-				String orderDesc = "gmt_create desc";
-				Integer bz=null;
-				//通过店铺id查询订单列表
-				List<BuffetFoodOrder> result = buffetFoodOrderService.getAdjustOrderList(shop.getShopId(), orderDesc, pageNumber, pageLimit);
-				List<BuffetFoodOrderProduct> productLists=new ArrayList<BuffetFoodOrderProduct>();
-				if (result != null) {
-					Map<String, Integer> map=new HashMap<String, Integer>();
-					int quantity = 0;
-					for (BuffetFoodOrder each : result) {
-						quantity = 0;
-						Gson gson=new Gson();
-						//提取订单当中用来调单的json串并转变成产品列表
-						productLists = gson.fromJson(each.getAdjustOrderProductJson(), new TypeToken<List<BuffetFoodOrderProduct>>() {
-						}.getType());
-						//通过每个订单id查询订单下的商品列表
-						List<BuffetFoodOrderProduct> orderProductList = buffetFoodOrderProductService.getOrderProductListById(each.getId());
-						String orderBy="gmt_create";
+//	@Override
+//	public void buffetFoodOrderEdit(RequestParams params) {
+//		System.out.println("帮忙进入");
+//		if (params != null) {
+//			try {
+//				//获得model
+//				Model model = params.getModel();
+//				//通过model获取用户
+//				LoginUser user = OtherUtils.getLoginUserByRequest();
+//				//通过用户id跟mark标记获得商铺信息
+//				Shop shop = shopService.getShopByAccountShopIdAndMark(user.getUserId(), 2);
+//				int pageNumber = Globals.DEFAULT_PAGE_NO;
+//				int pageLimit = Globals.DEFAULT_PAGE_LIMIT;
+//				if (params.getPageNum() > 1) {
+//					pageNumber = params.getPageNum();
+//				}
+//				String orderDesc = "gmt_create desc";
+//				Integer bz=null;
+//				//通过店铺id查询订单列表
+//				List<BuffetFoodOrder> result = buffetFoodOrderService.getAdjustOrderList(shop.getShopId(), orderDesc, pageNumber, pageLimit);
+//				List<BuffetFoodOrderProduct> productLists=new ArrayList<BuffetFoodOrderProduct>();
+//				if (result != null) {
+//					Map<String, Integer> map=new HashMap<String, Integer>();
+//					int quantity = 0;
+//					for (BuffetFoodOrder each : result) {
+//						quantity = 0;
+//						Gson gson=new Gson();
+//						//提取订单当中用来调单的json串并转变成产品列表
+//						productLists = gson.fromJson(each.getAdjustOrderProductJson(), new TypeToken<List<BuffetFoodOrderProduct>>() {
+//						}.getType());
+//						//通过每个订单id查询订单下的商品列表
+//						List<BuffetFoodOrderProduct> orderProductList = buffetFoodOrderProductService.getOrderProductListById(each.getId());
+//						String orderBy="gmt_create";
+//						//通过店铺id查询订单列表
+//						List<BuffetFoodOrder> result = buffetFoodOrderService.getAdjustOrderList(shop.getShopId(), orderDesc, pageNumber, pageLimit);
+//						List<BuffetFoodOrderProduct> productLists=new ArrayList<BuffetFoodOrderProduct>();
+//						if (result != null) {
+//							Map<String, Integer> map=new HashMap<String, Integer>();
+//							int quantity = 0;
+//							for (BuffetFoodOrder each : result) {
+//								quantity = 0;
+//								Gson gson=new Gson();
+//								//提取订单当中用来调单的json串并转变成产品列表
+//								productLists = gson.fromJson(each.getAdjustOrderProductJson(), new TypeToken<List<BuffetFoodOrderProduct>>() {
+//								}.getType());
+//								//通过每个订单id查询订单下的商品列表
+//								List<BuffetFoodOrderProduct> orderProductList = buffetFoodOrderProductService.getOrderProductListById(each.getId());
+//								String orderBy="gmt_create";
+//								//通过店铺id查询店铺下所有的商品
+//								List<BuffetFoodProduct> allProductList=buffetFoodProductService.getAllProductByShopId(each.getShopId(), orderBy);
+//								String productName="";
+//								for(BuffetFoodProduct bfp:allProductList) {
+//									productName=bfp.getProductName();
+//									map.put(productName, 0);
+//									productName="";
+//								}
+//								for(int a=0;a<orderProductList.size();a++) {
+//									if(map.containsKey(orderProductList.get(a).getProductName())) {
+//										productName=orderProductList.get(a).getProductName();
+//										map.put(productName,orderProductList.get(a).getQuantity());
+//									}
+//								}
+//								for(int a=0;a<productLists.size();a++) {
+//									productLists.get(a).setOrderId(orderProductList.get(0).getOrderId());
+//									if(map.containsKey(productLists.get(a).getProductName())&&map.get(productLists.get(a).getProductName())!=0) {
+//										if(map.get(productLists.get(a).getProductName())<productLists.get(a).getQuantity()) {
+//											bz=2;
+//											buffetFoodOrderProductService.updataOrderProductBzById(productLists.get(a), bz);
+//											productLists.get(a).setBz(bz.toString());
+//										}else if(map.get(productLists.get(a).getProductName())>productLists.get(a).getQuantity()){
+//											bz=1;
+//											buffetFoodOrderProductService.updataOrderProductBzById(productLists.get(a), bz);
+//											productLists.get(a).setBz(bz.toString());
+//										}else {
+//											bz=0;
+//											buffetFoodOrderProductService.updataOrderProductBzById(productLists.get(a), bz);
+//											productLists.get(a).setBz(bz.toString());
+//										}
+//									}else if(map.containsKey(productLists.get(a).getProductName())&&map.get(productLists.get(a).getProductName())==0){
+//										map.put(productLists.get(a).getProductName(), productLists.get(a).getQuantity());
+//										bz=2;
+//										buffetFoodOrderProductService.updataOrderProductBzById(productLists.get(a), bz);
+//									}
+//								}
+//								map.clear();
+//								if(orderProductList.size()<productLists.size()) {
+//									for(int a=0;a<productLists.size();a++) {
+//										if(a<orderProductList.size()&&!map.containsKey(orderProductList.get(a).getProductName())) {
+//											map.put(orderProductList.get(a).getProductName(), orderProductList.get(a).getQuantity());
+//										}
+//										if(!map.containsKey(productLists.get(a).getProductName())) {
+//											map.put(productLists.get(a).getProductName(), productLists.get(a).getQuantity());
+//										}
+//									}
+//								}else {
+//									for(int a=0;a<orderProductList.size();a++) {
+//										if(a<orderProductList.size()&&!map.containsKey(orderProductList.get(a).getProductName())) {
+//											map.put(orderProductList.get(a).getProductName(), orderProductList.get(a).getQuantity());
+//										}
+//										if(a<productLists.size()&&!map.containsKey(productLists.get(a).getProductName())) {
+//											map.put(productLists.get(a).getProductName(), productLists.get(a).getQuantity());
+//										}
+//									}
+//								}
+//
+//								for(int a=0;a<map.size();a++) {
+//									for(String key:map.keySet()) {
+//										if(a<productLists.size()&&!productLists.get(a).getProductName().equals(key)) {
+//											map.put(key, 0);
+//											for(int b=0;b<orderProductList.size();b++) {
+//												if(orderProductList.get(b).getProductName().equals(key)) {
+//													orderProductList.get(b).setQuantity(0);
+//												}
+//											}
+//										}
+//									}
+//								}
+//								map.clear();
+//								for(BuffetFoodOrderProduct bfop:productLists) {
+//									productName=bfop.getProductName();
+//									map.put(productName, 0);
+//									productName="";
+//								}
+//									for(int a=0;a<orderProductList.size();a++) {
+//										if(!(map.containsKey(orderProductList.get(a).getProductName()))) {
+//											productLists.add(orderProductList.get(a));
+//										}
+//									}
+//								//将查询到的商品详情储存到订单当中
+//								each.setProductLists(productLists);
+//								//为订单添加时间
+//								Date date = new Date();
+//								long time = date.getTime() - DateUtil.parse(each.getOrderTime()).getTime();
+//								String commitMinute = DateUtil.formatBetween(time, BetweenFormater.Level.MINUTE);
+//								each.setMinute(commitMinute);
+//								//为订单添加总价
+//								if (orderProductList != null) {
+//									for (BuffetFoodOrderProduct every : orderProductList) {
+//										quantity += every.getQuantity();
+//									}
+//								}
+//								each.setSum(quantity);
+//							}
+//						}
+//						model.addAttribute("data", result);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}
+
+
+			//自助点餐订单处理(订单调整)
+			@Override
+			public void buffetFoodOrderEdit(RequestParams params) {
+				System.out.println("帮忙进入");
+				if (params != null) {
+					try {
+						//获得model
+						Model model = params.getModel();
+						//通过model获取用户
+						LoginUser user = OtherUtils.getLoginUserByRequest();
+						//通过用户id跟mark标记获得商铺信息
+						Shop shop = shopService.getShopByAccountShopIdAndMark(user.getUserId(), 2);
+						int pageNumber = Globals.DEFAULT_PAGE_NO;
+						int pageLimit = Globals.DEFAULT_PAGE_LIMIT;
+						if (params.getPageNum() > 1) {
+							pageNumber = params.getPageNum();
+						}
+						String orderDesc = "gmt_create desc";
+						Integer bz=null;
 						//通过店铺id查询订单列表
 						List<BuffetFoodOrder> result = buffetFoodOrderService.getAdjustOrderList(shop.getShopId(), orderDesc, pageNumber, pageLimit);
 						List<BuffetFoodOrderProduct> productLists=new ArrayList<BuffetFoodOrderProduct>();
@@ -1185,20 +1323,21 @@ private SeatInformationService seatInofService;
 										if(map.get(productLists.get(a).getProductName())<productLists.get(a).getQuantity()) {
 											bz=2;
 											buffetFoodOrderProductService.updataOrderProductBzById(productLists.get(a), bz);
-											productLists.get(a).setBz(bz.toString());
+											productLists.get(a).setBz(bz);
 										}else if(map.get(productLists.get(a).getProductName())>productLists.get(a).getQuantity()){
 											bz=1;
 											buffetFoodOrderProductService.updataOrderProductBzById(productLists.get(a), bz);
-											productLists.get(a).setBz(bz.toString());
+											productLists.get(a).setBz(bz);
 										}else {
 											bz=0;
 											buffetFoodOrderProductService.updataOrderProductBzById(productLists.get(a), bz);
-											productLists.get(a).setBz(bz.toString());
+											productLists.get(a).setBz(bz);
 										}
 									}else if(map.containsKey(productLists.get(a).getProductName())&&map.get(productLists.get(a).getProductName())==0){
 										map.put(productLists.get(a).getProductName(), productLists.get(a).getQuantity());
 										bz=2;
 										buffetFoodOrderProductService.updataOrderProductBzById(productLists.get(a), bz);
+										productLists.get(a).setBz(bz);
 									}
 								}
 								map.clear();
@@ -1242,11 +1381,13 @@ private SeatInformationService seatInofService;
 								}
 									for(int a=0;a<orderProductList.size();a++) {
 										if(!(map.containsKey(orderProductList.get(a).getProductName()))) {
+											orderProductList.get(a).setBz(1);
 											productLists.add(orderProductList.get(a));
 										}
 									}
 								//将查询到的商品详情储存到订单当中
 								each.setProductLists(productLists);
+								
 								//为订单添加时间
 								Date date = new Date();
 								long time = date.getTime() - DateUtil.parse(each.getOrderTime()).getTime();
@@ -1254,22 +1395,24 @@ private SeatInformationService seatInofService;
 								each.setMinute(commitMinute);
 								//为订单添加总价
 								if (orderProductList != null) {
-									for (BuffetFoodOrderProduct every : orderProductList) {
+									for (BuffetFoodOrderProduct every : productLists) {
 										quantity += every.getQuantity();
 									}
 								}
 								each.setSum(quantity);
+								double orderAmount = 0.00;
+		                        for (BuffetFoodOrderProduct bfop : productLists){
+		                            orderAmount += bfop.getPrice() * bfop.getQuantity();
+		                        }
+		                        each.setOrderAmount(orderAmount);
 							}
 						}
 						model.addAttribute("data", result);
-			} catch (Exception e) {
-				e.printStackTrace();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 			}
-		}
-	}
-
-
-
 
 
 

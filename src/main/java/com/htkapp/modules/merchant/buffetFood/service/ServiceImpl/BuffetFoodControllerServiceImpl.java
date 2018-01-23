@@ -7,6 +7,7 @@ import com.htkapp.core.OtherUtils;
 import com.htkapp.core.dto.TableResponseModel;
 import com.htkapp.core.jsAjax.AjaxResponseModel;
 import com.htkapp.core.params.AjaxRequestParams;
+import com.htkapp.core.params.RequestParams;
 import com.htkapp.core.utils.FileUploadUtils;
 import com.htkapp.core.utils.Globals;
 import com.htkapp.modules.common.entity.LoginUser;
@@ -247,30 +248,25 @@ public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerServ
     }
 
     @Override
-    public AjaxResponseModel printOrder(AjaxRequestParams params) {
+    public AjaxResponseModel printOrder(AjaxRequestParams params,RequestParams Rparams,Integer state) {
         //TODO
         System.out.println(params.getOrderNumber());
         if(params != null && params.getOrderNumber() != null){
             List<BuffetFoodOrderProduct> list=new ArrayList<BuffetFoodOrderProduct>();
             try {
+            	LoginUser user = OtherUtils.getLoginUserByRequest();
+                Shop shop = shopService.getShopDataByAccountShopIdAndMark(user.getUserId(), 2);
                 //获取订单编号
                 String OderNumeber=params.getOrderNumber();
                 //查询订单详情
                 BuffetFoodOrder bfo=buffetFoodOrderDao.getBuffetFoodOrderByOrderNumberDAO(OderNumeber);
-                String orderDesc = "gmt_create desc";
-                int pageNumber = Globals.DEFAULT_PAGE_NO;
-                int pageLimit = Globals.DEFAULT_PAGE_LIMIT;
                 //通过订单详情的id查询订单内容
-                List<BuffetFoodOrder> result = buffetFoodOrderService.getAdjustOrderList(bfo.getShopId(), orderDesc, pageNumber, pageLimit);
-                for(BuffetFoodOrder buffetFoodOrder:result) {
-                    list=buffetFoodOrderProductService.getOrderProductListById(buffetFoodOrder.getId());
-                }
+                    list=buffetFoodOrderProductService.getOrderProductListById(bfo.getId());
                 //    通俗理解就是书、文档
                 Book book = new Book();
                 //    设置成竖打
                 PageFormat pf = new PageFormat();
                 pf.setOrientation(PageFormat.PORTRAIT);
-
                 //    通过Paper设置页面的空白边距和可打印区域。必须与实际打印纸张大小相符。
                 Paper p = new Paper();
                 p.setSize(590, 840);//纸张大小
@@ -280,6 +276,9 @@ public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerServ
                 //    把 PageFormat 和 Printable 添加到书中，组成一个页面
                 PrintTest pt=new PrintTest();
                 pt.setList(list);
+                pt.setTitle(shop.getShopName());
+                pt.setOderNumeber(OderNumeber);
+                pt.setState(state);
                 book.append(pt, pf);
                 //获取打印服务对象
                 PrinterJob job = PrinterJob.getPrinterJob();
@@ -289,6 +288,7 @@ public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerServ
                 job.print();
                 System.out.println("==========");
             }catch(Exception e) {
+            	e.printStackTrace();
                 return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED,"打印失败");
             }
             return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION,"打印成功");

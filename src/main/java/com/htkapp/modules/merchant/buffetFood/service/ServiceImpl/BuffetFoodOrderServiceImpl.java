@@ -285,7 +285,7 @@ public class BuffetFoodOrderServiceImpl implements BuffetFoodOrderService {
         return buffetFoodOrderDao.getLastOrderDAO(shopId);
     }
 
-    //查询调整订单列表
+    //查询调整订单列表(查询订单列表当中包含调单的数据的订单列表)
     @Override
     public List<BuffetFoodOrder> getAdjustOrderList(int shopId, String orderDesc, int pageNumber, int pageLimit) {
         PageHelper.startPage(pageNumber, pageLimit);

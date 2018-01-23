@@ -640,14 +640,14 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
                             moreMethodsUtils.jPushToMerAndAccount(getOrder.getToken(),"自助点餐订单催单请求已发送", jsonObject_.toJSONString(), user.getToken(),"有一个自助点餐订单信息", jsonObject_.toJSONString(), 2);
                         }
                         moreMethodsUtils.pushMesToManagePage(new PushMesEntity("自助点餐订单消息", "b", "自助点餐订单催单消息", user.getToken(), 'b', 4, "您有一个的自助点餐订单消息", user.getId()));
-                        return new APIResponseModel(Globals.API_SUCCESS);
+                        return new APIResponseModel(Globals.API_SUCCESS,"调单成功");
                     } catch (Exception e) {
-                        return new APIResponseModel(Globals.API_FAIL);
+                        return new APIResponseModel(Globals.API_FAIL,"调单失败");
                     }
                 } else if (getOrder.getOrderState() == 2) {
                     return new APIResponseModel(Globals.API_FAIL, "订单已完成");
                 } else {
-                    return new APIResponseModel(Globals.API_FAIL);
+                    return new APIResponseModel(Globals.API_FAIL,"订单状态错误");
                 }
             } else {
                 return new APIResponseModel(Globals.API_REQUEST_BAD, "订单不存在");

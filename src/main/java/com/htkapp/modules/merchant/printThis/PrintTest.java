@@ -14,6 +14,15 @@ public class PrintTest implements Printable {
 	private List<BuffetFoodOrderProduct> list;
 	private String title;
 	private String oderNumeber;
+	private Integer state;
+
+	public Integer getState() {
+		return state;
+	}
+
+	public void setState(Integer state) {
+		this.state = state;
+	}
 
 	public String getTitle() {
 		return title;
@@ -42,19 +51,9 @@ public class PrintTest implements Printable {
 
 	@Override
 	public int print(Graphics gra, PageFormat pf, int pageIndex) throws PrinterException {
-	    if (pageIndex > 0) {  
-            return NO_SUCH_PAGE;  
-        }  
-		//TODO
-		String str = null;
-		System.out.println("pageIndex="+pageIndex);
-		Component c = null;
-		for(int a=0;a<list.size();a++) {
-			BuffetFoodOrderProduct pfop=list.get(a);
-			String name=pfop.getProductName();
-			String quan=pfop.getQuantity().toString();
-			str=name+"		"+quan;
-		}
+		if (pageIndex > 0) {  
+			return NO_SUCH_PAGE;  
+		}  
 		//转换成Graphics2D
 		Graphics2D g2 = (Graphics2D) gra;
 
@@ -86,10 +85,16 @@ public class PrintTest implements Printable {
 		line+=heigth+2; 
 
 		//设置标题  
-		g2.drawString("名称",(float)x+20, (float)y+line);  
-		g2.drawString("单价",(float)x+60, (float)y+line);  
-		g2.drawString("数量",(float)x+90, (float)y+line);  
-		g2.drawString("小计",(float)x+120, (float)y+line);  
+		if(state==1) {
+			g2.drawString("名称",(float)x+20, (float)y+line); 
+			g2.drawString("单价",(float)x+60, (float)y+line);  
+			g2.drawString("数量",(float)x+90, (float)y+line);  
+			g2.drawString("小计",(float)x+120, (float)y+line);  
+		}else if(state==0) {
+			g2.drawString("名称",(float)x+20, (float)y+line); 
+			g2.drawString("数量",(float)x+120, (float)y+line);  
+		}
+
 		line+=heigth;
 		/*
 		 * 虚线绘制设置    setStroke(Stroke):为 Graphics2D 上下文设置 Stroke
@@ -118,24 +123,33 @@ public class PrintTest implements Printable {
 		g2.drawLine((int)x,(int)(y+line),(int)x+158,(int)(y+line));  
 		line+=heigth; 
 		//设置商品清单
-		Integer totalNum = null;
-		Double totalPrice = null;
+		Integer totalNum = 0;
+		Double totalPrice = 0.0;
 		if(list!=null && list.size()>0){
-			for(BuffetFoodOrderProduct bfop:list){
-				Double total=bfop.getPrice()*bfop.getQuantity();
-				g2.drawString(bfop.getProductName(),(float)x+15, (float)y+line);  
-				g2.drawString(bfop.getPrice().toString(),(float)x+60, (float)y+line);  
-				g2.drawString(bfop.getQuantity().toString(),(float)x+95,(float)y+line);  
-				g2.drawString(total.toString(),(float)x+120,(float)y+line);  
-				line += heigth; 
-				totalNum+=bfop.getQuantity();
-				totalPrice+=bfop.getPrice();
+			if(state==1) {
+				for(BuffetFoodOrderProduct bfop:list){
+					Double total=bfop.getPrice()*bfop.getQuantity();
+					g2.drawString(bfop.getProductName(),(float)x+15, (float)y+line);  
+					g2.drawString(bfop.getPrice().toString(),(float)x+60, (float)y+line);  
+					g2.drawString(bfop.getQuantity().toString(),(float)x+95,(float)y+line);  
+					g2.drawString(total.toString(),(float)x+120,(float)y+line);  
+					line += heigth; 
+					totalNum+=bfop.getQuantity();
+					totalPrice+=total;
+				}
+			}else if(state==0) {
+				for(BuffetFoodOrderProduct bfop:list){
+					g2.drawString(bfop.getProductName(),(float)x+15, (float)y+line);  
+					g2.drawString(bfop.getQuantity().toString(),(float)x+120,(float)y+line);  
+					line += heigth; 
+				}
 			}
-			//			        }
-			g2.drawLine((int) x, (int)(y+line), (int) x + 158, (int)(y+line));  
-			line += heigth+2;  
-			g2.drawString("商品总数:"+totalNum+ "件",(float)x+15,(float)y+line);  
-			g2.drawString("合计:"+totalPrice+" 元", (float)x+80, (float)y+line);  
+			if(state==1) {
+				g2.drawLine((int) x, (int)(y+line), (int) x + 158, (int)(y+line));  
+				line += heigth+2;  
+				g2.drawString("商品总数:"+totalNum+ "件",(float)x+15,(float)y+line);  
+				g2.drawString("合计:"+totalPrice+" 元", (float)x+80, (float)y+line);  
+			}
 			line += heigth;  
 			line += heigth;
 			g2.drawString("时间:"+sdf.format(new Date()),(float)x+15,(float)y+line);  
