@@ -4,3 +4,6 @@
 /target/*.war
 /bin/
 /target/
+/README.md
+/.classpath
+/.project
