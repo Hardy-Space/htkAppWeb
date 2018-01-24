@@ -548,7 +548,7 @@ function print(){
 	var orderNumber=$(".print").attr("orderNumber");
 	console.log(orderNumber);
 	console.log(url)
-	$.post(url,{orderNumber:orderNumber,state:0},function(data){
+	$.post(url,{orderNumber:orderNumber,state:1},function(data){
 		console.log(data)
 	})
 }

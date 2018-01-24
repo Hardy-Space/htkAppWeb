@@ -12,136 +12,85 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1">
 <%@include file="head.jsp"%>
-<style>
-* {
-	font-family: "微软雅黑";
-}
 
-.szuo {
-	font-size: 13px;
-	text-align: left;
-	height: 20px;
-	padding-left: 0px;
-}
-
-.szhong {
-	font-size: 13px;
-	text-align: right;
-	height: 20px;
-	text-align: right;
-}
-
-.syou {
-	font-size: 13px;
-	height: 20px;
-	text-align: right;
-}
-
-.xiaojie {
-	font-size: 13px;
-	float: right;
-	text-align: right;
-	margin-right: 0px;
-	padding-right: 0px;
-}
-
-.tog {
-	width: 100%;
-	padding: 0px;
-}
-
-.xiangqing {
-	margin-top: 0px;
-}
-
-.row {
-	margin-top: 20px;
-	background-color: white;
-	height: 100%;
-	background-color: white;
-	width: 100%;
-	float: right;
-	margin-right: 1px;
-	padding-left: 0px;
-	padding-right: 0px;
-	padding-bottom: 10px;
-	border-bottom: 2px solid #ddd;
-}
-
-.bianhao {
-	text-align: left;
-	padding-right: 20px;
-	font-size: 12px;
-	height: 30px;
-	margin-top: 12px;
-	font-weight: 700;
-	padding-left: 0px;
-	line-height: 30px;
-}
-
-.shouqi {
-	font-size: 10px;
-	color: dodgerblue;
-	float: right;
-	margin-right: 13px;
-	line-height: 40px;
-	margin-top: 5px;
-}
-
-.modal-body span {
-	text-align: center;
-	margin-top: 10px;
-	font-weight: 800;
-}
-
-.xuhao {
-	background-color: lightgray;
-	margin-top: 0px;
-	height: 40px;
-	line-height: 40px;
-	padding-left: 0px;
-}
-
-.bt {
-	width: 10%;
-	height: 30px;
-	background-color: white;
-	border: 1px solid dodgerblue;
-	border-radius: 5px;
-	color: lightskyblue;
-	margin-top: 12px;
-}
-
-.bt-primary {
-	background-color: dodgerblue;
-	color: white;
-}
-
-.nav {
-	height: 40px;
-	background-color: white;
-	text-align: center;
-	line-height: 40px;
-}
-
-.nav div a {
-	text-decoration: none;
-	out-line: none;
-	color: # *****;
-	font-size: 15px;
-	font-weight: 700;
-}
-
-.active {
-	border-bottom: 3px solid dodgerblue;
-	height: 40px;
-}
-</style>
 </head>
 <body>
+
 	<div class="layui-layout layui-layout-admin">
 		<%@include file="top.jsp"%>
 		<div class="layui-body" style="background-color: #f3f3f4">
+			<div class="container-fluid">
+				<div class="row-fluid">
+					<div class="span12">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>编号</th>
+									<th>产品</th>
+									<th>交付时间</th>
+									<th>状态</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>1</td>
+									<td>TB - Monthly</td>
+									<td>01/04/2012</td>
+									<td>Default</td>
+								</tr>
+								<tr class="success">
+									<td>1</td>
+									<td>TB - Monthly</td>
+									<td>01/04/2012</td>
+									<td>Approved</td>
+								</tr>
+								<tr class="error">
+									<td>2</td>
+									<td>TB - Monthly</td>
+									<td>02/04/2012</td>
+									<td>Declined</td>
+								</tr>
+								<tr class="warning">
+									<td>3</td>
+									<td>TB - Monthly</td>
+									<td>03/04/2012</td>
+									<td>Pending</td>
+								</tr>
+								<tr class="info">
+									<td>4</td>
+									<td>TB - Monthly</td>
+									<td>04/04/2012</td>
+									<td>Call in to confirm</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="row-fluid">
+							<div class="span4">
+								<div class="row-fluid">
+									<button class="btn" type="button">按钮</button>
+									<button class="btn" type="button">按钮</button>
+									<button class="btn" type="button">按钮</button>
+									<button class="btn" type="button">按钮</button>
+									<button class="btn" type="button">按钮</button>
+									<button class="btn" type="button">按钮</button>
+									<button class="btn" type="button">按钮</button>
+									<button class="btn" type="button">按钮</button>
+									<button class="btn" type="button">按钮</button>
+									<button class="btn" type="button">按钮</button>
+									<button class="btn" type="button">按钮</button>
+									<button class="btn" type="button">按钮</button>
+									<button class="btn" type="button">按钮</button>
+									<button class="btn" type="button">按钮</button>
+									<button class="btn" type="button">按钮</button>
+									<button class="btn" type="button">按钮</button>
+									<button class="btn" type="button">按钮</button>
+									<button class="btn" type="button">按钮</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div class="tabListDiv">
 				<c:choose>
 					<c:when test="${list!=null}">
@@ -164,9 +113,9 @@
 									</tr>
 								</c:forEach>
 								<tr>
-								<td colspan="4">
-									<input id="addSeatInformation"type="hidden" value="${data.shopId }">
-									<a class="addSeatInformation">目前没有座位，点击此处添加</a></td>
+									<td colspan="4"><input id="addSeatInformation"
+										type="hidden" value="${data.shopId }"> <a
+										class="addSeatInformation">目前没有座位，点击此处添加</a></td>
 								</tr>
 							</table>
 						</div>
@@ -181,9 +130,9 @@
 									<td>删除</td>
 								</tr>
 								<tr>
-									<td colspan="4">
-									<input id="addSeatInformation"type="hidden" value="${data.shopId }">
-									<a class="addSeatInformation">目前没有座位，点击此处添加</a></td>
+									<td colspan="4"><input id="addSeatInformation"
+										type="hidden" value="${data.shopId }"> <a
+										class="addSeatInformation">目前没有座位，点击此处添加</a></td>
 								</tr>
 							</table>
 						</div>
