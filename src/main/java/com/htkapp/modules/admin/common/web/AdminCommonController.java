@@ -164,16 +164,29 @@ public class AdminCommonController {
 
     //==================================权限管理
     @RequestMapping(value = "/permissionPage", method = RequestMethod.GET)
-    public String permissionPage(Model model,
+    public String permissionPage(Model model,@RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
                                  @RequestParam(value = "pageNum", defaultValue = "1", required = false) Integer pageNum) {
         model.addAttribute("date", new Date().getTime());
         model.addAttribute("permission_page", true);
         RequestParams params = new RequestParams();
         params.setModel(model);
+        params.setPage(page);
         params.setPageNum(pageNum);
         adminCommonControllerService.permissionPage(params);
         return adminDirector + "permission";
     }
+//    @RequestMapping(value = "/permissionPageByPage", method = RequestMethod.POST)
+//    public String permissionPageByPost(Model model,@RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
+//                                 @RequestParam(value = "pageNum", defaultValue = "1", required = false) Integer pageNum) {
+//        model.addAttribute("date", new Date().getTime());
+//        model.addAttribute("permission_page", true);
+//        RequestParams params = new RequestParams();
+//        params.setModel(model);
+//        params.setPageNum(pageNum);
+//        params.setPage(page);
+//        adminCommonControllerService.permissionPage(params);
+//        return adminDirector + "permission";
+//    }
 
     //==================================注册申请列表
     @RequestMapping("/registerApplyList")

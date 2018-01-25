@@ -14,47 +14,37 @@ import com.htkapp.core.jsAjax.AjaxResponseModel;
 import com.htkapp.core.params.RequestParams;
 import com.htkapp.core.shiro.common.utils.LoggerUtils;
 import com.htkapp.core.shiro.common.utils.StringUtils;
-import com.htkapp.core.shiro.core.shiro.token.manager.TokenManager;
 import com.htkapp.core.utils.Globals;
 import com.htkapp.core.utils.OrderNumGen;
 import com.htkapp.modules.common.dto.AjaxReturnLoginData;
 import com.htkapp.modules.common.entity.LoginUser;
-import com.htkapp.modules.merchant.common.service.IndexService;
 import com.htkapp.modules.merchant.common.service.MerchantService;
 import com.htkapp.modules.merchant.pay.service.BillBalanceSheetService;
 import com.htkapp.modules.merchant.shop.entity.AccountShop;
 import com.htkapp.modules.merchant.shop.entity.AccountShopReplyComments;
 import com.htkapp.modules.merchant.shop.entity.Shop;
+import com.htkapp.modules.merchant.shop.entity.ShopCategoryData;
 import com.htkapp.modules.merchant.shop.service.AccountShopServiceI;
+import com.htkapp.modules.merchant.shop.service.ShopInfoControllerService;
 import com.htkapp.modules.merchant.shop.service.ShopServiceI;
-import com.sun.org.apache.bcel.internal.generic.FADD;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.lang.Base64;
-import org.directwebremoting.guice.RequestParameters;
 import org.apache.http.util.TextUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import redis.clients.jedis.JedisPool;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static com.xiaoleilu.hutool.date.DateUtil.*;
 
@@ -65,6 +55,9 @@ import static com.xiaoleilu.hutool.date.DateUtil.*;
 @Controller
 @RequestMapping("/merchant/")
 public class MerchantController {
+
+    @Resource
+    private ShopInfoControllerService controllerService;
 
     @Resource
     private ShopServiceI shopService;
@@ -215,6 +208,8 @@ public class MerchantController {
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String registerPage(Model model) {
         model.addAttribute("date", new Date().getTime());
+        List<ShopCategoryData> resultList = controllerService.getShopCategory();
+        model.addAttribute("data", resultList);
         return mDirectory + "register";
     }
 
@@ -816,8 +811,10 @@ public class MerchantController {
             AccountShop accountShop = accountShopService.getAlipayAccount(user.getUserId());
 
             float moneyF = Float.parseFloat(money);
+            //扣除手续费千分之六
+            float realMoney= moneyF*(1f-0.006f);
             DecimalFormat decimalFormat=new DecimalFormat("0.00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
-            String p = decimalFormat.format(moneyF);//format 返回的是字符串
+            String p = decimalFormat.format(realMoney);//format 返回的是字符串
 
             if (accountShop != null) {
 
@@ -850,7 +847,7 @@ public class MerchantController {
                     System.out.println("调用成功");
 //                    callAplipayQuery(alipayClient,out_trade_no);
 
-                    //修改数据库里的商家账户余额
+                    //修改数据库里的商家账户余额(减去的是后台输入的提现金额)
                     double oldBalance = billBalanceSheetService.getAccountBalance(accountShop.getToken());
                     double newBalance = oldBalance - Double.valueOf(money);
                     int row = billBalanceSheetService.updateAccountBalance(accountShop.getToken(), newBalance);

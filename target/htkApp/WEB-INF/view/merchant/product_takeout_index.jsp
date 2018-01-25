@@ -52,9 +52,9 @@
         <div class="body-content">
             <div class="childCat clearfix tab">
                 <div style="position: relative">
-                    <a href="" class="cur">商品管理</a>
-                    <a href="">回收站</a>
-                    <a href="">违规</a>
+                    <a href="${sysPath}merchant/takeout/product/homePage" class="cur">商品管理</a>
+                    <%--<a href="${sysPath}merchant/takeout/product/homePage">回收站</a>--%>
+                    <%--<a href="">违规</a>--%>
                 </div>
             </div>
             <div class="continerCont pdtp10">
@@ -507,6 +507,16 @@
         })
 
     });
+
+    //选项卡
+    $(".tab a").click(function(){
+        //选择状态改变
+        $(this).addClass("cur").siblings().removeClass("cur");
+
+        return false;
+    });
+
+
     function ajax(url, datas) {
         var ajax_data = [];
         $.ajax({

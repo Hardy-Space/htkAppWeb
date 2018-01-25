@@ -134,6 +134,18 @@
             , jump: function (obj, first) {
                 if (!first) {
                     //不是第一页
+                    var url = baseUrl + "/admin/permissionPage?page="+obj.curr+"&pageNum="+obj.limit;
+                    window.location.href = url;
+//                    var param = {
+//                        "page":obj.curr,
+//                        "pageNum":obj.limit
+//                    };
+//                    $.post(url, param, function (result) {
+//                        if(result && result.code == 0){
+//                        }else {
+//                            layer_msg(result.message, 'error');
+//                        }
+//                    });
                 }
             }
         });

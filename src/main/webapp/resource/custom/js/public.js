@@ -19,14 +19,6 @@ $(function(){
         $(".menuItem .childMenu").hide();
     })
 
-    //选项卡
-    // $(".tab a").click(function(){
-    //     //选择状态改变
-    //     $(this).addClass("cur").siblings().removeClass("cur");
-    //
-    //     return false;
-    // });
-
     // //编辑商品分类名称
     $(".editCat").click(function(){
         var catName=$(this).siblings("span").text();

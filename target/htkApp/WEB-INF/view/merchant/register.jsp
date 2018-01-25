@@ -87,8 +87,6 @@
 
 </head>
 <body class="beg-login-bg">
-
-
 <div class="register">
     <div class="register_content shadow_">
         <form class="layui-form register-form">
@@ -108,7 +106,10 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">店铺分类</label>
                 <div class="layui-input-inline select-input">
-                    <select id="shopCategory" lay-ignore lay-verify="required" >
+                    <select id="shopCategory" lay-verify="required">
+                        <c:forEach items="${data}" var="each">
+                            <option value="${each.id}">${each.categoryName}</option>
+                        </c:forEach>
                     </select>
                 </div>
             </div>
@@ -228,7 +229,7 @@
     var aVal = "";
     var location_ = {};
 
-//    var categoryId;
+    //    var categoryId;
 
     //获取输入框对象
     var inputEle = $("#searchVal");
@@ -329,37 +330,48 @@
 
     }
 
-//    绑定分类选择变化更新选择的分类id
-//    $("#shopCategory").bind("change",function(){
-//        var id = $(this).val();
-//        categoryId = id;
-//    });
+    //    绑定分类选择变化更新选择的分类id
+    //    $("#shopCategory").bind("change",function(){
+    //        var id = $(this).val();
+    //        categoryId = id;
+    //    });
 
-//    初始化的select的默认分类id赋值
-//    $(function () {
-//        var id = $("#shopCategory").val();
-//        categoryId = id;
-//        //这里获取的是null
-//        alert(""+categoryId);
-//    });
+    //    初始化的select的默认分类id赋值
+    //    $(function () {
+    //        var id = $("#shopCategory").val();
+    //        categoryId = id;
+    //        //这里获取的是null
+    //        alert(""+categoryId);
+    //    });
 
     <%--页面初始化的时候把下拉店铺分类填好--%>
-    $(function () {
-        var shopCategoryListJson;
-        var url = baseUrl + "/merchant/shopInfo/getShopCategoryList";
-        $.post(url, function (result) {
-            if (result.code === 0 && result.data !== null) {
-                //获取数据成功
-                shopCategoryListJson = result.data;
-                $.each(shopCategoryListJson, function (index, item) {
-                    $("#shopCategory").append("<option value='" + item.id + "'>" + item.categoryName + "</option>");
-                });
-            } else {
-                //后台执行异常,外卖下分类为空(显示提示信息)
-//                layer_msg(result.data.message, 'exception');
-            }
-        });
-    });
+
+    //    function getCategoryData() {
+    //        var shopCategoryListJson;
+    //        var url = baseUrl + "/merchant/shopInfo/getShopCategoryList";
+    //        $.post(url, function (result) {
+    //            var r = result.code;
+    //            if (result.code === 0 && result.data !== null) {
+    //                //获取数据成功
+    //                shopCategoryListJson = result.data;
+    //                for(var i=0;i<shopCategoryListJson.length;i++){
+    //                    var item = shopCategoryListJson[i];
+    //                    $("#shopCategory").append("<option value='" + item.id + "'>" + item.categoryName + "</option>");
+    //                }
+    ////                $.each(shopCategoryListJson, function (index, item) {
+    ////                    $("#shopCategory").append("<option value='" + item.id + "'>" + item.categoryName + "</option>");
+    ////                });
+    //            } else {
+    //                //后台执行异常,外卖下分类为空(显示提示信息)
+    ////                layer_msg(result.data.message, 'exception');
+    //            }
+    //        });
+    //    }
+    //
+    //
+    //    $(function () {
+    //        getCategoryData();
+    //    });
 
 
     function search(obj) {
@@ -468,7 +480,13 @@
             data.field.latitude = location_.lat;
 
             //把选择的分类给带上
-            data.field.categoryId = $("#shopCategory").val();
+            var categoryId = $("#shopCategory").val();
+            if (categoryId == null) {
+                layer_msg('请选择分类', 'warring');
+                event.returnValue = false;
+                return;
+            }
+            data.field.categoryId = categoryId;
 
             data.field.password = MD5(data.field.password).toUpperCase();
             const url = baseUrl + "/merchant/register";

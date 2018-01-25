@@ -105,6 +105,9 @@
                         <value>/htkApp/login/captcha</value>
                         <value>/htkApp/resource/</value>
 
+                        <!--<value>/htkApp/merchant/shopInfo/getShopCategoryList</value>-->
+
+
                         <!--调试放开的口-->
                         <value>/htkApp/API/shopDataAPI/</value>
                         <value>/htkApp/API/appAPI/</value>

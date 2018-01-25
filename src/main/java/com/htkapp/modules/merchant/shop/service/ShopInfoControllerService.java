@@ -4,13 +4,19 @@ package com.htkapp.modules.merchant.shop.service;
 import com.htkapp.core.jsAjax.AjaxResponseModel;
 import com.htkapp.core.params.AjaxRequestParams;
 import com.htkapp.core.params.RequestParams;
+import com.htkapp.modules.merchant.shop.entity.ShopCategoryData;
 import org.springframework.ui.Model;
+
+import java.util.List;
 
 public interface ShopInfoControllerService {
 
     /* ====================接口开始========================= */
     //获取商铺分类列表（商家注册页面）
     AjaxResponseModel getShopCategoryList();
+
+    List<ShopCategoryData> getShopCategory();
+
     //获取店铺信息(店名、地址、分类、加入时间、剩余精确时间,店铺编号,店铺二维码等等.)
     void getShopMessageByShopEncryptToken(Model model);
     //店铺相册页面

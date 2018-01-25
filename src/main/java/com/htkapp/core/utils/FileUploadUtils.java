@@ -95,10 +95,14 @@ public class FileUploadUtils {
             FTPClient client = getFTPClient(FTPConfig.host, FTPConfig.port, FTPConfig.userName, FTPConfig.password);
             String writeTempPath = "D:\\resource";
 //            String writeTempPath = "/home/terabithia";
-            FileUtils.copyInputStreamToFile(myFile.getInputStream(), new File(writeTempPath, fileName));
-            uploadFileForFTP(client, fileName, writeTempPath + "\\" + fileName, "Resource\\htkApp\\upload\\" + folder);
+           File storeFile =  new File(writeTempPath, fileName);
+            FileUtils.copyInputStreamToFile(myFile.getInputStream(),storeFile );
+            String newName = ChangeImageSize.scale(storeFile.getAbsolutePath(),100,100,originalFileName[1]);
+//            uploadFileForFTP(client, fileName, writeTempPath + "\\" + fileName, "Resource\\htkApp\\upload\\" + folder);
+            uploadFileForFTP(client, newName, writeTempPath + "\\" + newName, "Resource\\htkApp\\upload\\" + folder);
 //            uploadFileForFTP(client, fileName, writeTempPath + "/" + fileName, "Resource\\htkApp\\upload\\" + folder);
-            String avaPath = OtherUtils.getRootDirectory() + Globals.PROJECT_URL + Globals.PHOTO_URL + folder + fileName;
+//            String avaPath = OtherUtils.getRootDirectory() + Globals.PROJECT_URL + Globals.PHOTO_URL + folder + fileName;
+            String avaPath = OtherUtils.getRootDirectory() + Globals.PROJECT_URL + Globals.PHOTO_URL + folder + newName;
 //            String avaPath = Globals.PROJECT_URL + Globals.PHOTO_URL + folder+fileName;
 //            String rjson = "{\"code\": 0,\"msg\": \"成功\",\"data\": {\"src\": \"" + avaPath + "\"}}";
             JSONObject map = new JSONObject();

@@ -234,7 +234,8 @@ private SeatInformationService seatInofService;
                 return new AjaxResponseModel<String>(Globals.COMMON_SUCCESSFUL_OPERATION, "注册成功");
             } catch (Exception e) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, e.getMessage());
+//                return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, e.getMessage());
+                return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "手机号已注册");
             }
         } else {
             return new AjaxResponseModel(Globals.COMMON_PARAMETER_ERROR);

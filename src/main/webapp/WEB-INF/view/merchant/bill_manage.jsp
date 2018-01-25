@@ -93,7 +93,8 @@
                                     <span><strong>${availableBalance}</strong></span>
                                     <button class="layui-btn layui-btn-primary ${availableBalance < 1 ? "layui-btn-disabled" : ""} withdrawDeposit"
                                             style="margin-left: 20px;height: 25px;line-height: 25px;" ${availableBalance < 1 ? "disabled='disabled'" : ""}>
-                                        提现
+                                        提现<i class="fa fa-question-circle i_left"
+                                             title="提现会扣除0.6%的平台手续费"></i>
                                     </button>
                                 </div>
                             </div>

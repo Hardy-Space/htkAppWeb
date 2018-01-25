@@ -150,11 +150,24 @@ public class AdminCommonControllerServiceImpl implements AdminCommonControllerSe
     public void permissionPage(RequestParams params) {
         try {
             if (params.getPageNum() != null) {
-                int pageNumber = Globals.DEFAULT_PAGE_NO;
-                int pageLimit = Globals.DEFAULT_PAGE_LIMIT;
+//                int pageNumber = Globals.DEFAULT_PAGE_NO;
+//                int pageLimit = Globals.DEFAULT_PAGE_LIMIT;
+//                if (params.getPageNum() > 1) {
+//                    pageNumber = params.getPage();
+//                }
+                int pageLimit;
+                int pageNumber;
                 if (params.getPageNum() > 1) {
-                    pageNumber = params.getPageNum();
+                    pageLimit = params.getPageNum();
+                } else {
+                    pageLimit = Globals.DEFAULT_PAGE_LIMIT;
                 }
+                if (params.getPage()!=null&&params.getPage() > 1) {
+                    pageNumber = params.getPage();
+                }else {
+                    pageNumber = Globals.DEFAULT_PAGE_NO;
+                }
+
                 List<AccountShop> accountShopList = accountShopService.getAccountShopList(pageNumber, pageLimit);
                 if (accountShopList != null) {
                     for (AccountShop each : accountShopList) {
@@ -182,7 +195,7 @@ public class AdminCommonControllerServiceImpl implements AdminCommonControllerSe
                             sb = new StringBuilder();
                             int i = 1;
                             for (Shop every : shopList) {
-                                String var0 = every.getMark() == 0 ? "外卖" : (every.getMark() == 1 ?"团购" : "自助点餐");
+                                String var0 = every.getMark() == 0 ? "外卖" : (every.getMark() == 1 ? "团购" : "自助点餐");
                                 sb.append(every.getShopName() + "(" + var0 + ")");
                                 if (i < shopList.size()) {
                                     sb.append("、");

@@ -52,6 +52,16 @@ public class ShopInfoControllerServiceImpl implements ShopInfoControllerService 
         }
     }
 
+    @Override
+    public List<ShopCategoryData> getShopCategory() {
+        try {
+            List<ShopCategoryData> data = shopCategoryService.getShopCategoryList();
+            return data;
+        }catch (Exception e){
+            return null;
+        }
+    }
+
     //获取店铺信息(店名、地址、分类、加入时间、剩余精确时间,店铺编号,店铺二维码等等)
     //店铺头像，我的账号名，营业时间，订餐时间,店铺公告，店铺简介
     @Override
