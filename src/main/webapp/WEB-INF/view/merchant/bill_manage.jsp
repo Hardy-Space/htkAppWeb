@@ -93,9 +93,10 @@
                                     <span><strong>${availableBalance}</strong></span>
                                     <button class="layui-btn layui-btn-primary ${availableBalance < 1 ? "layui-btn-disabled" : ""} withdrawDeposit"
                                             style="margin-left: 20px;height: 25px;line-height: 25px;" ${availableBalance < 1 ? "disabled='disabled'" : ""}>
-                                        提现<i class="fa fa-question-circle i_left"
-                                             title="提现会扣除0.6%的平台手续费"></i>
+                                        提现
                                     </button>
+                                    <i class="fa fa-question-circle i_left"
+                                       title="提现会扣除0.6%的平台手续费"></i>
                                 </div>
                             </div>
                         </div>
@@ -649,8 +650,8 @@
         // 向后台发起post请求，提现到商户支付账户
         var url = baseUrl + '/merchant/withdraw';
         var money = $(".finalMoney").text();
-        var params = {money:money};
-        $.post(url,params, function (result, status) {
+        var params = {money: money};
+        $.post(url, params, function (result, status) {
             //关闭弹窗
             layer_loadingClose(index);
             if (status === 'success') {

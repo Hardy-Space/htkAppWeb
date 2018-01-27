@@ -255,7 +255,16 @@ public class ShopDataServiceImpl implements ShopDataService {
                 //外卖
                 if (shop.getMark() == 0) {
                     try {
-                        ShopBulletin shopBulletin = shopBulletinService.getShopBulletinById(shopId);
+//                        ShopBulletin shopBulletin = shopBulletinService.getShopBulletinById(shopId);
+
+                        /**
+                         * @author 马鹏昊
+                         * @desc 直接把shop表里的公告填进去
+                         */
+                        ShopBulletin shopBulletin = new ShopBulletin();
+                        shopBulletin.setContent(shop.getIntro());
+                        shopBulletin.setShopId(shop.getShopId());
+
                         if (shopBulletin != null) {
                             result.setShopBulletin(shopBulletin);
                         } else {

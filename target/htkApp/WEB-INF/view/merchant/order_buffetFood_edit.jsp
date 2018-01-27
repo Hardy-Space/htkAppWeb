@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"
          pageEncoding="UTF-8" %>
+<%@ page import="java.util.List,com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrder" %>
 <%@ include file="/WEB-INF/view/common/url.jsp" %>
 <!DOCTYPE HTML>
 <%@include file="IE_lang.jsp" %>
@@ -519,6 +520,7 @@
 												<span class="shouqi">收起<i class="arrow fa fa-angle-up"></i></span><br/>
 												<div class="tog tabDivList bodyContent">
 													<c:forEach items="${each.productLists}" var="product">
+	<c:if test="${product.bz==0 }">
 														<span class="xiangqing col-md-12">
 															<span class="szuo col-md-6">${product.productName}</span>
                                                         <span class="szhong col-md-1">¥${product.price}</span>
@@ -526,6 +528,25 @@
                                                         <span class="xiaojie col-md-1">¥${product.price * product.quantity}</span>
                                                         <br/>
                                                     </span>
+ </c:if>
+                                                   <c:if test="${product.bz==1 }">
+														<span class="xiangqing col-md-12" style="color: red">
+														<span class="szuo col-md-6">${product.productName}</span>
+                                                        <span class="szhong col-md-1">¥${product.price}</span>
+                                                        <span class="syou col-md-2">X${product.quantity}</span>
+                                                        <span class="xiaojie col-md-1">¥${product.price * product.quantity}</span>
+                                                        <br/>
+                                                    </span>
+                                                   </c:if>
+                                                   <c:if test="${product.bz==2 }">
+														<span class="xiangqing col-md-12" style="color: green">
+														<span class="szuo col-md-6">${product.productName}</span>
+                                                        <span class="szhong col-md-1">¥${product.price}</span>
+                                                        <span class="syou col-md-2">X${product.quantity}</span>
+                                                        <span class="xiaojie col-md-1">¥${product.price * product.quantity}</span>
+                                                        <br/>
+                                                    </span>
+                                                   </c:if>
 													</c:forEach>
 												</div>
 												<span class="xiangqing bodyContent col-md-12">
@@ -735,8 +756,7 @@
     $(".settleBtn.curPage").on("click",function(){
         var orderNumber = $(this).attr("data-orderNumber");
         const url = baseUrl + "/merchant/buffetFood/print";
-        $.post(url,{orderNumber:orderNumber},function(result){
-            console.log(result)
+        $.post(url,{orderNumber:orderNumber,state:0},function(result){
         })
     })
 

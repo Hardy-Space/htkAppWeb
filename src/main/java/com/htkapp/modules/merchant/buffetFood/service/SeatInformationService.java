@@ -20,7 +20,10 @@ public interface SeatInformationService {
     AjaxResponseModel<SeatInformation> addSeatInfoByShopId(SeatInformation seat)throws Exception;
     //修改座位状态信息
     int updataSeatInfoByOrder(BuffetFoodOrder bfo, Integer b)throws Exception;
-
+//删除座位信息
+    AjaxResponseModel<SeatInformation> delSeatInfoByShopIdAndId(SeatInformation seat);
+    //修改座位信息
+    AjaxResponseModel<SeatInformation> updataSeatInfoBySeatName(SeatInformation seat,String oldName);
 
     /* =====================接口开始======================= */
 }

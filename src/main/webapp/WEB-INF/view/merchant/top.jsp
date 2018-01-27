@@ -175,6 +175,7 @@
             <a><i class="fa fa-link" aria-hidden="true"></i>门店信息</a>
             <dl class="layui-nav-child">
                 <dd class="${sto_mark_s ? "layui-this" : ""}"><a href="${sysPath}merchant/shopInfo/store">店铺</a></dd>
+<dd class="${sto_mark_seat_info ? "layui-this" : ""}"><a href="${sysPath}merchant/shopInfo/setSeatInfo">座位信息管理</a></dd>
             </dl>
         </li>
     </ul>

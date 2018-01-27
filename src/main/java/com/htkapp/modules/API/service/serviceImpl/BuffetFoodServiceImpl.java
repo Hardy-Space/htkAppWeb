@@ -179,8 +179,8 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
                 if (resultList != null) {
                     return new APIResponseModel<List<SeatInformation>>(Globals.API_SUCCESS, "成功", resultList);
                 } else {
-//                    return new APIResponseModel<String>(Globals.API_SUCCESS, "失败", null);
-                    return new APIResponseModel<String>(Globals.API_SUCCESS, "商家尚未设置座位", null);
+return new APIResponseModel<String>(Globals.API_SUCCESS, "失败", null);
+
                 }
             } catch (Exception e) {
                 return new APIResponseModel(Globals.API_FAIL, e.getMessage());
@@ -444,6 +444,7 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
                 //下单成功，推消息
                 System.out.println("下单成功");
                 BuffetFoodOrder buffetFoodOrder = buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(params.getOrderNumber());
+order.setShopId(buffetFoodOrder.getShopId());
                 //查询出订单中的商品
                 List<BuffetFoodOrderProduct> resultList = buffetFoodOrderProductService.getOrderProductListById(buffetFoodOrder.getId());
                 double orderAmount = 0.00;
@@ -641,14 +642,14 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
                             moreMethodsUtils.jPushToMerAndAccount(getOrder.getToken(),"自助点餐订单催单请求已发送", jsonObject_.toJSONString(), user.getToken(),"有一个自助点餐订单信息", jsonObject_.toJSONString(), 2);
                         }
                         moreMethodsUtils.pushMesToManagePage(new PushMesEntity("自助点餐订单消息", "b", "自助点餐订单催单消息", user.getToken(), 'b', 4, "您有一个的自助点餐订单消息", user.getId()));
-                        return new APIResponseModel(Globals.API_SUCCESS);
+                        return new APIResponseModel(Globals.API_SUCCESS,"调单成功");
                     } catch (Exception e) {
-                        return new APIResponseModel(Globals.API_FAIL);
+                        return new APIResponseModel(Globals.API_FAIL,"调单失败");
                     }
                 } else if (getOrder.getOrderState() == 2) {
                     return new APIResponseModel(Globals.API_FAIL, "订单已完成");
                 } else {
-                    return new APIResponseModel(Globals.API_FAIL);
+                     return new APIResponseModel(Globals.API_FAIL,"订单状态错误");
                 }
             } else {
                 return new APIResponseModel(Globals.API_REQUEST_BAD, "订单不存在");

@@ -16,8 +16,8 @@
     </select>
 <update id="updataSeatInfoByShopId">
 		update seat_information
-		set seat_status=${b}
-		where seat_name=#{bfo.seatName} and shop_id = ${bfo.shopId}
+	set seat_status=#{b}
+		where seat_name=#{bfo.seatName} and shop_id = #{bfo.shopId}
 	</update>
 	<!-- //根据商户id查找商铺下所有的座位信息-->
 	<select id="getSeatInformationListByShopId" resultType="SeatInformation">
@@ -48,22 +48,35 @@
 		</trim>
 		<trim prefix=" values(" suffix=")" >
 			<if test="seatName!=null">
-				${seatName},
+					#{seatName},
 			</if>
 			<if test="numberSeat!=null">
-				${numberSeat},
+					#{numberSeat},
 			</if>
 			<if test="shopId!=null">
-				${shopId},
+				#{shopId},
 			</if>
 			<if test="seatStatus!=null">
-				${seatStatus},
+			#{seatStatus},
 			</if>
 			now(),
 			now()
 		</trim>
 	</insert>
-	
+	<delete id="delSeatInfoByShopIdAndId" parameterType="SeatInformation">
+		DELETE from seat_information where shop_id=#{shopId} and seat_name=#{seatName}
+	</delete>
+	<update id="updataSeatInfoBySeatName">
+		update seat_information
+		set
+		<if test="newSeat.numberSeat!=null">
+		number_seat=#{newSeat.numberSeat},
+		</if>
+		<if test="newSeat.seatName!=null">
+		seat_name=#{newSeat.seatName}
+		</if>
+		where seat_name=#{oldName} and shop_id=#{newSeat.shopId}
+	</update>
     <!-- =====================接口结束======================= -->
 
 </mapper>

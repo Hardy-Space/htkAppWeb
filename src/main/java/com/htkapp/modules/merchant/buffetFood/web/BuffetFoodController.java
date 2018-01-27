@@ -5,8 +5,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.htkapp.core.MoreMethodsUtils;
 import com.htkapp.core.OtherUtils;
+import com.htkapp.core.dto.APIResponseModel;
 import com.htkapp.core.jsAjax.AjaxResponseModel;
 import com.htkapp.core.params.AjaxRequestParams;
+import com.htkapp.core.params.RequestParams;
 import com.htkapp.core.utils.Globals;
 import com.htkapp.core.utils.Jpush;
 import com.htkapp.core.utils.StringUtils;
@@ -16,6 +18,7 @@ import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodCategory;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrder;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrderProduct;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodProduct;
+import com.htkapp.modules.merchant.buffetFood.entity.SeatInformation;
 import com.htkapp.modules.merchant.buffetFood.service.*;
 import com.htkapp.modules.merchant.shop.entity.AccountShop;
 import com.htkapp.modules.merchant.shop.entity.Shop;
@@ -30,7 +33,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.htkapp.modules.merchant.takeout.web.TakeoutController.mTakeoutDirectory;
 
@@ -56,6 +61,8 @@ public class BuffetFoodController {
     private MoreMethodsUtils moreMethodsUtils;
     @Resource
     private AccountShopServiceI accountShopService;
+	@Resource
+	private SeatInformationService seatInfo;
 
     //========================================================商品
     //==== 页面
@@ -189,6 +196,11 @@ public class BuffetFoodController {
                 //插入订单商品记录，改变订单总价
                 buffetFoodOrderProductService.insertProductDetailsUnderOrder(each);
                 orderAmount += each.getPrice();
+	}
+			 int b=0;
+             int a=seatInfo.updataSeatInfoByOrder(order,b);
+             if(a<=0) {
+             	 return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "订单不存在");
             }
             buffetFoodOrderService.updateOrderTotalAmount(orderNumber, orderAmount);
             buffetFoodOrderService.changeOrderStateByAccountShopToken(orderNumber,2);
@@ -201,10 +213,10 @@ public class BuffetFoodController {
             jsonObject.put("orderId", order.getId());
             //推送消息
             if(order.getToken() == null){
-                Jpush.jPushMethodToMerchant(order.getToken(),"有一个自助点餐订单","ALERT", "商家版");
-                Jpush.jPushMethodToMerchant(order.getToken(),"有一个自助点餐订单","","");
+                	Jpush.jPushMethodToMerchant(accountShopToken,"有一个自助点餐订单","ALERT", "商家版");
+				Jpush.jPushMethodToMerchant(accountShopToken,"有一个自助点餐订单","","");
             }else {
-                moreMethodsUtils.jPushToMerAndAccount(order.getToken(),"自助点餐订单下单成功", jsonObject.toJSONString(),
+               	moreMethodsUtils.jPushToMerAndAccount(accountShopToken,"自助点餐订单下单成功", jsonObject.toJSONString(),
                         user.getToken(),"有一个自助点餐订单", jsonObject.toJSONString(), 2);
             }
             return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
@@ -237,16 +249,14 @@ public class BuffetFoodController {
     //打印各种单据接口
     @RequestMapping("/print")
     @ResponseBody
-    public AjaxResponseModel printOrder(Model model,AjaxRequestParams params){
+    	public AjaxResponseModel printOrder(Model model,AjaxRequestParams params, RequestParams Rparams,Integer state){
         if(params!=null&&params.getOrderNumber()!=null) {
-//    		 Map<String, Object> map = new HashMap<>();
-//    	        map.put("date", new Date().getTime());
-//    	        map.put("ord_mark", true);
-//    	        map.put("ord_mark_b_h", true);
-//    	        OtherUtils.ReturnValByModel(model, map);
-            return  buffetFoodControllerService.printOrder(params);
+	Map<String, Object> map = new HashMap<>();
+	OtherUtils.ReturnValByModel(model, map);
+			Rparams.setModel(model);
+           return  buffetFoodControllerService.printOrder(params,Rparams,state);
         }
-        return buffetFoodControllerService.printOrder(params);
+       	return buffetFoodControllerService.printOrder(params,Rparams,state);
     }
 
 
@@ -270,4 +280,58 @@ public class BuffetFoodController {
             return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
         }
     }
+	//添加座位
+	@RequestMapping("/addSeatInfo")
+	@ResponseBody
+	public AjaxResponseModel addaddSeatInfo(String shopId,String seatName,String numberSeat){
+		if(shopId!=null||seatName!=null||numberSeat!=null) {
+			SeatInformation seat=new SeatInformation();
+			seat.setNumberSeat(Integer.parseInt(numberSeat));
+			seat.setSeatName(seatName);
+			seat.setShopId(Integer.parseInt(shopId));
+			try {
+				return seatInfo.addSeatInfoByShopId(seat);
+			} catch (Exception e) {
+				return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED,"添加失败");
+			}
+		}
+		return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED,"添加成功");
+	}
+	//删除座位
+	@RequestMapping("/delSeatInfo")
+	@ResponseBody
+	public AjaxResponseModel delSeatInfoByShopIdAndId(String shopId,String seatName,String numberSeat) {
+		SeatInformation seat=new SeatInformation();
+		seat.setNumberSeat(Integer.parseInt(numberSeat));
+		seat.setSeatName(seatName);
+		seat.setShopId(Integer.parseInt(shopId));
+		return seatInfo.delSeatInfoByShopIdAndId(seat);
+	}
+	//修改座位信息
+	@RequestMapping("/updata")
+	@ResponseBody
+	public AjaxResponseModel updataSeatInfoBySeatName(String shopId,String seatName,String numberSeat,String oldName) {
+		SeatInformation seat=new SeatInformation();
+		seat.setNumberSeat(Integer.parseInt(numberSeat));
+		seat.setSeatName(seatName);
+		seat.setShopId(Integer.parseInt(shopId));
+		return seatInfo.updataSeatInfoBySeatName(seat, oldName);
+	}
+	//点击按钮修改座位状态信息
+	@RequestMapping("/changeStatus")
+	@ResponseBody
+	public AjaxResponseModel updataSeatInfoByOrder(String shopId,String seatName,String status) {
+		BuffetFoodOrder bfo=new BuffetFoodOrder();
+		bfo.setShopId(Integer.parseInt(shopId));
+		bfo.setSeatName(seatName);
+		try {
+			int a=seatInfo.updataSeatInfoByOrder(bfo, Integer.parseInt(status));
+			if(a<=0) {
+				return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED,"修改失败");
+			}
+		} catch (Exception e) {
+			return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED,"修改失败");
+		}
+		return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION,"修改成功");
+	}
 }
