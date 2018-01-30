@@ -67,7 +67,7 @@ public interface BuffetFoodOrderMapper {
     List<BuffetFoodOrder> getAdjustOrderListDAO(@Param("shopId") int shopId, @Param("orderDesc") String orderDesc);
     //查询催单订单列表
     List<BuffetFoodOrder> getReminderOrderListDAO(@Param("shopId") int shopId, @Param("orderDesc") String orderDesc);
-    //改变订单状态为未结算订单
+    //改变订单状态为未结算订单（修改订单状态，结算订单）
     int dealWithNewOrderDAO(String orderNumber, int orderStateId, int payState);
     //回复催单
     int replyReminderDAO(String orderNumber, int reminderId);

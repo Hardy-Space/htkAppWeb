@@ -12,8 +12,6 @@ import cn.jpush.api.push.model.audience.Audience;
 import cn.jpush.api.push.model.notification.Notification;
 import com.htkapp.core.config.JpushConfig;
 
-import static cn.jpush.api.push.model.notification.PlatformNotification.ALERT;
-
 /**
  * Created by yinqilei on 17-6-30.
  */

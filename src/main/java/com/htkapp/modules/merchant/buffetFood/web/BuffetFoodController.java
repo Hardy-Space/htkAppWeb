@@ -211,12 +211,13 @@ public class BuffetFoodController {
             jsonObject.put("orderNumber", order.getOrderNumber());
             jsonObject.put("orderState", order.getOrderState());
             jsonObject.put("orderId", order.getId());
-            //推送消息
+//            推送消息
             if(order.getToken() == null){
-                	Jpush.jPushMethodToMerchant(accountShopToken,"有一个自助点餐订单","ALERT", "商家版");
+            	//TODO
+                Jpush.jPushMethodToMerchant(accountShopToken,"有一个自助点餐订单","ALERT", "商家版");
 				Jpush.jPushMethodToMerchant(accountShopToken,"有一个自助点餐订单","","");
             }else {
-               	moreMethodsUtils.jPushToMerAndAccount(accountShopToken,"自助点餐订单下单成功", jsonObject.toJSONString(),
+               	moreMethodsUtils.jPushToMerAndAccount(order.getToken(),"自助点餐订单下单成功", jsonObject.toJSONString(),
                         user.getToken(),"有一个自助点餐订单", jsonObject.toJSONString(), 2);
             }
             return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);

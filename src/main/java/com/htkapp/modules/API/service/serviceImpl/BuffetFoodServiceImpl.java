@@ -458,7 +458,6 @@ order.setShopId(buffetFoodOrder.getShopId());
                 //新增订单信息
                 buffetFoodOrderService.confirmOrderButton(order);
                 //变更座位状态信息
-                //TODO
                 int b=1;
                 int a=seatInformationService.updataSeatInfoByOrder(order,b);
                 if(a<=0) {
