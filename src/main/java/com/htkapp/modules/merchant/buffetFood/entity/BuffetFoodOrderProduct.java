@@ -24,8 +24,18 @@ public class BuffetFoodOrderProduct {
     private Integer categoryId;  //所属分类id
 
     private String categoryName;  //分类名
+    
+    private Integer bz;
 
-    public Integer getId() {
+    public Integer getBz() {
+		return bz;
+	}
+
+	public void setBz(Integer bz) {
+		this.bz = bz;
+	}
+
+	public Integer getId() {
         return id == null ? 0 : id;
     }
 
@@ -141,4 +151,5 @@ public class BuffetFoodOrderProduct {
 			return false;
 		return true;
 	}
+
 }

@@ -66,6 +66,7 @@ public class BuffetFoodAPI {
     }
 
     //商品页面－确认按钮(生成初始订单,登陆、未登陆状态)
+    //初始化创建一个空的订单
     @RequestMapping(value = "/insertInitialOrder", method = RequestMethod.POST)
     public APIResponseModel insertInitialOrder(APIRequestParams params, BuffetFoodOrder buffetFoodOrder){
         return buffetFoodService.insertInitialOrder(params, buffetFoodOrder);
