@@ -4,7 +4,8 @@
 
     <sql id="Base_Column_List">
         id, order_number, order_amount, discount_amount, order_body,seat_name,
-        payment_method, order_state, account_token, shop_id, mark, reminder_state, adjust_order_json as adjustState, remark, serial_number, all_serial_number
+        payment_method, order_state, account_token, shop_id,
+        mark, reminder_state, adjust_order_json as adjustState, remark, serial_number, all_serial_number
     </sql>
 
     <!-- =========================接口开始============================= -->
@@ -224,7 +225,7 @@
         buffet_food_order.order_amount,
         buffet_food_order.order_body,buffet_food_order.seat_name,
         buffet_food_order.payment_method, buffet_food_order.order_state,
-        buffet_food_order.account_token, buffet_food_order.shop_id,
+        buffet_food_order.account_token token, buffet_food_order.shop_id,
         buffet_food_order.gmt_create as orderTime
         from buffet_food_order
         left join shop on buffet_food_order.shop_id = shop.shop_id
@@ -265,7 +266,7 @@
         buffet_food_order.gmt_create as orderTime,buffet_food_order.serial_number,
         buffet_food_order.all_serial_number
         from buffet_food_order
-        where shop_id = #{shopId} and order_state = #{orderStateId} and pay_state = 0
+        where shop_id = #{shopId} and adjust_order_product_json is null and order_state = #{orderStateId} and pay_state = 0
         order by ${orderDesc}
     </select>
     <select id="getLastOrderDAO" resultType="BuffetFoodOrder">
