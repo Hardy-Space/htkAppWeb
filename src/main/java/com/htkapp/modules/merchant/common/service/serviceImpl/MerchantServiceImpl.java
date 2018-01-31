@@ -234,8 +234,8 @@ private SeatInformationService seatInofService;
                 return new AjaxResponseModel<String>(Globals.COMMON_SUCCESSFUL_OPERATION, "注册成功");
             } catch (Exception e) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-//                return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, e.getMessage());
-                return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "手机号已注册");
+ return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, e.getMessage());
+
             }
         } else {
             return new AjaxResponseModel(Globals.COMMON_PARAMETER_ERROR);
@@ -1166,25 +1166,30 @@ private SeatInformationService seatInofService;
 							}
 						}
 						for(int a=0;a<productLists.size();a++) {
+	productLists.get(a).setOrderId(orderProductList.get(0).getOrderId());
 							if(map.containsKey(productLists.get(a).getProductName())&&map.get(productLists.get(a).getProductName())!=0) {
 								if(map.get(productLists.get(a).getProductName())<productLists.get(a).getQuantity()) {
 									bz=2;
 									buffetFoodOrderProductService.updataOrderProductBzById(productLists.get(a), bz);
+	productLists.get(a).setBz(bz);
 								}else if(map.get(productLists.get(a).getProductName())>productLists.get(a).getQuantity()){
 									bz=1;
 									buffetFoodOrderProductService.updataOrderProductBzById(productLists.get(a), bz);
+productLists.get(a).setBz(bz);
 								}else {
 									bz=0;
 									buffetFoodOrderProductService.updataOrderProductBzById(productLists.get(a), bz);
+	productLists.get(a).setBz(bz);
 								}
 							}else if(map.containsKey(productLists.get(a).getProductName())&&map.get(productLists.get(a).getProductName())==0){
 								map.put(productLists.get(a).getProductName(), productLists.get(a).getQuantity());
 								bz=2;
 								buffetFoodOrderProductService.updataOrderProductBzById(productLists.get(a), bz);
+	productLists.get(a).setBz(bz);
 							}
 						}
-						//判断老订单中是否包含调整订单的每一项，如果有一个不包含，就添加进去
-						for(int b=0;b<orderProductList.size();b++) {
+			map.clear();
+								if(orderProductList.size()<productLists.size()) {
 							for(int a=0;a<productLists.size();a++) {
 //								if(orderProductList.get(b).getProductName().equals(productLists.get(a).getProductName())
 //										&&
