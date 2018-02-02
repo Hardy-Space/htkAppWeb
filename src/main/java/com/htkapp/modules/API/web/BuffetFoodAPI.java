@@ -184,8 +184,13 @@ public class BuffetFoodAPI {
     public APIResponseModel quickOrder(BuffetFoodOrder buffetFoodOrder) {
         return buffetFoodService.quickOrder(buffetFoodOrder);
     }
-
-
+    
+//    //订单未下单时退出，删除订单
+//    @RequestMapping(value = "/delOrder", method = RequestMethod.POST)
+//    public APIResponseModel delOrder(BuffetFoodOrder buffetFoodOrder) {
+//        return buffetFoodService.delOrder(buffetFoodOrder);
+//    }
+    
 
 
 

@@ -151,6 +151,13 @@
             width: 20%;
             margin-top: 11px;
         }
+          .print {
+            height: 30px;
+            float: right;
+            line-height: 30px;
+            width: 20%;
+            margin-top: 11px;
+        }
 
         .oBuffetFoodQuerySpanSelect {
             margin-top: 5px;
@@ -278,7 +285,12 @@
 
         .szhong.modelWindow {
             text-align: right;
-            float: right;
+            font-size: 14px;
+            margin-top: 0;
+            line-height: 0;
+        }
+         .xiaojie.modelWindow {
+            text-align: right;
             font-size: 14px;
             margin-top: 0;
             line-height: 0;
@@ -414,16 +426,13 @@
                                                     <span class="szuo bodyContent col-md-6">订单时间：${each.orderTime}&nbsp;&nbsp;&nbsp;&nbsp;已提交：<b>${each.minute}</b>钟</span>
                                                     <span class="col-md-1"></span>
                                                     <span class="szhong bodyContent col-md-2">共<b>${each.sum}</b>件</span>
-                                                    <span class="syou bodyContent col-md-1 floatRight">合计：${each.orderAmount}<b>
-                                                    </b>元</span><br/>
+                                                    <span class="syou bodyContent col-md-1 floatRight">合计：<b>${each.orderAmount}</b>元</span><br/>
                                                     <br/>
                                                 </span>
                                                 <span class="col-md-12">
-                                                    <span class="col-md-6 bianhao orderNumber bodyContent">订单编号：${each.orderNumber}</span>
+                                                    <span class="col-md-6 bianhao orderNumber bodyContent" value="${each.orderNumber}">订单编号：${each.orderNumber}</span>
                                                     <span class="xiangqing col-md-6">
-                                                        <input type="button"
-                                                               class="bt bt-primary col-md-2 floatRight settleBtn curPage"
-                                                               value="结算"/>
+                                                        <input type="button" class="bt bt-primary col-md-2 floatRight settleBtn curPage" value="结算"/>
                                                     </span>
                                                 </span>
                                             </div>
@@ -510,24 +519,40 @@
             </div>
             <span class="xiangqing modelWindow col-md-12">
                 <br/>
-                <span class="szuo col-md-4 bianhao modelWindow">订单已提交：<b></b>分钟
-                </span>
-                <span class="col-md-2"></span>
-                <span class="szhong modelWindow allCount col-md-2">共<b></b>件</span>
+                <span class="szuo col-md-4 bianhao modelWindow">订单已提交：<b></b>分钟</span>
+                <span class="xiaojie modelWindow allXiaoJie col-med-2 ">合计：<b></b>元</span>
+                <span class="szhong modelWindow allCount col-md-2 ">共<b></b>件</span>
                 <br/>
             </span>
             <span class="col-md-12">
                 <span class="col-md-6 bianhao orderNumber modelWindow">订单编号：</span>
                 <span class="xiangqing col-md-12">
                     <button id="myModalc" onclick="printMenu()" type="button" class="bt modelWindow bt-primary col-md-4">打印</button>
-                    <input data-dismiss="modal" type="button" class="bt cancel modelWindow bt-default col-md-4 "
-                           value="取消"/>
+                    <input data-dismiss="modal" type="button" class="bt cancel modelWindow bt-default col-md-4 " value="取消"/>
+                    <input type="button" class="layui-btn layui-btn-normal col-md-4 print" value="打印账单">
                     <button type="button" class="layui-btn layui-btn-normal col-md-4 affirmSettleBtn">确认结算</button>
                 </span>
             </span>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+$(function(){
+	 $(".print").on("click",function(){
+	    	print()
+	    })
+})
+function print(){
+	debugger
+	var url=baseUrl+"/merchant/buffetFood/print"
+	var orderNumber=$(".print").attr("orderNumber");
+	console.log(orderNumber);
+	console.log(url)
+	$.post(url,{orderNumber:orderNumber,state:1},function(data){
+		console.log(data)
+	})
+}
+</script>
 </body>
 <%@include file="js.jsp" %>
 <script>
@@ -552,9 +577,11 @@
     var curClickEleItemList;
 
     //商品条目构造函数
-    function ProductItem(productName, productQuantity) {
+    function ProductItem(productName, productQuantity,price,total) {
         this.productName = productName;
         this.productQuantity = productQuantity;
+        this.price=price;
+        this.total=total;
     }
 
     //添加的商品构造函数
@@ -644,7 +671,9 @@
         $(tabDivListEleSpan).each(function (index, item) {
             var productName = $(item).find(".szuo").text();
             var quantity = parseInt($(item).find(".syou").text().replace("X", ""));
-            var productItem = new ProductItem(productName, quantity);
+            var total=$(item).find(".xiaojie").text();
+            var price=$(item).find(".szhong").text();
+            var productItem = new ProductItem(productName,quantity,price,total);
             curClickEleItemList.push(productItem);
         });
         //桌号
@@ -657,7 +686,7 @@
         var serialNumber = $(ele).find(".serialNumber.bodyContent > b").text();
         //订单提交时间
         var orderSubmitTime = $(ele).find(".szuo.bodyContent > b").text();
-
+		var orderAmount=$(ele).find(".syou.bodyContent > b").text();
         //获取模态框的tabDom对象
         //模态框序号
         var serialNumber_m = $(this).find(".numberH.modelWindow > b");
@@ -672,8 +701,11 @@
         var orderNumberEle = $(this).find(".orderNumber.modelWindow");
         //订单已提交时间
         var orderSubmitTimeEle = $(this).find(".bianhao.modelWindow > b");
+        var orderAmountEle=$(this).find(".xiaojie.modelWindow > b");
+        $(".print").attr("orderNumber",$(ele).find(".orderNumber.bodyContent").attr("value"));
         orderSubmitTimeEle.text(orderSubmitTime);
         orderNumberEle.text(orderNumber);
+        orderAmountEle.text(orderAmount);
         //模态框商品条目内容
         var productItemParent = $(this).find(".tog.modelWindow");
         productItemParent.empty();
@@ -681,7 +713,9 @@
         $(curClickEleItemList).each(function (index, item) {
             var insertStr = '<span class="xiangqing col-md-12">\n' +
                 '                    <span class="szuo col-md-3">' + item.productName + '</span>\n' +
+                '<span class="xiaojie col-md-2 folatRight">'+item.total+'</span>\n'+
                 '                    <span class="syou col-md-2 floatRight">X' + item.productQuantity + '</span>\n' +
+                '<span class="szhong col-md-2 folatRingth">'+item.price+'</span>\n'
                 '                    <br>\n' +
                 '                </span>';
             productItemParent.append(insertStr);
@@ -722,7 +756,7 @@
             }
         });
     })
-</script>
+ </script>
 <script>
     $(function () {
         $('.shouqi').click(function () {

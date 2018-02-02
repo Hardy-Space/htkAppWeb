@@ -1,8 +1,10 @@
 package com.htkapp.modules.merchant.buffetFood.service.ServiceImpl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.htkapp.core.LogUtil;
+import com.htkapp.core.MoreMethodsUtils;
 import com.htkapp.core.OtherUtils;
 import com.htkapp.core.dto.TableResponseModel;
 import com.htkapp.core.jsAjax.AjaxResponseModel;
@@ -10,6 +12,7 @@ import com.htkapp.core.params.AjaxRequestParams;
 import com.htkapp.core.params.RequestParams;
 import com.htkapp.core.utils.FileUploadUtils;
 import com.htkapp.core.utils.Globals;
+import com.htkapp.core.utils.Jpush;
 import com.htkapp.modules.common.entity.LoginUser;
 import com.htkapp.modules.merchant.buffetFood.dao.BuffetFoodCategoryMapper;
 import com.htkapp.modules.merchant.buffetFood.dao.BuffetFoodOrderMapper;
@@ -46,6 +49,8 @@ import java.util.Set;
 @Service
 public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerService {
 
+	 @Resource
+	private MoreMethodsUtils moreMethodsUtils;
     @Resource
     private BuffetFoodCategoryService buffetFoodCategoryService;
     @Resource
@@ -180,6 +185,8 @@ public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerServ
         if (params != null && params.getOrderNumber() != null) {
             try {
                 buffetFoodOrderService.dealWithNewOrder(params.getOrderNumber(), 1, 1);
+                BuffetFoodOrder order=buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(params.getOrderNumber());
+                Jpush.jPushMethod(order.getToken(),"商家已接单,请耐心等候.","ALERT");
                 return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
             } catch (Exception e) {
                 return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
@@ -195,6 +202,8 @@ public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerServ
         if (params != null && params.getOrderNumber() != null) {
             try {
                 buffetFoodOrderService.replyReminder(params.getOrderNumber(), 0);
+                BuffetFoodOrder order=buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(params.getOrderNumber());
+                Jpush.jPushMethod(order.getToken(),"您的订单已催,请耐心等候.","ALERT");
                 return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
             } catch (Exception e) {
                 return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
@@ -228,6 +237,7 @@ public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerServ
                         buffetFoodOrderService.updateOrderTotalAmount(order.getOrderNumber(), orderAmount);
                         int row = buffetFoodOrderDao.replyFalseDAO(params.getOrderNumber(), null);
                         if (row <= 0) {
+                        	   Jpush.jPushMethod(order.getToken(),"您的订单已调整,请耐心等候.","ALERT");
                             return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
                         } else {
                             return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);

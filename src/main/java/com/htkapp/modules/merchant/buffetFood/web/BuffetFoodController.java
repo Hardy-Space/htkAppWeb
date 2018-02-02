@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.htkapp.core.MoreMethodsUtils;
 import com.htkapp.core.OtherUtils;
+import com.htkapp.core.MethodsParamsEntity.PushMesEntity;
 import com.htkapp.core.dto.APIResponseModel;
 import com.htkapp.core.jsAjax.AjaxResponseModel;
 import com.htkapp.core.params.AjaxRequestParams;
@@ -213,9 +214,9 @@ public class BuffetFoodController {
             jsonObject.put("orderId", order.getId());
 //            推送消息
             if(order.getToken() == null){
-            	//TODO
-                Jpush.jPushMethodToMerchant(accountShopToken,"有一个自助点餐订单","ALERT", "商家版");
-				Jpush.jPushMethodToMerchant(accountShopToken,"有一个自助点餐订单","","");
+//            	TODO
+                Jpush.jPushMethodToMerchant(accountShopToken,"有一个自助点餐结算","ALERT", "商家版");
+				Jpush.jPushMethodToMerchant(accountShopToken,"有一个自助点餐结算","","");
             }else {
                	moreMethodsUtils.jPushToMerAndAccount(order.getToken(),"自助点餐订单下单成功", jsonObject.toJSONString(),
                         user.getToken(),"有一个自助点餐订单", jsonObject.toJSONString(), 2);
@@ -277,7 +278,6 @@ public class BuffetFoodController {
                 return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
             }
         }catch (Exception e){
-            e.printStackTrace();
             return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
         }
     }

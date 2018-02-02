@@ -458,7 +458,7 @@
                                                     <span class="xiangqing col-md-6">
                                                         <input type="button"
                                                                class="bt bt-primary col-md-2 floatRight println curPage"
-                                                               value="打印"/>
+                                                               value="打印" data-orderNumber="${each.orderNumber}"/>
                                                     </span>
                                                 </span>
                                             </div>
@@ -520,7 +520,10 @@
 
     //打印按钮绑定点击事件
     $(".println.curPage").on("click", function () {
-        alert("打印小票功能先不做");
+    	var orderNumber = $(this).attr("data-orderNumber");
+        const url = baseUrl + "/merchant/buffetFood/print";
+        $.post(url,{orderNumber:orderNumber,state:0},function(result){
+        })
     })
 
     //查询按钮绑定点击事件

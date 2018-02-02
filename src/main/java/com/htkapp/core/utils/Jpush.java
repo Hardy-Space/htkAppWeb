@@ -58,6 +58,7 @@ public class Jpush {
             System.out.println("商家推送"+e);
 
         } catch (APIRequestException e) {
+        	e.printStackTrace();
             System.out.println("商家推送"+e.getErrorCode());
             System.out.println("商家推送"+e);
             System.out.println("商家推送"+e.getErrorMessage());
@@ -85,7 +86,4 @@ public class Jpush {
                 .setMessage(Message.content(pushContent))
                 .build();
     }
-
-
-
 }
