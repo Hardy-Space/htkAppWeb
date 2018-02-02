@@ -522,7 +522,7 @@
     $(".println.curPage").on("click", function () {
     	var orderNumber = $(this).attr("data-orderNumber");
         const url = baseUrl + "/merchant/buffetFood/print";
-        $.post(url,{orderNumber:orderNumber,state:0},function(result){
+        $.post(url,{orderNumber:orderNumber,state:1},function(result){
         })
     })
 

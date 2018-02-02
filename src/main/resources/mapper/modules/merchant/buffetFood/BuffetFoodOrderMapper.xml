@@ -96,7 +96,7 @@
     </select>
     <select id="getOrderListByTokenDAO" resultType="BuffetFoodOrder">
         select
-        id, buffet_food_order.gmt_create as order_time, seat_name,shop.shop_name
+        id, buffet_food_order.gmt_create as order_time,buffet_food_order.order_state, seat_name,shop.shop_name
         from buffet_food_order left join shop on buffet_food_order.shop_id = shop.shop_id
         where account_token = #{0} and buffet_food_order.shop_id = #{1} order by ${2}
     </select>

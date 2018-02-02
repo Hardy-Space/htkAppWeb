@@ -735,6 +735,9 @@
 												<input type="button" data-orderNumber="${each.orderNumber}"
                                                        class="bt bt-primary col-md-2 floatRight settleBtn curPage"
                                                        value="下单"/>
+                                                <input type="button"
+															   class="bt bt-primary col-md-2 floatRight settleBtn curPage"
+															   value="打印小票" data-orderNumber="${each.orderNumber}"/>
 											</span>
 										</span>
                                         </div>
@@ -808,6 +811,12 @@
             }else {
                 alert("网络连接失败");
             }
+        })
+    })
+     $(".settleBtn.curPage").on("click",function(){
+        var orderNumber = $(this).attr("data-orderNumber");
+        const url = baseUrl + "/merchant/buffetFood/print";
+        $.post(url,{orderNumber:orderNumber,state:0},function(result){
         })
     })
 </script>
