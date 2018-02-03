@@ -313,6 +313,7 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 			try {
 				//查找数据显示在已点列表
 				//数据：分类[商品名, 价格，数量]
+				System.out.println(params.getOrderNumber());
 				BuffetFoodOrder order = buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(params.getOrderNumber());
 				if (order != null) {
 					//验证订单状态
@@ -368,7 +369,7 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 					each.setOrderId(getOrder.getId());
 					buffetFoodOrderProductService.insertProductDetailsUnderOrder(each);
 				}
-				return new APIResponseModel(Globals.API_SUCCESS);
+				return new APIResponseModel(Globals.API_SUCCESS,"",order);
 			} catch (Exception e) {
 				return new APIResponseModel(Globals.API_FAIL);
 			}
@@ -503,9 +504,13 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 				//查找订单中的商品
 				BuffetFoodOrder buffetFoodOrder = buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(params.getOrderNumber());
 				net.sf.json.JSONArray jsonArray = net.sf.json.JSONArray.fromObject(buffetFoodOrder.getAdjustOrderProductJson());
-//				List<BuffetFoodOrderProduct> buffetFoodOrderProductList = net.sf.json.JSONArray.toList(jsonArray,new BuffetFoodOrderProduct(),new JsonConfig());
-				List<BuffetFoodOrderProduct> buffetFoodOrderProductList = buffetFoodOrderProductService.getOrderProductListByOrderNumber(buffetFoodOrder.getOrderNumber());
-				buffetFoodOrderData.setProductList(buffetFoodOrderProductList);
+				if(jsonArray.get(0)==null) {
+					List<BuffetFoodOrderProduct> buffeFoodOrderProductList = net.sf.json.JSONArray.toList(jsonArray,new BuffetFoodOrderProduct(),new JsonConfig());
+					buffetFoodOrderData.setProductList(buffeFoodOrderProductList);
+				}else {
+					List<BuffetFoodOrderProduct> buffetFoodOrderProductList = buffetFoodOrderProductService.getOrderProductListByOrderNumber(buffetFoodOrder.getOrderNumber());
+					buffetFoodOrderData.setProductList(buffetFoodOrderProductList);
+				}
 				System.out.println("已点商品列表");
 				return new APIResponseModel<>(Globals.API_SUCCESS, "成功", buffetFoodOrderData);
 			} else {
@@ -1105,4 +1110,17 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 //		}
 //	}
 	/* =============接口结束================= */
+
+	@Override
+	public APIResponseModel enterOrder(APIRequestParams params, BuffetFoodOrder order) {
+		if (params != null && params.getOrderNumber() != null&&order.getProductLists()!=null) {
+			try {
+				return apiCommonService.insertBuffetFoodInitOrder(order);
+			} catch (Exception e) {
+				return new APIResponseModel(Globals.API_FAIL,"订单内容不正确");
+			}
+		}else {
+			return new APIResponseModel(Globals.API_FAIL,"订单内容不正确");
+		}
+	}
 }

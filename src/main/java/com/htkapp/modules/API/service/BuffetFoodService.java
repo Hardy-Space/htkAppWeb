@@ -83,5 +83,7 @@ public interface BuffetFoodService {
     APIResponseModel quickOrder(BuffetFoodOrder buffetFoodOrder);
     //用户不点餐时删除订单
 //    APIResponseModel delOrder(BuffetFoodOrder buffetFoodOrder);
+    //确认下单接口(调整后)
+    APIResponseModel enterOrder(APIRequestParams params, BuffetFoodOrder order);
     /* =============接口结束================= */
 }

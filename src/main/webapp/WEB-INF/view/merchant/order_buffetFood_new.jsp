@@ -817,6 +817,7 @@
         var orderNumber = $(this).attr("data-orderNumber");
         const url = baseUrl + "/merchant/buffetFood/print";
         $.post(url,{orderNumber:orderNumber,state:0},function(result){
+        	
         })
     })
 </script>

@@ -247,8 +247,9 @@
         left join account_shop on shop.account_shop_id = account_shop.id
         where account_shop.token = #{accountShopToken} and pay_state = #{orderState}
         <if test="startTime != null and endTime != null">
-            and buffet_food_order.gmt_create between #{startTime} and #{endTime}
+            and buffet_food_order.gmt_create between #{startTime} and #{endTime} 
         </if>
+        and buffet_food_order.adjust_order_product_json is null
         order by ${orderDesc}
     </select>
     <update id="updateOrderTotalAmountDAO">

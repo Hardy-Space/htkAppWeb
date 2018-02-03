@@ -230,22 +230,65 @@ public class APICommonServiceImpl implements APICommonService {
 		}
 	}
 	//app自助点餐下单
-		@Override
-		public APIResponseModel insertBuffetFoodInitOrder(BuffetFoodOrder order) throws Exception {
-			if (order != null && order.getShopId() != null) {
-				try {
-					String orderTime = format(new Date(), NORM_DATETIME_PATTERN);
-					final String orderNumber = String.valueOf(OrderNumGen.next());
-					order.setOrderNumber(orderNumber);
-					order.setOrderTime(orderTime);
-					order.setOrderBody("自助点餐初始下单");
-					int pageNumber = Globals.DEFAULT_PAGE_NO;
-				    int pageLimit = Globals.DEFAULT_PAGE_LIMIT;
-					String startTime = format(DateUtil.beginOfDay(new Date()), NORM_DATETIME_PATTERN);
-					String endTime = format(DateUtil.endOfDay(new Date()), NORM_DATETIME_PATTERN);
-					List<BuffetFoodOrder> resultList=buffetFoodOrderService.getOrderListByToken(order.getToken(),order.getShopId(),pageNumber,pageLimit);
-					if(resultList==null) {
-						try {
+	@Override
+	public APIResponseModel insertBuffetFoodInitOrder(BuffetFoodOrder order) throws Exception {
+		if (order != null && order.getShopId() != null) {
+			try {
+				String orderTime = format(new Date(), NORM_DATETIME_PATTERN);
+				final String orderNumber = String.valueOf(OrderNumGen.next());
+				order.setOrderNumber(orderNumber);
+				order.setOrderTime(orderTime);
+				order.setOrderBody("自助点餐初始下单");
+				int pageNumber = Globals.DEFAULT_PAGE_NO;
+				int pageLimit = Globals.DEFAULT_PAGE_LIMIT;
+				String startTime = format(DateUtil.beginOfDay(new Date()), NORM_DATETIME_PATTERN);
+				String endTime = format(DateUtil.endOfDay(new Date()), NORM_DATETIME_PATTERN);
+				List<BuffetFoodOrder> resultList=buffetFoodOrderService.getOrderListByToken(order.getToken(),order.getShopId(),pageNumber,pageLimit);
+				if(resultList==null) {
+					//查找当天有没有生成过订单
+					BuffetFoodOrder order1 = buffetFoodOrderService.verifyTodayOrder(order.getShopId(),startTime,endTime);
+					if(order1 != null){
+						order.setSerialNumber((order1.getSerialNumber() + 1));
+						System.out.println("========当前订单序号："+order1.getSerialNumber());
+						order.setAllSerialNumber((order1.getAllSerialNumber() + 1));
+						System.out.println("========当前订单总序号："+order1.getAllSerialNumber());
+					}else {
+						//取最后一条订单信息
+						BuffetFoodOrder order2 = buffetFoodOrderService.getLastOrder(order.getShopId());
+						if(order2 != null){
+							order.setAllSerialNumber((order2.getAllSerialNumber()+1));
+							System.out.println("最后一条========当前订单序号："+order2.getSerialNumber());
+							order.setSerialNumber((order2.getSerialNumber() +1));
+							System.out.println("最后一条========当前订单总序号："+order2.getAllSerialNumber());
+						}
+					}
+					System.out.println("插入订单前");
+					Map<String, String> resultMap = buffetFoodOrderService.insertOrder(order);
+					boolean result = Boolean.parseBoolean(resultMap.get("result"));
+					if (result) {
+						Integer orderId = Integer.parseInt(resultMap.get("orderId"));
+						for (BuffetFoodOrderProduct each : order.getProductLists()) {
+							BuffetFoodProduct product = buffetFoodProductService.getBuffetFoodProductDetailById(each.getProductId());
+							if(product != null){
+								each.setImgUrl(product.getImgUrl());
+							}
+							each.setOrderId(orderId);
+							buffetFoodOrderProductService.insertProductDetailsUnderOrder(each);
+						}
+						if(order.getToken() != null){
+							//用户已登陆  返回订单号
+							return new APIResponseModel<>(Globals.API_SUCCESS, "成功", orderNumber);
+						}else {
+							//在这里创建一个token传递给app端
+
+							//用户未登陆
+							return new APIResponseModel<>(Globals.API_SUCCESS, "成功", orderNumber);
+						}
+					} else {
+						return new APIResponseModel(Globals.API_FAIL);
+					}
+				}else {
+						if(resultList.get(resultList.size()-1).getOrderState()==2) {
 							//查找当天有没有生成过订单
 							BuffetFoodOrder order1 = buffetFoodOrderService.verifyTodayOrder(order.getShopId(),startTime,endTime);
 							if(order1 != null){
@@ -281,147 +324,26 @@ public class APICommonServiceImpl implements APICommonService {
 									return new APIResponseModel<>(Globals.API_SUCCESS, "成功", orderNumber);
 								}else {
 									//在这里创建一个token传递给app端
-									
+
 									//用户未登陆
 									return new APIResponseModel<>(Globals.API_SUCCESS, "成功", orderNumber);
 								}
 							} else {
 								return new APIResponseModel(Globals.API_FAIL);
 							}
-						} catch (Exception e) {
-							return new APIResponseModel(Globals.API_FAIL, "下单失败");
+						}else {
+							return new APIResponseModel(Globals.API_FAIL,"您有一个已存在订单未完成");
 						}
-					}else {
-						for(BuffetFoodOrder resultOrder:resultList) {
-							if(resultOrder.getOrderState()==2) {
-								try {
-									//查找当天有没有生成过订单
-									BuffetFoodOrder order1 = buffetFoodOrderService.verifyTodayOrder(order.getShopId(),startTime,endTime);
-									if(order1 != null){
-										order.setSerialNumber((order1.getSerialNumber() + 1));
-										System.out.println("========当前订单序号："+order1.getSerialNumber());
-										order.setAllSerialNumber((order1.getAllSerialNumber() + 1));
-										System.out.println("========当前订单总序号："+order1.getAllSerialNumber());
-									}else {
-										//取最后一条订单信息
-										BuffetFoodOrder order2 = buffetFoodOrderService.getLastOrder(order.getShopId());
-										if(order2 != null){
-											order.setAllSerialNumber((order2.getAllSerialNumber()+1));
-											System.out.println("最后一条========当前订单序号："+order2.getSerialNumber());
-											order.setSerialNumber((order2.getSerialNumber() +1));
-											System.out.println("最后一条========当前订单总序号："+order2.getAllSerialNumber());
-										}
-									}
-									System.out.println("插入订单前");
-									Map<String, String> resultMap = buffetFoodOrderService.insertOrder(order);
-									boolean result = Boolean.parseBoolean(resultMap.get("result"));
-									if (result) {
-										Integer orderId = Integer.parseInt(resultMap.get("orderId"));
-										for (BuffetFoodOrderProduct each : order.getProductLists()) {
-											BuffetFoodProduct product = buffetFoodProductService.getBuffetFoodProductDetailById(each.getProductId());
-											if(product != null){
-												each.setImgUrl(product.getImgUrl());
-											}
-											each.setOrderId(orderId);
-											buffetFoodOrderProductService.insertProductDetailsUnderOrder(each);
-										}
-										if(order.getToken() != null){
-											//用户已登陆  返回订单号
-											return new APIResponseModel<>(Globals.API_SUCCESS, "成功", orderNumber);
-										}else {
-											//在这里创建一个token传递给app端
-											
-											//用户未登陆
-											return new APIResponseModel<>(Globals.API_SUCCESS, "成功", orderNumber);
-										}
-									} else {
-										return new APIResponseModel(Globals.API_FAIL);
-									}
-								} catch (Exception e) {
-									return new APIResponseModel(Globals.API_FAIL, "下单失败");
-								}
-							}else {
-								return new APIResponseModel(Globals.API_FAIL,"您有一个已存在订单未完成");
-							}
-						}
-					}
-				} catch (Exception e) {
-					return new APIResponseModel(Globals.API_FAIL, e.getMessage());
 				}
-			} else {
-				return new APIResponseModel(Globals.API_REQUEST_BAD);
+			} catch (Exception e) {
+				return new APIResponseModel(Globals.API_FAIL, e.getMessage());
 			}
-			 return new APIResponseModel(Globals.API_FAIL, "下单失败");
+		} else {
+			return new APIResponseModel(Globals.API_REQUEST_BAD);
 		}
-//	//app自助点餐下单
-//	@Override
-//	public APIResponseModel insertBuffetFoodInitOrder(BuffetFoodOrder order) throws Exception {
-//		if (order != null && order.getShopId() != null) {
-//			try {
-//				String orderTime = format(new Date(), NORM_DATETIME_PATTERN);
-//				final String orderNumber = String.valueOf(OrderNumGen.next());
-//				order.setOrderNumber(orderNumber);
-//				order.setOrderTime(orderTime);
-//				order.setOrderBody("自助点餐初始下单");
-//				BuffetFoodOrder resultOrder= buffetFoodOrderService.getBuffetFoodOrder(order.getToken(), orderNumber);
-//				if(resultOrder==null) {
-//					try {
-//						String startTime = format(DateUtil.beginOfDay(new Date()), NORM_DATETIME_PATTERN);
-//						String endTime = format(DateUtil.endOfDay(new Date()), NORM_DATETIME_PATTERN);
-//						//查找当天有没有生成过订单
-//						BuffetFoodOrder order1 = buffetFoodOrderService.verifyTodayOrder(order.getShopId(),startTime,endTime);
-//						if(order1 != null){
-//							order.setSerialNumber((order1.getSerialNumber() + 1));
-//							System.out.println("========当前订单序号："+order1.getSerialNumber());
-//							order.setAllSerialNumber((order1.getAllSerialNumber() + 1));
-//							System.out.println("========当前订单总序号："+order1.getAllSerialNumber());
-//						}else {
-//							//取最后一条订单信息
-//							BuffetFoodOrder order2 = buffetFoodOrderService.getLastOrder(order.getShopId());
-//							if(order2 != null){
-//								order.setAllSerialNumber((order2.getAllSerialNumber()+1));
-//								System.out.println("最后一条========当前订单序号："+order2.getSerialNumber());
-//								order.setSerialNumber((order2.getSerialNumber() +1));
-//								System.out.println("最后一条========当前订单总序号："+order2.getAllSerialNumber());
-//							}
-//						}
-//						System.out.println("插入订单前");
-//						Map<String, String> resultMap = buffetFoodOrderService.insertOrder(order);
-//						boolean result = Boolean.parseBoolean(resultMap.get("result"));
-//						if (result) {
-//							Integer orderId = Integer.parseInt(resultMap.get("orderId"));
-//							for (BuffetFoodOrderProduct each : order.getProductLists()) {
-//								BuffetFoodProduct product = buffetFoodProductService.getBuffetFoodProductDetailById(each.getProductId());
-//								if(product != null){
-//									each.setImgUrl(product.getImgUrl());
-//								}
-//								each.setOrderId(orderId);
-//								buffetFoodOrderProductService.insertProductDetailsUnderOrder(each);
-//							}
-//							if(order.getToken() != null){
-//								//用户已登陆  返回订单号
-//								return new APIResponseModel<>(Globals.API_SUCCESS, "成功", orderNumber);
-//							}else {
-//								//在这里创建一个token传递给app端
-//								//用户未登陆
-//								return new APIResponseModel<>(Globals.API_SUCCESS, "成功", orderNumber);
-//							}
-//						} else {
-//							return new APIResponseModel(Globals.API_FAIL);
-//						}
-//					} catch (Exception e) {
-//						return new APIResponseModel(Globals.API_FAIL, "下单失败");
-//					}
-//				}
-//			} catch (Exception e) {
-//				return new APIResponseModel(Globals.API_FAIL, e.getMessage());
-//			}
-//		} else {
-//			return new APIResponseModel(Globals.API_REQUEST_BAD);
-//		}
-//		 return new APIResponseModel(Globals.API_FAIL, "下单失败");
-//	}
-//	//app自助点餐下单
+	}
+	
+		//app自助点餐下单
 //		@Override
 //		public APIResponseModel insertBuffetFoodInitOrder(BuffetFoodOrder order) throws Exception {
 //			if (order != null && order.getShopId() != null) {
@@ -431,8 +353,6 @@ public class APICommonServiceImpl implements APICommonService {
 //					order.setOrderNumber(orderNumber);
 //					order.setOrderTime(orderTime);
 //					order.setOrderBody("自助点餐初始下单");
-//					BuffetFoodOrder resultOrder= buffetFoodOrderService.getBuffetFoodOrder(order.getToken(), orderNumber);
-//					if(resultOrder==null) {
 //						try {
 //							String startTime = format(DateUtil.beginOfDay(new Date()), NORM_DATETIME_PATTERN);
 //							String endTime = format(DateUtil.endOfDay(new Date()), NORM_DATETIME_PATTERN);
@@ -458,15 +378,6 @@ public class APICommonServiceImpl implements APICommonService {
 //							boolean result = Boolean.parseBoolean(resultMap.get("result"));
 //							if (result) {
 //								Integer orderId = Integer.parseInt(resultMap.get("orderId"));
-//								//给新创建的订单添加总价
-//								double orderAmount = 0.00;
-//								List<BuffetFoodOrderProduct> resultList = order.getProductLists();
-//								if(resultList != null){
-//									for (BuffetFoodOrderProduct each : resultList){
-//										orderAmount += each.getPrice() * each.getQuantity();
-//									}
-//								}
-//								order.setOrderAmount(orderAmount);
 //								for (BuffetFoodOrderProduct each : order.getProductLists()) {
 //									BuffetFoodProduct product = buffetFoodProductService.getBuffetFoodProductDetailById(each.getProductId());
 //									if(product != null){
@@ -474,24 +385,12 @@ public class APICommonServiceImpl implements APICommonService {
 //									}
 //									each.setOrderId(orderId);
 //									buffetFoodOrderProductService.insertProductDetailsUnderOrder(each);
-//									int b=1;
-//									int a=seatInformationService.updataSeatInfoByOrder(order,b);
-//									if(a<=0) {
-//										return new APIResponseModel(Globals.API_FAIL, "座位已满");
-//									}
 //								}
 //								if(order.getToken() != null){
 //									//用户已登陆  返回订单号
 //									return new APIResponseModel<>(Globals.API_SUCCESS, "成功", orderNumber);
 //								}else {
-//									//在这里创建一个token传递给app
-//									Account account = new Account()
-//											.setSaltToken(Globals.DEFAULT_SALT_TOKEN)
-//											.setAvatarUrl("htkApp/upload/app/default/appDefaultAva_img.jpg")
-//											.setToken(UUID.randomUUID().toString())
-//											.setAccountStatus(1); //默认激活账号
-//									account.setEncryptToken(MD5Utils.getMD5Encode(account.getToken() + account.getSaltToken()));
-//									accountService.insertAccount(account);
+//									//在这里创建一个token传递给app端
 //									//用户未登陆
 //									return new APIResponseModel<>(Globals.API_SUCCESS, "成功", orderNumber);
 //								}
@@ -501,13 +400,132 @@ public class APICommonServiceImpl implements APICommonService {
 //						} catch (Exception e) {
 //							return new APIResponseModel(Globals.API_FAIL, "下单失败");
 //						}
-//					}
 //				} catch (Exception e) {
 //					return new APIResponseModel(Globals.API_FAIL, e.getMessage());
 //				}
 //			} else {
 //				return new APIResponseModel(Globals.API_REQUEST_BAD);
 //			}
-//			return new APIResponseModel(Globals.API_FAIL, "下单失败");
 //		}
+		/*
+		 * 确认下单，调整后的流程
+		 */
+		//app自助点餐下单
+		//	@Override
+		//	public APIResponseModel insertBuffetFoodInitOrder(BuffetFoodOrder order) throws Exception {
+		//		if (order != null && order.getShopId() != null) {
+		//			try {
+		//				String orderTime = format(new Date(), NORM_DATETIME_PATTERN);
+		//				final String orderNumber = String.valueOf(OrderNumGen.next());
+		//				order.setOrderNumber(orderNumber);
+		//				order.setOrderTime(orderTime);
+		//				order.setOrderBody("自助点餐初始下单");
+		//				int pageNumber = Globals.DEFAULT_PAGE_NO;
+		//				int pageLimit = Globals.DEFAULT_PAGE_LIMIT;
+		//				String startTime = format(DateUtil.beginOfDay(new Date()), NORM_DATETIME_PATTERN);
+		//				String endTime = format(DateUtil.endOfDay(new Date()), NORM_DATETIME_PATTERN);
+		//				List<BuffetFoodOrder> resultList=buffetFoodOrderService.getOrderListByToken(order.getToken(),order.getShopId(),pageNumber,pageLimit);
+		//				if(resultList==null) {
+		//					//查找当天有没有生成过订单
+		//					BuffetFoodOrder order1 = buffetFoodOrderService.verifyTodayOrder(order.getShopId(),startTime,endTime);
+		//					if(order1 != null){
+		//						order.setSerialNumber((order1.getSerialNumber() + 1));
+		//						System.out.println("========当前订单序号："+order1.getSerialNumber());
+		//						order.setAllSerialNumber((order1.getAllSerialNumber() + 1));
+		//						System.out.println("========当前订单总序号："+order1.getAllSerialNumber());
+		//					}else {
+		//						//取最后一条订单信息
+		//						BuffetFoodOrder order2 = buffetFoodOrderService.getLastOrder(order.getShopId());
+		//						if(order2 != null){
+		//							order.setAllSerialNumber((order2.getAllSerialNumber()+1));
+		//							System.out.println("最后一条========当前订单序号："+order2.getSerialNumber());
+		//							order.setSerialNumber((order2.getSerialNumber() +1));
+		//							System.out.println("最后一条========当前订单总序号："+order2.getAllSerialNumber());
+		//						}
+		//					}
+		//					System.out.println("插入订单前");
+		//					Map<String, String> resultMap = buffetFoodOrderService.insertOrder(order);
+		//					boolean result = Boolean.parseBoolean(resultMap.get("result"));
+		//					if (result) {
+		//						Integer orderId = Integer.parseInt(resultMap.get("orderId"));
+		//						for (BuffetFoodOrderProduct each : order.getProductLists()) {
+		//							BuffetFoodProduct product = buffetFoodProductService.getBuffetFoodProductDetailById(each.getProductId());
+		//							if(product != null){
+		//								each.setImgUrl(product.getImgUrl());
+		//							}
+		//							each.setOrderId(orderId);
+		//							buffetFoodOrderProductService.insertProductDetailsUnderOrder(each);
+		//						}
+		//						if(order.getToken() != null){
+		//							//用户已登陆  返回订单号
+		//							return new APIResponseModel<>(Globals.API_SUCCESS, "成功", order);
+		//						}else {
+		//							//在这里创建一个token传递给app端
+		//
+		//							//用户未登陆
+		//							return new APIResponseModel<>(Globals.API_SUCCESS, "成功", order);
+		//						}
+		//					} else {
+		//						return new APIResponseModel(Globals.API_FAIL);
+		//					}
+		//				}else {
+		//					for(BuffetFoodOrder resultOrder:resultList) {
+		//						if(resultOrder.getOrderState()==2) {
+		//							//查找当天有没有生成过订单
+		//							BuffetFoodOrder order1 = buffetFoodOrderService.verifyTodayOrder(order.getShopId(),startTime,endTime);
+		//							if(order1 != null){
+		//								order.setSerialNumber((order1.getSerialNumber() + 1));
+		//								System.out.println("========当前订单序号："+order1.getSerialNumber());
+		//								order.setAllSerialNumber((order1.getAllSerialNumber() + 1));
+		//								System.out.println("========当前订单总序号："+order1.getAllSerialNumber());
+		//							}else {
+		//								//取最后一条订单信息
+		//								BuffetFoodOrder order2 = buffetFoodOrderService.getLastOrder(order.getShopId());
+		//								if(order2 != null){
+		//									order.setAllSerialNumber((order2.getAllSerialNumber()+1));
+		//									System.out.println("最后一条========当前订单序号："+order2.getSerialNumber());
+		//									order.setSerialNumber((order2.getSerialNumber() +1));
+		//									System.out.println("最后一条========当前订单总序号："+order2.getAllSerialNumber());
+		//								}
+		//							}
+		//							System.out.println("插入订单前");
+		//							Map<String, String> resultMap = buffetFoodOrderService.insertOrder(order);
+		//							boolean result = Boolean.parseBoolean(resultMap.get("result"));
+		//							if (result) {
+		//								Integer orderId = Integer.parseInt(resultMap.get("orderId"));
+		//								for (BuffetFoodOrderProduct each : order.getProductLists()) {
+		//									BuffetFoodProduct product = buffetFoodProductService.getBuffetFoodProductDetailById(each.getProductId());
+		//									if(product != null){
+		//										each.setImgUrl(product.getImgUrl());
+		//									}
+		//									each.setOrderId(orderId);
+		//									buffetFoodOrderProductService.insertProductDetailsUnderOrder(each);
+		//								}
+		//								if(order.getToken() != null){
+		//									//用户已登陆  返回订单号
+		//									return new APIResponseModel<>(Globals.API_SUCCESS, "成功", order);
+		//								}else {
+		//									//在这里创建一个token传递给app端
+		//
+		//									//用户未登陆
+		//									return new APIResponseModel<>(Globals.API_SUCCESS, "成功", order);
+		//								}
+		//							} else {
+		//								return new APIResponseModel(Globals.API_FAIL);
+		//							}
+		//						}else {
+		//							return new APIResponseModel(Globals.API_FAIL,"您有一个已存在订单未完成");
+		//						}
+		//					}
+		//				}
+		//			} catch (Exception e) {
+		//				return new APIResponseModel(Globals.API_FAIL, e.getMessage());
+		//			}
+		//		} else {
+		//			return new APIResponseModel(Globals.API_REQUEST_BAD);
+		//		}
+		//		return new APIResponseModel(Globals.API_FAIL, "下单失败");
+		//	}
+		
+		
 }

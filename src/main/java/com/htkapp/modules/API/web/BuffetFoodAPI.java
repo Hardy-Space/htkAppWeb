@@ -110,17 +110,6 @@ public class BuffetFoodAPI {
         return buffetFoodService.getLastModifiedProductList(params);
     }
 
-    //下单按钮
-    @RequestMapping(value = "/enterOrderButton", method = RequestMethod.POST)
-    public APIResponseModel enterOrderButton(APIRequestParams params, BuffetFoodOrder buffetFoodOrder){
-        return buffetFoodService.enterOrderButton(params,buffetFoodOrder);
-    }
-
-    //确认下单按钮
-    @RequestMapping(value = "/confirmOrderButton", method = RequestMethod.POST)
-    public APIResponseModel confirmOrderButton(APIRequestParams params, BuffetFoodOrder order){
-        return buffetFoodService.confirmOrderButton(params, order);
-    }
 
     //确认调单页面商品列表
     @RequestMapping(value = "/getLastModifiedAdjustProductList", method = RequestMethod.POST)
@@ -190,7 +179,24 @@ public class BuffetFoodAPI {
 //    public APIResponseModel delOrder(BuffetFoodOrder buffetFoodOrder) {
 //        return buffetFoodService.delOrder(buffetFoodOrder);
 //    }
+
+    //下单按钮
+    @RequestMapping(value = "/enterOrderButton", method = RequestMethod.POST)
+    public APIResponseModel enterOrderButton(APIRequestParams params, BuffetFoodOrder buffetFoodOrder){
+        return buffetFoodService.enterOrderButton(params,buffetFoodOrder);
+    }
+
+    //确认下单按钮
+    @RequestMapping(value = "/confirmOrderButton", method = RequestMethod.POST)
+    public APIResponseModel confirmOrderButton(APIRequestParams params, BuffetFoodOrder order){
+        return buffetFoodService.confirmOrderButton(params, order);
+    }
     
+//    //确认下单接口(修改位置后）
+//    @RequestMapping(value = "/confirmOrderButton", method = RequestMethod.POST)
+//    public APIResponseModel enterOrder(APIRequestParams params, BuffetFoodOrder order){
+//        return buffetFoodService.enterOrder(params, order);
+//    }
 
 
 
