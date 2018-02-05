@@ -84,6 +84,9 @@ public interface BuffetFoodService {
     //用户不点餐时删除订单
 //    APIResponseModel delOrder(BuffetFoodOrder buffetFoodOrder);
     //确认下单接口(调整后)
-    APIResponseModel enterOrder(APIRequestParams params, BuffetFoodOrder order);
+//    APIResponseModel enterOrder(APIRequestParams params, BuffetFoodOrder order);
+    //查询用户名下是否存在未完成的订单
+    APIResponseModel checkOrder(APIRequestParams param);
+   
     /* =============接口结束================= */
 }

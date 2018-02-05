@@ -181,26 +181,28 @@ public class BuffetFoodAPI {
 //        return buffetFoodService.delOrder(buffetFoodOrder);
 //    }
 
-    //下单按钮
+//    //下单按钮
     @RequestMapping(value = "/enterOrderButton", method = RequestMethod.POST)
     public APIResponseModel enterOrderButton(APIRequestParams params, BuffetFoodOrder buffetFoodOrder){
         return buffetFoodService.enterOrderButton(params,buffetFoodOrder);
     }
 
     //确认下单按钮
-    @RequestMapping(value = "/confirmOrderButton", method = RequestMethod.POST)
+    @RequestMapping(value = "/confirmOrderButtn", method = RequestMethod.POST)
     public APIResponseModel confirmOrderButton(APIRequestParams params, BuffetFoodOrder order){
         return buffetFoodService.confirmOrderButton(params, order);
     }
     
-//    //确认下单接口(修改位置后）
-//    @RequestMapping(value = "/confirmOrderButton", method = RequestMethod.POST)
-//    public APIResponseModel enterOrder(APIRequestParams params, BuffetFoodOrder order){
-//        return buffetFoodService.enterOrder(params, order);
-//    }
-
-
-
+    //确认下单接口(修改位置后）
+    @RequestMapping(value = "/confirmOrderButton", method = RequestMethod.POST)
+    public APIResponseModel enterOrder(APIRequestParams params, BuffetFoodOrder order){
+        return buffetFoodService.enterOrderButton(params, order);
+    }
+//查询用户名下是否存在未完成的订单
+    @RequestMapping(value = "/checkIfAlreadyExistOrder", method = RequestMethod.POST)
+    public APIResponseModel checkOrder(APIRequestParams params){
+        return buffetFoodService.checkOrder(params);
+    }
 
 
 
