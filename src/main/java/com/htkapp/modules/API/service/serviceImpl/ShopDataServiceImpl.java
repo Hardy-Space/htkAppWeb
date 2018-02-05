@@ -658,9 +658,10 @@ public class ShopDataServiceImpl implements ShopDataService {
                                             .setShopMobilePhone(shop.getMobilePhone());
                                     list.add(orderInfo);
                                     break;
-                                } else {
-                                    return new APIResponseModel<String>(Globals.API_SUCCESS, "没有外卖订单");
                                 }
+//                                else {
+//                                    return new APIResponseModel<String>(Globals.API_SUCCESS, "没有外卖订单");
+//                                }
                             case 1:
                                 //订单id，店铺名,店铺logo,下单时间,订单状态,价格,套餐名,套餐id,1
                                 OrderRecord orderRecordG = orderRecordService.getOrderRecordByOrderNumber(each.getOrderNumber());
@@ -688,9 +689,10 @@ public class ShopDataServiceImpl implements ShopDataService {
                                     info.setLogoUrl(OtherUtils.getRootDirectory() + shop.getLogoUrl());
                                     list.add(info);
                                     break;
-                                } else {
-                                    return new APIResponseModel<String>(Globals.API_SUCCESS, "没有团购订单");
                                 }
+//                                else {
+//                                    return new APIResponseModel<String>(Globals.API_SUCCESS, "没有团购订单");
+//                                }
                             case 2:
                                 SeatOrder seatOrder = seatOrderService.getSeatOrderByOrderNumber(each.getOrderNumber());
                                 if (seatOrder != null) {
@@ -712,7 +714,7 @@ public class ShopDataServiceImpl implements ShopDataService {
                                     }
                                     break;
                                 } catch (Exception e) {
-                                    return new APIResponseModel(Globals.API_FAIL, "获取订单列表失败");
+//                                    return new APIResponseModel(Globals.API_FAIL, "获取订单列表失败");
                                 }
                             default:
                                 break;
@@ -720,7 +722,7 @@ public class ShopDataServiceImpl implements ShopDataService {
                     }
                     return new APIResponseModel<>(Globals.API_SUCCESS, "成功", list);
                 } else {
-                    return new APIResponseModel<>(Globals.API_SUCCESS, "数据为空", null);
+                    return new APIResponseModel<String>(Globals.API_SUCCESS, "没有外卖订单");
                 }
             } catch (Exception e) {
                 return new APIResponseModel(Globals.API_FAIL);

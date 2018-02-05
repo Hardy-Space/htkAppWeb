@@ -8,7 +8,7 @@
             + request.getServerName() + ":" + request.getServerPort()
             + path + "/";
 
-    String staticFilePath = "http://120.27.5.36:8500/htkApp/";
+    String staticFilePath = "http://120.27.5.36:8080/htkApp/";
     response.setHeader("Pragma","No-cache");
     response.setHeader("Cache-Control","no-cache");
     response.setDateHeader("Expires", 0);
