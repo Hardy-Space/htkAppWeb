@@ -22,8 +22,18 @@ public class ReturnOrderInfo {
     private Integer payState;
 
     private int mark;
+    
+    private int orderState;
 
-    public int getMark() {
+    public int getOrderState() {
+		return orderState;
+	}
+
+	public void setOrderState(int orderState) {
+		this.orderState = orderState;
+	}
+
+	public int getMark() {
         return mark;
     }
 

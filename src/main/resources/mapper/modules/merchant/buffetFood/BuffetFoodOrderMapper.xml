@@ -130,7 +130,7 @@
     </delete>
     <select id="getOrderByOrderNumberAndTokenDAO" resultType="com.htkapp.modules.merchant.buffetFood.dto.ReturnOrderInfo">
         select
-        id, buffet_food_order.gmt_create as order_time, seat_name,shop.shop_name,
+        id, buffet_food_order.gmt_create as order_time, order_state orderState, seat_name,shop.shop_name,
         shop.logo_url,shop.shop_id,pay_state, order_number
         from buffet_food_order left join shop on buffet_food_order.shop_id = shop.shop_id
         where account_token = #{0} and order_number = #{1}
@@ -197,7 +197,7 @@
             <if test="adjustOrderJson != null">
                 adjust_order_json = #{adjustOrderJson},
             </if>
-            <if test="adjustOrderProductJson">
+            <if test="adjustOrderProductJson!=null">
                 adjust_order_product_json = #{adjustOrderProductJson}
             </if>
         </set>

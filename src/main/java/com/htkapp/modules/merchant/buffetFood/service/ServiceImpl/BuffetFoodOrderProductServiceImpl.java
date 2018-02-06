@@ -104,6 +104,5 @@ public class BuffetFoodOrderProductServiceImpl implements BuffetFoodOrderProduct
     public int updataOrderProductBzById(BuffetFoodOrderProduct product, int bz) {
         return boPDao.updataOrderProductBzById(product, bz);
     }
-
     /* =============================接口结束============================== */
 }

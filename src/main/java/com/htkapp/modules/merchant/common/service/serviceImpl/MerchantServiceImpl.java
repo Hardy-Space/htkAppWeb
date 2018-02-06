@@ -1030,7 +1030,7 @@ public class MerchantServiceImpl implements MerchantService {
                 LoginUser user = OtherUtils.getLoginUserByRequest();
                 Shop shop = shopService.getShopDataByAccountShopIdAndMark(user.getUserId(), 2);
                 if (shop != null) {
-                    List<BuffetFoodOrder> resultList = buffetFoodOrderService.getBuffetFoodOrderListByShopIdAndOrderStateId(orderDesc, shop.getShopId(), 1, pageNumber, pageLimit);
+                    List<BuffetFoodOrder> resultList = buffetFoodOrderService.getBuffetFoodOrderListByShopIdAndOrderStateId(orderDesc, shop.getShopId(),0, pageNumber, pageLimit);
                     if (resultList != null) {
                         int quantity = 0;
                         //计算总数量
