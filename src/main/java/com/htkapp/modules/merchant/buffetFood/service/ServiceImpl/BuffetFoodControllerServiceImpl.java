@@ -225,6 +225,7 @@ public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerServ
                     List<BuffetFoodOrderProduct> productLists = gson.fromJson(order.getAdjustOrderProductJson(), new TypeToken<List<BuffetFoodOrderProduct>>() {
                     }.getType());
                     if (productLists != null && productLists.size() > 0) {
+                    	buffetFoodOrderService.dealWithNewOrder(params.getOrderNumber(), 1, 1);
                         //删除订单下的原商品信息
                         buffetFoodOrderProductService.deleteOrderProductByOrderId(order.getId());
                         //插入修改后的订单下商品信息
