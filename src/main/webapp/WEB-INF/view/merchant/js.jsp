@@ -38,12 +38,12 @@
                 if(url.indexOf("/order/query")!=-1&&obj.statusCode==1){
                 	setTimeOut(function(){
                 		location.reload(),
-                		60000
+                		10000
                 	})
                 }else if(url.indexOf("/order/new")!=-1&&obj.statusCode==0){
                 	setTimeOut(function(){
                 		location.reload(),
-                		60000
+                		10000
                 	})
                 }else if(url.indexOf("/order/edit")!=-1&&obj.statusCode==1){
                 	setTimeOut(function(){
@@ -53,7 +53,7 @@
                 }else if(url.indexOf("/order/reminder")!=-1&&obj.statusCode==3){
                 	setTimeOut(function(){
                 		location.reload(),
-                		60000
+                		10000
                 	})
                 }
             }
