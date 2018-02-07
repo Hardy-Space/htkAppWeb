@@ -47,6 +47,8 @@ public interface BuffetFoodOrderService {
     void enterAdjustOrder(BuffetFoodOrder buffetFoodOrder);
     //调单接口
     void updateOrderAdjustOrderJson(BuffetFoodOrder order);
+    //
+    void updataOrderAdjustState(BuffetFoodOrder order);
     /* =====================接口结束===================== */
 
     /* =======================JSP页面接口开始=============================== */

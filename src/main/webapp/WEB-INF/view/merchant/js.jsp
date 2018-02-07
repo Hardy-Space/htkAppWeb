@@ -35,20 +35,20 @@
                 console.log(obj)
                 console.log(obj.statusCode)
                 var url=window.location.href
-                if(url.indexOf("/order/query")!=-1&&obj.statusCode==4){
+                if(url.indexOf("/order/query")!=-1&&obj.statusCode==1){
                 	setTimeOut(function(){
                 		location.reload(),
                 		60000
                 	})
-                }else if(url.indexOf("/order/new")!=-1&&obj.statusCode==1){
+                }else if(url.indexOf("/order/new")!=-1&&obj.statusCode==0){
                 	setTimeOut(function(){
                 		location.reload(),
                 		60000
                 	})
-                }else if(url.indexOf("/order/edit")!=-1&&obj.statusCode==4){
+                }else if(url.indexOf("/order/edit")!=-1&&obj.statusCode==1){
                 	setTimeOut(function(){
                 		location.reload(),
-                		60000
+                		10000
                 	})
                 }else if(url.indexOf("/order/reminder")!=-1&&obj.statusCode==3){
                 	setTimeOut(function(){

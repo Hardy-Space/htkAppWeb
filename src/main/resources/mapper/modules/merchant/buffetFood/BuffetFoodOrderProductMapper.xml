@@ -53,7 +53,7 @@
 	</insert>
 	<select id="getOrderProductListByIdDAO" resultType="BuffetFoodOrderProduct">
 		select
-		buffet_food_product.id,buffet_food_order_product.product_id,
+		buffet_food_product.id,
 		buffet_food_order_product.product_name,
 		buffet_food_order_product.img_url,
 		buffet_food_order_product.quantity, buffet_food_order_product.price, buffet_food_order_product.order_id,
@@ -111,16 +111,5 @@
 		where order_id=#{product.orderId} and
 		product_name=#{product.productName}
 	</update>
-	<select id="getOrderProductDetailById">
-		select bfp.id,
-		bfop.product_name,bfop.img_url,bfop.quantity,bfop.price,bfc.category_name,bfc.id
-		as category_id
-		from buffet_food_order_product as bfop LEFT JOIN buffet_food_product as
-		bfp
-		on bfop.product_id=bfp.id
-		LEFT JOIN buffet_food_category as bfc
-		on bfp.category_id=bfc.id
-		where bfop.id=#{id}
-	</select>
 	<!-- ==============================接口结束================================== -->
 </mapper>

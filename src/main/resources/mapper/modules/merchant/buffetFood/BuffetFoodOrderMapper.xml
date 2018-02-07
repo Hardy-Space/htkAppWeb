@@ -39,6 +39,12 @@
             <if test="remark != null">
                 remark,
             </if>
+            <if test="serialNumber!=null">
+            	serial_number,
+            </if>
+              <if test="allSerialNumber!=null">
+            	all_serial_number
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="orderNumber != null">
@@ -67,6 +73,12 @@
             </if>
             <if test="remark != null">
                 #{remark},
+            </if>
+            <if test="serialNumber!=null">
+            	 #{serialNumber}
+            </if>
+              <if test="allSerialNumber!=null">
+            	 #{allSerialNumber}
             </if>
         </trim>
     </insert>
@@ -144,8 +156,9 @@
     <select id="getBuffetFoodOrderByOrderNumberDAO" resultType="BuffetFoodOrder">
         select
         id, order_number, order_amount, discount_amount, order_body,seat_name,
-        payment_method, order_state, account_token as token, shop_id, mark, reminder_state, adjust_order_json as adjustState, remark, serial_number, all_serial_number,
-        adjust_order_json, adjust_order_product_json
+        payment_method, order_state, account_token as token, shop_id, mark, reminder_state, 
+         remark, serial_number, all_serial_number,
+        adjust_order_json, adjust_order_product_json,adjust_state 
         from buffet_food_order
         where order_number = #{0}
     </select>
@@ -311,6 +324,11 @@
         update buffet_food_order
         set adjust_order_product_json = #{1}
         where order_number = #{0}
+    </update>
+    <update id="updataOrderAdjustState">
+    	update buffet_food_order
+        set adjust_state = #{adjustState}
+        where order_number = #{orderNumber}
     </update>
     <!-- =========================JSP页面接口结束================================= -->
 

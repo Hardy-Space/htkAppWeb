@@ -218,8 +218,8 @@ public class BuffetFoodController {
                 Jpush.jPushMethodToMerchant(accountShopToken,"有一个自助点餐结算","ALERT", "商家版");
 				Jpush.jPushMethodToMerchant(accountShopToken,"有一个自助点餐结算","","");
             }else {
-               	moreMethodsUtils.jPushToMerAndAccount(order.getToken(),"自助点餐订单下单成功", jsonObject.toJSONString(),
-                        user.getToken(),"有一个自助点餐订单", jsonObject.toJSONString(), 2);
+               	moreMethodsUtils.jPushToMerAndAccount(order.getToken(),"订单已完成", jsonObject.toJSONString(),
+                        user.getToken(),"有一个自助点餐订单已完成", jsonObject.toJSONString(), 2);
             }
             return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
         } catch (Exception e) {

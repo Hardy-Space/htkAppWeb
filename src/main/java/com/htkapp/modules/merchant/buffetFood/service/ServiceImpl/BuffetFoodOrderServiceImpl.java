@@ -323,5 +323,13 @@ public class BuffetFoodOrderServiceImpl implements BuffetFoodOrderService {
         }
     }
 
+	@Override
+	public void updataOrderAdjustState(BuffetFoodOrder order) {
+		int row=buffetFoodOrderDao.updataOrderAdjustState(order);
+		if(row<=0) {
+			 throw new UpdateException(Globals.DEFAULT_EXCEPTION_UPDATE_FAILED);
+		}
+	}
+
     /* ============================JSP页面接口结束===================================== */
 }

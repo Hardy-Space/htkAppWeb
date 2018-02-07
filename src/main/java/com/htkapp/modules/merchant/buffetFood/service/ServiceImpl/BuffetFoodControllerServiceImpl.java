@@ -186,6 +186,7 @@ public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerServ
             try {
                 buffetFoodOrderService.dealWithNewOrder(params.getOrderNumber(), 1, 1);
                 BuffetFoodOrder order=buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(params.getOrderNumber());
+                //TODO
                 Jpush.jPushMethod(order.getToken(),"商家已接单,请耐心等候.","ALERT");
                 return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
             } catch (Exception e) {
@@ -225,22 +226,27 @@ public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerServ
                     List<BuffetFoodOrderProduct> productLists = gson.fromJson(order.getAdjustOrderProductJson(), new TypeToken<List<BuffetFoodOrderProduct>>() {
                     }.getType());
                     if (productLists != null && productLists.size() > 0) {
-                    	buffetFoodOrderService.dealWithNewOrder(params.getOrderNumber(), 1, 1);
                         //删除订单下的原商品信息
                         buffetFoodOrderProductService.deleteOrderProductByOrderId(order.getId());
                         //插入修改后的订单下商品信息
                         double orderAmount = 0.00;
                         for (BuffetFoodOrderProduct each : productLists) {
+                        	 BuffetFoodProduct product = buffetFoodProductService.getBuffetFoodProductDetailById(each.getProductId());
                             orderAmount += each.getPrice() * each.getQuantity();
                             each.setOrderId(order.getId());
+                            each.setImgUrl(product.getImgUrl());
                             buffetFoodOrderProductService.insertProductDetailsUnderOrder(each);
                         }
+                        order.setAdjustState(0);
+                        buffetFoodOrderService.updataOrderAdjustState(order);
+                        System.out.println(order.toString());
                         buffetFoodOrderService.updateOrderTotalAmount(order.getOrderNumber(), orderAmount);
                         int row = buffetFoodOrderDao.replyFalseDAO(params.getOrderNumber(), null);
                         if (row <= 0) {
                         	   Jpush.jPushMethod(order.getToken(),"您的订单已调整,请耐心等候.","ALERT");
                             return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
                         } else {
+                        	Jpush.jPushMethod(order.getToken(),"您的订单已调整,请耐心等候.","ALERT");
                             return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
                         }
                     } else {
@@ -250,7 +256,7 @@ public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerServ
                     return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
                 }
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+            	e.printStackTrace();
                 return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
             }
         } else {
