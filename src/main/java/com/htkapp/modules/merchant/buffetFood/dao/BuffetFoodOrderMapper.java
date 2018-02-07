@@ -43,6 +43,8 @@ public interface BuffetFoodOrderMapper {
     int enterAdjustOrderDAO(BuffetFoodOrder order);
     //调单接口
     int updateOrderAdjustOrderJsonDAO(BuffetFoodOrder order);
+    //修改订单的调单状态
+    int updataOrderAdjustState(BuffetFoodOrder order);
     /* ===================接口结束======================= */
 
 

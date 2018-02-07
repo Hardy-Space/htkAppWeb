@@ -62,8 +62,18 @@ public class BuffetFoodOrder {
     private String minute;  //提交分钟数
 
     private int sum;
+    
+    private int adjustState;//调单状态
 
-    public Integer getId() {
+    public int getAdjustState() {
+		return adjustState;
+	}
+
+	public void setAdjustState(int adjustState) {
+		this.adjustState = adjustState;
+	}
+
+	public Integer getId() {
         return id;
     }
 

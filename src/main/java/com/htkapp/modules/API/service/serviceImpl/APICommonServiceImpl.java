@@ -252,6 +252,7 @@ public class APICommonServiceImpl implements APICommonService {
 						System.out.println("========当前订单序号："+order1.getSerialNumber());
 						order.setAllSerialNumber((order1.getAllSerialNumber() + 1));
 						System.out.println("========当前订单总序号："+order1.getAllSerialNumber());
+						order.setOrderState(0);
 					}else {
 						//取最后一条订单信息
 						BuffetFoodOrder order2 = buffetFoodOrderService.getLastOrder(order.getShopId());
@@ -261,6 +262,7 @@ public class APICommonServiceImpl implements APICommonService {
 							order.setSerialNumber((order2.getSerialNumber() +1));
 							System.out.println("最后一条========当前订单总序号："+order2.getAllSerialNumber());
 						}
+						order.setOrderState(0);
 					}
 					System.out.println("插入订单前");
 					Map<String, String> resultMap = buffetFoodOrderService.insertOrder(order);
@@ -277,6 +279,10 @@ public class APICommonServiceImpl implements APICommonService {
 						}
 						if(order.getToken() != null){
 							//用户已登陆  返回订单号
+							 Shop shop = shopService.getShopDataById(order.getShopId());
+					            System.out.println("shop is:"+shop.toString());
+					            AccountShop user = accountShopService.getAccountShopDataById(shop.getAccountShopId());
+							methodsUtils.pushMesToManagePage(new PushMesEntity("自助点餐订单消息", "b", "自助点餐订单下单成功", user.getToken(), 'b', order.getOrderState(), "您有一个的自助点餐订单消息", user.getId()));
 							return new APIResponseModel<>(Globals.API_SUCCESS, "成功", orderNumber);
 						}else {
 							//在这里创建一个token传递给app端
@@ -285,10 +291,11 @@ public class APICommonServiceImpl implements APICommonService {
 							return new APIResponseModel<>(Globals.API_SUCCESS, "成功", orderNumber);
 						}
 					} else {
-						return new APIResponseModel(Globals.API_FAIL);
+						return new APIResponseModel(Globals.API_FAIL,"错误1");
 					}
 				}else {
-						if(resultList.get(resultList.size()-1).getOrderState()==2) {
+						if(resultList.get(resultList.size()-1).getOrderState()==2||
+								resultList.get(resultList.size()-2).getOrderState()==2) {
 							//查找当天有没有生成过订单
 							BuffetFoodOrder order1 = buffetFoodOrderService.verifyTodayOrder(order.getShopId(),startTime,endTime);
 							if(order1 != null){
@@ -296,6 +303,7 @@ public class APICommonServiceImpl implements APICommonService {
 								System.out.println("========当前订单序号："+order1.getSerialNumber());
 								order.setAllSerialNumber((order1.getAllSerialNumber() + 1));
 								System.out.println("========当前订单总序号："+order1.getAllSerialNumber());
+								order.setOrderState(0);
 							}else {
 								//取最后一条订单信息
 								BuffetFoodOrder order2 = buffetFoodOrderService.getLastOrder(order.getShopId());
@@ -304,6 +312,7 @@ public class APICommonServiceImpl implements APICommonService {
 									System.out.println("最后一条========当前订单序号："+order2.getSerialNumber());
 									order.setSerialNumber((order2.getSerialNumber() +1));
 									System.out.println("最后一条========当前订单总序号："+order2.getAllSerialNumber());
+									order.setOrderState(0);
 								}
 							}
 							System.out.println("插入订单前");
@@ -321,6 +330,10 @@ public class APICommonServiceImpl implements APICommonService {
 								}
 								if(order.getToken() != null){
 									//用户已登陆  返回订单号
+									 Shop shop = shopService.getShopDataById(order.getShopId());
+							            System.out.println("shop is:"+shop.toString());
+							            AccountShop user = accountShopService.getAccountShopDataById(shop.getAccountShopId());
+									methodsUtils.pushMesToManagePage(new PushMesEntity("自助点餐订单消息", "b", "自助点餐订单下单成功", user.getToken(), 'b', order.getOrderState(), "您有一个的自助点餐订单消息", user.getId()));
 									return new APIResponseModel<>(Globals.API_SUCCESS, "成功", orderNumber);
 								}else {
 									//在这里创建一个token传递给app端
@@ -329,7 +342,7 @@ public class APICommonServiceImpl implements APICommonService {
 									return new APIResponseModel<>(Globals.API_SUCCESS, "成功", orderNumber);
 								}
 							} else {
-								return new APIResponseModel(Globals.API_FAIL);
+								return new APIResponseModel(Globals.API_FAIL,"错误2");
 							}
 						}else {
 							return new APIResponseModel(Globals.API_FAIL,"您有一个已存在订单未完成");
@@ -339,7 +352,7 @@ public class APICommonServiceImpl implements APICommonService {
 				return new APIResponseModel(Globals.API_FAIL, e.getMessage());
 			}
 		} else {
-			return new APIResponseModel(Globals.API_REQUEST_BAD);
+			return new APIResponseModel(Globals.API_REQUEST_BAD,"错误3");
 		}
 	}
 	

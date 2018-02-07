@@ -284,54 +284,43 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 		if (params != null && params.getOrderNumber() != null) {
 			try {
 				//根据订单号查询订单详情{ 订单号，时间，订单状态，已点商品{名字、数量、价格}, 已提交时间 }
-//				ReturnBuffetFoodOrderData buffetFoodOrder = buffetFoodOrderService.getOrderByOrderNumber(params.getOrderNumber());
-//				if (buffetFoodOrder != null) {
-//					//TODO
-//					
-//					//查找订单中的商品
-//					//                    BuffetFoodOrder buffetFoodOrder = buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(params.getOrderNumber());
-//					//                    List<BuffetFoodOrderProduct> buffetFoodOrderProductList = buffetFoodOrder.getProductLists();
-//					List<BuffetFoodOrderProduct> buffetFoodOrderProductList = buffetFoodOrderProductService.getOrderProductListByOrderNumber(buffetFoodOrder.getOrderNumber());
-//					buffetFoodOrder.setProductList(buffetFoodOrderProductList);
-//					//格式化时间
-//					buffetFoodOrder.setOrderTime(format(DateUtil.parse(buffetFoodOrder.getOrderTime()), NORM_DATETIME_PATTERN).substring(5));
-//					//查找调单状态、催单状态
-//					return new APIResponseModel<>(Globals.API_SUCCESS, "成功", buffetFoodOrder);
 					ReturnBuffetFoodOrderData buffetFoodOrderData = buffetFoodOrderService.getOrderByOrderNumber(params.getOrderNumber());
 					String a=buffetFoodOrderData.getOrderTime().substring(0,buffetFoodOrderData.getOrderTime().lastIndexOf("."));
 					buffetFoodOrderData.setOrderTime(a);
-					List<Integer> ids=new ArrayList<Integer>();
 					if (buffetFoodOrderData != null) {
 						//查找订单中的商品
 						BuffetFoodOrder buffetFoodOrder = buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(params.getOrderNumber());
 						//创建gson
-						Gson gson = new Gson();
-						//将订单中的json字符串转换成对应的集合对象
-						List<BuffetFoodOrderProduct> productLists
-						= gson.fromJson(buffetFoodOrder.getAdjustOrderProductJson(), new TypeToken<List<BuffetFoodOrderProduct>>() {
-						}.getType());
-						//创建一个订单内容集合备用
-						List<BuffetFoodOrderProduct> buffetFoodOrderProductList=new ArrayList<BuffetFoodOrderProduct>();
-						if(productLists!=null) {
-							//将json串中的订单产品自增id取出用于查询
-							ids.add(productLists.get(0).getId());
-							buffetFoodOrderProductList=buffetFoodOrderProductService.getOrderProductDetailById(buffetFoodOrder.getId(), ids);
-							//为每个图片地址增加服务器前缀
+//						Gson gson = new Gson();
+//						//将订单中的json字符串转换成对应的集合对象
+//						List<BuffetFoodOrderProduct> productLists
+//						= gson.fromJson(buffetFoodOrder.getAdjustOrderProductJson(), new TypeToken<List<BuffetFoodOrderProduct>>() {
+//						}.getType());
+//						//创建一个订单内容集合备用
+//						List<BuffetFoodOrderProduct> buffetFoodOrderProductList=new ArrayList<BuffetFoodOrderProduct>();
+//						if(productLists!=null) {
+//							//将json串中的订单产品自增id取出用于查询
+//							for(BuffetFoodOrderProduct bfop:productLists) {
+//								BuffetFoodProduct product = buffetFoodProductService.getBuffetFoodProductDetailById(bfop.getProductId());
+//								if(product != null){
+//									bfop.setId(bfop.getProductId());
+//									bfop.setImgUrl(OtherUtils.getRootDirectory() +product.getImgUrl());
+//									bfop.setCategoryId(product.getCategoryId());
+//									bfop.setCategoryName(buffetFoodCategoryService.getCategoryById(product.getCategoryId()).getCategoryName());
+//									bfop.setProductId(bfop.getProductId());
+//								}
+//							}
+//							buffetFoodOrderData.setProductList(productLists);
+//						}else {
+						List<BuffetFoodOrderProduct> buffetFoodOrderProductList = buffetFoodOrderProductService.getOrderProductListById(buffetFoodOrder.getId());
 							if (buffetFoodOrderProductList != null) {
 								for (BuffetFoodOrderProduct every : buffetFoodOrderProductList) {
-									every.setImgUrl(OtherUtils.getRootDirectory() + every.getImgUrl());
-								}
-							}
-							buffetFoodOrderData.setProductList(productLists);
-						}else {
-							buffetFoodOrderProductList = buffetFoodOrderProductService.getOrderProductListById(buffetFoodOrder.getId());
-							if (buffetFoodOrderProductList != null) {
-								for (BuffetFoodOrderProduct every : buffetFoodOrderProductList) {
+									every.setProductId(every.getId());
 									every.setImgUrl(OtherUtils.getRootDirectory() + every.getImgUrl());
 								}
 							}
 							buffetFoodOrderData.setProductList(buffetFoodOrderProductList);
-						}
+//						}
 						return new APIResponseModel<>(Globals.API_SUCCESS, "成功", buffetFoodOrderData);
 				} else {
 					return new APIResponseModel(Globals.API_REQUEST_BAD, "查找不到订单");
@@ -651,12 +640,9 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 	}
 
 	//调整订单接口
+	//废弃
 	@Override
 	public APIResponseModel adjustOrder(APIRequestParams params, BuffetFoodOrder order) {
-		//TODO
-		//TODO
-		//TODO
-		//TODO
 		if (params != null && order != null) {
 			BuffetFoodOrder getOrder = buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(params.getOrderNumber());
 			if (getOrder != null) {
@@ -712,52 +698,50 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 	//确认调单接口
 	@Override
 	public APIResponseModel enterAdjustOrder(APIRequestParams params, BuffetFoodOrder order) {
-		//TODO
-		//TODO
-		//TODO
-		//TODO
 		if (params != null && order != null) {
 			//取出参数和值，形成json字符串
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("remark", order.getRemark());
-			jsonObject.put("discountAmount", order.getDiscountAmount());
-			jsonObject.put("seatName", order.getSeatName());
-			jsonObject.put("orderAmount", order.getOrderAmount());
-			order.setAdjustOrderProductJson(order.getJsonProductList());
-			buffetFoodOrderService.updateOrderAdjustOrderJson(order);
-			try {
-				//下单成功，推消息
-				//修改
-				BuffetFoodOrder buffetFoodOrder = buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(order.getOrderNumber());
-				//                Shop shop = shopService.getShopDataById(order.getShopId());
-				Shop shop = shopService.getShopDataById(buffetFoodOrder.getShopId());
+			BuffetFoodOrder buffetFoodOrder = buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(order.getOrderNumber());
+			if(buffetFoodOrder.getOrderState()==1) {
+				JSONObject jsonObject = new JSONObject();
+				jsonObject.put("remark", order.getRemark());
+				jsonObject.put("discountAmount", order.getDiscountAmount());
+				jsonObject.put("seatName", order.getSeatName());
+				jsonObject.put("orderAmount", order.getOrderAmount());
+				order.setAdjustOrderProductJson(order.getJsonProductList());
+				order.setAdjustState(1);
+				buffetFoodOrderService.updataOrderAdjustState(order);
+				buffetFoodOrderService.updateOrderAdjustOrderJson(order);
+				try {
+					//下单成功，推消息
+					//修改
+					//                Shop shop = shopService.getShopDataById(order.getShopId());
+					Shop shop = shopService.getShopDataById(buffetFoodOrder.getShopId());
 
-				AccountShop user = accountShopService.getAccountShopDataById(shop.getAccountShopId());
-				JSONObject jsonObject_ = new JSONObject();
-				jsonObject_.put("orderNumber", buffetFoodOrder.getOrderNumber());
-				jsonObject_.put("orderState", buffetFoodOrder.getOrderState());
-				jsonObject_.put("orderId", buffetFoodOrder.getId());
-				//                jsonObject_.put("orderNumber", order.getOrderNumber());
-				//                jsonObject_.put("orderState", order.getOrderState());
-				//                jsonObject_.put("orderId", order.getId());
-				if(order.getToken() != null){
-					moreMethodsUtils.jPushToMerAndAccount(order.getToken(),"自助点餐订单调单请求已发送", jsonObject_.toJSONString(), user.getToken(),"有一个自助点餐订单信息", jsonObject_.toJSONString(), 2);
+					AccountShop user = accountShopService.getAccountShopDataById(shop.getAccountShopId());
+					JSONObject jsonObject_ = new JSONObject();
+					jsonObject_.put("orderNumber", buffetFoodOrder.getOrderNumber());
+					jsonObject_.put("orderState", buffetFoodOrder.getOrderState());
+					jsonObject_.put("orderId", buffetFoodOrder.getId());
+					if(order.getToken() != null){
+						moreMethodsUtils.jPushToMerAndAccount(order.getToken(),"自助点餐订单调单请求已发送", jsonObject_.toJSONString(), user.getToken(),"有一个自助点餐订单信息", jsonObject_.toJSONString(), 2);
+					}
+					String userToken = user.getToken();
+					Integer orderState = buffetFoodOrder.getOrderState();
+					//因为此处的orderState获取的是null，再加上PushMesEntity构造方法里面接收的是int基本数据类型，
+					// 所以在下面的new PushMesEntity()传参数的时候，null向int基本数据类型赋值就会报空指针异常
+					Integer userId = user.getId();
+					PushMesEntity pushMesEntity = new PushMesEntity("自助点餐订单消息", "b", "自助点餐订单调单申请",userToken , 'b', orderState, "您有一个的自助点餐调单消息", userId);
+					moreMethodsUtils.pushMesToManagePage(pushMesEntity);
+				}catch (Exception e){
+					return new APIResponseModel(Globals.API_FAIL);
 				}
-				String userToken = user.getToken();
-				Integer orderState = buffetFoodOrder.getOrderState();
-				//因为此处的orderState获取的是null，再加上PushMesEntity构造方法里面接收的是int基本数据类型，
-				// 所以在下面的new PushMesEntity()传参数的时候，null向int基本数据类型赋值就会报空指针异常
-				//                Integer orderState = order.getOrderState();
-				Integer userId = user.getId();
-				PushMesEntity pushMesEntity = new PushMesEntity("自助点餐订单消息", "b", "自助点餐订单调单申请",userToken , 'b', orderState, "您有一个的自助点餐订单消息", userId);
-				moreMethodsUtils.pushMesToManagePage(pushMesEntity);
-			}catch (Exception e){
-				return new APIResponseModel(Globals.API_FAIL);
+				return new APIResponseModel(Globals.API_SUCCESS);
 			}
-			return new APIResponseModel(Globals.API_SUCCESS);
+			return new APIResponseModel(Globals.API_FAIL);
 		} else {
 			return new APIResponseModel(Globals.API_REQUEST_BAD);
 		}
+	
 	}
 
 	//确认调单页面商品列表
