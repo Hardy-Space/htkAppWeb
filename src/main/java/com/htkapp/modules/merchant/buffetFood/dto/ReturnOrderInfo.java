@@ -1,5 +1,10 @@
 package com.htkapp.modules.merchant.buffetFood.dto;
 
+import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrderProduct;
+import com.htkapp.modules.merchant.pay.entity.OrderProduct;
+
+import java.util.List;
+
 public class ReturnOrderInfo {
 
     /**
@@ -24,6 +29,37 @@ public class ReturnOrderInfo {
     private int mark;
     
     private int orderState;
+
+    private String orderNumber;  //订单号
+
+    private Double orderAmount;  //订单金额
+
+
+    private List<BuffetFoodOrderProduct> productList; //产品集合
+
+    public String getOrderNumber() {
+        return orderNumber;
+    }
+
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
+    public Double getOrderAmount() {
+        return orderAmount;
+    }
+
+    public void setOrderAmount(Double orderAmount) {
+        this.orderAmount = orderAmount;
+    }
+
+    public List<BuffetFoodOrderProduct> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(List<BuffetFoodOrderProduct> productLists) {
+        this.productList = productLists;
+    }
 
     public int getOrderState() {
 		return orderState;

@@ -24,6 +24,8 @@ import com.htkapp.modules.API.service.ShopDataService;
 import com.htkapp.modules.admin.shopCategory.entity.ShopCategory;
 import com.htkapp.modules.admin.shopCategory.service.ShopCategoryService;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrder;
+import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrderProduct;
+import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodProduct;
 import com.htkapp.modules.merchant.buffetFood.service.BuffetFoodOrderProductService;
 import com.htkapp.modules.merchant.buffetFood.service.BuffetFoodOrderService;
 import com.htkapp.modules.merchant.common.dto.MerchantReplyInfo;
@@ -422,7 +424,6 @@ public class ShopDataServiceImpl implements ShopDataService {
                         List<ReturnCommentInfo> resultList = shopMessageCommentService.getTakeoutCommentById(shopId, pageNo, pageLimit);
 
 
-
                         if (resultList != null) {
                             for (ReturnCommentInfo each : resultList) {
                                 try {
@@ -440,7 +441,7 @@ public class ShopDataServiceImpl implements ShopDataService {
                                      * @desc 加上商家回复的内容
                                      */
                                     List<MerchantReplyInfo> merchantReplyInfos = shopMessageCommentService.getMerchantReplyListByUserCommentId(each.getCommentId());
-                                    if (merchantReplyInfos!=null&&merchantReplyInfos.size()>0) {
+                                    if (merchantReplyInfos != null && merchantReplyInfos.size() > 0) {
                                         //因为商家只能回复一条，所以集合里只有一条数据
                                         MerchantReplyInfo merchantReplyInfo = merchantReplyInfos.get(0);
                                         String userCommentInfo = merchantReplyInfo.getReplyContent();
@@ -707,11 +708,12 @@ public class ShopDataServiceImpl implements ShopDataService {
                                 try {
                                     com.htkapp.modules.merchant.buffetFood.dto.ReturnOrderInfo orderInfo = buffetFoodOrderService.getOrderByOrderNumberAndToken(token, each.getOrderNumber());
                                     if (orderInfo != null) {
-                                        Date time = DateUtil.parse(orderInfo.getOrderTime());
-                                        String forMatTime = format(time, "MM-dd HH:mm");
-                                        orderInfo.setOrderTime(forMatTime);
                                         orderInfo.setMark(each.getMark());
                                         orderInfo.setLogoUrl(OtherUtils.getRootDirectory() + orderInfo.getLogoUrl());
+
+                                        List<BuffetFoodOrderProduct> productList = buffetFoodOrderProductService.getOrderProductListById(orderInfo.getId());
+                                        orderInfo.setProductList(productList);
+
                                         list.add(orderInfo);
                                     }
                                     break;
