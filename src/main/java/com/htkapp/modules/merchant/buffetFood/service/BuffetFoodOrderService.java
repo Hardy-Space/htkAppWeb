@@ -49,6 +49,8 @@ public interface BuffetFoodOrderService {
     void updateOrderAdjustOrderJson(BuffetFoodOrder order);
     //
     void updataOrderAdjustState(BuffetFoodOrder order);
+    
+    public List<BuffetFoodOrder> getOrderListByTokenAndShopId(String token,int shopId);
     /* =====================接口结束===================== */
 
     /* =======================JSP页面接口开始=============================== */

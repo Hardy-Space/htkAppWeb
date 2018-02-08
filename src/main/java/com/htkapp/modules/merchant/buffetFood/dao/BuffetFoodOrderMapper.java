@@ -45,6 +45,8 @@ public interface BuffetFoodOrderMapper {
     int updateOrderAdjustOrderJsonDAO(BuffetFoodOrder order);
     //修改订单的调单状态
     int updataOrderAdjustState(BuffetFoodOrder order);
+    //根据用户token以及店铺查询订单
+    List<BuffetFoodOrder> getOrderListByTokenAndShopId(@Param("token")String token,@Param("shopId")int shopId);
     /* ===================接口结束======================= */
 
 

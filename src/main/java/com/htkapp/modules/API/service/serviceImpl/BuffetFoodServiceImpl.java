@@ -289,30 +289,12 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 					buffetFoodOrderData.setOrderTime(a);
 					if (buffetFoodOrderData != null) {
 						//查找订单中的商品
-						BuffetFoodOrder buffetFoodOrder = buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(params.getOrderNumber());
-						//创建gson
-//						Gson gson = new Gson();
-//						//将订单中的json字符串转换成对应的集合对象
-//						List<BuffetFoodOrderProduct> productLists
-//						= gson.fromJson(buffetFoodOrder.getAdjustOrderProductJson(), new TypeToken<List<BuffetFoodOrderProduct>>() {
-//						}.getType());
-//						//创建一个订单内容集合备用
-//						List<BuffetFoodOrderProduct> buffetFoodOrderProductList=new ArrayList<BuffetFoodOrderProduct>();
-//						if(productLists!=null) {
-//							//将json串中的订单产品自增id取出用于查询
-//							for(BuffetFoodOrderProduct bfop:productLists) {
-//								BuffetFoodProduct product = buffetFoodProductService.getBuffetFoodProductDetailById(bfop.getProductId());
-//								if(product != null){
-//									bfop.setId(bfop.getProductId());
-//									bfop.setImgUrl(OtherUtils.getRootDirectory() +product.getImgUrl());
-//									bfop.setCategoryId(product.getCategoryId());
-//									bfop.setCategoryName(buffetFoodCategoryService.getCategoryById(product.getCategoryId()).getCategoryName());
-//									bfop.setProductId(bfop.getProductId());
-//								}
-//							}
-//							buffetFoodOrderData.setProductList(productLists);
-//						}else {
-						List<BuffetFoodOrderProduct> buffetFoodOrderProductList = buffetFoodOrderProductService.getOrderProductListById(buffetFoodOrder.getId());
+						List<BuffetFoodOrder> buffetFoodOrder = buffetFoodOrderService.getOrderListByTokenAndShopId(params.getToken(), params.getShopId());
+						for(BuffetFoodOrder each:buffetFoodOrder) {
+							if(each.getOrderState()==2) {
+								continue;
+							}
+							List<BuffetFoodOrderProduct> buffetFoodOrderProductList = buffetFoodOrderProductService.getOrderProductListById(each.getId());
 							if (buffetFoodOrderProductList != null) {
 								for (BuffetFoodOrderProduct every : buffetFoodOrderProductList) {
 									every.setProductId(every.getId());
@@ -320,12 +302,13 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 								}
 							}
 							buffetFoodOrderData.setProductList(buffetFoodOrderProductList);
-//						}
+						}
 						return new APIResponseModel<>(Globals.API_SUCCESS, "成功", buffetFoodOrderData);
 				} else {
 					return new APIResponseModel(Globals.API_REQUEST_BAD, "查找不到订单");
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 				return new APIResponseModel(Globals.API_FAIL);
 			}
 		} else {

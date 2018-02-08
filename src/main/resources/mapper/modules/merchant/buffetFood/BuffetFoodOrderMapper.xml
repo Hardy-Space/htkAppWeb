@@ -216,6 +216,16 @@
         </set>
         where order_number = #{orderNumber}
     </update>
+    <select id="getOrderListByTokenAndShopId" resultType="BuffetFoodOrder">
+    	  select
+        id, order_number, order_amount, discount_amount, order_body,seat_name,
+        payment_method, order_state, account_token as token, shop_id, mark, reminder_state, 
+         remark, serial_number, all_serial_number,
+        adjust_order_json, adjust_order_product_json,adjust_state 
+        from buffet_food_order
+        where account_token = #{token} and shop_id=#{shopId}
+    </select>
+    
     <!-- =========================接口结束============================= -->
 
     <!-- ==========================JSP页面接口开始=============================== -->

@@ -189,7 +189,16 @@ public class BuffetFoodOrderServiceImpl implements BuffetFoodOrderService {
             throw new UpdateException(Globals.DEFAULT_EXCEPTION_UPDATE_FAILED);
         }
     }
-
+    
+    //根据用户token和店铺id查询订单列表
+    @Override
+    public List<BuffetFoodOrder> getOrderListByTokenAndShopId(String token,int shopId) {
+    	 List<BuffetFoodOrder> resultList = buffetFoodOrderDao.getOrderListByTokenAndShopId(token, shopId);
+        if(resultList !=null){
+        	return resultList;
+        }
+		return resultList;
+    }
     /* ============================接口结束================================= */
 
 
