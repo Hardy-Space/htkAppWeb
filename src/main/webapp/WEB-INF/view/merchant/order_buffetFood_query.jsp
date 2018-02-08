@@ -498,7 +498,7 @@
 				</span>
 			</span>
 			<span class="col-md-12 oBuffetFoodQuerySpanSelect">
-				<span class="col-md-4 spanFontSize labelSpanText">请选择其他消费项目：</span>
+				<span class="col-md-4 spanFontSize labelSpanText">请选择优惠券：</span>
 				<span class="col-md-8">
 					<select class="selectDown">
                         <c:choose>

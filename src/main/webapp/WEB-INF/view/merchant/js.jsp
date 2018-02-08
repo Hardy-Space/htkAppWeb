@@ -36,25 +36,13 @@
                 console.log(obj.statusCode)
                 var url=window.location.href
                 if(url.indexOf("/order/query")!=-1&&obj.statusCode==1){
-                	setTimeOut(function(){
-                		location.reload(),
-                		10000
-                	})
+                		location.reload()
                 }else if(url.indexOf("/order/new")!=-1&&obj.statusCode==0){
-                	setTimeOut(function(){
-                		location.reload(),
-                		10000
-                	})
+                		location.reload()
                 }else if(url.indexOf("/order/edit")!=-1&&obj.statusCode==1){
-                	setTimeOut(function(){
-                		location.reload(),
-                		10000
-                	})
+                		location.reload()
                 }else if(url.indexOf("/order/reminder")!=-1&&obj.statusCode==3){
-                	setTimeOut(function(){
-                		location.reload(),
-                		10000
-                	})
+                		location.reload()
                 }
             }
             return false;

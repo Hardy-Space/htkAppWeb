@@ -161,7 +161,7 @@
                 <dd class="${int_mark_list ? "layui-this" : ""}"><a href="${sysPath}merchant/integral/list">积分列表</a>
                 </dd>
                 <dd class="${int_mark_active ? "layui-this" : ""}"><a href="${sysPath}merchant/integral/getNewActivePage">积分活动</a></dd>
-                <dd class="${int_mark_seatOrder ? "layui-this" : ""}"><a href="${sysPath}merchant/integral/seatOrder">订座订单</a></dd>
+                <!-- <dd class="${int_mark_seatOrder ? "layui-this" : ""}"><a href="${sysPath}merchant/integral/seatOrder">订座订单</a></dd> -->
             </dl>
         </li>
         <li class="layui-nav-item ${bil_mark ? "layui-nav-itemed" : ""}">
