@@ -266,6 +266,11 @@ public class APICommonServiceImpl implements APICommonService {
 					}
 					System.out.println("插入订单前");
 					Map<String, String> resultMap = buffetFoodOrderService.insertOrder(order);
+					int b=1;
+					int a=seatInformationService.updataSeatInfoByOrder(order,b);
+					if(a<=0||order.getSeatName()==null) {
+						return new APIResponseModel(Globals.API_FAIL, "当前座位已被占用");
+					}
 					boolean result = Boolean.parseBoolean(resultMap.get("result"));
 					if (result) {
 						Integer orderId = Integer.parseInt(resultMap.get("orderId"));
@@ -317,6 +322,11 @@ public class APICommonServiceImpl implements APICommonService {
 							}
 							System.out.println("插入订单前");
 							Map<String, String> resultMap = buffetFoodOrderService.insertOrder(order);
+							int b=1;
+							int a=seatInformationService.updataSeatInfoByOrder(order,b);
+							if(a<=0||order.getSeatName()==null) {
+								return new APIResponseModel(Globals.API_FAIL, "当前座位已被占用");
+							}
 							boolean result = Boolean.parseBoolean(resultMap.get("result"));
 							if (result) {
 								Integer orderId = Integer.parseInt(resultMap.get("orderId"));

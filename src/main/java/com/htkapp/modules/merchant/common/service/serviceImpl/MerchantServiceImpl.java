@@ -40,7 +40,9 @@ import com.htkapp.modules.merchant.common.service.MerchantService;
 import com.htkapp.modules.merchant.common.service.ShopMessageCommentService;
 import com.htkapp.modules.merchant.groupBuy.entity.BuyPackage;
 import com.htkapp.modules.merchant.groupBuy.service.BuyPackageService;
+import com.htkapp.modules.merchant.integral.entity.AccountTicketList;
 import com.htkapp.modules.merchant.integral.entity.Integral;
+import com.htkapp.modules.merchant.integral.service.AccountTicketListService;
 import com.htkapp.modules.merchant.integral.service.IntegralService;
 import com.htkapp.modules.merchant.pay.entity.*;
 import com.htkapp.modules.merchant.pay.service.*;
@@ -132,6 +134,8 @@ public class MerchantServiceImpl implements MerchantService {
     private IndexService indexService;
     @Resource
     private SeatInformationService seatInofService;
+    @Resource
+    private AccountTicketListService ticketListService;
 
     /* ===================接口开始================== */
     //异步验证商户账号是否存在
@@ -711,6 +715,7 @@ public class MerchantServiceImpl implements MerchantService {
             int accountShopId = OtherUtils.getLoginUserByRequest().getUserId();
             List<BuffetFoodOrder> orderList = buffetFoodOrderService.getBuffetFoodOrderListByToken(token, null, null, 1, pageNumber, pageLimit);
             if (orderList != null) {
+            	List<AccountTicketList> list=ticketListService.getTicketListByTokenAndShopId(token, accountShopId);
                 int quantity = 0;
                 for (BuffetFoodOrder each : orderList) {
                     quantity = 0;

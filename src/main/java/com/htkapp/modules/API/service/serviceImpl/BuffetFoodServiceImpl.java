@@ -481,11 +481,6 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 				//新增订单信息
 				buffetFoodOrderService.confirmOrderButton(order);
 				//变更座位状态信息
-				int b=1;
-				int a=seatInformationService.updataSeatInfoByOrder(order,b);
-				if(a<=0||order.getSeatName()==null) {
-					return new APIResponseModel(Globals.API_FAIL, "当前座位已被占用");
-				}
 				//根据店铺id查找店铺信息
 				Shop shop = shopService.getShopDataById(buffetFoodOrder.getShopId());
 				//通过商户店铺id查找商户信息

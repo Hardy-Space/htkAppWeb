@@ -42,7 +42,7 @@
             <if test="serialNumber!=null">
             	serial_number,
             </if>
-              <if test="allSerialNumber!=null">
+            <if test="allSerialNumber!=null">
             	all_serial_number
             </if>
         </trim>
@@ -75,7 +75,7 @@
                 #{remark},
             </if>
             <if test="serialNumber!=null">
-            	 #{serialNumber}
+            	 #{serialNumber},
             </if>
               <if test="allSerialNumber!=null">
             	 #{allSerialNumber}

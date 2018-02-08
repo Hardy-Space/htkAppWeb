@@ -497,6 +497,25 @@
                     <input name="quantity" class="quantity" placeholder="请输入数量" value="">
 				</span>
 			</span>
+			<span class="col-md-12 oBuffetFoodQuerySpanSelect">
+				<span class="col-md-4 spanFontSize labelSpanText">请选择优惠券：</span>
+				<span class="col-md-8">
+					<select class="selectDown">
+                        <c:choose>
+                            <c:when test="${productData != null}">
+                                <option value="0" data-price="0">请选择优惠券</option>
+                                <c:forEach items="${productData}" var="each">
+                                    <option value="${each.id}"
+                                            data-price="${each.price}">${each.productName}</option>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <option value="0" data-price="0">请选择商品</option>
+                            </c:otherwise>
+                        </c:choose>
+					</select>
+				</span>
+			</span>
             <span class="col-md-12 oBuffetFoodQuerySpanButton">
 				<span class="col-md-12 spanFontSize">
                     <button class="affirmAddItemBtn">确认添加</button>
