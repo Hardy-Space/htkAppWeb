@@ -636,27 +636,29 @@ public class ShopDataServiceImpl implements ShopDataService {
                                                 .setSex(orderRecordT.getSex())
                                                 .setProductList(resultList)
                                                 .setShippingAddress(orderRecordT.getShippingAddress());
-                                    }
-                                    Date curDate = new Date();
-                                    if (orderRecordT.getOrderState() == 1) {
-                                        int value = 1000 * 60 * 5;
-                                        Date date = DateUtil.parseDate(orderRecordT.getOrderTime());
-                                        if (date.getTime() >= (curDate.getTime() - value)) {
-                                            orderInfo.setTimeLeft(date.getTime() + value - curDate.getTime());
+
+                                        Date curDate = new Date();
+                                        if (orderRecordT.getOrderState() == 1) {
+                                            int value = 1000 * 60 * 5;
+                                            Date date = DateUtil.parseDate(orderRecordT.getOrderTime());
+                                            if (date.getTime() >= (curDate.getTime() - value)) {
+                                                orderInfo.setTimeLeft(date.getTime() + value - curDate.getTime());
+                                            } else {
+                                                orderInfo.setTimeLeft(0);
+                                            }
                                         } else {
                                             orderInfo.setTimeLeft(0);
                                         }
-                                    } else {
-                                        orderInfo.setTimeLeft(0);
+                                        orderInfo.setOneProductName(resultList.get(0).getProductName());
+                                        orderInfo.setMark(each.getMark());
+                                        Shop shop = shopService.getShopDataById(orderRecordT.getShopId());
+                                        orderInfo.setShopName(shop.getShopName())
+                                                .setLogoUrl(OtherUtils.getRootDirectory() + shop.getLogoUrl())
+                                                .setShopId(shop.getShopId())
+                                                .setShopMobilePhone(shop.getMobilePhone());
+                                        list.add(orderInfo);
                                     }
-                                    orderInfo.setOneProductName(resultList.get(0).getProductName());
-                                    orderInfo.setMark(each.getMark());
-                                    Shop shop = shopService.getShopDataById(orderRecordT.getShopId());
-                                    orderInfo.setShopName(shop.getShopName())
-                                            .setLogoUrl(OtherUtils.getRootDirectory() + shop.getLogoUrl())
-                                            .setShopId(shop.getShopId())
-                                            .setShopMobilePhone(shop.getMobilePhone());
-                                    list.add(orderInfo);
+
                                     break;
                                 }
 //                                else {
