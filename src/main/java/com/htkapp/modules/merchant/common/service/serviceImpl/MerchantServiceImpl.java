@@ -752,7 +752,7 @@ public class MerchantServiceImpl implements MerchantService {
             model.addAttribute("data", null);
         }
     }
-
+ 
     //自助点餐订单查询已结算订单
     @Override
     public void getBuffetFoodOrderDoneResult(Model model, String startTime, String endTime, Integer pageNum) {
