@@ -254,7 +254,7 @@
         buffet_food_order.payment_method, buffet_food_order.order_state,
         buffet_food_order.account_token, buffet_food_order.shop_id,
         buffet_food_order.gmt_create as orderTime,buffet_food_order.serial_number,
-        buffet_food_order.all_serial_number
+        buffet_food_order.all_serial_number,buffet_food_order.account_token as token
         from buffet_food_order
         left join shop on buffet_food_order.shop_id = shop.shop_id
         left join account_shop on shop.account_shop_id = account_shop.id

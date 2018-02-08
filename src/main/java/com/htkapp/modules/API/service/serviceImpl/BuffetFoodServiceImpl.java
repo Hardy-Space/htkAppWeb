@@ -615,7 +615,7 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 						if(getOrder.getToken() != null){
 							moreMethodsUtils.jPushToMerAndAccount(getOrder.getToken(),"自助点餐订单催单请求已发送", jsonObject_.toJSONString(), user.getToken(),"有一个自助点餐订单信息", jsonObject_.toJSONString(), 2);
 						}
-						moreMethodsUtils.pushMesToManagePage(new PushMesEntity("自助点餐订单消息", "b", "自助点餐订单催单消息", user.getToken(), 'b', 3, "您有一个的自助点餐订单消息", user.getId()));
+						moreMethodsUtils.pushMesToManagePage(new PushMesEntity("自助点餐订单消息", "b", "自助点餐订单催单消息", user.getToken(), 'b', 4, "您有一个的自助点餐订单消息", user.getId()));
 						return new APIResponseModel(Globals.API_SUCCESS);
 					} else if (getOrder.getOrderState() == 2) {
 						return new APIResponseModel(Globals.API_FAIL, "订单已完成");
@@ -672,7 +672,7 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 						if(getOrder.getToken() != null){
 							moreMethodsUtils.jPushToMerAndAccount(getOrder.getToken(),"自助点餐订单催单请求已发送", jsonObject_.toJSONString(), user.getToken(),"有一个自助点餐订单信息", jsonObject_.toJSONString(), 2);
 						}
-						moreMethodsUtils.pushMesToManagePage(new PushMesEntity("自助点餐订单消息", "b", "自助点餐订单催单消息", user.getToken(), 'b', 4, "您有一个的自助点餐订单消息", user.getId()));
+						moreMethodsUtils.pushMesToManagePage(new PushMesEntity("自助点餐订单消息", "b", "自助点餐订单催单消息", user.getToken(), 'b', 1, "您有一个的自助点餐订单消息", user.getId()));
 						return new APIResponseModel(Globals.API_SUCCESS,"调单成功");
 					} catch (Exception e) {
 						return new APIResponseModel(Globals.API_FAIL,"调单失败");
@@ -725,7 +725,7 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 					//因为此处的orderState获取的是null，再加上PushMesEntity构造方法里面接收的是int基本数据类型，
 					// 所以在下面的new PushMesEntity()传参数的时候，null向int基本数据类型赋值就会报空指针异常
 					Integer userId = user.getId();
-					PushMesEntity pushMesEntity = new PushMesEntity("自助点餐订单消息", "b", "自助点餐订单调单申请",userToken , 'b', orderState, "您有一个的自助点餐调单消息", userId);
+					PushMesEntity pushMesEntity = new PushMesEntity("自助点餐订单消息", "b", "自助点餐订单调单申请",userToken , 'b', 3, "您有一个的自助点餐调单消息", userId);
 					moreMethodsUtils.pushMesToManagePage(pushMesEntity);
 				}catch (Exception e){
 					return new APIResponseModel(Globals.API_FAIL);

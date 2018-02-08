@@ -35,14 +35,14 @@
                 console.log(obj)
                 console.log(obj.statusCode)
                 var url=window.location.href
-                if(url.indexOf("/order/query")!=-1&&obj.statusCode==1){
-                		location.reload()
-                }else if(url.indexOf("/order/new")!=-1&&obj.statusCode==0){
-                		location.reload()
-                }else if(url.indexOf("/order/edit")!=-1&&obj.statusCode==1){
-                		location.reload()
-                }else if(url.indexOf("/order/reminder")!=-1&&obj.statusCode==3){
-                		location.reload()
+                if(url.indexOf("/order/query")!=-1&&obj.statusCode==3){
+                	 setTimeout(function(){location.reload()},5000);
+                }else if(url.indexOf("/order/new")!=-1&&obj.statusCode==1){
+                	 setTimeout(function(){location.reload()},5000);
+                }else if(url.indexOf("/order/edit")!=-1&&obj.statusCode==3){
+                	 setTimeout(function(){location.reload()},5000);
+                }else if(url.indexOf("/order/reminder")!=-1&&obj.statusCode==4){
+                	 setTimeout(function(){location.reload()},5000);
                 }
             }
             return false;

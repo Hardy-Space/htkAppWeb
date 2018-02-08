@@ -287,7 +287,7 @@ public class APICommonServiceImpl implements APICommonService {
 							 Shop shop = shopService.getShopDataById(order.getShopId());
 					            System.out.println("shop is:"+shop.toString());
 					            AccountShop user = accountShopService.getAccountShopDataById(shop.getAccountShopId());
-							methodsUtils.pushMesToManagePage(new PushMesEntity("自助点餐订单消息", "b", "自助点餐订单下单成功", user.getToken(), 'b', order.getOrderState(), "您有一个的自助点餐订单消息", user.getId()));
+							methodsUtils.pushMesToManagePage(new PushMesEntity("自助点餐订单消息", "b", "自助点餐订单下单成功", user.getToken(), 'b',1, "您有一个的自助点餐订单消息", user.getId()));
 							return new APIResponseModel<>(Globals.API_SUCCESS, "成功", orderNumber);
 						}else {
 							//在这里创建一个token传递给app端
@@ -343,7 +343,7 @@ public class APICommonServiceImpl implements APICommonService {
 									 Shop shop = shopService.getShopDataById(order.getShopId());
 							            System.out.println("shop is:"+shop.toString());
 							            AccountShop user = accountShopService.getAccountShopDataById(shop.getAccountShopId());
-									methodsUtils.pushMesToManagePage(new PushMesEntity("自助点餐订单消息", "b", "自助点餐订单下单成功", user.getToken(), 'b', order.getOrderState(), "您有一个的自助点餐订单消息", user.getId()));
+									methodsUtils.pushMesToManagePage(new PushMesEntity("自助点餐订单消息", "b", "自助点餐订单下单成功", user.getToken(), 'b', 1, "您有一个的自助点餐订单消息", user.getId()));
 									return new APIResponseModel<>(Globals.API_SUCCESS, "成功", orderNumber);
 								}else {
 									//在这里创建一个token传递给app端
