@@ -108,9 +108,12 @@
     </select>
     <select id="getOrderListByTokenDAO" resultType="BuffetFoodOrder">
         select
-        id, buffet_food_order.gmt_create as order_time,buffet_food_order.order_state, seat_name,shop.shop_name
-        from buffet_food_order left join shop on buffet_food_order.shop_id = shop.shop_id
-        where account_token = #{0} and buffet_food_order.shop_id = #{1} order by ${2}
+        id,bfo.order_number, bfo.order_amount, bfo.discount_amount, bfo.order_body,bfo.seat_name,
+        bfo.payment_method, bfo.order_state, bfo.account_token as token, bfo.shop_id, bfo.mark, bfo.reminder_state, 
+         bfo.remark, bfo.serial_number, bfo.all_serial_number,
+        adjust_order_json, adjust_order_product_json,adjust_state ,bfo.gmt_create as order_time
+        from buffet_food_order as bfo left join shop on bfo.shop_id = shop.shop_id
+        where bfo.account_token = #{0} and bfo.shop_id = #{1} order by ${2}
     </select>
     <select id="getOrderDetailListByTokenAndIdDAO" resultType="com.htkapp.modules.merchant.buffetFood.dto.ReturnOrderDetailInfo">
         select
