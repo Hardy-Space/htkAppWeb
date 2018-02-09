@@ -715,12 +715,9 @@ public class MerchantServiceImpl implements MerchantService {
             int accountShopId = OtherUtils.getLoginUserByRequest().getUserId();
             Shop takeOutShop=shopService.getShopByAccountShopIdAndMark(accountShopId,0);
             List<BuffetFoodOrder> orderList = buffetFoodOrderService.getBuffetFoodOrderListByToken(token, null, null, 1, pageNumber, pageLimit);
-            Map<String, List> map=new HashMap<String, List>();
             if (orderList != null) {
                 int quantity = 0;
                 for (BuffetFoodOrder each : orderList) {
-                	List<AccountTicketList> list=ticketListService.getTicketListByTokenAndShopId(each.getToken(), takeOutShop.getShopId());
-                	map.put(each.getOrderNumber(),list);
                     quantity = 0;
                     //遍历订单列表，根据订单查询订单中的商品
                     List<BuffetFoodOrderProduct> orderProductList = buffetFoodOrderProductService.getOrderProductListById(each.getId());
@@ -747,7 +744,6 @@ public class MerchantServiceImpl implements MerchantService {
             model.addAttribute("data", orderList);
             model.addAttribute("page", pageInfo);
             model.addAttribute("productData", productList);
-            model.addAttribute("ticket", map);
         } catch (Exception e) {
             model.addAttribute("data", null);
         }

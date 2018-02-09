@@ -284,31 +284,31 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 		if (params != null && params.getOrderNumber() != null) {
 			try {
 				//根据订单号查询订单详情{ 订单号，时间，订单状态，已点商品{名字、数量、价格}, 已提交时间 }
-					ReturnBuffetFoodOrderData buffetFoodOrderData = buffetFoodOrderService.getOrderByOrderNumber(params.getOrderNumber());
-					String a=buffetFoodOrderData.getOrderTime().substring(0,buffetFoodOrderData.getOrderTime().lastIndexOf("."));
-					buffetFoodOrderData.setOrderTime(a);
-					if (buffetFoodOrderData != null) {
+				List<BuffetFoodOrder> bfoList=buffetFoodOrderService.getOrderListByToken(params.getToken(),params.getShopId(),1,1);
+				for(BuffetFoodOrder bfo:bfoList) {
+					if(bfo.getOrderState()==2) {
+						continue;
+					}
+					String a=bfo.getOrderTime().substring(0,bfo.getOrderTime().lastIndexOf("."));
+					bfo.setOrderTime(a);
+					if (bfo != null) {
 						//查找订单中的商品
-						List<BuffetFoodOrder> buffetFoodOrder = buffetFoodOrderService.getOrderListByTokenAndShopId(params.getToken(), params.getShopId());
-						for(BuffetFoodOrder each:buffetFoodOrder) {
-							if(each.getOrderState()==2) {
-								continue;
+//						BuffetFoodOrder buffetFoodOrder = buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(params.getOrderNumber());
+						List<BuffetFoodOrderProduct> buffetFoodOrderProductList = buffetFoodOrderProductService.getOrderProductListById(bfo.getId());
+						if (buffetFoodOrderProductList != null) {
+							for (BuffetFoodOrderProduct every : buffetFoodOrderProductList) {
+								every.setProductId(every.getId());
+								every.setImgUrl(OtherUtils.getRootDirectory() + every.getImgUrl());
 							}
-							List<BuffetFoodOrderProduct> buffetFoodOrderProductList = buffetFoodOrderProductService.getOrderProductListById(each.getId());
-							if (buffetFoodOrderProductList != null) {
-								for (BuffetFoodOrderProduct every : buffetFoodOrderProductList) {
-									every.setProductId(every.getId());
-									every.setImgUrl(OtherUtils.getRootDirectory() + every.getImgUrl());
-								}
-							}
-							buffetFoodOrderData.setProductList(buffetFoodOrderProductList);
 						}
-						return new APIResponseModel<>(Globals.API_SUCCESS, "成功", buffetFoodOrderData);
-				} else {
-					return new APIResponseModel(Globals.API_REQUEST_BAD, "查找不到订单");
+						bfo.setProductLists(buffetFoodOrderProductList);
+						return new APIResponseModel<>(Globals.API_SUCCESS, "成功", bfo);
+					} else {
+						return new APIResponseModel(Globals.API_REQUEST_BAD, "查找不到订单");
+					}
 				}
+				return new APIResponseModel(Globals.API_REQUEST_BAD, "查找不到订单");
 			} catch (Exception e) {
-				e.printStackTrace();
 				return new APIResponseModel(Globals.API_FAIL);
 			}
 		} else {
@@ -719,7 +719,7 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 		} else {
 			return new APIResponseModel(Globals.API_REQUEST_BAD);
 		}
-	
+
 	}
 
 	//确认调单页面商品列表
@@ -1155,7 +1155,7 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 			if(result.get(result.size()-1).getOrderState()==2) {
 				return new APIResponseModel(Globals.API_SUCCESS);
 			}
-				return new APIResponseModel(Globals.API_FAIL,"订单未被接单");
+			return new APIResponseModel(Globals.API_FAIL,"订单未被接单");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
