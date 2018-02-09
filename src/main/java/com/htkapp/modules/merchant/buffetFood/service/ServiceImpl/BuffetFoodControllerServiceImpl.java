@@ -277,10 +277,16 @@ public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerServ
                 String OderNumeber = params.getOrderNumber();
                 //查询订单详情
                 BuffetFoodOrder bfo = buffetFoodOrderDao.getBuffetFoodOrderByOrderNumberDAO(OderNumeber);
-
+                if(bfo.getAdjustOrderProductJson()!=null) {
+                	Gson gson = new Gson();
+                	List<BuffetFoodOrderProduct> productLists = gson.fromJson(bfo.getAdjustOrderProductJson(), new TypeToken<List<BuffetFoodOrderProduct>>() {
+    				}.getType());
+                	list=productLists;
+                }else {
+                	list = buffetFoodOrderProductService.getOrderProductListById(bfo.getId());
+                }
                 //通过订单详情的id查询订单内容
 
-                list = buffetFoodOrderProductService.getOrderProductListById(bfo.getId());
                 //    通俗理解就是书、文档
                 Book book = new Book();
                 //    设置成竖打

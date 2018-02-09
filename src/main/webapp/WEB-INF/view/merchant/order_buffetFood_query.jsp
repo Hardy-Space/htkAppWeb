@@ -502,7 +502,7 @@
 				<span class="col-md-8">
 					<select class="selectDown">
                         <c:choose>
-                            <c:when test="${ticket != null}">
+                            <c:when test="${productData != null}">
                                 <option value="0" data-price="0">请选择优惠券</option>
                                 <c:forEach items="${productData}" var="each">
                                     <option value="${each.id}"

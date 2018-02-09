@@ -4,6 +4,7 @@ package com.htkapp.modules.merchant.buffetFood.entity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.htkapp.core.utils.StringUtils;
+import com.htkapp.modules.merchant.integral.entity.AccountTicketList;
 
 import java.util.List;
 
@@ -64,8 +65,18 @@ public class BuffetFoodOrder {
     private int sum;
     
     private int adjustState;//调单状态
+    
+    private List<AccountTicketList> ticketList;//用户名下的优惠券
 
-    public int getAdjustState() {
+    public List<AccountTicketList> getTicketList() {
+		return ticketList;
+	}
+
+	public void setTicketList(List<AccountTicketList> ticketList) {
+		this.ticketList = ticketList;
+	}
+
+	public int getAdjustState() {
 		return adjustState;
 	}
 

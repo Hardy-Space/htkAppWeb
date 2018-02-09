@@ -718,10 +718,12 @@ public class MerchantServiceImpl implements MerchantService {
             if (orderList != null) {
                 int quantity = 0;
                 for (BuffetFoodOrder each : orderList) {
+                	List<AccountTicketList> list=ticketListService.getTicketListByTokenAndShopId(each.getToken(), takeOutShop.getShopId());
                     quantity = 0;
                     //遍历订单列表，根据订单查询订单中的商品
                     List<BuffetFoodOrderProduct> orderProductList = buffetFoodOrderProductService.getOrderProductListById(each.getId());
                     each.setProductLists(orderProductList);
+                    each.setTicketList(list);
                     Date date = new Date();
                     String commitMinute = "";
                     long minute = DateUtil.between(DateUtil.parse(each.getOrderTime()), date, DateUnit.DAY);
