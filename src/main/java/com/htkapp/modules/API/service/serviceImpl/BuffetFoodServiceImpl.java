@@ -28,6 +28,7 @@ import com.htkapp.modules.merchant.shop.entity.AccountShop;
 import com.htkapp.modules.merchant.shop.entity.Shop;
 import com.htkapp.modules.merchant.shop.service.AccountShopServiceI;
 import com.htkapp.modules.merchant.shop.service.ShopServiceI;
+import com.xiaoleilu.hutool.date.BetweenFormater;
 import com.xiaoleilu.hutool.date.DateUtil;
 import io.goeasy.GoEasy;
 import net.sf.json.JsonConfig;
@@ -290,7 +291,6 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 						continue;
 					}
 					String a=bfo.getOrderTime().substring(0,bfo.getOrderTime().lastIndexOf("."));
-					bfo.setOrderTime(a);
 					if (bfo != null) {
 						//查找订单中的商品
 //						BuffetFoodOrder buffetFoodOrder = buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(params.getOrderNumber());
@@ -301,8 +301,14 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 								every.setImgUrl(OtherUtils.getRootDirectory() + every.getImgUrl());
 							}
 						}
-						bfo.setProductLists(buffetFoodOrderProductList);
-						return new APIResponseModel<>(Globals.API_SUCCESS, "成功", bfo);
+						Date date = new Date();
+                        long time = date.getTime() - DateUtil.parse(bfo.getOrderTime()).getTime();
+                        String commitMinute = DateUtil.formatBetween(time, BetweenFormater.Level.MINUTE);
+						ReturnBuffetFoodOrderData BuffetFoodOrderData =buffetFoodOrderService.getOrderByOrderNumber(bfo.getOrderNumber());
+						BuffetFoodOrderData.setCommitTime(commitMinute);
+						BuffetFoodOrderData.setOrderTime(a);
+						BuffetFoodOrderData.setProductList(buffetFoodOrderProductList);
+						return new APIResponseModel<>(Globals.API_SUCCESS, "成功", BuffetFoodOrderData);
 					} else {
 						return new APIResponseModel(Globals.API_REQUEST_BAD, "查找不到订单");
 					}
