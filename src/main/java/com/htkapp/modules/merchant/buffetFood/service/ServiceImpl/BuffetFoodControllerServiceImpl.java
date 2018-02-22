@@ -315,11 +315,11 @@ public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerServ
                 System.out.println("==========");
             } catch (Exception e) {
                 e.printStackTrace();
-                return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "打印失败");
+                return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "打印失败,trycatch报错");
             }
             return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION, "打印成功");
         }
-        return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "打印失败");
+        return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "打印失败，其他错误");
     }
 
     /* =========================接口结束============================ */

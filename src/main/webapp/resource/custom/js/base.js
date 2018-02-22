@@ -399,18 +399,18 @@ function bOrderHandle(statusCode, message, soundsUrl_) {
             // title = "自助点餐订单已结算";
             // playSounds(soundsUrl);
             // orderPushHint(title, message, url, delay)
-        }else if(statusCode === 3){
+        }else if(statusCode === 4){
             //催单
             const soundsUrl = soundsUrl_ + "resource/custom/sounds/7815.wav";
             url = baseUrl + "/merchant/buffetFood/order/reminder";
-            title = "自助点餐订单催单";
+            title = "自助点餐订单调单";
             playSounds(soundsUrl);
             orderPushHint(title, message, url, delay)
-        }else if(statusCode === 4){
+        }else if(statusCode === 3){
             //调单
             const soundsUrl = soundsUrl_ + "resource/custom/sounds/8858.wav";
             url = baseUrl + "/merchant/buffetFood/order/edit";
-            title = "自助点餐订单调单";
+            title = "自助点餐订单催单";
             playSounds(soundsUrl);
             orderPushHint(title, message, url, delay)
         }

@@ -365,13 +365,13 @@
             "</div>" +
             "</div>" +
             "<div class='form-item'><label class='labelText'>活动内容</label>" +
-            "<div class='rightContent'><input class='inputEle' name='integralValue' lay-verify=\"required\" placeholder='请输入整数' /> <span>换</span> " +
-            "<input class='inputEle' lay-verify=\"required\" name='tMoney' placeholder='请输入整数' /></div>" +
+            "<div class='rightContent'><input class='inputEle' name='integralValue' lay-verify=\"required\" placeholder='请输入需要的积分' /> <span>换</span> " +
+            "<input class='inputEle' lay-verify=\"required\" name='tMoney' placeholder='请输入兑换的金额' /></div>" +
             "</div>" +
             "<div class='form-item'>" +
             "<label class='labelText'>使用金额限制</label>" +
             "<div class='rightContent'>" +
-            "<input class='inputEle' name='tUseMoney' lay-verify=\"required\" placeholder='请输入整数' />" +
+            "<input class='inputEle' name='tUseMoney' lay-verify=\"required\" placeholder='请输入最低消费额度' />" +
             "</div>" +
             "</div>" +
             "<div style='margin-left: 100px;margin-top: 20px;'>" +

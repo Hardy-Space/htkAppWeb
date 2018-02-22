@@ -602,9 +602,9 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 						jsonObject_.put("orderState", getOrder.getOrderState());
 						jsonObject_.put("orderId", getOrder.getId());
 						if(getOrder.getToken() != null){
-							moreMethodsUtils.jPushToMerAndAccount(getOrder.getToken(),"自助点餐订单催单请求已发送", jsonObject_.toJSONString(), user.getToken(),"有一个自助点餐订单信息", jsonObject_.toJSONString(), 2);
+							moreMethodsUtils.jPushToMerAndAccount(getOrder.getToken(),"自助点餐订单催单请求已发送", jsonObject_.toJSONString(), user.getToken(),"有一个自助点餐催单信息", jsonObject_.toJSONString(), 2);
 						}
-						moreMethodsUtils.pushMesToManagePage(new PushMesEntity("自助点餐订单消息", "b", "自助点餐订单催单消息", user.getToken(), 'b', 4, "您有一个的自助点餐订单消息", user.getId()));
+						moreMethodsUtils.pushMesToManagePage(new PushMesEntity("自助点餐订单消息", "b", "自助点餐订单催单消息", user.getToken(), 'b', 4, "您有一个的自助点餐催单消息", user.getId()));
 						return new APIResponseModel(Globals.API_SUCCESS);
 					} else if (getOrder.getOrderState() == 2) {
 						return new APIResponseModel(Globals.API_FAIL, "订单已完成");
