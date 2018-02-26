@@ -22,7 +22,6 @@ import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrder;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrderProduct;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodProduct;
 import com.htkapp.modules.merchant.buffetFood.service.*;
-import com.htkapp.modules.merchant.printThis.PrintTest;
 import com.htkapp.modules.merchant.shop.entity.Shop;
 import com.htkapp.modules.merchant.shop.service.ShopServiceI;
 import com.htkapp.modules.merchant.takeout.dto.AddProductList;
@@ -264,57 +263,63 @@ public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerServ
         }
     }
 
-    @Override
-    public AjaxResponseModel printOrder(AjaxRequestParams params, RequestParams Rparams, Integer state) {
-        //TODO
-        System.out.println(params.getOrderNumber());
-        if (params != null && params.getOrderNumber() != null) {
-            List<BuffetFoodOrderProduct> list = new ArrayList<BuffetFoodOrderProduct>();
-            try {
-                LoginUser user = OtherUtils.getLoginUserByRequest();
-                Shop shop = shopService.getShopDataByAccountShopIdAndMark(user.getUserId(), 2);
-                //获取订单编号
-                String OderNumeber = params.getOrderNumber();
-                //查询订单详情
-                BuffetFoodOrder bfo = buffetFoodOrderDao.getBuffetFoodOrderByOrderNumberDAO(OderNumeber);
-
-                //通过订单详情的id查询订单内容
-
-                list = buffetFoodOrderProductService.getOrderProductListById(bfo.getId());
-                //    通俗理解就是书、文档
-                Book book = new Book();
-                //    设置成竖打
-                PageFormat pf = new PageFormat();
-                pf.setOrientation(PageFormat.PORTRAIT);
-
-                //    通过Paper设置页面的空白边距和可打印区域。必须与实际打印纸张大小相符。
-                Paper p = new Paper();
-                p.setSize(590, 840);//纸张大小
-                p.setImageableArea(10, 10, 590, 840);//A4(595 X 842)设置打印区域，其实0，0应该是72，72，因为A4纸的默认X,Y边距是72
-                pf.setPaper(p);
-
-                //    把 PageFormat 和 Printable 添加到书中，组成一个页面
-                PrintTest pt = new PrintTest();
-                pt.setList(list);
-                pt.setTitle(shop.getShopName());
-                pt.setOderNumeber(OderNumeber);
-                pt.setState(state);
-                book.append(pt, pf);
-                //获取打印服务对象
-                PrinterJob job = PrinterJob.getPrinterJob();
-
-                // 设置打印类
-                job.setPageable(book);
-                job.print();
-                System.out.println("==========");
-            } catch (Exception e) {
-                e.printStackTrace();
-                return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "打印失败");
-            }
-            return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION, "打印成功");
-        }
-        return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "打印失败");
-    }
+//    @Override
+//    public AjaxResponseModel printOrder(AjaxRequestParams params, RequestParams Rparams, Integer state) {
+//        //TODO
+//        System.out.println(params.getOrderNumber());
+//        if (params != null && params.getOrderNumber() != null) {
+//            List<BuffetFoodOrderProduct> list = new ArrayList<BuffetFoodOrderProduct>();
+//            try {
+//                LoginUser user = OtherUtils.getLoginUserByRequest();
+//                Shop shop = shopService.getShopDataByAccountShopIdAndMark(user.getUserId(), 2);
+//                //获取订单编号
+//                String OderNumeber = params.getOrderNumber();
+//                //查询订单详情
+//                BuffetFoodOrder bfo = buffetFoodOrderDao.getBuffetFoodOrderByOrderNumberDAO(OderNumeber);
+//                if(bfo.getAdjustOrderProductJson()!=null) {
+//                	Gson gson = new Gson();
+//                	List<BuffetFoodOrderProduct> productLists = gson.fromJson(bfo.getAdjustOrderProductJson(), new TypeToken<List<BuffetFoodOrderProduct>>() {
+//    				}.getType());
+//                	list=productLists;
+//                }else {
+//                	list = buffetFoodOrderProductService.getOrderProductListById(bfo.getId());
+//                }
+//                //通过订单详情的id查询订单内容
+//
+//                //    通俗理解就是书、文档
+//                Book book = new Book();
+//                //    设置成竖打
+//                PageFormat pf = new PageFormat();
+//                pf.setOrientation(PageFormat.PORTRAIT);
+//
+//                //    通过Paper设置页面的空白边距和可打印区域。必须与实际打印纸张大小相符。
+//                Paper p = new Paper();
+//                p.setSize(590, 840);//纸张大小
+//                p.setImageableArea(10, 10, 590, 840);//A4(595 X 842)设置打印区域，其实0，0应该是72，72，因为A4纸的默认X,Y边距是72
+//                pf.setPaper(p);
+//
+//                //    把 PageFormat 和 Printable 添加到书中，组成一个页面
+//                PrintTest pt = new PrintTest();
+//                pt.setList(list);
+//                pt.setTitle(shop.getShopName());
+//                pt.setOderNumeber(OderNumeber);
+//                pt.setState(state);
+//                book.append(pt, pf);
+//                //获取打印服务对象
+//                PrinterJob job = PrinterJob.getPrinterJob();
+//
+//                // 设置打印类
+//                job.setPageable(book);
+//                job.print();
+//                System.out.println("==========");
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "打印失败,trycatch报错");
+//            }
+//            return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION, "打印成功");
+//        }
+//        return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "打印失败，其他错误");
+//    }
 
     /* =========================接口结束============================ */
 }

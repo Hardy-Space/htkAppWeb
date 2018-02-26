@@ -754,10 +754,7 @@
 
     //打印小票
     $(".settleBtn.curPage").on("click",function(){
-        var orderNumber = $(this).attr("data-orderNumber");
-        const url = baseUrl + "/merchant/buffetFood/print";
-        $.post(url,{orderNumber:orderNumber,state:0},function(result){
-        })
+       alert("正在制作中")
     })
 
 </script>

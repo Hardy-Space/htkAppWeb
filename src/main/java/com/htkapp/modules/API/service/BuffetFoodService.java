@@ -87,6 +87,7 @@ public interface BuffetFoodService {
 //    APIResponseModel enterOrder(APIRequestParams params, BuffetFoodOrder order);
     //查询用户名下是否存在未完成的订单
     APIResponseModel checkOrder(APIRequestParams param);
-   
+    //查询用户名下该店铺的所有历史订单
+    APIResponseModel getAllOrderList(APIRequestParams param);
     /* =============接口结束================= */
 }

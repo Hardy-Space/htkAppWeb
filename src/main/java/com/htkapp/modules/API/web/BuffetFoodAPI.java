@@ -206,6 +206,11 @@ public class BuffetFoodAPI {
     public APIResponseModel checkOrder(APIRequestParams params){
         return buffetFoodService.checkOrder(params);
     }
+    //查询用户名下的所有订单
+    @RequestMapping(value = "/getAllOrderList", method = RequestMethod.POST)
+    public APIResponseModel getAllOrderList(APIRequestParams params){
+        return buffetFoodService.getAllOrderList(params);
+    }
 
 
 

@@ -276,6 +276,7 @@
             and buffet_food_order.gmt_create between #{startTime} and #{endTime} 
         </if>
         and buffet_food_order.adjust_order_product_json is null
+        and buffet_food_order.reminder_state='0'
         order by ${orderDesc}
     </select>
     <update id="updateOrderTotalAmountDAO">
@@ -343,6 +344,20 @@
         set adjust_state = #{adjustState}
         where order_number = #{orderNumber}
     </update>
+    <select id="getBFOLByToken" resultType="BuffetFoodOrder">
+    select
+        buffet_food_order.id, buffet_food_order.order_number,
+        buffet_food_order.order_amount,
+        buffet_food_order.order_body,buffet_food_order.seat_name,
+        buffet_food_order.payment_method, buffet_food_order.order_state,
+        buffet_food_order.account_token, buffet_food_order.shop_id,
+        buffet_food_order.gmt_create as orderTime,buffet_food_order.serial_number,
+        buffet_food_order.all_serial_number,buffet_food_order.account_token as token,shop.shop_name
+        from buffet_food_order
+        left join shop on buffet_food_order.shop_id = shop.shop_id
+        left join account_shop on shop.account_shop_id = account_shop.id
+        where buffet_food_order.shop_id=#{1} and buffet_food_order.order_number=#{0}
+    </select>
     <!-- =========================JSP页面接口结束================================= -->
 
 </mapper>

@@ -4,6 +4,7 @@ package com.htkapp.modules.merchant.buffetFood.entity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.htkapp.core.utils.StringUtils;
+import com.htkapp.modules.merchant.integral.entity.AccountUseTicketList;
 
 import java.util.List;
 
@@ -44,6 +45,8 @@ public class BuffetFoodOrder {
     private String orderHandle;
 
     private String shopName;  //店铺名
+    
+    private String logoUrl;   //店铺图片url
 
     private String adjustOrderJson;   //调整订单的数据
 
@@ -64,8 +67,26 @@ public class BuffetFoodOrder {
     private int sum;
     
     private int adjustState;//调单状态
+    
+    private List<AccountUseTicketList> ticketList;//用户名下的优惠券
 
-    public int getAdjustState() {
+    public String getLogoUrl() {
+		return logoUrl;
+	}
+
+	public void setLogoUrl(String logoUrl) {
+		this.logoUrl = logoUrl;
+	}
+
+	public List<AccountUseTicketList> getTicketList() {
+		return ticketList;
+	}
+
+	public void setTicketList(List<AccountUseTicketList> ticketList) {
+		this.ticketList = ticketList;
+	}
+
+	public int getAdjustState() {
 		return adjustState;
 	}
 

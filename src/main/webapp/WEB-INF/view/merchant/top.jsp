@@ -60,13 +60,13 @@
                         <div class="statusSelect">
                             <div class="statusItem clearfix">
                                 <a href="javascript:void(0)"
-                                   class="${status == "1" ? 'cur' : ''} openState changeState"
+                                   class="${status == "1" ?'cur' : ''} openState changeState"
                                    data-id="1">营业中</a>
                                 <p>当前餐厅处于设置的营业时间内，正常接受新订单</p>
                             </div>
                             <div class="statusItem clearfix">
                                 <a href="javascript:void(0)"
-                                   class="${status == "0" ? 'cur':'' } stopState changeState" data-id="0">停止营业</a>
+                                   class="${status =="0" ? 'cur':'' } stopState changeState" data-id="0">停止营业</a>
                                 <p>适用于较长时间停止提供服务，不接受任何订单，手动恢复营业后可正常接受订单</p>
                             </div>
                             <div class="statusItem clearfix">营业时间：9:00-20:00</div>
