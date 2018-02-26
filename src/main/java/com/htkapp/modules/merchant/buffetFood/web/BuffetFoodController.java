@@ -5,8 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.htkapp.core.MoreMethodsUtils;
 import com.htkapp.core.OtherUtils;
-import com.htkapp.core.MethodsParamsEntity.PushMesEntity;
-import com.htkapp.core.dto.APIResponseModel;
 import com.htkapp.core.jsAjax.AjaxResponseModel;
 import com.htkapp.core.params.AjaxRequestParams;
 import com.htkapp.core.params.RequestParams;
@@ -21,18 +19,17 @@ import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrderProduct;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodProduct;
 import com.htkapp.modules.merchant.buffetFood.entity.SeatInformation;
 import com.htkapp.modules.merchant.buffetFood.service.*;
+import com.htkapp.modules.merchant.integral.entity.AccountUseTicketList;
+import com.htkapp.modules.merchant.integral.service.AccountUseTicketListService;
 import com.htkapp.modules.merchant.shop.entity.AccountShop;
 import com.htkapp.modules.merchant.shop.entity.Shop;
 import com.htkapp.modules.merchant.shop.service.AccountShopServiceI;
 import com.htkapp.modules.merchant.shop.service.ShopServiceI;
-import com.htkapp.modules.merchant.takeout.entity.TakeoutCategory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.annotation.Resource;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,6 +61,8 @@ public class BuffetFoodController {
 	private AccountShopServiceI accountShopService;
 	@Resource
 	private SeatInformationService seatInfo;
+	@Resource
+	private AccountUseTicketListService useTicketListService;
 
 	//========================================================商品
 	//==== 页面
@@ -176,7 +175,8 @@ public class BuffetFoodController {
 	@RequestMapping(value = "/affirmSettleMethod", method = RequestMethod.POST)
 	@ResponseBody
 	public AjaxResponseModel affirmSettleMethod(@RequestParam("productList") String productList,
-			@RequestParam("orderNumber") String orderNumber) {
+			@RequestParam("orderNumber") String orderNumber,
+			@RequestParam("dataTime") String dataTime) {
 		try {
 			List<BuffetFoodOrderProduct> products = new ArrayList<>();
 			if (StringUtils.isNotEmpty(productList)) {
@@ -185,7 +185,9 @@ public class BuffetFoodController {
 				}.getType());
 			}
 			String accountShopToken = OtherUtils.getLoginUserByRequest().getToken();
+			int accountShopId = OtherUtils.getLoginUserByRequest().getUserId();
 			BuffetFoodOrder order = buffetFoodOrderService.getBuffetFoodOrder(accountShopToken, orderNumber);
+			Shop takeOutShop=shopService.getShopByAccountShopIdAndMark(accountShopId,0);
 			System.out.println(products);
 			buffetFoodOrderService.changeOrderStateByAccountShopToken(orderNumber, 2);  //更改订单支付状态
 			buffetFoodOrderService.changeOrderState(orderNumber,2); //更改订单状态
@@ -203,6 +205,15 @@ public class BuffetFoodController {
 			if(a<=0) {
 				return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "订单不存在");
 			}
+			//如果使用了优惠券会有优惠券创建时间传递过来
+			if(dataTime!=null) {
+				//通过一系列条件查询出使用的优惠券
+				AccountUseTicketList autl=useTicketListService.getTicketListByTokenAndShopIdAndTime(order.getToken(), takeOutShop.getShopId(), dataTime);
+				Double ticketMoney=autl.gettMoney();
+				orderAmount-=ticketMoney;
+				//使用结束后删除该优惠券
+				useTicketListService.updataTicketListByTokenAndShopIdAndTime(order.getToken(), takeOutShop.getShopId(), dataTime, (autl.getQuantity()-1));
+			}
 			buffetFoodOrderService.updateOrderTotalAmount(orderNumber, orderAmount);
 			buffetFoodOrderService.changeOrderStateByAccountShopToken(orderNumber,2);
 			Shop shop = shopService.getShopDataById(order.getShopId());
@@ -214,7 +225,6 @@ public class BuffetFoodController {
 			jsonObject.put("orderId", order.getId());
 			//            推送消息
 			if(order.getToken() == null){
-				//            	TODO
 				Jpush.jPushMethodToMerchant(accountShopToken,"有一个自助点餐结算","ALERT", "商家版");
 				Jpush.jPushMethodToMerchant(accountShopToken,"有一个自助点餐结算","","");
 			}else {
@@ -223,6 +233,7 @@ public class BuffetFoodController {
 			}
 			return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
 		}
 	}
@@ -249,17 +260,17 @@ public class BuffetFoodController {
 	}
 
 	//打印各种单据接口
-	@RequestMapping("/print")
-	@ResponseBody
-	public AjaxResponseModel printOrder(Model model,AjaxRequestParams params, RequestParams Rparams,Integer state){
-		if(params!=null&&params.getOrderNumber()!=null) {
-			Map<String, Object> map = new HashMap<>();
-			OtherUtils.ReturnValByModel(model, map);
-			Rparams.setModel(model);
-			return  buffetFoodControllerService.printOrder(params,Rparams,state);
-		}
-		return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
-	}
+//	@RequestMapping("/print")
+//	@ResponseBody
+//	public AjaxResponseModel printOrder(Model model,AjaxRequestParams params, RequestParams Rparams,Integer state){
+//		if(params!=null&&params.getOrderNumber()!=null) {
+//			Map<String, Object> map = new HashMap<>();
+//			OtherUtils.ReturnValByModel(model, map);
+//			Rparams.setModel(model);
+//			return  buffetFoodControllerService.printOrder(params,Rparams,state);
+//		}
+//		return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
+//	}
 
 
 	//核退

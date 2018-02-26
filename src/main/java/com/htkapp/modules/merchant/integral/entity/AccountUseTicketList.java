@@ -7,8 +7,12 @@ public class AccountUseTicketList {
     private String tName;
 
     private Integer ticketId;
+    
+    private String tExpiration;
+    
+    private String gmtCreate;
 
-    private Integer quantity;
+	private Integer quantity;
 
     private String usePhone;
 
@@ -21,6 +25,22 @@ public class AccountUseTicketList {
     private Double tUseMoney;
 
     private Integer integralValue;
+    
+    public String getGmtCreate() {
+		return gmtCreate;
+	}
+
+	public void setGmtCreate(String gmtCreate) {
+		this.gmtCreate = gmtCreate;
+	}
+
+	public String gettExpiration() {
+		return tExpiration;
+	}
+
+	public void settExpiration(String tExpiration) {
+		this.tExpiration = tExpiration;
+	}
 
 	public Integer getId() {
 		return id;
@@ -104,9 +124,10 @@ public class AccountUseTicketList {
 
 	@Override
 	public String toString() {
-		return "AccountUseTicketList [id=" + id + ", tName=" + tName + ", ticketId=" + ticketId + ", quantity="
-				+ quantity + ", usePhone=" + usePhone + ", shopId=" + shopId + ", accountToken=" + accountToken
-				+ ", tMoney=" + tMoney + ", tUseMoney=" + tUseMoney + ", integralValue=" + integralValue + "]";
+		return "AccountUseTicketList [id=" + id + ", tName=" + tName + ", ticketId=" + ticketId + ", tExpiration="
+				+ tExpiration + ", gmtCreate=" + gmtCreate + ", quantity=" + quantity + ", usePhone=" + usePhone
+				+ ", shopId=" + shopId + ", accountToken=" + accountToken + ", tMoney=" + tMoney + ", tUseMoney="
+				+ tUseMoney + ", integralValue=" + integralValue + "]";
 	}
 
 	@Override

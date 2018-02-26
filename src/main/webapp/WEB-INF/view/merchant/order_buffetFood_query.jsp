@@ -192,6 +192,13 @@
 	height: 30px;
 	padding-left: 10px;
 }
+.orderTicketList>span>select {
+	width: 100%;
+	border-radius: 2px;
+	border: 1px solid #e2e2e2;
+	height: 30px;
+	padding-left: 10px;
+}
 
 .spanFontSize {
 	font-size: 13px;
@@ -425,12 +432,14 @@
 													</div>
 													<span class="col-md-12 orderTicketList">
 														<span class="col-md-4 spanFontSize labelSpanText">请选择优惠券：</span>
-														<span class="col-md-8"> <select class="selectDown">
+														<span class="col-md-8"> 
+														<select >
 																<c:choose>
 																	<c:when test="${each.ticketList!= null}">
 																		<option value="0" data-price="0">请选择优惠券</option>
 																			<c:forEach items="${each.ticketList}" var="ticketList">
-																				<option value="${ticketList.tMoney }" data-money="${ticketList.tUseMoney}">${ticketList.tName}</option>
+																				<option value="${ticketList.tMoney }" data-money="${ticketList.tUseMoney}"
+																				data-Time="${ticketList.gmtCreate }">${ticketList.tName}</option>
 																			</c:forEach>
 																	</c:when>
 																	<c:otherwise>
@@ -511,12 +520,21 @@
 							</c:choose>
 					</select>
 				</span>
-				</span> <span class="col-md-12 oBuffetFoodQuerySpanInput"> <span
+				</span> 
+				<span class="col-md-12 oBuffetFoodQuerySpanInput"> <span
 					class="col-md-4 spanFontSize labelSpanText">请输入数量：</span> <span
 					class="col-md-8"> <input name="quantity" class="quantity"
 						placeholder="请输入数量" value="">
+				</span></span> 
+				<span class="col-md-12 ticket modelWindow"> 
+				<span class="col-md-4 spanFontSize labelSpanText">已选择的优惠券：
 				</span>
-				</span> <span class="col-md-12 oBuffetFoodQuerySpanButton"> <span
+				<span class="col-md-8">
+					
+				</span>
+				</span> 
+				
+				<span class="col-md-12 oBuffetFoodQuerySpanButton"> <span
 					class="col-md-12 spanFontSize">
 						<button class="affirmAddItemBtn">确认添加</button>
 				</span>
@@ -534,7 +552,7 @@
 					</h5>
 				</span> <span class="shouqi ModelWindow">收起<i
 					class="arrow fa fa-angle-up"></i></span> <br />
-				<div class="tog modelWindow"></div>
+				<div class="tog modelWindow" id="printArea"></div>
 				<span class="xiangqing modelWindow col-md-12"> <br /> <span
 					class="szuo col-md-4 bianhao modelWindow">订单已提交：<b></b>分钟
 				</span> <span class="xiaojie modelWindow allXiaoJie col-med-2 ">合计：<b></b>元
@@ -559,18 +577,19 @@
 	<script type="text/javascript">
 $(function(){
 	 $(".print").on("click",function(){
-	    	print()
+		 printArea()
 	    })
 })
-function print(){
-	var url=baseUrl+"/merchant/buffetFood/print"
-	var orderNumber=$(".print").attr("orderNumber");
-	console.log(orderNumber);
-	console.log(url)
-	$.post(url,{orderNumber:orderNumber,state:1},function(data){
-		console.log(data)
-	})
+function printArea(){
+	var body=$("body").html();
+	var printArea=$("#printArea").html();
+	console.log(printArea);
+	$("body").html(printArea);
+	window.print();
+	window.location.reload();
 }
+
+
 </script>
 </body>
 <%@include file="js.jsp"%>
@@ -639,10 +658,11 @@ function print(){
         var price = selectedEle.attr("data-price");
         var productId = selectedEle.val();
         var orderId = selectedEle.attr("data-orderId");
-        var insertStr = '<span class="xiangqing addItem col-md-12" data-price="' + price + '" data-productId="' + productId + '">\n' +
-            '<span class="iconSpan"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>' +
+        var insertStr ='<span class="xiangqing addItem col-md-12" data-price="' + price + '" data-productId="' + productId + '">\n' +
             '                    <span class="szuo col-md-3">' + selectedEle.text() + '</span>\n' +
-            '                    <span class="syou col-md-2" style="float: right;">X' + inputQuantityEle.val() + '</span>\n' +
+            '<span class="xiaojie col-md-2 folatRight">¥'+(parseInt(inputQuantityEle.val())*parseInt(price))+'</span>\n'+
+            '                    <span class="syou col-md-2 floatRight">X' + inputQuantityEle.val() + '</span>\n' +
+            '<span class="szhong col-md-2 folatRingth">¥'+price+'</span>\n'
             '                    <br>\n' +
             '                </span>';
         orderListParentEle.append(insertStr);
@@ -662,10 +682,12 @@ function print(){
     //删除或添加后动态计算总条数
     function sumUp() {
         //取总数值
+        debugger
         var allCountEle = $(".modelWindow.allCount > b");
         //计算item数量
         var itemList = $(".tog.modelWindow");
         allCountEle.text(itemList.children().length);
+        var orderAmountEle=$(".modelWindow").find(".xiaojie.modelWindow > b");
     }
 
     //结算按钮绑定点击事件
@@ -695,6 +717,14 @@ function print(){
             var productItem = new ProductItem(productName,quantity,price,total);
             curClickEleItemList.push(productItem);
         });
+        //优惠券信息
+        var ticket=$(ele).find(".orderTicketList > span > select").children('option:selected').text();
+        //优惠券限定
+        var ticket_tUseMoney=$(ele).find(".orderTicketList > span > select").children('option:selected').attr("data-money");
+        //优惠券金额
+        var ticket_tMoney=$(ele).find(".orderTicketList > span > select").children('option:selected').attr("value");
+        //优惠券时间
+        var ticket_time=$(ele).find(".orderTicketList > span > select").children('option:selected').attr("data-Time");
         //桌号
         var tableNumber = $(ele).find(".tableNumberH.bodyContent > b").text();
         //总数量
@@ -707,6 +737,13 @@ function print(){
         var orderSubmitTime = $(ele).find(".szuo.bodyContent > b").text();
 		var orderAmount=$(ele).find(".syou.bodyContent > b").text();
         //获取模态框的tabDom对象
+        //模态框优惠券
+        var ticket_m=$(this).find(".ticket.modelWindow > span:last");
+       if(parseInt(ticket_tUseMoney)<parseInt(orderAmount)){
+            ticket_m.text(ticket);
+        }else{
+        	ticket_m.text("优惠券使用条件不满足");
+       }
         //模态框序号
         var serialNumber_m = $(this).find(".numberH.modelWindow > b");
         serialNumber_m.text(serialNumber);
@@ -716,19 +753,25 @@ function print(){
         //总数对象
         var totalCountEle_m = $(this).find(".xiangqing.modelWindow").find(".szhong.modelWindow > b");
         totalCountEle_m.text(totalCount);
-        //订单号
+        //模态框订单号
         var orderNumberEle = $(this).find(".orderNumber.modelWindow");
-        //订单已提交时间
-        var orderSubmitTimeEle = $(this).find(".bianhao.modelWindow > b");
-        var orderAmountEle=$(this).find(".xiaojie.modelWindow > b");
-        $(".print").attr("orderNumber",$(ele).find(".orderNumber.bodyContent").attr("value"));
-        orderSubmitTimeEle.text(orderSubmitTime);
         orderNumberEle.text(orderNumber);
-        orderAmountEle.text(orderAmount);
+        //模态框订单已提交时间
+        var orderSubmitTimeEle = $(this).find(".bianhao.modelWindow > b");
+        orderSubmitTimeEle.text(orderSubmitTime);
+        //模态框总价
+        var orderAmountEle=$(this).find(".xiaojie.modelWindow > b");
+        if(parseInt(ticket_tUseMoney)<parseInt(orderAmount)){
+        	orderAmountEle.text(parseInt(orderAmount)-parseInt(ticket_tMoney));
+        }else{
+        	 orderAmountEle.text(orderAmount);
+        }
+        $(".print").attr("orderNumber",$(ele).find(".orderNumber.bodyContent").attr("value"));
         //模态框商品条目内容
         var productItemParent = $(this).find(".tog.modelWindow");
         productItemParent.empty();
         $(".affirmSettleBtn").attr("data-orderNumber", orderNumber);
+        $(".affirmSettleBtn").attr("data-Time",ticket_time);
         $(curClickEleItemList).each(function (index, item) {
             var insertStr = '<span class="xiangqing col-md-12">\n' +
                 '                    <span class="szuo col-md-3">' + item.productName + '</span>\n' +
@@ -744,6 +787,7 @@ function print(){
 
     $(".affirmSettleBtn").on("click", function () {
         var orderNumber = $(this).attr("data-orderNumber").replace("订单编号：", "");
+        var dataTime = $(this).attr("data-Time");
         const url = baseUrl + "/merchant/buffetFood/affirmSettleMethod";
         //获取新增的商品名，价格，数量，商品id
         var addedEntries = $(".xiangqing.addItem");
@@ -759,7 +803,7 @@ function print(){
         $.ajax({
             url: url,
             type: 'post',
-            data: {productList: JSON.stringify(paramList), orderNumber: orderNumber},
+            data: {productList: JSON.stringify(paramList), orderNumber: orderNumber,dataTime:dataTime},
             dataType: 'json',
             success: function (data) {
                 if (data && data.code === 0) {

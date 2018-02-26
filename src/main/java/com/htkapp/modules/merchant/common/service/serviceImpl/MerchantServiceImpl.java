@@ -62,6 +62,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -712,17 +713,27 @@ public class MerchantServiceImpl implements MerchantService {
 					if (orderList != null) {
 						int quantity = 0;
 						for (BuffetFoodOrder each : orderList) {
-							//                	List<AccountTicketList> list=ticketListService.getTicketListByTokenAndShopId(each.getToken(), takeOutShop.getShopId());
 							List<AccountUseTicketList> list=useTicketListService.getListByTokenAndShopId(each.getToken(), takeOutShop.getShopId());
 							quantity = 0;
 							//遍历订单列表，根据订单查询订单中的商品
 							List<BuffetFoodOrderProduct> orderProductList = buffetFoodOrderProductService.getOrderProductListById(each.getId());
 							each.setProductLists(orderProductList);
 							if(list!=null) {
+								List<AccountUseTicketList> newList=new ArrayList<AccountUseTicketList>();
+								String outTime=null;
+								SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+								Date date=new Date();
 								for(AccountUseTicketList every:list) {
+									outTime=every.gettExpiration();
+									Date outData=sdf.parse(outTime);
 									every.settName(every.gettMoney()+"元优惠券");
+									if(outData.getTime()>date.getTime()) {
+										newList.add(every);
+									}
 								}
-								each.setTicketList(list);
+								if(newList.size()>0) {
+									each.setTicketList(newList);
+								}
 							}
 							Date date = new Date();
 							String commitMinute = "";
@@ -747,6 +758,7 @@ public class MerchantServiceImpl implements MerchantService {
 					model.addAttribute("page", pageInfo);
 					model.addAttribute("productData", productList);
 				} catch (Exception e) {
+					e.printStackTrace();
 					model.addAttribute("data", null);
 				}
 			}

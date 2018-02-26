@@ -340,5 +340,15 @@ public class BuffetFoodOrderServiceImpl implements BuffetFoodOrderService {
 		}
 	}
 
+	@Override
+	public BuffetFoodOrder getBFOLByToken(String orderNumber,int shopId) {
+		BuffetFoodOrder bfo=buffetFoodOrderDao.getBFOLByToken(orderNumber, shopId);
+		if(bfo!=null) {
+			return bfo;
+		}
+		return null;
+	}
+
+
     /* ============================JSP页面接口结束===================================== */
 }

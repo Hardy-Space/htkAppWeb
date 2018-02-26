@@ -293,17 +293,17 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 					String a=bfo.getOrderTime().substring(0,bfo.getOrderTime().lastIndexOf("."));
 					if (bfo != null) {
 						//查找订单中的商品
-//						BuffetFoodOrder buffetFoodOrder = buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(params.getOrderNumber());
+						//						BuffetFoodOrder buffetFoodOrder = buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(params.getOrderNumber());
 						List<BuffetFoodOrderProduct> buffetFoodOrderProductList = buffetFoodOrderProductService.getOrderProductListById(bfo.getId());
 						if (buffetFoodOrderProductList != null) {
 							for (BuffetFoodOrderProduct every : buffetFoodOrderProductList) {
 								every.setProductId(every.getId());
-								every.setImgUrl(OtherUtils.getRootDirectory() + every.getImgUrl());
+								every.setImgUrl(OtherUtils.getRootDirectory()+ every.getImgUrl());
 							}
 						}
 						Date date = new Date();
-                        long time = date.getTime() - DateUtil.parse(bfo.getOrderTime()).getTime();
-                        String commitMinute = DateUtil.formatBetween(time, BetweenFormater.Level.MINUTE);
+						long time = date.getTime() - DateUtil.parse(bfo.getOrderTime()).getTime();
+						String commitMinute = DateUtil.formatBetween(time, BetweenFormater.Level.MINUTE);
 						ReturnBuffetFoodOrderData BuffetFoodOrderData =buffetFoodOrderService.getOrderByOrderNumber(bfo.getOrderNumber());
 						BuffetFoodOrderData.setCommitTime(commitMinute);
 						BuffetFoodOrderData.setOrderTime(a);
@@ -1166,5 +1166,38 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 			e.printStackTrace();
 		}
 		return new APIResponseModel(Globals.API_FAIL,"订单未被接单");
+	}
+
+	@Override
+	public APIResponseModel getAllOrderList(APIRequestParams param) {
+		if(param.getOrderNumber()!=null&&param!=null&&param.getShopId()!=null) {
+			try {
+				BuffetFoodOrder bfo=buffetFoodOrderService.getBFOLByToken(param.getOrderNumber(), param.getShopId());
+				String a=bfo.getOrderTime().substring(0,bfo.getOrderTime().lastIndexOf("."));
+				Shop shop=shopService.getShopDataById(bfo.getShopId());
+				List<BuffetFoodOrderProduct> productLists=buffetFoodOrderProductService.getOrderProductListById(bfo.getId());
+				bfo.setProductLists(productLists);
+				bfo.setLogoUrl(OtherUtils.getRootDirectory() +shop.getLogoUrl());
+				bfo.setOrderTime(a);
+				return new APIResponseModel<>(Globals.API_SUCCESS, "成功",bfo);
+			}catch(Exception e) {
+				return new APIResponseModel(Globals.API_FAIL,"查询失败");
+			}
+		}
+		return new APIResponseModel(Globals.API_FAIL,"参数错误");
+		
+		// TODO Auto-generated method stub
+//			try {
+//				List<BuffetFoodOrder> list=buffetFoodOrderService.getBFOLByToken(param.getToken());
+//				for(BuffetFoodOrder bfo:list) {
+//					Shop shop=shopService.getShopDataById(bfo.getShopId());
+//					List<BuffetFoodOrderProduct> productLists=buffetFoodOrderProductService.getOrderProductListById(bfo.getId());
+//					bfo.setProductLists(productLists);
+//					bfo.setLogoUrl(shop.getLogoUrl());
+//				}
+//				return new APIResponseModel<>(Globals.API_SUCCESS, "成功");
+//			} catch (Exception e) {
+//				return new APIResponseModel(Globals.API_FAIL,"系统错误");
+//			}
 	}
 }

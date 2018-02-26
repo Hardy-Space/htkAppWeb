@@ -77,5 +77,7 @@ public interface BuffetFoodOrderMapper {
     int replyReminderDAO(String orderNumber, int reminderId);
     //核退调单
     int replyFalseDAO(String orderNumber, String adjustJson);
+    //通过令牌查询用户的所有订单
+    BuffetFoodOrder getBFOLByToken(String orderNumber,int shopId);
     /* ==========================JSP页面接口结束================================= */
 }

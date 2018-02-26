@@ -79,5 +79,7 @@ public interface BuffetFoodOrderService {
     void dealWithNewOrder(String orderNumber, int orderStateId, int payState);
     //回复催单
     void replyReminder(String orderNumber, int reminderId);
+    //根据用户token/订单号/店铺号查询相应的订单
+    BuffetFoodOrder getBFOLByToken(String orderNumber,int shopId);
     /* =====================JSP页面接口结束================================= */
 }

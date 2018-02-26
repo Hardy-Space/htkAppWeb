@@ -45,6 +45,8 @@ public class BuffetFoodOrder {
     private String orderHandle;
 
     private String shopName;  //店铺名
+    
+    private String logoUrl;   //店铺图片url
 
     private String adjustOrderJson;   //调整订单的数据
 
@@ -68,7 +70,15 @@ public class BuffetFoodOrder {
     
     private List<AccountUseTicketList> ticketList;//用户名下的优惠券
 
-    public List<AccountUseTicketList> getTicketList() {
+    public String getLogoUrl() {
+		return logoUrl;
+	}
+
+	public void setLogoUrl(String logoUrl) {
+		this.logoUrl = logoUrl;
+	}
+
+	public List<AccountUseTicketList> getTicketList() {
 		return ticketList;
 	}
 

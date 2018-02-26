@@ -25,4 +25,30 @@ public class AccountUseTicketListServiceImpl implements AccountUseTicketListServ
 		return list;
 	}
 
+	@Override
+	public AccountUseTicketList getTicketListByTokenAndShopIdAndTime(String token, int shopId, String dataTime) {
+		AccountUseTicketList autl=accountUseTicketListMapper.getTicketListByTokenAndShopIdAndTime(token, shopId, dataTime);
+		if(autl!=null) {
+			return autl;
+		}
+		return null;
+	}
+
+	@Override
+	public int delTicketListByTokenAndShopIdAndTime(String token, int shopId, String dataTime) {
+		int a =accountUseTicketListMapper.delTicketListByTokenAndShopIdAndTime(token, shopId, dataTime);
+		if(a<=0) {
+			return 0;
+		}
+		return a;
+	}
+
+	@Override
+	public int updataTicketListByTokenAndShopIdAndTime(String token, int shopId, String dataTime, int quantity) {
+		int a=accountUseTicketListMapper.updataTicketListByTokenAndShopIdAndTime(token, shopId, dataTime, quantity);
+		if(a<=0) {
+			return 0;
+		}
+		return a;
+	}
 }

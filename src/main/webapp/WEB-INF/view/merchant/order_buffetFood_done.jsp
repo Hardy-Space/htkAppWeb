@@ -520,10 +520,7 @@
 
     //打印按钮绑定点击事件
     $(".println.curPage").on("click", function () {
-    	var orderNumber = $(this).attr("data-orderNumber");
-        const url = baseUrl + "/merchant/buffetFood/print";
-        $.post(url,{orderNumber:orderNumber,state:1},function(result){
-        })
+    	alert("正在制作中")
     })
 
     //查询按钮绑定点击事件
