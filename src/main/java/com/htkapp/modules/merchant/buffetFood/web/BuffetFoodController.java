@@ -176,7 +176,7 @@ public class BuffetFoodController {
 	@ResponseBody
 	public AjaxResponseModel affirmSettleMethod(@RequestParam("productList") String productList,
 			@RequestParam("orderNumber") String orderNumber,
-			@RequestParam("dataTime") String dataTime) {
+			@RequestParam(value="dataTime",required=false) String dataTime) {
 		try {
 			List<BuffetFoodOrderProduct> products = new ArrayList<>();
 			if (StringUtils.isNotEmpty(productList)) {

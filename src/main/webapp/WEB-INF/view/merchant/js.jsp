@@ -32,8 +32,6 @@
             if (message.content !== null && message.content !== "" && message.content !== undefined) {
                 tipsHandle(JSON.parse(message.content), "${staticFilePath}");
                 var obj=JSON.parse(message.content)
-                console.log(obj)
-                console.log(obj.statusCode)
                 var url=window.location.href
                 if(url.indexOf("/order/query")!=-1&&obj.statusCode==3){
                 	 setTimeout(function(){location.reload()},5000);
