@@ -141,8 +141,46 @@
 	height: 40px;
 }
 </style>
-
+   <style type="text/css">
+        .printArea{padding:0;margin: 0;}
+        .useTitle{font-size: 20px;}
+        .useLittleTitle{font-size: 16px;}
+        .left{
+            float: left;
+        }
+        .right{
+            float:right;
+        }
+        .clearfix{
+            clear: both;
+        }
+        ul{list-style: none;}
+        .print_container{
+            padding: 20px;
+            width: 188px;
+        }
+        .section1{
+        }
+        .section2 label{
+            display: block;
+        }
+        .section3 label{
+            display: block;
+        }
+        .section4{
+        }
+        .section4 .total label{
+            display: block;
+        }
+        .section4 .other_fee{
+            border-bottom: 1px solid #DADADA;
+        }
+        .section5 label{
+            display: block;
+        }
+        </style>
 <style>
+
 .affirmSettleBtn {
 	height: 30px;
 	float: right;
@@ -561,12 +599,10 @@
 				</span> <span class="col-md-12"> <span
 					class="col-md-6 bianhao orderNumber modelWindow">订单编号：</span> <span
 					class="xiangqing col-md-12">
-						<button id="myModalc" onclick="printMenu()" type="button"
+						<button id="myModalc" type="button"
 							class="bt modelWindow bt-primary col-md-4">打印</button> <input
 						data-dismiss="modal" type="button"
-						class="bt cancel modelWindow bt-default col-md-4 " value="取消" /> <input
-						type="button" class="layui-btn layui-btn-normal col-md-4 print"
-						value="打印账单">
+						class="bt cancel modelWindow bt-default col-md-4 " value="取消" /> 
 						<button type="button"
 							class="layui-btn layui-btn-normal col-md-4 affirmSettleBtn">确认结算</button>
 				</span>
@@ -574,23 +610,51 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript">
-$(function(){
-	 $(".print").on("click",function(){
-		 printArea()
-	    })
-})
-function printArea(){
-	var body=$("body").html();
-	var printArea=$("#printArea").html();
-	console.log(printArea);
-	$("body").html(printArea);
-	window.print();
-	window.location.reload();
-}
-
-
-</script>
+	<div class="modal printArea" style="background-color:#fff;">
+        <div class="print_container">
+            <h1 class="useTitle">给顾客专用</h1>
+            <span>**************************</span>
+            <div class="section1">
+                <h3 class="useLittleTitle">自助点餐结账单</h3>
+            </div>
+            <span>**************************</span>
+            <div class="section3">
+                <label id="orderNumber"></label>
+                <label id="orderTime"></label>
+            </div>
+            <span>**************************</span>
+            <div class="section4">
+                <div style="border-bottom: 1px solid #DADADA;">
+                    <!--<ul>
+                        <div>菜单名称     数量    金额</div>
+                        <li>米饭米饭 米饭 米饭 米饭 米饭 米饭       2    28元</li>
+                        <li>米饭      2    28元</li>
+                    </ul>-->
+                    <table style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <td width="60%">菜单名称</td>
+                                <td width="20%">数量</td>
+                                <td width="20%">金额</td>
+                            </tr>
+                        </thead>
+                        <tbody id="orderProduct">
+                        </tbody>
+                    </table>
+                </div>
+            	<span>**************************</span> 
+                <div class="total">
+                    <label class="left">总计</label>
+                    <label class="right" id="orderAmount">39</label>
+                    <div class="clearfix"></div>
+                </div>
+				<div class="section3">
+					<label id="nowTime"></label>
+				</div>
+			</div>
+            <span>**************************</span> 
+        </div> 
+    </div>
 </body>
 <%@include file="js.jsp"%>
 <script>
@@ -658,36 +722,46 @@ function printArea(){
         var price = selectedEle.attr("data-price");
         var productId = selectedEle.val();
         var orderId = selectedEle.attr("data-orderId");
-        var insertStr ='<span class="xiangqing addItem col-md-12" data-price="' + price + '" data-productId="' + productId + '">\n' +
+        var insertStr =
+        	'<span class="xiangqing addItem col-md-12" data-price="' + price + '" data-productId="' + productId + '">\n' +
             '                    <span class="szuo col-md-3">' + selectedEle.text() + '</span>\n' +
-            '<span class="xiaojie col-md-2 folatRight">¥'+(parseInt(inputQuantityEle.val())*parseInt(price))+'</span>\n'+
+            '<span class="iconSpan"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>' +
+            '<span class="xiaojie col-md-2 folatRight">¥'+(parseInt(inputQuantityEle.val())*parseInt(price)).toFixed(1)+'</span>\n'+
             '                    <span class="syou col-md-2 floatRight">X' + inputQuantityEle.val() + '</span>\n' +
             '<span class="szhong col-md-2 folatRingth">¥'+price+'</span>\n'
             '                    <br>\n' +
-            '                </span>';
+        	'                </span>';
         orderListParentEle.append(insertStr);
         //动态计算弹窗总件数
-        sumUp();
+        var a=0;
+        sumUp(a,(parseInt(inputQuantityEle.val())*parseInt(price)));
     });
 
     //删除条目按钮
     $(document).on("click", ".iconSpan", function () {
+    	var total=$(this).siblings(".xiaojie").html().replace("¥", "");
         var ele = $(this);
         var eleParent = ele.parent();
         eleParent.remove();
+        var a=1;
         //动态计算弹窗总件数
-        sumUp();
+        sumUp(a,total);
     })
 
     //删除或添加后动态计算总条数
-    function sumUp() {
+    function sumUp(a,price) {
         //取总数值
-        debugger
         var allCountEle = $(".modelWindow.allCount > b");
         //计算item数量
         var itemList = $(".tog.modelWindow");
         allCountEle.text(itemList.children().length);
-        var orderAmountEle=$(".modelWindow").find(".xiaojie.modelWindow > b");
+        var orderAmountEle=$(".xiaojie.modelWindow.allXiaoJie >b").html();
+        if(a==0){
+        	$(".xiaojie.modelWindow.allXiaoJie >b").html((parseInt(orderAmountEle)+parseInt(price)).toFixed(1))
+        }else if(a){
+        	$(".xiaojie.modelWindow.allXiaoJie >b").html(parseInt(orderAmountEle)-parseInt(price).toFixed(1))
+        }
+       
     }
 
     //结算按钮绑定点击事件
@@ -803,7 +877,7 @@ function printArea(){
         $.ajax({
             url: url,
             type: 'post',
-            data: {productList: JSON.stringify(paramList), orderNumber: orderNumber,dataTime:dataTime},
+            data: {productList: JSON.stringify(paramList), orderNumber: orderNumber,dataTime:(dataTime==null?dataTime:"")},
             dataType: 'json',
             success: function (data) {
                 if (data && data.code === 0) {
@@ -819,6 +893,55 @@ function printArea(){
             }
         });
     })
+    
+    $(function(){
+	 $("#myModalc").on("click",function(){
+		 updataPrintArea()
+	    })
+})
+function updataPrintArea(){
+    	debugger
+	   var ele = $(curClickEle).parent().parent().parent();
+       curClickEleItemList = new Array();
+       //商品条目信息
+       var tabDivListEleSpan = $(ele).find(".tabDivList.bodyContent").find("span.xiangqing");
+       $(tabDivListEleSpan).each(function (index, item) {
+           var productName = $(item).find(".szuo").text();
+           var quantity = parseInt($(item).find(".syou").text().replace("X", ""));
+           var total=$(item).find(".xiaojie").text();
+           var price=$(item).find(".szhong").text();
+           var productItem = new ProductItem(productName,quantity,price,total);
+           curClickEleItemList.push(productItem);
+       });
+       var orderSubmitTimeEle=$("#myModal").find(".bianhao.modelWindow > b").html();
+       $("#orderTime").html("下单时间:<br />"+orderSubmitTimeEle+"钟")
+       var orderNumberEle=$("#myModal").find(".orderNumber.modelWindow").html().replace("订单编号：", "");
+       $("#orderNumber").html("订单编号:<br />"+orderNumberEle)
+       var orderAmountEle=$("#myModal").find(".xiaojie.modelWindow > b").html();
+       $("#orderAmount").html("¥"+orderAmountEle)
+       var productItems=$("#orderProduct")
+       var myDate = new Date();    
+       $("#nowTime").html("时间:<br />"+myDate.toLocaleDateString()+myDate.toLocaleTimeString())
+       $(curClickEleItemList).each(function (index, item) {
+           var insertStr = "<tr>"+
+           "<td>"+item.productName+"</td>"+
+           "<td>"+item.productQuantity+"</td>"+
+           "<td>"+item.price+"</td>"+
+           "</tr>"
+           productItems.append(insertStr);
+       })
+	 printArea()
+}
+    function printArea(){
+    	var body=$("body").html();
+    	var printArea=$(".printArea").html();
+    	$("body").html(printArea);
+    	window.print();
+    	pageInit()
+    }
+    function pageInit(){
+    	window.location.reload()
+    }
  </script>
 <script>
     $(function () {

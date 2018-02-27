@@ -114,6 +114,7 @@ public class BuffetFoodAPI {
     //确认调单页面商品列表
     @RequestMapping(value = "/getLastModifiedAdjustProductList", method = RequestMethod.POST)
     public APIResponseModel getLastModifiedAdjustProductList(APIRequestParams params){
+    	  String a="1111";
         return buffetFoodService.getLastModifiedAdjustProductList(params);
     }
 
