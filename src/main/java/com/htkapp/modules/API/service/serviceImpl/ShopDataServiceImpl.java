@@ -215,6 +215,26 @@ public class ShopDataServiceImpl implements ShopDataService {
                             if (each.getLogoUrl() != null) {
                                 each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
                             }
+                            /**
+                             * @author 马鹏昊
+                             * @desc 查询每个商家最新一个月的销售数量（收货成功的）
+                             */
+                            Date currentTime = new Date();
+                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            Calendar c = Calendar.getInstance();
+//                            long monthStart = currentTime.getTime()-(1000*60*60*24*30L);
+//                            String dateStart = formatter.format(monthStart);
+                            String dateEnd = formatter.format(currentTime);
+
+                            //过去一月
+                            c.setTime(new Date());
+                            c.add(Calendar.MONTH, -1);
+                            Date m = c.getTime();
+                            String dateStart = formatter.format(m);
+//                            System.out.println("过去一个月："+dateStart);
+
+                            int row = orderRecordService.getOrderQuantities(each.getShopId(),dateStart,dateEnd);
+                            each.setMonthlySalesVolume(row);
                         }
                         return new APIResponseModel<List<Shop>>(Globals.API_SUCCESS, "成功", shopList);
                     } else {
@@ -229,6 +249,26 @@ public class ShopDataServiceImpl implements ShopDataService {
                             if (each.getLogoUrl() != null) {
                                 each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
                             }
+                            /**
+                             * @author 马鹏昊
+                             * @desc 查询每个商家最新一个月的销售数量（收货成功的）
+                             */
+                            Date currentTime = new Date();
+                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            Calendar c = Calendar.getInstance();
+//                            long monthStart = currentTime.getTime()-(1000*60*60*24*30L);
+//                            String dateStart = formatter.format(monthStart);
+                            String dateEnd = formatter.format(currentTime);
+
+                            //过去一月
+                            c.setTime(new Date());
+                            c.add(Calendar.MONTH, -1);
+                            Date m = c.getTime();
+                            String dateStart = formatter.format(m);
+//                            System.out.println("过去一个月："+dateStart);
+
+                            int row = orderRecordService.getOrderQuantities(each.getShopId(),dateStart,dateEnd);
+                            each.setMonthlySalesVolume(row);
                         }
                         return new APIResponseModel<List<Shop>>(Globals.API_SUCCESS, "成功", resultList);
                     } else {
@@ -292,6 +332,28 @@ public class ShopDataServiceImpl implements ShopDataService {
                             .setMonthlySalesVolume(shop.getMonthlySalesVolume())
                             .setOpeningTime(shop.getOpeningTime())
                             .setScore(shop.getScore());
+
+                    /**
+                     * @author 马鹏昊
+                     * @desc 查询每个商家最新一个月的销售数量（收货成功的）
+                     */
+                    Date currentTime = new Date();
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Calendar c = Calendar.getInstance();
+//                            long monthStart = currentTime.getTime()-(1000*60*60*24*30L);
+//                            String dateStart = formatter.format(monthStart);
+                    String dateEnd = formatter.format(currentTime);
+
+                    //过去一月
+                    c.setTime(new Date());
+                    c.add(Calendar.MONTH, -1);
+                    Date m = c.getTime();
+                    String dateStart = formatter.format(m);
+//                            System.out.println("过去一个月："+dateStart);
+
+                    int row = orderRecordService.getOrderQuantities(shop.getShopId(),dateStart,dateEnd);
+                    result.setMonthlySalesVolume(row);
+
                     return new APIResponseModel<AppShowShopInfo>(Globals.API_SUCCESS, "成功", result);
                 } else if (shop.getMark() == 1) {
                     //团购
