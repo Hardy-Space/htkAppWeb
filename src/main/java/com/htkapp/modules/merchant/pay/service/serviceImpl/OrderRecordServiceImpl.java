@@ -13,7 +13,6 @@ import com.htkapp.modules.merchant.pay.entity.OrderProduct;
 import com.htkapp.modules.merchant.pay.entity.OrderRecord;
 import com.htkapp.modules.merchant.pay.service.OrderRecordService;
 import com.xiaoleilu.hutool.date.DateUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -518,6 +517,15 @@ public class OrderRecordServiceImpl implements OrderRecordService {
     public OrderProduct getOrderProduct(Integer id) {
         OrderProduct orderProduct = orderRecordDao.getOrderProduct(id);
         return orderProduct;
+    }
+
+    @Override
+    public int getOrderQuantities(Integer shopId, String dateStart, String dateEnd) {
+
+        int row = orderRecordDao.getOrderHasDealedQuantities(shopId,dateStart,dateEnd);
+        if (row<=0)
+            row = 0;
+        return row;
     }
 
     /* ====================JSP页面接口结束========================= */

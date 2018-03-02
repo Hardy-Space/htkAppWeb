@@ -9,6 +9,14 @@
 
     <!-- ===================接口开始===================== -->
 
+    <select id="getOrderHasDealedQuantities" resultType="java.lang.Integer">
+        select COUNT(0)
+        from order_record LEFT JOIN takeout_order
+        on takeout_order.order_id = order_record.id
+        where  order_record.shop_id = #{shopId} and (order_record.gmt_modified between #{startDate} and #{endDate})
+        and order_record.order_state = 4
+    </select>
+
     <select id="getOrderProduct" resultType="com.htkapp.modules.merchant.pay.entity.OrderProduct">
         select *
         from order_product
