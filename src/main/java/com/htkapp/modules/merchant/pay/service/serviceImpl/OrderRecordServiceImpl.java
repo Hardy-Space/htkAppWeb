@@ -22,6 +22,7 @@ import java.util.List;
 
 import static com.xiaoleilu.hutool.date.DateUtil.NORM_DATETIME_PATTERN;
 import static com.xiaoleilu.hutool.date.DateUtil.format;
+import static com.xiaoleilu.hutool.date.DateUtil.now;
 
 /**
  * Created by yinqilei on 17-6-29.
@@ -64,8 +65,12 @@ public class OrderRecordServiceImpl implements OrderRecordService {
             List<AccountTicketList> accountTicketLists = ticketListService.getTicketListByTokenAndCouponId(orderRecord.getToken(), orderRecord.getCouponId());
             //使用优惠券的情况下才操作
             if (accountTicketLists != null && accountTicketLists.size() > 0) {
+                int newQuantity = 0;
                 int nowQuantity = accountTicketLists.get(0).getQuantity();
-                ticketListService.updateTicketListByTokenAndCouponIdDAO(nowQuantity - 1, orderRecord.getToken(), orderRecord.getCouponId());
+                if (nowQuantity > 0)
+                    newQuantity = nowQuantity - 1;
+
+                ticketListService.updateTicketListByTokenAndCouponIdDAO(newQuantity, orderRecord.getToken(), orderRecord.getCouponId());
             }
 
         } catch (Exception e) {
@@ -522,8 +527,8 @@ public class OrderRecordServiceImpl implements OrderRecordService {
     @Override
     public int getOrderQuantities(Integer shopId, String dateStart, String dateEnd) {
 
-        int row = orderRecordDao.getOrderHasDealedQuantities(shopId,dateStart,dateEnd);
-        if (row<=0)
+        int row = orderRecordDao.getOrderHasDealedQuantities(shopId, dateStart, dateEnd);
+        if (row <= 0)
             row = 0;
         return row;
     }
