@@ -149,6 +149,44 @@
 
     </style>
 
+   <style type="text/css">
+        .printArea{padding:0;margin: 0;}
+        .useTitle{font-size: 20px;}
+        .useLittleTitle{font-size: 16px;}
+        .left{
+            float: left;
+        }
+        .right{
+            float:right;
+        }
+        .clearfix{
+            clear: both;
+        }
+        ul{list-style: none;}
+        .print_container{
+            padding: 20px;
+            width: 188px;
+        }
+        .section1{
+        }
+        .section2 label{
+            display: block;
+        }
+        .section3 label{
+            display: block;
+        }
+        .section4{
+        }
+        .section4 .total label{
+            display: block;
+        }
+        .section4 .other_fee{
+            border-bottom: 1px solid #DADADA;
+        }
+        .section5 label{
+            display: block;
+        }
+</style>
 	<style>
 
 		.szuo {
@@ -520,7 +558,7 @@
 												<span class="shouqi">收起<i class="arrow fa fa-angle-up"></i></span><br/>
 												<div class="tog tabDivList bodyContent">
 													<c:forEach items="${each.productLists}" var="product">
-	<c:if test="${product.bz==0 }">
+														<c:if test="${product.bz==0 }">
 														<span class="xiangqing col-md-12">
 															<span class="szuo col-md-6">${product.productName}</span>
                                                         <span class="szhong col-md-1">¥${product.price}</span>
@@ -528,7 +566,7 @@
                                                         <span class="xiaojie col-md-1">¥${product.price * product.quantity}</span>
                                                         <br/>
                                                     </span>
- </c:if>
+ 													</c:if>
                                                    <c:if test="${product.bz==1 }">
 														<span class="xiangqing col-md-12" style="color: red">
 														<span class="szuo col-md-6">${product.productName}</span>
@@ -563,10 +601,10 @@
                                                     <span class="xiangqing col-md-6">
 														<input type="button"
 															   class="bt bt-primary col-md-2 floatRight settleBtn curPage"
-															   value="打印小票" data-orderNumber="${each.orderNumber}"/>
+															   value="打印小票"  data-orderAmount="${each.orderAmount}" data-orderNumber="${each.orderNumber}"  data-orderAmount="${each.orderAmount}"/>
                                                         <input type="button"
 															   class="bt bt-primary col-md-2 floatRight settleBtna curPage"
-															   value="核退" data-orderNumber="${each.orderNumber}"/>
+															   value="核退" data-orderNumber="${each.orderNumber}" />
 														<input type="button"
 															   class="bt bt-primary col-md-2 floatRight settleBtnt curPage"
 															   value="确认调整" data-orderNumber="${each.orderNumber}" />
@@ -607,71 +645,52 @@
 </div>
 <%@include file="footer.jsp" %>
 <!-- 模态框（Modal） -->
-<div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<!--这里id和上面那个动态值一样-->
-	<div class="modal-dialog">
-		<div style="border-radius: 6px;" class="row col-md-12">
-			<!--序号-->
-			<h3 style="padding-left: 0px;border-radius: 6px 6px 0 0;"
-				class="xuhao col-md-12"><b class="col-md-12">#3</b></h3>
-			<h5 style="padding-left: 0px;margin-bottom: 15px;"
-				class="col-md-12"><b class="col-md-12">桌号：03</b></h5>
-			<hr/>
-			<span style="padding-left: 0px;padding-bottom: 0px;margin-top: 5px;"
-				  class="col-md-6"><h5 class="col-md-12"
-									   style="margin-bottom: 0px;"><b>商品信息</b></h5></span>
-			<span class="shouqi">收起<i
-					class="arrow fa fa-angle-up"></i></span><br/>
-			<div class="tog">
-														<span class="xiangqing col-md-12">
-															<span class="szuo col-md-3">麻辣小龙虾</span>
-															<!--<span class="szhong col-md-3">¥68.0</span>-->
-															<span class="syou col-md-2" style="float: right;">X1</span>
-															<!--<span class="xiaojie col-md-3" >¥68.0</span>-->
-															<br/>
-														</span>
-				<span class="xiangqing col-md-12">
-															<span class="szuo col-md-3">清蒸鲍鱼</span>
-					<!--<span class="szhong col-md-3">¥127.0</span>-->
-															<span class="syou col-md-2" style="float: right;">X1</span>
-					<!--<span class="xiaojie col-md-3" >¥127.0</span>-->
-															<br/>
-														</span>
-				<span class="xiangqing col-md-12">
-															<span class="szuo col-md-3">麻辣小龙虾</span>
-					<!--<span class="szhong col-md-3">¥68.0</span>-->
-															<span class="syou col-md-2" style="float: right;">X1</span>
-					<!--<span class="xiaojie col-md-3" >¥68.0</span>-->
-															<br/>
-														</span>
+
+	<div class="modal printArea" style="background-color:#fff;">
+        <div class="print_container">
+            <h1 class="useTitle">给顾客专用</h1>
+            <span>**************************</span>
+            <div class="section1">
+                <h3 class="useLittleTitle">自助点餐结账单</h3>
+            </div>
+            <span>**************************</span>
+            <div class="section3">
+                <label id="orderNumber"></label>
+                <label id="orderTime"></label>
+            </div>
+            <span>**************************</span>
+            <div class="section4">
+                <div style="border-bottom: 1px solid #DADADA;">
+                    <!--<ul>
+                        <div>菜单名称     数量    金额</div>
+                        <li>米饭米饭 米饭 米饭 米饭 米饭 米饭       2    28元</li>
+                        <li>米饭      2    28元</li>
+                    </ul>-->
+                    <table style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <td width="60%">菜单名称</td>
+                                <td width="20%">数量</td>
+                                <td width="20%">金额</td>
+                            </tr>
+                        </thead>
+                        <tbody id="orderProduct">
+                        </tbody>
+                    </table>
+                </div>
+            	<span>**************************</span> 
+                <div class="total">
+                    <label class="left">总计</label>
+                    <label class="right" id="orderAmount">39</label>
+                    <div class="clearfix"></div>
+                </div>
+				<div class="section3">
+					<label id="nowTime"></label>
+				</div>
 			</div>
-
-
-			<span class="xiangqing col-md-12"
-				  style="border-bottom: 1px solid gainsboro;border-top: 1px solid gainsboro;height: 40px; padding-bottom: 13px;">
-															<br/>
-															<span class="szuo col-md-4 bianhao"
-																  style="line-height: 0px;margin-top: 0px;">订单已提交：<b>10</b>分钟</span>
-															<span class="col-md-2"></span>
-															<span class="szhong col-md-2"
-																  style="text-align: right;float: right;font-size: 14px;margin-top: 0px;line-height: 0px;">共<b>3</b>件</span>
-				<!--<span class="syou col-md-3" style="text-align: right;float: right;margin-right: 20px;">合计：<b style="font-size: 20px;">245</b>元</span><br />-->
-															<br/>
-														</span>
-			<span class="col-md-12">
-															<span class="col-md-6 bianhao">订单编号：123456</span>
-														<span class="xiangqing col-md-12" style="">
-																<button style="width: 15%;border-radius: 6px;"
-																		id="myModalc" type="button"
-																		class="bt bt-primary col-md-4">打印</button>
-														        <input style="float: left;margin-left: 30px;width: 15%;border-radius: 6px;"
-																	   data-dismiss="modal" type="button"
-																	   class="bt bt-default col-md-4 " value="取消"/>
-														</span>
-														</span>
-		</div>
-	</div>
-</div>
+            <span>**************************</span> 
+        </div> 
+    </div>
 </body>
 <%@include file="js.jsp" %>
 <script type="text/javascript">
@@ -751,11 +770,75 @@
             }
         })
     })
+	 //当前点击对象
+    var curClickEle;
+    //当前点击对象的条目集合
+    var curClickEleItemList;
 
-    //打印小票
-    $(".settleBtn.curPage").on("click",function(){
-       alert("正在制作中")
-    })
+    //商品条目构造函数
+    function ProductItem(productName, productQuantity,price,total) {
+        this.productName = productName;
+        this.productQuantity = productQuantity;
+        this.price=price;
+        this.total=total;
+    }
 
+    //添加的商品构造函数
+    function addedEntriesConstruction(productName, productQuantity, productPrice, productId) {
+        this.productName = productName;
+        this.quantity = productQuantity;
+        this.price = productPrice;
+        this.productId = productId;
+    }
+    
+    $(function(){
+   	 $(".floatRight.settleBtn.curPage").on("click",function(){
+   		curClickEle = $(this);
+   		 updataPrintArea()
+   	    })
+   })
+   function updataPrintArea(){
+    	debugger
+    	 var ele = $(curClickEle).parent().parent().parent();    	
+          curClickEleItemList = new Array();
+          //商品条目信息
+          var tabDivListEleSpan = $(ele).find(".tog.tabDivList.bodyContent").find("span.xiangqing");
+          $(tabDivListEleSpan).each(function (index, item) {
+              var productName = $(item).find(".szuo").text();
+              var quantity = parseInt($(item).find(".syou").text().replace("X", ""));
+              var total=$(item).find(".xiaojie").text();
+              var price=$(item).find(".szhong").text();
+              var productItem = new ProductItem(productName,quantity,price,total);
+              curClickEleItemList.push(productItem);
+          });
+          var orderSubmitTimeEle=$(".xiangqing.bodyContent").find(".szuo.bodyContent > b").html();
+          $("#orderTime").html("下单时间:<br />"+orderSubmitTimeEle+"钟")
+          var orderNumberEle=$(curClickEle).attr("data-orderNumber");
+          $("#orderNumber").html("订单编号:<br />"+orderNumberEle)
+          var orderAmountEle=$(curClickEle).attr("data-orderAmount");
+          $("#orderAmount").html("¥"+orderAmountEle)
+          var productItems=$("#orderProduct")
+          var myDate = new Date();    
+          $("#nowTime").html("时间:<br />"+myDate.toLocaleDateString()+myDate.toLocaleTimeString())
+          $(curClickEleItemList).each(function (index, item) {
+              var insertStr = "<tr>"+
+              "<td>"+item.productName+"</td>"+
+              "<td>"+item.productQuantity+"</td>"+
+              "<td>"+item.price+"</td>"+
+              "</tr>"
+              productItems.append(insertStr);
+          })
+   	 printArea()
+   }
+       function printArea(){
+       	var body=$("body").html();
+       	var printArea=$(".printArea").html();
+       	$("body").html(printArea);
+       	window.print();
+       	pageInit()
+       }
+       function pageInit(){
+    	   location.reload()
+       }
 </script>
 </html>

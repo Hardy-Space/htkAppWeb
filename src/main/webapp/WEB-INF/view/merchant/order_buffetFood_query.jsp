@@ -178,7 +178,7 @@
         .section5 label{
             display: block;
         }
-        </style>
+</style>
 <style>
 
 .affirmSettleBtn {
@@ -881,6 +881,7 @@
             dataType: 'json',
             success: function (data) {
                 if (data && data.code === 0) {
+                	alert(data.message)
                     window.location.href = window.location.href;
                 } else {
                     layer_msg(data.message, 'error');
@@ -900,11 +901,9 @@
 	    })
 })
 function updataPrintArea(){
-    	debugger
-	   var ele = $(curClickEle).parent().parent().parent();
        curClickEleItemList = new Array();
        //商品条目信息
-       var tabDivListEleSpan = $(ele).find(".tabDivList.bodyContent").find("span.xiangqing");
+       var tabDivListEleSpan = $(".modal-dialog").find(".tog.modelWindow").find("span.xiangqing");
        $(tabDivListEleSpan).each(function (index, item) {
            var productName = $(item).find(".szuo").text();
            var quantity = parseInt($(item).find(".syou").text().replace("X", ""));
@@ -940,7 +939,7 @@ function updataPrintArea(){
     	pageInit()
     }
     function pageInit(){
-    	window.location.reload()
+    	location.reload()
     }
  </script>
 <script>

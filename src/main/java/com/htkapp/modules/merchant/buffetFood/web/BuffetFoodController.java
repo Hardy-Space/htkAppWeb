@@ -21,6 +21,7 @@ import com.htkapp.modules.merchant.buffetFood.entity.SeatInformation;
 import com.htkapp.modules.merchant.buffetFood.service.*;
 import com.htkapp.modules.merchant.integral.entity.AccountUseTicketList;
 import com.htkapp.modules.merchant.integral.service.AccountUseTicketListService;
+import com.htkapp.modules.merchant.integral.service.IntegralService;
 import com.htkapp.modules.merchant.shop.entity.AccountShop;
 import com.htkapp.modules.merchant.shop.entity.Shop;
 import com.htkapp.modules.merchant.shop.service.AccountShopServiceI;
@@ -63,6 +64,8 @@ public class BuffetFoodController {
 	private SeatInformationService seatInfo;
 	@Resource
 	private AccountUseTicketListService useTicketListService;
+    @Resource
+    private IntegralService integralService;
 
 	//========================================================商品
 	//==== 页面
@@ -193,12 +196,24 @@ public class BuffetFoodController {
 			buffetFoodOrderService.changeOrderState(orderNumber,2); //更改订单状态
 			double orderAmount = order.getOrderAmount();
 			//追加订单中的商品
+			int integral=0;
 			for (BuffetFoodOrderProduct each : products) {
 				each.setState(1); //状态1追加商品
 				each.setOrderId(order.getId());
 				//插入订单商品记录，改变订单总价
 				buffetFoodOrderProductService.insertProductDetailsUnderOrder(each);
 				orderAmount += each.getPrice();
+			}
+			List<BuffetFoodProduct> bfpList=buffetFoodProductService.getAllProductByShopId(order.getShopId(),null);
+			List<BuffetFoodOrderProduct> bfopList=buffetFoodOrderProductService.getOrderProductListById(order.getId());
+			Map<String, Integer> map=new HashMap<String, Integer>();
+			for(BuffetFoodProduct bfp:bfpList) {
+				map.put(bfp.getProductName(), bfp.getIntegral());
+			}
+			for(BuffetFoodOrderProduct each:bfopList) {
+				if(map.containsKey(each.getProductName())) {
+					integral+=(map.get(each.getProductName())*each.getQuantity());
+				}
 			}
 			int b=0;
 			int a=seatInfo.updataSeatInfoByOrder(order,b);
@@ -211,11 +226,17 @@ public class BuffetFoodController {
 				AccountUseTicketList autl=useTicketListService.getTicketListByTokenAndShopIdAndTime(order.getToken(), takeOutShop.getShopId(), dataTime);
 				Double ticketMoney=autl.gettMoney();
 				orderAmount-=ticketMoney;
-				//使用结束后删除该优惠券
+				//使用结束后该优惠券数量-1
 				useTicketListService.updataTicketListByTokenAndShopIdAndTime(order.getToken(), takeOutShop.getShopId(), dataTime, (autl.getQuantity()-1));
 			}
 			buffetFoodOrderService.updateOrderTotalAmount(orderNumber, orderAmount);
 			buffetFoodOrderService.changeOrderStateByAccountShopToken(orderNumber,2);
+			Integer AllIntegral=integralService.getVal(order.getToken(),takeOutShop.getShopId());
+			AllIntegral+=integral;
+			Integer result=integralService.updateIntegral(order.getToken(),takeOutShop.getShopId(), AllIntegral);
+			if(result<=0) {
+				return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "积分插入失败");
+			}
 			Shop shop = shopService.getShopDataById(order.getShopId());
 			System.out.println("shop is:"+shop.toString());
 			AccountShop user = accountShopService.getAccountShopDataById(shop.getAccountShopId());
@@ -233,7 +254,6 @@ public class BuffetFoodController {
 			}
 			return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
 		}
 	}

@@ -344,6 +344,44 @@
             overflow: auto;
         }
     </style>
+   <style type="text/css">
+        .printArea{padding:0;margin: 0;}
+        .useTitle{font-size: 20px;}
+        .useLittleTitle{font-size: 16px;}
+        .left{
+            float: left;
+        }
+        .right{
+            float:right;
+        }
+        .clearfix{
+            clear: both;
+        }
+        ul{list-style: none;}
+        .print_container{
+            padding: 20px;
+            width: 188px;
+        }
+        .section1{
+        }
+        .section2 label{
+            display: block;
+        }
+        .section3 label{
+            display: block;
+        }
+        .section4{
+        }
+        .section4 .total label{
+            display: block;
+        }
+        .section4 .other_fee{
+            border-bottom: 1px solid #DADADA;
+        }
+        .section5 label{
+            display: block;
+        }
+</style>
 
     <style>
 
@@ -737,7 +775,7 @@
                                                        value="下单"/>
                                                 <input type="button"
 															   class="bt bt-primary col-md-2 floatRight settleBtn print"
-															   value="打印小票" data-orderNumber="${each.orderNumber}"/>
+															   value="打印小票" data-orderNumber="${each.orderNumber}" data-orderAmount="${each.orderAmount}"/>
 											</span>
 										</span>
                                         </div>
@@ -770,6 +808,51 @@
         </div>
     </div>
 </div>
+	<div class="modal printArea" style="background-color:#fff;">
+        <div class="print_container">
+            <h1 class="useTitle">给顾客专用</h1>
+            <span>**************************</span>
+            <div class="section1">
+                <h3 class="useLittleTitle">自助点餐结账单</h3>
+            </div>
+            <span>**************************</span>
+            <div class="section3">
+                <label id="orderNumber"></label>
+                <label id="orderTime"></label>
+            </div>
+            <span>**************************</span>
+            <div class="section4">
+                <div style="border-bottom: 1px solid #DADADA;">
+                    <!--<ul>
+                        <div>菜单名称     数量    金额</div>
+                        <li>米饭米饭 米饭 米饭 米饭 米饭 米饭       2    28元</li>
+                        <li>米饭      2    28元</li>
+                    </ul>-->
+                    <table style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <td width="60%">菜单名称</td>
+                                <td width="20%">数量</td>
+                                <td width="20%">金额</td>
+                            </tr>
+                        </thead>
+                        <tbody id="orderProduct">
+                        </tbody>
+                    </table>
+                </div>
+            	<span>**************************</span> 
+                <div class="total">
+                    <label class="left">总计</label>
+                    <label class="right" id="orderAmount">39</label>
+                    <div class="clearfix"></div>
+                </div>
+				<div class="section3">
+					<label id="nowTime"></label>
+				</div>
+			</div>
+            <span>**************************</span> 
+        </div> 
+    </div>
 <%@include file="footer.jsp" %>
 </body>
 <%@include file="js.jsp" %>
@@ -804,6 +887,7 @@
         $.post(url,{orderNumber:orderNumber},function (result, status) {
             if(status === 'success'){
                 if(result && result.code === 0){
+                	alert("下单成功")
                     window.location.href = baseUrl + "/merchant/buffetFood/order/new";
                 }else {
                     alert("下单失败");
@@ -813,13 +897,76 @@
             }
         })
     })
-     $(".settleBtn.print").on("click",function(){
-        var orderNumber = $(this).attr("data-orderNumber");
-        const url = baseUrl + "/merchant/buffetFood/print";
-        $.post(url,{orderNumber:orderNumber,state:0},function(result){
-        	
-        })
-    })
+ //当前点击对象
+    var curClickEle;
+    //当前点击对象的条目集合
+    var curClickEleItemList;
+
+    //商品条目构造函数
+    function ProductItem(productName, productQuantity,price,total) {
+        this.productName = productName;
+        this.productQuantity = productQuantity;
+        this.price=price;
+        this.total=total;
+    }
+
+    //添加的商品构造函数
+    function addedEntriesConstruction(productName, productQuantity, productPrice, productId) {
+        this.productName = productName;
+        this.quantity = productQuantity;
+        this.price = productPrice;
+        this.productId = productId;
+    }
+    
+    $(function(){
+   	 $(".floatRight.settleBtn.print").on("click",function(){
+   		curClickEle = $(this);
+   		 updataPrintArea()
+   	    })
+   })
+   function updataPrintArea(){
+    	debugger
+    	 var ele = $(curClickEle).parent().parent().parent();    	
+          curClickEleItemList = new Array();
+          //商品条目信息
+          var tabDivListEleSpan = $(ele).find(".tog.tabDivList.bodyContent").find("span.xiangqing");
+          $(tabDivListEleSpan).each(function (index, item) {
+              var productName = $(item).find(".szuo").text();
+              var quantity = parseInt($(item).find(".syou").text().replace("X", ""));
+              var total=$(item).find(".xiaojie").text();
+              var price=$(item).find(".szhong").text();
+              var productItem = new ProductItem(productName,quantity,price,total);
+              curClickEleItemList.push(productItem);
+          });
+          var orderSubmitTimeEle=$(".xiangqing.bodyContent").find(".szuo.bodyContent > b").html();
+          $("#orderTime").html("下单时间:<br />"+orderSubmitTimeEle+"钟")
+          var orderNumberEle=$(curClickEle).attr("data-orderNumber");
+          $("#orderNumber").html("订单编号:<br />"+orderNumberEle)
+          var orderAmountEle=$(curClickEle).attr("data-orderAmount");
+          $("#orderAmount").html("¥"+orderAmountEle)
+          var productItems=$("#orderProduct")
+          var myDate = new Date();    
+          $("#nowTime").html("时间:<br />"+myDate.toLocaleDateString()+myDate.toLocaleTimeString())
+          $(curClickEleItemList).each(function (index, item) {
+              var insertStr = "<tr>"+
+              "<td>"+item.productName+"</td>"+
+              "<td>"+item.productQuantity+"</td>"+
+              "<td>"+item.price+"</td>"+
+              "</tr>"
+              productItems.append(insertStr);
+          })
+   	 printArea()
+   }
+       function printArea(){
+       	var body=$("body").html();
+       	var printArea=$(".printArea").html();
+       	$("body").html(printArea);
+       	window.print();
+       	pageInit()
+       }
+       function pageInit(){
+    	   location.reload()
+       }
 </script>
 </html>
 
