@@ -95,5 +95,7 @@ public interface OrderRecordMapper {
     List<OrderRecord> getOrderRecordListByDescAndShopIdDAO(@Param("shopId") int shopId, @Param("orderDesc") String orderDesc, @Param("keyWord") String keyWord);
 
     OrderProduct getOrderProduct(Integer id);
+
+    int getOrderHasDealedQuantities(@Param("shopId") Integer shopId, @Param("startDate") String dateStart, @Param("endDate") String dateEnd);
     /* =====================JSP页面接口结束====================== */
 }

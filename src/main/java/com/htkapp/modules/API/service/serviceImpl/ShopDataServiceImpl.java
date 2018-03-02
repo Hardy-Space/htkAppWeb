@@ -19,13 +19,11 @@ import com.htkapp.modules.API.entity.Account;
 import com.htkapp.modules.API.entity.AccountFocus;
 import com.htkapp.modules.API.service.AccountFocusService;
 import com.htkapp.modules.API.service.AccountServiceI;
-import com.htkapp.modules.API.service.BuffetFoodService;
 import com.htkapp.modules.API.service.ShopDataService;
 import com.htkapp.modules.admin.shopCategory.entity.ShopCategory;
 import com.htkapp.modules.admin.shopCategory.service.ShopCategoryService;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrder;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodOrderProduct;
-import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodProduct;
 import com.htkapp.modules.merchant.buffetFood.service.BuffetFoodOrderProductService;
 import com.htkapp.modules.merchant.buffetFood.service.BuffetFoodOrderService;
 import com.htkapp.modules.merchant.common.dto.MerchantReplyInfo;
@@ -59,12 +57,10 @@ import com.htkapp.modules.merchant.takeout.service.TakeoutCategoryServiceI;
 import com.htkapp.modules.merchant.takeout.service.TakeoutProductServiceI;
 import com.xiaoleilu.hutool.date.DateUtil;
 import com.xiaoleilu.hutool.util.RandomUtil;
-import jdk.nashorn.internal.objects.Global;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.xiaoleilu.hutool.date.DateUtil.NORM_DATETIME_PATTERN;
@@ -1158,6 +1154,27 @@ public class ShopDataServiceImpl implements ShopDataService {
                         for (Shop each : shops) {
                             each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
                             each.setCollection(true);
+
+                            /**
+                             * @author 马鹏昊
+                             * @desc 查询每个商家最新一个月的销售数量（收货成功的）
+                             */
+                            Date currentTime = new Date();
+                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            Calendar c = Calendar.getInstance();
+//                            long monthStart = currentTime.getTime()-(1000*60*60*24*30L);
+//                            String dateStart = formatter.format(monthStart);
+                            String dateEnd = formatter.format(currentTime);
+
+                            //过去一月
+                            c.setTime(new Date());
+                            c.add(Calendar.MONTH, -1);
+                            Date m = c.getTime();
+                            String dateStart = formatter.format(m);
+//                            System.out.println("过去一个月："+dateStart);
+
+                            int row = orderRecordService.getOrderQuantities(each.getShopId(),dateStart,dateEnd);
+                            each.setMonthlySalesVolume(row);
                         }
                         //要返回的此分类下的所有商家集合（包括商家已关注的和被推荐的）
                         RecommendedShopInfo info = new RecommendedShopInfo();
@@ -1176,6 +1193,27 @@ public class ShopDataServiceImpl implements ShopDataService {
                                     if (each.getLogoUrl() != null) {
                                         each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
                                     }
+                                    /**
+                                     * @author 马鹏昊
+                                     * @desc 查询每个商家最新一个月的销售数量（收货成功的）
+                                     */
+                                    Date currentTime = new Date();
+                                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    Calendar c = Calendar.getInstance();
+//                            long monthStart = currentTime.getTime()-(1000*60*60*24*30L);
+//                            String dateStart = formatter.format(monthStart);
+                                    String dateEnd = formatter.format(currentTime);
+
+                                    //过去一月
+                                    c.setTime(new Date());
+                                    c.add(Calendar.MONTH, -1);
+                                    Date m = c.getTime();
+                                    String dateStart = formatter.format(m);
+//                            System.out.println("过去一个月："+dateStart);
+
+                                    int row = orderRecordService.getOrderQuantities(each.getShopId(),dateStart,dateEnd);
+                                    each.setMonthlySalesVolume(row);
+
                                 }
                                 //根据距离过滤商家
                                 if (distanceType != 0) {
@@ -1202,6 +1240,27 @@ public class ShopDataServiceImpl implements ShopDataService {
                                 if (each.getLogoUrl() != null) {
                                     each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
                                 }
+
+                                /**
+                                 * @author 马鹏昊
+                                 * @desc 查询每个商家最新一个月的销售数量（收货成功的）
+                                 */
+                                Date currentTime = new Date();
+                                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                Calendar c = Calendar.getInstance();
+//                            long monthStart = currentTime.getTime()-(1000*60*60*24*30L);
+//                            String dateStart = formatter.format(monthStart);
+                                String dateEnd = formatter.format(currentTime);
+
+                                //过去一月
+                                c.setTime(new Date());
+                                c.add(Calendar.MONTH, -1);
+                                Date m = c.getTime();
+                                String dateStart = formatter.format(m);
+//                            System.out.println("过去一个月："+dateStart);
+
+                                int row = orderRecordService.getOrderQuantities(each.getShopId(),dateStart,dateEnd);
+                                each.setMonthlySalesVolume(row);
                             }
                             //根据距离过滤商家
                             if (distanceType != 0) {
@@ -1221,6 +1280,26 @@ public class ShopDataServiceImpl implements ShopDataService {
                         for (Shop each : shopList) {
                             each.setCollection(true);
                             each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
+                            /**
+                             * @author 马鹏昊
+                             * @desc 查询每个商家最新一个月的销售数量（收货成功的）
+                             */
+                            Date currentTime = new Date();
+                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            Calendar c = Calendar.getInstance();
+//                            long monthStart = currentTime.getTime()-(1000*60*60*24*30L);
+//                            String dateStart = formatter.format(monthStart);
+                            String dateEnd = formatter.format(currentTime);
+
+                            //过去一月
+                            c.setTime(new Date());
+                            c.add(Calendar.MONTH, -1);
+                            Date m = c.getTime();
+                            String dateStart = formatter.format(m);
+//                            System.out.println("过去一个月："+dateStart);
+
+                            int row = orderRecordService.getOrderQuantities(each.getShopId(),dateStart,dateEnd);
+                            each.setMonthlySalesVolume(row);
                         }
                         RecommendedShopInfo info = new RecommendedShopInfo();
                         //根据距离过滤商家
@@ -1236,6 +1315,26 @@ public class ShopDataServiceImpl implements ShopDataService {
                                     if (each.getLogoUrl() != null) {
                                         each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
                                     }
+                                    /**
+                                     * @author 马鹏昊
+                                     * @desc 查询每个商家最新一个月的销售数量（收货成功的）
+                                     */
+                                    Date currentTime = new Date();
+                                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    Calendar c = Calendar.getInstance();
+//                            long monthStart = currentTime.getTime()-(1000*60*60*24*30L);
+//                            String dateStart = formatter.format(monthStart);
+                                    String dateEnd = formatter.format(currentTime);
+
+                                    //过去一月
+                                    c.setTime(new Date());
+                                    c.add(Calendar.MONTH, -1);
+                                    Date m = c.getTime();
+                                    String dateStart = formatter.format(m);
+//                            System.out.println("过去一个月："+dateStart);
+
+                                    int row = orderRecordService.getOrderQuantities(each.getShopId(),dateStart,dateEnd);
+                                    each.setMonthlySalesVolume(row);
                                     System.out.println("重复了");
                                 }
                                 //根据距离过滤商家
@@ -1261,6 +1360,26 @@ public class ShopDataServiceImpl implements ShopDataService {
                                     each.setLogoUrl(OtherUtils.getRootDirectory() + each.getLogoUrl());
                                 }
                                 System.out.println("重复了");
+                                /**
+                                 * @author 马鹏昊
+                                 * @desc 查询每个商家最新一个月的销售数量（收货成功的）
+                                 */
+                                Date currentTime = new Date();
+                                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                Calendar c = Calendar.getInstance();
+//                            long monthStart = currentTime.getTime()-(1000*60*60*24*30L);
+//                            String dateStart = formatter.format(monthStart);
+                                String dateEnd = formatter.format(currentTime);
+
+                                //过去一月
+                                c.setTime(new Date());
+                                c.add(Calendar.MONTH, -1);
+                                Date m = c.getTime();
+                                String dateStart = formatter.format(m);
+//                            System.out.println("过去一个月："+dateStart);
+
+                                int row = orderRecordService.getOrderQuantities(each.getShopId(),dateStart,dateEnd);
+                                each.setMonthlySalesVolume(row);
                             }
                             //根据距离过滤商家
                             if (distanceType != 0) {
