@@ -66,4 +66,19 @@ public class AccountTicketListServiceImpl implements AccountTicketListService {
         }
     }
 
+	@Override
+	public AccountTicketList getTicketByTokenAndShopIdAndTicketId(Integer ticketId, String token, int shopId) {
+		AccountTicketList atl=accountTicketListDao.getTicketByTokenAndShopIdAndTicketId(ticketId, token, shopId);
+		if(atl!=null) {
+			return atl;
+		}
+		return null;
+	}
+
+	@Override
+	public int updataTicketByTokenAndShopIdAndTicketId(Integer ticketId, String token, int shopId,int ticketQuantity) {
+		int a=accountTicketListDao.updataTicketByTokenAndShopIdAndTicketId(ticketId, token, shopId, ticketQuantity);
+		return 0;
+	}
+
 }

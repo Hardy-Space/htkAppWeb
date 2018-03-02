@@ -17,4 +17,9 @@ public interface AccountTicketListMapper {
     List<AccountTicketList> getTicketListByTokenAndCouponIdDAO(String token, Integer ticket_id);
 
     int updateTicketListByTokenAndCouponIdDAO(@Param("ticketQuantity") int ticketQuantity,@Param("token") String token,@Param("ticket_id") Integer couponId);
+    
+    //通过优惠券id、店铺id、用户token查询对应的优惠券
+    AccountTicketList getTicketByTokenAndShopIdAndTicketId(Integer ticketId,String token, int shopId);
+  //通过优惠券id、店铺id、用户token更新对应的优惠券
+    int updataTicketByTokenAndShopIdAndTicketId(Integer ticketId, String token, int shopId,int ticketQuantity);
 }

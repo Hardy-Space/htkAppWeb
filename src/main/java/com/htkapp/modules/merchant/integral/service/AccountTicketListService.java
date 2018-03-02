@@ -19,4 +19,9 @@ public interface AccountTicketListService {
 
     //更新用户优惠券数量
     void updateTicketListByTokenAndCouponIdDAO(int ticketQuantity,String token,Integer couponId);
+    //通过优惠券id、店铺id、用户token查询对应的优惠券
+    AccountTicketList getTicketByTokenAndShopIdAndTicketId(Integer ticketId,String token, int shopId);
+    //通过优惠券id、店铺id、用户token更新对应的优惠券
+    int updataTicketByTokenAndShopIdAndTicketId(Integer ticketId,String token, int shopId,int ticketQuantity);
+    
 }

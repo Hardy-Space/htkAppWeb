@@ -378,6 +378,7 @@ public class IntegralAPIServiceImpl implements IntegralAPIService {
         if (params != null && params.getShopId() != null && params.getTicketId() != null && params.getToken() != null) {
             //店铺id, 优惠券id, 用户token
             try {
+            	Shop takeOutShop=shopService.getShopDataByAccountShopId(params.getShopId());
                 AccountSaverTicket saverTicket = saverTicketService.getTicketMesByIdAndShopId(params.getTicketId(), params.getShopId());
                 Account account = accountService.selectByToken(params.getToken());
                 //1.根据店铺id和优惠id 查询优惠券  验证优惠券是否存，是否是当前店铺下的优惠券
@@ -394,7 +395,13 @@ public class IntegralAPIServiceImpl implements IntegralAPIService {
                         ticketList.setShopId(params.getShopId());
                         ticketList.setUsePhone(account.getPhone());
                         ticketList.setTicketId(params.getTicketId());
-                        ticketListService.insertAccountTicket(ticketList);
+                        AccountTicketList hasTicketList=ticketListService.getTicketByTokenAndShopIdAndTicketId(params.getTicketId(), params.getToken(), takeOutShop.getShopId());
+                        if(hasTicketList!=null) {
+                        	hasTicketList.setQuantity(hasTicketList.getQuantity()+1);
+                        	ticketListService.updataTicketByTokenAndShopIdAndTicketId(params.getTicketId(), params.getToken(), takeOutShop.getShopId(), hasTicketList.getQuantity());
+                        }else {
+                        	  ticketListService.insertAccountTicket(ticketList);
+                        }
                         //2.减用户积分   0减  1加
                         integralService.presentOrDeductionIntegralByToken(params.getToken(), params.getShopId(), saverTicket.getIntegralValue(), 0);
                         //3.增加积分消费记录
@@ -421,9 +428,7 @@ public class IntegralAPIServiceImpl implements IntegralAPIService {
                         Date d = new Date();
                         String dateStr = df.format(d);
                         integralService.updateLatestConsumeTime(params.getToken(), params.getShopId(),dateStr);
-
-
-                        return new APIResponseModel(Globals.API_SUCCESS);
+                        return new APIResponseModel(Globals.API_SUCCESS,"兑换成功");
                     }
                     return new APIResponseModel(Globals.API_FAIL, "积分值不足");
                 }
