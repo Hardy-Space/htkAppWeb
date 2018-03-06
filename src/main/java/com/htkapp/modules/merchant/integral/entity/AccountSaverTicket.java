@@ -23,6 +23,18 @@ public class AccountSaverTicket {
 
     private String jsonStr;
 
+    /**
+     * @author 马鹏昊
+     * @desc 保存此优惠券的数量
+     */
+    private int quantity;
+    public int getQuantity() {
+        return quantity;
+    }
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     public Integer getId() {
         return id;
     }

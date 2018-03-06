@@ -150,6 +150,11 @@ public class IntegralAPIServiceImpl implements IntegralAPIService {
                         AccountSaverTicket saverTicket = saverTicketService.getTicketMesByIdAndShopId(each.getTicketId(), params.getShopId());
                         if (saverTicket != null) {
                             saverTicket.settUsePhone(each.getUsePhone());
+                            /**
+                             * @author 马鹏昊
+                             * @desc 保存此优惠券的数量
+                             */
+                            saverTicket.setQuantity(each.getQuantity());
                         }
                         saverTicketList.add(saverTicket);
                     }
