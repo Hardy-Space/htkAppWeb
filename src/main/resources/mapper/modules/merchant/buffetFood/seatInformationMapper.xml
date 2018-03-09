@@ -3,7 +3,7 @@
 <mapper namespace="com.htkapp.modules.merchant.buffetFood.dao.SeatInformationMapper">
 
     <sql id="Base_Column_List">
-        id,seat_name, number_seat, shop_id,seat_status
+        id,seat_name, number_seat, shop_id,seat_status,use_seat_time
     </sql>
     
     <!-- =====================接口开始======================= -->
@@ -14,9 +14,9 @@
         from seat_information
         where shop_id = #{shopId} and seat_status = 0
     </select>
-<update id="updataSeatInfoByShopId">
+	<update id="updataSeatInfoByShopId">
 		update seat_information
-	set seat_status=#{b}
+		set seat_status=#{b}
 		where seat_name=#{bfo.seatName} and shop_id = #{bfo.shopId}
 	</update>
 	<!-- //根据商户id查找商铺下所有的座位信息-->
@@ -76,6 +76,15 @@
 		seat_name=#{newSeat.seatName}
 		</if>
 		where seat_name=#{oldName} and shop_id=#{newSeat.shopId}
+	</update>
+	<select id="getSeatInformationByShopIdAndSeatName" resultType="SeatInformation">
+	select * from seat_information
+	where shop_id=#{0} and seat_name=#{1}
+	</select>
+	<update id="updataSeatInfoBySeatNameAndShopId" parameterType="SeatInformation">
+		update seat_information
+		set seat_status=#{seatStatus},use_seat_time=#{useSeatTime}
+		where shop_id=#{shopId} and seat_name=#{seatName}
 	</update>
     <!-- =====================接口结束======================= -->
 

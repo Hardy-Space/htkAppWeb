@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.htkapp.core.utils.StringUtils;
 import com.htkapp.modules.merchant.integral.entity.AccountUseTicketList;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -39,9 +40,9 @@ public class BuffetFoodOrder {
     private String token;  //app用户token
 
     private Integer shopId;   //店铺id
-
+    
     private String orderTime;   //下单时间
-
+    
     private String orderHandle;
 
     private String shopName;  //店铺名
@@ -68,9 +69,11 @@ public class BuffetFoodOrder {
     
     private int adjustState;//调单状态
     
+    
     private List<AccountUseTicketList> ticketList;//用户名下的优惠券
+    
 
-    public String getLogoUrl() {
+	public String getLogoUrl() {
 		return logoUrl;
 	}
 
@@ -298,6 +301,7 @@ public class BuffetFoodOrder {
     public void setSum(int sum) {
         this.sum = sum;
     }
+
 	@Override
 	public String toString() {
 		return "BuffetFoodOrder [id=" + id + ", orderNumber=" + orderNumber + ", orderAmount=" + orderAmount
@@ -305,9 +309,11 @@ public class BuffetFoodOrder {
 				+ ", seatName=" + seatName + ", paymentMethod=" + paymentMethod + ", orderState=" + orderState
 				+ ", productLists=" + productLists + ", jsonProductList=" + jsonProductList + ", token=" + token
 				+ ", shopId=" + shopId + ", orderTime=" + orderTime + ", orderHandle=" + orderHandle + ", shopName="
-				+ shopName + ", adjustOrderJson=" + adjustOrderJson + ", adjustOrderProductJson="
-				+ adjustOrderProductJson + ", remark=" + remark + ", payState=" + payState + ", serialNumber="
-				+ serialNumber + ", allSerialNumber=" + allSerialNumber + ", discountCouponId=" + discountCouponId
-				+ ", minute=" + minute + ", sum=" + sum + "]";
+				+ shopName + ", logoUrl=" + logoUrl + ", adjustOrderJson=" + adjustOrderJson
+				+ ", adjustOrderProductJson=" + adjustOrderProductJson + ", remark=" + remark + ", payState=" + payState
+				+ ", serialNumber=" + serialNumber + ", allSerialNumber=" + allSerialNumber + ", discountCouponId="
+				+ discountCouponId + ", minute=" + minute + ", sum=" + sum + ", adjustState=" + adjustState
+				+ ", ticketList=" + ticketList + "]";
 	}
+	
 }

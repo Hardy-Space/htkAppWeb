@@ -398,7 +398,10 @@ public class IntegralAPIServiceImpl implements IntegralAPIService {
                         AccountTicketList hasTicketList=ticketListService.getTicketByTokenAndShopIdAndTicketId(params.getTicketId(), params.getToken(), takeOutShop.getShopId());
                         if(hasTicketList!=null) {
                         	hasTicketList.setQuantity(hasTicketList.getQuantity()+1);
-                        	ticketListService.updataTicketByTokenAndShopIdAndTicketId(params.getTicketId(), params.getToken(), takeOutShop.getShopId(), hasTicketList.getQuantity());
+                        	int a =ticketListService.updataTicketByTokenAndShopIdAndTicketId(params.getTicketId(), params.getToken(), takeOutShop.getShopId(), hasTicketList.getQuantity());
+                        	if(a<=0) {
+                        		return new APIResponseModel(Globals.API_FAIL);
+                        	}
                         }else {
                         	  ticketListService.insertAccountTicket(ticketList);
                         }
@@ -413,13 +416,23 @@ public class IntegralAPIServiceImpl implements IntegralAPIService {
                         integralRecord.setShopId(params.getShopId());
                         integralRecordService.insertIntegralRecord(integralRecord);
                         //4.插入商家优惠券兑换记录
+                        //TODO
+                        //为商家插入优惠券记录增加唯一性保障
                         ShopSaverTicketRecord ticketRecord = new ShopSaverTicketRecord();
                         ticketRecord.setAccountToken(params.getToken());
                         ticketRecord.setQuantity(1); //默认为1
                         ticketRecord.setShopId(params.getShopId());
                         ticketRecord.setTicketId(params.getTicketId());
-                        shopSaverTicketRecordService.insertAccountExchangeRecord(ticketRecord);
-
+                        ShopSaverTicketRecord str = shopSaverTicketRecordService.getTicketByTokenAndShopIdAndTicketId(params.getTicketId(), params.getToken(), takeOutShop.getShopId());
+                        if(str!=null) {
+                        	str.setQuantity(str.getQuantity()+1);
+                        	int a =shopSaverTicketRecordService.updateAccountExchangeRecordDao(params.getTicketId(), params.getToken(), takeOutShop.getShopId(), str.getQuantity());
+                        	if(a<=0) {
+                        		return new APIResponseModel(Globals.API_FAIL);
+                        	}
+                        }else {
+                        	shopSaverTicketRecordService.insertAccountExchangeRecord(ticketRecord);
+                        }
                         /**
                          * @author 马鹏昊
                          * @desc 修改最近消费时间（gmt_modified字段）

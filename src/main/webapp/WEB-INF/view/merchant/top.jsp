@@ -161,7 +161,7 @@
                 <dd class="${int_mark_list ? "layui-this" : ""}"><a href="${sysPath}merchant/integral/list">积分列表</a>
                 </dd>
                 <dd class="${int_mark_active ? "layui-this" : ""}"><a href="${sysPath}merchant/integral/getNewActivePage">积分活动</a></dd>
-                <!-- <dd class="${int_mark_seatOrder ? "layui-this" : ""}"><a href="${sysPath}merchant/integral/seatOrder">订座订单</a></dd> -->
+                <dd class="${int_mark_seatOrder ? "layui-this" : ""}"><a href="${sysPath}merchant/integral/seatOrder">订座订单</a></dd>
             </dl>
         </li>
         <li class="layui-nav-item ${bil_mark ? "layui-nav-itemed" : ""}">
@@ -175,7 +175,8 @@
             <a><i class="fa fa-link" aria-hidden="true"></i>门店信息</a>
             <dl class="layui-nav-child">
                 <dd class="${sto_mark_s ? "layui-this" : ""}"><a href="${sysPath}merchant/shopInfo/store">店铺</a></dd>
-<dd class="${sto_mark_seat_info ? "layui-this" : ""}"><a href="${sysPath}merchant/shopInfo/setSeatInfo">座位信息管理</a></dd>
+                <dd class="${sto_mark_seat_manage ? "layui-this":""}"><a href="${sysPath}merchant/shopInfo/SeatInfoManage">座位管理</a></dd>
+				<dd class="${sto_mark_seat_info ? "layui-this" : ""}"><a href="${sysPath}merchant/shopInfo/setSeatInfo">座位信息管理</a></dd>
             </dl>
         </li>
     </ul>

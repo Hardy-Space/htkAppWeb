@@ -55,22 +55,17 @@ public class SeatInformationServiceImpl implements SeatInformationService{
     @Override
    public AjaxResponseModel<SeatInformation> addSeatInfoByShopId(SeatInformation seat){
         try {
-	//获取店铺当中所有的座位号
-        	List<SeatInformation> list=seatInformationDao.getSeatInformationListByShopId(seat.getShopId());
-        	Map<String,Object> map=new HashMap<String,Object>();
-        	for(int a=0;a<list.size();a++) {
-        		map.put(list.get(a).getSeatName(), list.get(a).getSeatName());
-        	}
-        	//判断添加的座位信息当中是否已经存在数据库中
-        	if(!map.containsValue(seat.getSeatName())) {
-    			int a =seatInformationDao.addSeatInfoByShopId(seat);
-    			if(a<=0) {
-    				 return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED,"添加失败");
-    			}
+        	SeatInformation oldseat=seatInformationDao.getSeatInformationByShopIdAndSeatName(seat.getShopId(), seat.getSeatName());
+        	if(oldseat==null) {
+        		int a=seatInformationDao.addSeatInfoByShopId(seat);
+        		if(a<=0) {
+        			 return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED,"添加失败");
+        		}
     		}else {
     			 return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED,"座位已存在");
     		}
-            return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION,"添加成功");
+        	SeatInformation returnseat=seatInformationDao.getSeatInformationByShopIdAndSeatName(seat.getShopId(), seat.getSeatName());
+            return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION,"添加成功",returnseat);
         } catch (Exception e) {
             return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED,"添加失败");
         }
@@ -102,7 +97,26 @@ public class SeatInformationServiceImpl implements SeatInformationService{
 		}
 		return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION,"修改成功");
 	}
+	//获得单独的某条座位信息
+	@Override
+	public SeatInformation getSeatInformationByShopIdAndSeatName(int shopId, String seatName) {
+		SeatInformation sif=seatInformationDao.getSeatInformationByShopIdAndSeatName(shopId, seatName);
+		if(sif!=null) {
+			return sif;
+		}
+		return sif;
+	}
 
+	@Override
+	public int updataSeatInfoBySeatNameAndShopId(SeatInformation seat) {
+		int a =seatInformationDao.updataSeatInfoBySeatNameAndShopId(seat);
+		if(a<=0) {
+			return a;
+		} 
+		return a;
+	}
+	
+	
 
 
 

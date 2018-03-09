@@ -532,10 +532,10 @@
 <%@include file="footer.jsp" %>
 	<div class="modal printArea" style="background-color:#fff;">
         <div class="print_container">
-            <h1 class="useTitle">给顾客专用</h1>
+            <h1 class="useTitle">顾客专用</h1>
             <span>**************************</span>
             <div class="section1">
-                <h3 class="useLittleTitle">自助点餐结账单</h3>
+                <h3 class="useLittleTitle">自助点餐已结账单</h3>
             </div>
             <span>**************************</span>
             <div class="section3">
@@ -665,10 +665,7 @@
        	var printArea=$(".printArea").html();
        	$("body").html(printArea);
        	window.print();
-       	pageInit()
-       }
-       function pageInit(){
-    	   location.reload()
+       	$("body").html(body);
        }
 
     //查询按钮绑定点击事件

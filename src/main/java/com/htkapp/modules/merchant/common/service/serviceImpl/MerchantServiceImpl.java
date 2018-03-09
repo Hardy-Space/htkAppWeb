@@ -1,6 +1,5 @@
 package com.htkapp.modules.merchant.common.service.serviceImpl;
 
-import com.alibaba.druid.pool.vendor.SybaseExceptionSorter;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -1406,7 +1405,34 @@ public class MerchantServiceImpl implements MerchantService {
 						return;
 					}
 				}
+			}
 
+			@Override
+			public void manageSeatInfo(RequestParams params) {
+				if(params!=null) {
+					LoginUser user;
+					try {
+						user = OtherUtils.getLoginUserByRequest();
+						Shop shop = shopService.getShopMessageById(user.getUserId(), 2);
+						Model model = params.getModel();
+						List<SeatInformation> list=new ArrayList<SeatInformation>();
+						if(shop!=null) {
+							list=seatInofService.getSeatInformationAllByShopId(shop.getShopId());
+							for(SeatInformation sif:list) {
+								BuffetFoodOrder bfo=buffetFoodOrderService.getBuffetFoodOrderByOrderStateAndSeatName(sif.getSeatName());
+								if(bfo!=null) {
+									String a=bfo.getOrderTime().substring(bfo.getOrderTime().indexOf(" ")+1,bfo.getOrderTime().lastIndexOf("."));
+									bfo.setOrderTime(a);
+									sif.setBfo(bfo);
+								}
+							}
+						}
+						model.addAttribute("list",list);
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				}
 			}
 
 			/* ===================JSP接口结束======================= */

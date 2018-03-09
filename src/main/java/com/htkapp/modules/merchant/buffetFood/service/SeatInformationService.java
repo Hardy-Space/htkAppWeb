@@ -24,6 +24,10 @@ public interface SeatInformationService {
     AjaxResponseModel<SeatInformation> delSeatInfoByShopIdAndId(SeatInformation seat);
     //修改座位信息
     AjaxResponseModel<SeatInformation> updataSeatInfoBySeatName(SeatInformation seat,String oldName);
+    //通过座位名称以及店铺id查询对应的座位信息
+    SeatInformation getSeatInformationByShopIdAndSeatName(int shopId,String seatName);
+  //通过座位名称以及店铺id修改特定座位的状态以及入座时间(仅限点击座位管理修改状态)
+    int updataSeatInfoBySeatNameAndShopId(SeatInformation seat);
 
     /* =====================接口开始======================= */
 }

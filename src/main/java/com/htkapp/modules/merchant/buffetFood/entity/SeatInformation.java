@@ -14,8 +14,28 @@ public class SeatInformation {
     private Integer shopId;  //商铺id
 
     private Integer seatStatus;   //座位状态
+    
+    private BuffetFoodOrder bfo; //座位相关的订单
+    
+    private String useSeatTime;
 
-    public Integer getId() {
+    public String getUseSeatTime() {
+		return useSeatTime;
+	}
+
+	public void setUseSeatTime(String useSeatTime) {
+		this.useSeatTime = useSeatTime;
+	}
+
+	public BuffetFoodOrder getBfo() {
+		return bfo;
+	}
+
+	public void setBfo(BuffetFoodOrder bfo) {
+		this.bfo = bfo;
+	}
+
+	public Integer getId() {
         return id;
     }
 

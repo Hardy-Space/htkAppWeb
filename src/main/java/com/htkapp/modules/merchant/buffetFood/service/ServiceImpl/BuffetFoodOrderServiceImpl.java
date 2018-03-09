@@ -349,6 +349,16 @@ public class BuffetFoodOrderServiceImpl implements BuffetFoodOrderService {
 		return null;
 	}
 
+	@Override
+	public BuffetFoodOrder getBuffetFoodOrderByOrderStateAndSeatName(String seatName) {
+		int orderstate=1;
+		BuffetFoodOrder bfo=buffetFoodOrderDao.getBuffetFoodOrderByOrderStateAndSeatName(seatName, orderstate);
+		if(bfo!=null) {
+			return bfo;
+		}
+		return bfo;
+	}
+
 
     /* ============================JSP页面接口结束===================================== */
 }

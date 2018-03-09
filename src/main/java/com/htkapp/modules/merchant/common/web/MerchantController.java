@@ -936,7 +936,6 @@ public class MerchantController {
     }
 
 //座位信息管理
-//座位信息管理
     @RequestMapping(value = "/shopInfo/setSeatInfo", method = RequestMethod.GET)
     public String setSeatInfo(Model model, RequestParams params) {
         Map<String, Object> map = new HashMap<>();
@@ -948,5 +947,17 @@ public class MerchantController {
         merchantService.getSeatInfo(params);
         return mDirectory + "set_Seat_Info";
     }
-
+    //座位管理
+    @RequestMapping(value = "/shopInfo/SeatInfoManage", method = RequestMethod.GET)
+    public String SeatInfoManage(Model model, RequestParams params) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("sto_mark", true);
+        map.put("sto_mark_seat_info", true);
+        map.put("sto_mark_seat_manage", true);
+        map.put("date", new Date().getTime());
+        OtherUtils.ReturnValByModel(model, map);
+        params.setModel(model);
+        merchantService.manageSeatInfo(params);
+        return mDirectory + "seat_Info_Manager";
+    }
 }

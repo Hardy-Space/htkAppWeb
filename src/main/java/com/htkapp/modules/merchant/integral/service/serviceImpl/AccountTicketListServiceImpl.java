@@ -78,7 +78,10 @@ public class AccountTicketListServiceImpl implements AccountTicketListService {
 	@Override
 	public int updataTicketByTokenAndShopIdAndTicketId(Integer ticketId, String token, int shopId,int ticketQuantity) {
 		int a=accountTicketListDao.updataTicketByTokenAndShopIdAndTicketId(ticketId, token, shopId, ticketQuantity);
-		return 0;
+		if(a<=0) {
+			return a;
+		}
+		return a;
 	}
 
 }

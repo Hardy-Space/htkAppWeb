@@ -228,6 +228,13 @@
         from buffet_food_order
         where account_token = #{token} and shop_id=#{shopId}
     </select>
+	<select id="getBuffetFoodOrderByOrderStateAndSeatName" resultType="BuffetFoodOrder">
+	  select id, order_number, order_amount, discount_amount, order_body,seat_name,
+        payment_method, order_state, account_token, shop_id, mark, reminder_state,
+        adjust_order_json,adjust_order_product_json adjustOrderProductJson, remark, serial_number, all_serial_number, gmt_create as orderTime
+        from buffet_food_order
+	where seat_name=#{0}  and order_state=#{1}
+	</select>
     
     <!-- =========================接口结束============================= -->
 

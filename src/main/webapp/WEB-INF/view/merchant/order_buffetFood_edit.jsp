@@ -648,10 +648,10 @@
 
 	<div class="modal printArea" style="background-color:#fff;">
         <div class="print_container">
-            <h1 class="useTitle">给顾客专用</h1>
+            <h1 class="useTitle">厨房专用</h1>
             <span>**************************</span>
             <div class="section1">
-                <h3 class="useLittleTitle">自助点餐结账单</h3>
+                <h3 class="useLittleTitle">自助点餐调整订单</h3>
             </div>
             <span>**************************</span>
             <div class="section3">
@@ -671,7 +671,6 @@
                             <tr>
                                 <td width="60%">菜单名称</td>
                                 <td width="20%">数量</td>
-                                <td width="20%">金额</td>
                             </tr>
                         </thead>
                         <tbody id="orderProduct">
@@ -824,7 +823,6 @@
               var insertStr = "<tr>"+
               "<td>"+item.productName+"</td>"+
               "<td>"+item.productQuantity+"</td>"+
-              "<td>"+item.price+"</td>"+
               "</tr>"
               productItems.append(insertStr);
           })
@@ -835,10 +833,7 @@
        	var printArea=$(".printArea").html();
        	$("body").html(printArea);
        	window.print();
-       	pageInit()
-       }
-       function pageInit(){
-    	   location.reload()
+       	$("body").html(body);
        }
 </script>
 </html>

@@ -612,7 +612,7 @@
 	</div>
 	<div class="modal printArea" style="background-color:#fff;">
         <div class="print_container">
-            <h1 class="useTitle">给顾客专用</h1>
+            <h1 class="useTitle">顾客专用</h1>
             <span>**************************</span>
             <div class="section1">
                 <h3 class="useLittleTitle">自助点餐结账单</h3>
@@ -932,11 +932,16 @@ function updataPrintArea(){
 	 printArea()
 }
     function printArea(){
+    	debugger
     	var body=$("body").html();
     	var printArea=$(".printArea").html();
+    	var model=$("#myModal").html();
     	$("body").html(printArea);
     	window.print();
     	pageInit()
+     	 $('#myModal').modal('show');
+    	$("#myModal").html(model);
+    	
     }
     function pageInit(){
     	location.reload()

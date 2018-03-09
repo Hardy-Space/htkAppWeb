@@ -51,6 +51,9 @@ public interface BuffetFoodOrderService {
     void updataOrderAdjustState(BuffetFoodOrder order);
     
     public List<BuffetFoodOrder> getOrderListByTokenAndShopId(String token,int shopId);
+    //通过座位名称以及订单状态查询当前座位上的订单
+    BuffetFoodOrder getBuffetFoodOrderByOrderStateAndSeatName(String seatName);
+    
     /* =====================接口结束===================== */
 
     /* =======================JSP页面接口开始=============================== */

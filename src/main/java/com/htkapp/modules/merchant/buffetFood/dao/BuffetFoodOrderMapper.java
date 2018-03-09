@@ -47,6 +47,8 @@ public interface BuffetFoodOrderMapper {
     int updataOrderAdjustState(BuffetFoodOrder order);
     //根据用户token以及店铺查询订单
     List<BuffetFoodOrder> getOrderListByTokenAndShopId(@Param("token")String token,@Param("shopId")int shopId);
+    //通过座位名称以及订单状态查询座位上的订单信息
+    BuffetFoodOrder getBuffetFoodOrderByOrderStateAndSeatName(String seatName,int orderstate);
     /* ===================接口结束======================= */
 
 

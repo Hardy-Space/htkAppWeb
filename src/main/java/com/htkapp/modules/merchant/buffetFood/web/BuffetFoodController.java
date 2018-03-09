@@ -317,11 +317,11 @@ public class BuffetFoodController {
 	@ResponseBody
 	public AjaxResponseModel addaddSeatInfo(String shopId,String seatName,String numberSeat){
 		if(shopId!=null||seatName!=null||numberSeat!=null) {
-			SeatInformation seat=new SeatInformation();
-			seat.setNumberSeat(Integer.parseInt(numberSeat));
-			seat.setSeatName(seatName);
-			seat.setShopId(Integer.parseInt(shopId));
 			try {
+				SeatInformation seat=new SeatInformation();
+				seat.setNumberSeat(Integer.parseInt(numberSeat));
+				seat.setSeatName(seatName);
+				seat.setShopId(Integer.parseInt(shopId));
 				return seatInfo.addSeatInfoByShopId(seat);
 			} catch (Exception e) {
 				return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED,"添加失败");
@@ -352,18 +352,23 @@ public class BuffetFoodController {
 	//点击按钮修改座位状态信息
 	@RequestMapping("/changeStatus")
 	@ResponseBody
-	public AjaxResponseModel updataSeatInfoByOrder(String shopId,String seatName,String status) {
-		BuffetFoodOrder bfo=new BuffetFoodOrder();
-		bfo.setShopId(Integer.parseInt(shopId));
-		bfo.setSeatName(seatName);
-		try {
-			int a=seatInfo.updataSeatInfoByOrder(bfo, Integer.parseInt(status));
-			if(a<=0) {
+	public AjaxResponseModel updataSeatInfoByOrder(String shopId,String seatName,String status,String useSeatTime) {
+		if(shopId!=null&&seatName!=null&&status!=null&&useSeatTime!=null) {
+			SeatInformation sif=new SeatInformation();
+			sif.setShopId(Integer.parseInt(shopId));
+			sif.setSeatName(seatName);
+			sif.setSeatStatus(Integer.parseInt(status));
+			sif.setUseSeatTime(useSeatTime);
+			try {
+				int a=seatInfo.updataSeatInfoBySeatNameAndShopId(sif);
+				if(a<=0) {
+					return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED,"修改失败");
+				}
+			} catch (Exception e) {
 				return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED,"修改失败");
 			}
-		} catch (Exception e) {
-			return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED,"修改失败");
+			return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION,"修改成功");
 		}
-		return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION,"修改成功");
+		return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED,"修改失败");
 	}
 }
