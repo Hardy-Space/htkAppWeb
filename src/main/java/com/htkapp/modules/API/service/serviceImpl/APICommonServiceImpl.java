@@ -95,8 +95,12 @@ public class APICommonServiceImpl implements APICommonService {
 			//这是插入order_record表记录
 			orderRecordService.paymentSuccessfullyCreatedOrder(orderRecord);
 
+			/**
+			 * @author 马鹏昊
+			 * @desc 下面这句是新订单支付完成时催单页面同时会出现新订单的罪魁祸首
+			 */
 			//这是插入takeout_order表记录(和order_record表关联)
-			takeoutOrderService.insertReminderStateByOrderId(orderRecord.getId());
+//			takeoutOrderService.insertReminderStateByOrderId(orderRecord.getId());
 
 			for (OrderProduct each : orderRecord.getProductLists()) {
 				each.setOrderId(orderRecord.getId());

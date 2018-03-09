@@ -254,7 +254,7 @@ function tOrderHandle(statusCode, message, soundsUrl_) {
             default :
                 break;
         }
-        window.location.reload();
+        // window.location.reload();
     }else {
         if (statusCode === 1) {
             //新订单

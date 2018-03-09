@@ -22,6 +22,16 @@ public class ReturnBuffetFoodOrderData {
 
     private Integer adjustState;  //调单状态   0当前状态没有调单   1正在调单
 
+    private String seatName;
+
+    public String getSeatName() {
+        return seatName;
+    }
+
+    public void setSeatName(String seatName) {
+        this.seatName = seatName;
+    }
+
     public String getOrderNumber() {
         return orderNumber;
     }

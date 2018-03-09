@@ -28,10 +28,7 @@ import com.htkapp.modules.merchant.pay.dto.AppAccountInfo;
 import com.htkapp.modules.merchant.pay.entity.BillBalanceSheet;
 import com.htkapp.modules.merchant.pay.entity.OrderProduct;
 import com.htkapp.modules.merchant.pay.entity.OrderRecord;
-import com.htkapp.modules.merchant.pay.service.BillBalanceSheetService;
-import com.htkapp.modules.merchant.pay.service.BillRecordService;
-import com.htkapp.modules.merchant.pay.service.OrderProductService;
-import com.htkapp.modules.merchant.pay.service.OrderRecordService;
+import com.htkapp.modules.merchant.pay.service.*;
 import com.htkapp.modules.merchant.shop.entity.AccountShop;
 import com.htkapp.modules.merchant.shop.entity.Shop;
 import com.htkapp.modules.merchant.shop.service.AccountShopServiceI;
@@ -89,6 +86,9 @@ public class AccountServiceImpl implements AccountServiceI {
     private TakeoutProductServiceI takeoutProductService;
     @Resource
     private IntegralManageRecordService integralManageRecordService;
+
+    @Resource
+    private TakeoutOrderService takeoutOrderService;
 
     /* ====================接口的逻辑处理方法开始========================= */
     //通过手机号注册用户
@@ -760,6 +760,13 @@ public class AccountServiceImpl implements AccountServiceI {
                 Shop shop = shopService.getShopDataById(orderRecord.getShopId());
                 AccountShop accountShop = accountShopService.getAccountShopDataById(shop.getAccountShopId());
                 orderRecordService.changeOrderStateByOrderNumber(orderNumber, Globals.DEFAULT_T_ENTER_RECEIVING);
+
+                /**
+                 * @author 马鹏昊
+                 * @desc 确认收货只修改订单状态，还需要把催单状态取消（takeout_order表里的reminder_state置为0）
+                 */
+                takeoutOrderService.updateReminderStateByOrderId(orderRecord.getId(),0);
+
                 //改变记录状态为已入账(2为已入账)
                 billRecordService.updateBillStatus(accountShop.getToken(),orderNumber, "2");
                 //TODO 记录收入记录

@@ -407,7 +407,7 @@
                                                 </div>
                                                 <div class="buttons">
                                                     <a class="replyMessage"
-                                                       data-num="${each.orderNumber}">回复消息</a>
+                                                       data-num="${each.orderNumber}">确认</a>
                                                 </div>
                                                 <p class="orderSn">${fn:substring(each.orderTime,5 , 19)} 下单 |
                                                     订单编号：${each.orderNumber}</p>
