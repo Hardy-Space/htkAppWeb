@@ -49,6 +49,8 @@ public interface BuffetFoodOrderMapper {
     List<BuffetFoodOrder> getOrderListByTokenAndShopId(@Param("token")String token,@Param("shopId")int shopId);
     //通过座位名称以及订单状态查询座位上的订单信息
     BuffetFoodOrder getBuffetFoodOrderByOrderStateAndSeatName(String seatName,int orderstate);
+    //当座位改变的时候更新数据库的座位名称
+    int updateOrderSeatName(BuffetFoodOrder order);
     /* ===================接口结束======================= */
 
 

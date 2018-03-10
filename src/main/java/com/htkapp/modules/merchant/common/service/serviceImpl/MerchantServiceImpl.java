@@ -1434,7 +1434,7 @@ public class MerchantServiceImpl implements MerchantService {
 					}
 				}
 			}
-
+			//获取订座订单
 			@Override
 			public void getSeatOrder(RequestParams params) {
 				if(params!=null) {
@@ -1444,9 +1444,10 @@ public class MerchantServiceImpl implements MerchantService {
 						accountShopId = OtherUtils.getLoginUserByRequest().getUserId();
 						Shop takeOutShop=shopService.getShopByAccountShopIdAndMark(accountShopId,0);
 						List<SeatInformation> list=seatInofService.getSeatInformationListByShopId(accountShopId);
-						
+						model.addAttribute("list",list);
 					} catch (Exception e) {
 						e.printStackTrace();
+						return;
 					}
 				}
 			}

@@ -47,12 +47,15 @@ public interface BuffetFoodOrderService {
     void enterAdjustOrder(BuffetFoodOrder buffetFoodOrder);
     //调单接口
     void updateOrderAdjustOrderJson(BuffetFoodOrder order);
-    //
+    //更新调单状态
     void updataOrderAdjustState(BuffetFoodOrder order);
-    
+    //通过店铺id以及token获取所哟订单
     public List<BuffetFoodOrder> getOrderListByTokenAndShopId(String token,int shopId);
     //通过座位名称以及订单状态查询当前座位上的订单
     BuffetFoodOrder getBuffetFoodOrderByOrderStateAndSeatName(String seatName);
+    //当座位改变的时候更新数据库的座位名称
+    void updateOrderSeatName(BuffetFoodOrder order);
+    
     
     /* =====================接口结束===================== */
 

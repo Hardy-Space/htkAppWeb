@@ -359,6 +359,14 @@ public class BuffetFoodOrderServiceImpl implements BuffetFoodOrderService {
 		return bfo;
 	}
 
+	@Override
+	public void updateOrderSeatName(BuffetFoodOrder order) {
+		int a=buffetFoodOrderDao.updateOrderSeatName(order);
+		if(a<=0) {
+			throw new UpdateException(Globals.DEFAULT_EXCEPTION_UPDATE_FAILED);
+		}
+	}
+
 
     /* ============================JSP页面接口结束===================================== */
 }

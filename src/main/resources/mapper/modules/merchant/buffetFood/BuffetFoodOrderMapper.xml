@@ -351,6 +351,11 @@
         set adjust_state = #{adjustState}
         where order_number = #{orderNumber}
     </update>
+    <update id="updateOrderSeatName">
+    	update buffet_food_order
+        set seat_name = #{seatName}
+        where order_number = #{orderNumber}
+    </update>
     <select id="getBFOLByToken" resultType="BuffetFoodOrder">
     select
         buffet_food_order.id, buffet_food_order.order_number,
