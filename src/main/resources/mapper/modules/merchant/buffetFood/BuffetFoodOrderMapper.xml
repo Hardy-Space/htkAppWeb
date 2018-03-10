@@ -102,7 +102,7 @@
     </select>
     <select id="getOrderByOrderNumberADAO" resultType="com.htkapp.modules.API.dto.ReturnBuffetFoodOrderData">
         select
-        order_number, gmt_create as orderTime, order_state
+        order_number, gmt_create as orderTime, order_state,seat_name
         from buffet_food_order
         where order_number = #{0}
     </select>

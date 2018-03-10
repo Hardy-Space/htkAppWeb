@@ -1528,6 +1528,14 @@ public class ShopDataServiceImpl implements ShopDataService {
                 Shop shop = shopService.getShopDataById(orderRecord.getShopId());
                 AccountShop accountShop = accountShopService.getAccountShopDataById(shop.getAccountShopId());
                 takeoutOrderService.insertReminderStateByOrderId(orderRecord.getId());
+
+                /**
+                 * @author 马鹏昊
+                 * @desc 插入完立马把催单状态修改成催单中
+                 */
+                takeoutOrderService.updateReminderStateByOrderId(orderRecord.getId(),1);
+
+
                 methodsUtils.pushMesToManagePage(new PushMesEntity(
                         "外卖订单消息", "t", "你有一个催单消息", accountShop.getToken(),
                         't', 6, "您有一个催单消息", accountShop.getId()
