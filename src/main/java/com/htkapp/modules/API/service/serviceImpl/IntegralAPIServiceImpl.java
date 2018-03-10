@@ -455,6 +455,7 @@ public class IntegralAPIServiceImpl implements IntegralAPIService {
                 }
                 return new APIResponseModel(Globals.API_REQUEST_BAD, "请求参数错误，当前店铺下不存在当前要兑换的优惠券");
             } catch (Exception e) {
+            	e.printStackTrace();
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return new APIResponseModel(Globals.API_FAIL);
             }

@@ -42,7 +42,7 @@
     	  set quantity = #{3}
     	  where ticket_id=#{0} and account_token=#{1} and shop_id=#{2}
     </update>
-    <select id="getShopSaverTicketRecordByTokenAndShopIdAndTicketId">
+    <select id="getShopSaverTicketRecordByTokenAndShopIdAndTicketId" resultType="com.htkapp.modules.merchant.shop.entity.ShopSaverTicketRecord">
     	select * from shop_saver_ticket_record 
     	where ticket_id=#{0} and account_token=#{1} and shop_id=#{2}
     </select>
