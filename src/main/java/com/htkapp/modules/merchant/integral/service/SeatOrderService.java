@@ -17,6 +17,8 @@ public interface SeatOrderService {
     SeatOrder getSeatOrderByOrderNumber(String orderNumber);
     //插入座位预定
     void insertSeatOrderByToken(SeatOrder order);
+    //根据店铺号查询店铺名下所有的订座信息
+    List<SeatOrder> getSeatOrderListByShopId(String shopId);
     /* =====================接口结束===================== */
 
     /* ===================JSP接口开始========================= */

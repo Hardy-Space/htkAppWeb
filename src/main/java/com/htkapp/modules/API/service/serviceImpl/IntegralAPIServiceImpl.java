@@ -302,6 +302,10 @@ public class IntegralAPIServiceImpl implements IntegralAPIService {
         if (params != null && order != null) {
             //预定时间、预定人数、预定人姓名、预定手机
             try {
+            	//TODO
+				int accountShopId = OtherUtils.getLoginUserByRequest().getUserId();
+				Shop bfoShop=shopService.getShopByAccountShopIdAndMark(accountShopId,2);
+				order.setShopId(bfoShop.getShopId());
                 order.setOrderNumber(String.valueOf(OrderNumGen.next()));
                 seatOrderService.insertSeatOrderByToken(order);
                 return new APIResponseModel(Globals.API_SUCCESS);

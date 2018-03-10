@@ -141,6 +141,13 @@
             </if>
         </trim>
     </insert>
+    <select  id="getSeatOrderListByShopId" resultType="SeatOrder">
+    	select <include refid="Base_Column_List" />
+    	 from seat_order 
+    	 where shop_id=#{shopId}
+    
+    </select>
+    
     <!-- =====================JSP接口结束============================ -->
 
 </mapper>

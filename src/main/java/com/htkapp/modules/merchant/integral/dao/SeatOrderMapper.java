@@ -20,6 +20,8 @@ public interface SeatOrderMapper {
     int insertSeatOrderByTokenDAO(SeatOrder order);
     //根据订座订单号查询订座详情
     SeatOrderDetail getSeatOrderDetailDAO(String orderNumber, String token);
+    //根据店铺号查询店铺名下所有的订座信息
+    List<SeatOrder> getSeatOrderListByShopId(String shopId);
     /* ========================接口结束======================== */
 
 

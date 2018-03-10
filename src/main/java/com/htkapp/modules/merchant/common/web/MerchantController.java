@@ -731,12 +731,14 @@ public class MerchantController {
 
     //=====订座订单
     @RequestMapping(value = "/integral/seatOrder", method = RequestMethod.GET)
-    public String integralSeatOrder(Model model) {
+    public String integralSeatOrder(Model model,RequestParams params) {
         Map<String, Object> map = new HashMap<>();
         map.put("date", new Date().getTime());
         map.put("int_mark", true);
         map.put("int_mark_seatOrder", true);
         OtherUtils.ReturnValByModel(model, map);
+        merchantService.getSeatOrder(params);
+        //TODO
         return mDirectory + "integral_seatOrder";
     }
 
