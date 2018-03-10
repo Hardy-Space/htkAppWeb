@@ -737,6 +737,7 @@ public class MerchantController {
         map.put("int_mark", true);
         map.put("int_mark_seatOrder", true);
         OtherUtils.ReturnValByModel(model, map);
+        params.setModel(model);
         merchantService.getSeatOrder(params);
         //TODO
         return mDirectory + "integral_seatOrder";

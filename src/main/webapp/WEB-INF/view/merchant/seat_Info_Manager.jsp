@@ -217,12 +217,12 @@
 								<c:if test="${each.bfo!=null }">
 								<span class="orderAmount">¥${each.bfo.orderAmount }</span><br/>
 								</c:if>
-								<c:if test="${each.bfo.orderTime!=null}">
+								<c:when test="${each.bfo.orderTime!=null}">
 								<span class="orderTime">${each.bfo.orderTime }</span>
-								</c:if>
-								<c:if test="${each.useSeatTime!=null}">
+								</c:when>
+								<c:otherwise test="${each.useSeatTime!=null}">
 								<span class="orderTime">${each.useSeatTime }</span>
-								</c:if>
+								</c:otherwise>
 								<span class="numberSeat">${each.numberSeat }</span><br/>
 							</div>
 							</c:if>

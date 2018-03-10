@@ -9,7 +9,9 @@
          pageEncoding="UTF-8" %>
 <script src="${staticFilePath}resource/custom/plugins/layui/layui.js?${date}"></script>
 <!-- 引入jQuery -->
-<script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+<script src="${staticFilePath}resource/plugins/assets/laydate/jquery-3.3.1.js"></script>
+<script src="${staticFilePath}resource/plugins/assets/laydate/jQuery.print.js" ></script>
+<script src="${staticFilePath}resource/plugins/assets/laydate/jquery.PrintArea.js" ></script>
 <!-- 引入兼容IE9 Input placeholder插件 -->
 <script type="text/javascript" src="http://www.ijquery.cn/js/jquery.placeholder.min.js"></script>
 <script type="text/javascript" src="${staticFilePath}resource/custom/js/base.js?${date}"></script>
@@ -20,7 +22,10 @@
 <script src="http://cdn-hangzhou.goeasy.io/goeasy.js"></script>
 <script src="${staticFilePath}resource/custom/plugins/PNotify/pnotify.custom.min.js"></script>
 <script src="${staticFilePath}resource/custom/plugins/baseJs/base64.min.js"></script>
+<!--
 
+//-->
+</script>
 <script>
 
     var goEasy = new GoEasy({

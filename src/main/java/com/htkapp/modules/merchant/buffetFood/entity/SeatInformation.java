@@ -17,7 +17,7 @@ public class SeatInformation {
     
     private BuffetFoodOrder bfo; //座位相关的订单
     
-    private String useSeatTime;
+    private String useSeatTime;//使用座位的时间
 
     public String getUseSeatTime() {
 		return useSeatTime;

@@ -22,6 +22,7 @@
 	href="${staticFilePath}resource/plugins/assets/laydate/theme/default/laydate.css" />
 <script
 	src="${staticFilePath}resource/plugins/assets/laydate/laydate.js"></script>
+	
 <style>
 .szuo {
 	font-size: 13px;
@@ -142,7 +143,7 @@
 }
 </style>
    <style type="text/css">
-        .printArea{padding:0;margin: 0;}
+        .PrintArea{padding:0;margin: 0;}
         .useTitle{font-size: 20px;}
         .useLittleTitle{font-size: 16px;}
         .left{
@@ -590,7 +591,7 @@
 					</h5>
 				</span> <span class="shouqi ModelWindow">收起<i
 					class="arrow fa fa-angle-up"></i></span> <br />
-				<div class="tog modelWindow" id="printArea"></div>
+				<div class="tog modelWindow" ></div>
 				<span class="xiangqing modelWindow col-md-12"> <br /> <span
 					class="szuo col-md-4 bianhao modelWindow">订单已提交：<b></b>分钟
 				</span> <span class="xiaojie modelWindow allXiaoJie col-med-2 ">合计：<b></b>元
@@ -610,8 +611,8 @@
 			</div>
 		</div>
 	</div>
-	<div class="modal printArea" style="background-color:#fff;">
-        <div class="print_container">
+	 <div class="PrintArea area1 both" id="Retain">
+       <div class="print_container">
             <h1 class="useTitle">顾客专用</h1>
             <span>**************************</span>
             <div class="section1">
@@ -932,20 +933,16 @@ function updataPrintArea(){
 	 printArea()
 }
     function printArea(){
-    	debugger
+    	//debugger
     	var body=$("body").html();
     	var printArea=$(".printArea").html();
     	var model=$("#myModal").html();
-    	$("body").html(printArea);
-    	window.print();
-    	pageInit()
-     	 $('#myModal').modal('show');
-    	$("#myModal").html(model);
+    	alert($("div.PrintArea").html())
+    	$("div.PrintArea").printArea()
+ 
+    }
+ 
     	
-    }
-    function pageInit(){
-    	location.reload()
-    }
  </script>
 <script>
     $(function () {

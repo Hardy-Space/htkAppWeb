@@ -38,6 +38,7 @@ import com.htkapp.modules.merchant.groupBuy.entity.BuyPackage;
 import com.htkapp.modules.merchant.groupBuy.service.BuyPackageService;
 import com.htkapp.modules.merchant.integral.entity.AccountUseTicketList;
 import com.htkapp.modules.merchant.integral.entity.Integral;
+import com.htkapp.modules.merchant.integral.entity.SeatOrder;
 import com.htkapp.modules.merchant.integral.service.AccountTicketListService;
 import com.htkapp.modules.merchant.integral.service.AccountUseTicketListService;
 import com.htkapp.modules.merchant.integral.service.IntegralService;
@@ -56,6 +57,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.ui.Model;
+import com.htkapp.modules.merchant.integral.service.SeatOrderService;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -77,7 +79,9 @@ import static com.xiaoleilu.hutool.date.DateUtil.*;
  */
 @Service
 public class MerchantServiceImpl implements MerchantService {
-
+	
+	@Resource
+	private SeatOrderService SeatOrderService;
 	@Resource
 	private AccountShopServiceI accountShopService;
 	@Resource
@@ -1446,7 +1450,7 @@ public class MerchantServiceImpl implements MerchantService {
 					try {
 						accountShopId = OtherUtils.getLoginUserByRequest().getUserId();
 						Shop takeOutShop=shopService.getShopByAccountShopIdAndMark(accountShopId,0);
-						List<SeatInformation> list=seatInofService.getSeatInformationListByShopId(accountShopId);
+						List<SeatOrder> list=SeatOrderService.getSeatOrderListByShopId(takeOutShop.getShopId().toString());
 						model.addAttribute("list",list);
 					} catch (Exception e) {
 						e.printStackTrace();

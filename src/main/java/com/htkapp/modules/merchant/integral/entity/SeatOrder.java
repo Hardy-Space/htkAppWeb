@@ -168,4 +168,14 @@ public class SeatOrder extends CommonShopInfo {
     public void setTimeLeft(long timeLeft) {
         this.timeLeft = timeLeft;
     }
+
+	@Override
+	public String toString() {
+		return "SeatOrder [id=" + id + ", orderNumber=" + orderNumber + ", scheduledName=" + scheduledName
+				+ ", seatCount=" + seatCount + ", seatName=" + seatName + ", scheduledTime=" + scheduledTime
+				+ ", seatPhone=" + seatPhone + ", shopId=" + shopId + ", accountToken=" + accountToken + ", remarks="
+				+ remarks + ", status=" + status + ", gmtCreate=" + gmtCreate + ", gmtModified=" + gmtModified
+				+ ", orderTime=" + orderTime + ", mark=" + mark + ", timeLeft=" + timeLeft + "]";
+	}
+    
 }
