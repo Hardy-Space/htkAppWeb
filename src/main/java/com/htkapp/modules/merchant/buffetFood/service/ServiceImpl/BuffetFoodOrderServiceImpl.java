@@ -367,6 +367,14 @@ public class BuffetFoodOrderServiceImpl implements BuffetFoodOrderService {
 		}
 	}
 
+	@Override
+	public void updateTempSeatName(BuffetFoodOrder order) {
+		int a=buffetFoodOrderDao.updateTempSeatName(order);
+		if(a<=0) {
+			throw new UpdateException(Globals.DEFAULT_EXCEPTION_UPDATE_FAILED);
+		}
+	}
+
 
     /* ============================JSP页面接口结束===================================== */
 }

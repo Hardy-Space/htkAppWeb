@@ -72,6 +72,16 @@ public class BuffetFoodOrder {
     
     private List<AccountUseTicketList> ticketList;//用户名下的优惠券
     
+    private String tempSeatName;//临时座位名称
+    
+
+	public String getTempSeatName() {
+		return tempSeatName;
+	}
+
+	public void setTempSeatName(String tempSeatName) {
+		this.tempSeatName = tempSeatName;
+	}
 
 	public String getLogoUrl() {
 		return logoUrl;

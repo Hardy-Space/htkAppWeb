@@ -693,9 +693,10 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 				jsonObject.put("orderAmount", order.getOrderAmount());
 				order.setAdjustOrderProductJson(order.getJsonProductList());
 				order.setAdjustState(1);
+				order.setTempSeatName(order.getSeatName());
 				buffetFoodOrderService.updataOrderAdjustState(order);
 				buffetFoodOrderService.updateOrderAdjustOrderJson(order);
-				buffetFoodOrderService.updateOrderSeatName(order);
+				buffetFoodOrderService.updateTempSeatName(order);
 				try {
 					//下单成功，推消息
 					//修改
@@ -718,6 +719,7 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 					PushMesEntity pushMesEntity = new PushMesEntity("自助点餐订单消息", "b", "自助点餐订单调单申请",userToken , 'b', 3, "您有一个的自助点餐调单消息", userId);
 					moreMethodsUtils.pushMesToManagePage(pushMesEntity);
 				}catch (Exception e){
+					e.printStackTrace();
 					return new APIResponseModel(Globals.API_FAIL);
 				}
 				return new APIResponseModel(Globals.API_SUCCESS);

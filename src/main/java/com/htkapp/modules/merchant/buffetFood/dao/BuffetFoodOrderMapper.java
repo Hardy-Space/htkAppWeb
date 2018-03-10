@@ -51,6 +51,8 @@ public interface BuffetFoodOrderMapper {
     BuffetFoodOrder getBuffetFoodOrderByOrderStateAndSeatName(String seatName,int orderstate);
     //当座位改变的时候更新数据库的座位名称
     int updateOrderSeatName(BuffetFoodOrder order);
+    //给订单添加临时座位名称
+    int updateTempSeatName(BuffetFoodOrder order);
     /* ===================接口结束======================= */
 
 

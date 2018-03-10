@@ -161,7 +161,7 @@
         id, order_number, order_amount, discount_amount, order_body,seat_name,
         payment_method, order_state, account_token as token, shop_id, mark, reminder_state, 
          remark, serial_number, all_serial_number,
-        adjust_order_json, adjust_order_product_json,adjust_state 
+        adjust_order_json, adjust_order_product_json,adjust_state,temp_seat_name
         from buffet_food_order
         where order_number = #{0}
     </select>
@@ -319,7 +319,8 @@
     <select id="getAdjustOrderListDAO" resultType="BuffetFoodOrder">
         select id, order_number, order_amount, discount_amount, order_body,seat_name,
         payment_method, order_state, account_token, shop_id, mark, reminder_state,
-        adjust_order_json,adjust_order_product_json adjustOrderProductJson, remark, serial_number, all_serial_number, gmt_create as orderTime
+        adjust_order_json,adjust_order_product_json adjustOrderProductJson, remark, serial_number,
+        all_serial_number, gmt_create as orderTime,temp_seat_name
         from buffet_food_order
         where shop_id = #{shopId} and adjust_order_product_json is not null order by ${orderDesc}
     </select>
@@ -356,6 +357,12 @@
         set seat_name = #{seatName}
         where order_number = #{orderNumber}
     </update>
+    <update id="updateTempSeatName">
+    	update buffet_food_order
+        set temp_seat_name = #{tempSeatName}
+        where order_number = #{orderNumber}
+    </update>
+    
     <select id="getBFOLByToken" resultType="BuffetFoodOrder">
     select
         buffet_food_order.id, buffet_food_order.order_number,

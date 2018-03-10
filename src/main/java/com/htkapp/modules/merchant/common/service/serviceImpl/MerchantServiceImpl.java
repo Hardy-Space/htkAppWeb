@@ -1162,6 +1162,9 @@ public class MerchantServiceImpl implements MerchantService {
 							Map<String, Integer> map=new HashMap<String, Integer>();
 							int quantity = 0;
 							for (BuffetFoodOrder each : result) {
+								if(each.getTempSeatName()!=null) {
+									each.setSeatName(each.getTempSeatName());
+								}
 								quantity = 0;
 								Gson gson=new Gson();
 								//提取订单当中用来调单的json串并转变成产品列表

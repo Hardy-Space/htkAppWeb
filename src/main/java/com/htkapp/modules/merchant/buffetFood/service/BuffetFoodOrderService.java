@@ -55,6 +55,8 @@ public interface BuffetFoodOrderService {
     BuffetFoodOrder getBuffetFoodOrderByOrderStateAndSeatName(String seatName);
     //当座位改变的时候更新数据库的座位名称
     void updateOrderSeatName(BuffetFoodOrder order);
+    //给订单添加临时座位名称
+    void updateTempSeatName(BuffetFoodOrder order);
     
     
     /* =====================接口结束===================== */

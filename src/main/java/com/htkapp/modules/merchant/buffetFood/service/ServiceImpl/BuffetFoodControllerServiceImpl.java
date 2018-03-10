@@ -221,6 +221,7 @@ public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerServ
                 //取出 要调整商品的json字符串
                 BuffetFoodOrder order = buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(params.getOrderNumber());
                 if (order != null && order.getAdjustOrderProductJson() != null) {
+                	order.setSeatName(order.getTempSeatName());
                     Gson gson = new Gson();
                     List<BuffetFoodOrderProduct> productLists = gson.fromJson(order.getAdjustOrderProductJson(), new TypeToken<List<BuffetFoodOrderProduct>>() {
                     }.getType());
@@ -238,6 +239,7 @@ public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerServ
                         }
                         order.setAdjustState(0);
                         buffetFoodOrderService.updataOrderAdjustState(order);
+                        buffetFoodOrderService.updateOrderSeatName(order);
                         System.out.println(order.toString());
                         buffetFoodOrderService.updateOrderTotalAmount(order.getOrderNumber(), orderAmount);
                         int row = buffetFoodOrderDao.replyFalseDAO(params.getOrderNumber(), null);
