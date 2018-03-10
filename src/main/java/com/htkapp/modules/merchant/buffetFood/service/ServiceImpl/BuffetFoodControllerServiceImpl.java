@@ -62,6 +62,8 @@ public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerServ
     private BuffetFoodOrderProductService buffetFoodOrderProductService;
     @Resource
     private BuffetFoodOrderMapper buffetFoodOrderDao;
+	@Resource
+	private SeatInformationService seatInfo;
 
     private Class<? extends Object> cls = BuffetFoodControllerServiceImpl.class;
 
@@ -185,7 +187,6 @@ public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerServ
             try {
                 buffetFoodOrderService.dealWithNewOrder(params.getOrderNumber(), 1, 1);
                 BuffetFoodOrder order=buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(params.getOrderNumber());
-                //TODO
                 Jpush.jPushMethod(order.getToken(),"商家已接单,请耐心等候.","ALERT");
                 return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
             } catch (Exception e) {
@@ -221,7 +222,21 @@ public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerServ
                 //取出 要调整商品的json字符串
                 BuffetFoodOrder order = buffetFoodOrderService.getBuffetFoodOrderByOrderNumber(params.getOrderNumber());
                 if (order != null && order.getAdjustOrderProductJson() != null) {
-                	order.setSeatName(order.getTempSeatName());
+                	int a;
+                	int b;
+                	if(order.getTempSeatName()!=null) {
+                		b=0;
+            			a=seatInfo.updataSeatInfoByOrder(order,b);
+            			if(a<=0) {
+            				return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "座位不存在");
+            			}
+                		order.setSeatName(order.getTempSeatName());
+                		b=1;
+            			a=seatInfo.updataSeatInfoByOrder(order,b);
+            			if(a<=0) {
+            				return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "座位不存在");
+            			}
+                	}
                     Gson gson = new Gson();
                     List<BuffetFoodOrderProduct> productLists = gson.fromJson(order.getAdjustOrderProductJson(), new TypeToken<List<BuffetFoodOrderProduct>>() {
                     }.getType());
