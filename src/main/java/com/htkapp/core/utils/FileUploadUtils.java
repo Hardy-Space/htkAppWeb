@@ -69,11 +69,22 @@ public class FileUploadUtils {
             FTPClient client = getFTPClient(FTPConfig.host, FTPConfig.port, FTPConfig.userName, FTPConfig.password);
             String writeTempPath = "D:\\resource";
 //            String writeTempPath = "/home/terabithia";
-            FileUtils.copyInputStreamToFile(myFile.getInputStream(), new File(writeTempPath, fileName));
-            uploadFileForFTP(client, fileName, writeTempPath + "\\" + fileName, "Resource\\htkApp\\upload\\" + folder);
+
+            /**
+             * @author 马鹏昊
+             * @desc 裁剪图片
+             */
+            File storeFile =  new File(writeTempPath, fileName);
+            FileUtils.copyInputStreamToFile(myFile.getInputStream(),storeFile );
+            String newName = ChangeImageSize.scale(storeFile.getAbsolutePath(),360,360,originalFileName[1]);
+
+//            FileUtils.copyInputStreamToFile(myFile.getInputStream(), new File(writeTempPath, fileName));
+//            uploadFileForFTP(client, fileName, writeTempPath + "\\" + fileName, "Resource\\htkApp\\upload\\" + folder);
+            uploadFileForFTP(client, newName, writeTempPath + "\\" + newName, "Resource\\htkApp\\upload\\" + folder);
 //            uploadFileForFTP(client, fileName, writeTempPath + "/" + fileName, "Resource\\htkApp\\upload\\" + folder);
             String avaPath = Globals.PROJECT_URL + Globals.PHOTO_URL + folder;
-            return avaPath + fileName;
+
+            return avaPath + newName;
         } catch (IOException ex) {
             System.out.println("Exception: " + ex);
             ex.printStackTrace();
@@ -95,9 +106,17 @@ public class FileUploadUtils {
             FTPClient client = getFTPClient(FTPConfig.host, FTPConfig.port, FTPConfig.userName, FTPConfig.password);
             String writeTempPath = "D:\\resource";
 //            String writeTempPath = "/home/terabithia";
-           File storeFile =  new File(writeTempPath, fileName);
+
+
+            /**
+             * @author 马鹏昊
+             * @desc 裁剪图片
+             */
+            File storeFile =  new File(writeTempPath, fileName);
             FileUtils.copyInputStreamToFile(myFile.getInputStream(),storeFile );
-            String newName = ChangeImageSize.scale(storeFile.getAbsolutePath(),100,100,originalFileName[1]);
+            String newName = ChangeImageSize.scale(storeFile.getAbsolutePath(),360,360,originalFileName[1]);
+
+
 //            uploadFileForFTP(client, fileName, writeTempPath + "\\" + fileName, "Resource\\htkApp\\upload\\" + folder);
             uploadFileForFTP(client, newName, writeTempPath + "\\" + newName, "Resource\\htkApp\\upload\\" + folder);
 //            uploadFileForFTP(client, fileName, writeTempPath + "/" + fileName, "Resource\\htkApp\\upload\\" + folder);
