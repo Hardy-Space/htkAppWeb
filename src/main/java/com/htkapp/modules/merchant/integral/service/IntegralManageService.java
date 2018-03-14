@@ -45,6 +45,10 @@ public interface IntegralManageService {
     AjaxResponseModel updateMes(ShopArticleInfo shopArticleInfo);
     //查询座位订单号
     AjaxResponseModel getSeatInfo();
+    //订座订单操作(安排座位)
+    AjaxResponseModel updataSeatInfo(String seatName,String orderNumber);
+    //查询座位订单中没有被处理的
+    AjaxResponseModel getSeatInfoByStatus();
     /* ====================JSP页面接口结束========================== */
 
 	String uploadNewsContentImg(MultipartFile file);

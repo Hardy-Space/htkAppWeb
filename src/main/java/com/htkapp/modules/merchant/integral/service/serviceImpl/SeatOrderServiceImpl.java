@@ -2,6 +2,7 @@ package com.htkapp.modules.merchant.integral.service.serviceImpl;
 
 import com.github.pagehelper.PageHelper;
 import com.htkapp.core.curdException.InsertException;
+import com.htkapp.core.jsAjax.AjaxResponseModel;
 import com.htkapp.core.utils.Globals;
 import com.htkapp.modules.API.dto.SeatOrderDetail;
 import com.htkapp.modules.merchant.integral.dao.SeatOrderMapper;
@@ -65,6 +66,23 @@ public class SeatOrderServiceImpl implements SeatOrderService {
 	@Override
 	public List<SeatOrder> getSeatOrderListByShopId(String shopId) {
 		List<SeatOrder> list=seatOrderDao.getSeatOrderListByShopId(shopId);
+		if(list.size()<=0) {
+			return list;
+		}
+		return list;
+	}
+	@Override
+	public int updataSeatInfo(String seatName, String orderNumber) {
+		int row=seatOrderDao.updataSeatInfo(seatName, orderNumber);
+		 if(row <= 0){
+	            throw new InsertException(Globals.DEFAULT_EXCEPTION_INSERT_FAILED);
+	        }
+		 return row;
+	}
+	@Override
+	public List<SeatOrder> getSeatOrderListByShopIdAndStatus(String shopId) {
+		int status=0;
+		List<SeatOrder> list=seatOrderDao.getSeatOrderListByShopIdAndStatus(shopId, status);
 		if(list.size()<=0) {
 			return list;
 		}

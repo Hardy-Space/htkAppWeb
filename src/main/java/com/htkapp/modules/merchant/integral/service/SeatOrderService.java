@@ -1,5 +1,6 @@
 package com.htkapp.modules.merchant.integral.service;
 
+import com.htkapp.core.jsAjax.AjaxResponseModel;
 import com.htkapp.modules.API.dto.SeatOrderDetail;
 import com.htkapp.modules.merchant.integral.entity.SeatOrder;
 
@@ -19,6 +20,10 @@ public interface SeatOrderService {
     void insertSeatOrderByToken(SeatOrder order);
     //根据店铺号查询店铺名下所有的订座信息
     List<SeatOrder> getSeatOrderListByShopId(String shopId);
+    //订座订单操作(安排座位)
+    int updataSeatInfo(String seatName,String orderNumber);
+  //根据店铺号以及状态码查询店铺名下未处理的订单
+    List<SeatOrder> getSeatOrderListByShopIdAndStatus(String shopId);
     /* =====================接口结束===================== */
 
     /* ===================JSP接口开始========================= */

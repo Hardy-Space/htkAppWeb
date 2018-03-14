@@ -16,52 +16,53 @@
 * {
 	font-family: "微软雅黑";
 }
-.seatName{
-  position: relative;
-  right: 30px;
-  bottom: 10px;
-}
-.orderAmount{
- position: relative;
- right: 30px;
-  bottom: 10px;
+
+.seatName {
+	position: relative;
+	right: 30px;
+	bottom: 10px;
 }
 
-.numberSeat{
- 	position: relative;
- 	left: 15px;
+.orderAmount {
+	position: relative;
+	right: 30px;
+	bottom: 10px;
+}
+
+.numberSeat {
+	position: relative;
+	left: 15px;
 	top: 30px;
 }
 
-.orderTime{
- 	position: relative;
-	 right: 25px;
-  	bottom: 10px;
-
+.orderTime {
+	position: relative;
+	right: 25px;
+	bottom: 10px;
 }
 
-
-.seatInfo{
-	border:1px solid #000;
+.seatInfo {
+	border: 1px solid #000;
 	width: 120px;
 	height: 120px;
-	margin:20px 15px;
-	padding:20px;
+	margin: 20px 15px;
+	padding: 20px;
 	float: left;
-	-moz-border-radius: 10px;    
-    -webkit-border-radius: 10px;  
-    border-radius:10px;   
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
 }
 
 .tabListDiv {
 	width: 80%;
-	height:100%;
+	height: 100%;
 	background-color: white;
 	margin: auto;
 	padding-top: 80px;
 	text-align: center;
 }
-#myModal{
+
+#myModal {
 	width: 50%;
 	height: 60%;
 	background-color: #fff;
@@ -70,20 +71,31 @@
 	top: 10%;
 	left: 450px;
 }
-.tableContent{
+
+.tableContent {
 	border-collapse: collapse;
 	margin: auto;
-	width: 80%;
+	width: 100%;
 	height: 80%;
 	font-size: 20px;
-
 }
-.tableContent,.titleInfo ,.titleInfo>th,.bodyInfo>td{
+
+.tableContent, .titleInfo, .titleInfo>tr>th, .bodyInfo>tr>td {
 	border: 1px solid #d2d2d2;
 	text-align: center;
 	height: 40px;
 }
 
+.toolDiv {
+	text-align: right;
+	margin: 20px;
+}
+
+.orderContent {
+	width: 100%;
+	height: 100%;
+	overflow: scroll;
+}
 </style>
 
 </head>
@@ -97,35 +109,35 @@
 						<!-- 有东西 -->
 						<c:forEach items="${list}" var="each" varStatus="i">
 							<c:if test="${each.seatStatus==1 }">
-							<div class="seatInfo" style="background-color:#cc5b67" 
-							seatStatus="${each.seatStatus }"
-							shopId="${each.shopId }">
-								<span class="seatName">${each.seatName}</span><br/>
-								<c:if test="${each.bfo!=null }">
-								<span class="orderAmount">¥${each.bfo.orderAmount }</span><br/>
-								</c:if>
+								<div class="seatInfo" style="background-color: #cc5b67"
+									seatStatus="${each.seatStatus }" shopId="${each.shopId }">
+									<span class="seatName">${each.seatName}</span><br />
+									<c:if test="${each.bfo!=null }">
+										<span class="orderAmount">¥${each.bfo.orderAmount }</span>
+										<br />
+									</c:if>
 									<c:choose>
-								<c:when test="${each.bfo.orderTime!=null}">
-								<span class="orderTime">${each.bfo.orderTime }</span>
-								</c:when>
-								<c:when test="${each.useSeatTime!=null}">
-								<span class="orderTime">${each.useSeatTime }</span>
-								</c:when>
+										<c:when test="${each.bfo.orderTime!=null}">
+											<span class="orderTime">${each.bfo.orderTime }</span>
+										</c:when>
+										<c:when test="${each.useSeatTime!=null}">
+											<span class="orderTime">${each.useSeatTime }</span>
+										</c:when>
 									</c:choose>
-								<span class="numberSeat">${each.numberSeat }</span><br/>
-						
-							</div>
+									<span class="numberSeat">${each.numberSeat }</span><br />
+
+								</div>
 							</c:if>
 							<c:if test="${each.seatStatus==0 }">
-							<div class="seatInfo" style="background-color:#b0b0b0"
-							seatStatus="${each.seatStatus }"
-							shopId="${each.shopId }">
-								<span class="seatName">${each.seatName}</span><br/>
-								<c:if test="${each.bfo!=null }">
-								<span class="orderAmount">¥${each.bfo.orderAmount }</span><br/>
-								</c:if>
-								<span class="numberSeat">${each.numberSeat }</span><br/>
-							</div>
+								<div class="seatInfo" style="background-color: #b0b0b0"
+									seatStatus="${each.seatStatus }" shopId="${each.shopId }">
+									<span class="seatName">${each.seatName}</span><br />
+									<c:if test="${each.bfo!=null }">
+										<span class="orderAmount">¥${each.bfo.orderAmount }</span>
+										<br />
+									</c:if>
+									<span class="numberSeat">${each.numberSeat }</span><br />
+								</div>
 							</c:if>
 						</c:forEach>
 					</c:when>
@@ -133,7 +145,9 @@
 						<span>目前没有任何座位，请添加座位</span>
 					</c:otherwise>
 				</c:choose>
-				<div><input type="button" id="modal" value="测试模态框"></div>
+				<div>
+					<input type="button" value="测试" class="selectBtn" seatName="">
+				</div>
 			</div>
 		</div>
 		<%@include file="footer.jsp"%>
@@ -147,25 +161,21 @@
 					<thead class="titleInfo">
 						<tr>
 							<th>序号</th>
-							<th>订单号</th>
 							<th>人数</th>
-							<th>座位名</th>
 							<th>预定人</th>
 							<th>预定时间</th>
 							<th>预定手机号</th>
 							<th>备注</th>
-							<th>状态</th>
 							<th>操作</th>
 						</tr>
 					</thead>
 					<tbody class="bodyInfo">
 					</tbody>
 				</table>
-				<div>
-					<select id="selectInfo">
-						<option>选择座位号</option>
-					</select>
-				</div>
+			</div>
+			<div class="toolDiv">
+				<input type="button" value="安排座位" class="btn btn-primary selectInfoBtn" seatName=""/>
+				<button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
 			</div>
 		</div>
 	</div>
@@ -173,54 +183,71 @@
 $(function(){
 	$(".seatInfo").on("click",function(){
 		changeSeatState(this)
+		var status=$(this).attr("seatStatus");
+		if(status==0){
+			var seatName=$(this).find(".seatName").html();
+			$(".selectInfoBtn").attr("seatName",seatName)
+			$(".selectBtn").attr("seatName",seatName)
+		}
 	})
-	$("#modal").on("click",function(){
+	$(".selectBtn").on("click",function(){
+		debugger
+		var seatName=$(".selectBtn").attr("seatName")
+		if(seatName==''||seatName==null){
+			alert("请选择闲置的座位")
+			return
+		}
 		$("#myModal").modal('show')
+		$(".selectInfoBtn").unbind();
+		$(".selectInfoBtn").on("click",function(){
+			addSeatOrderInfo(this);
+		})
 		addSeatOrder()
 	})
 })
+
+function addSeatOrderInfo(order){
+	debugger
+	var seatOrder=$(".bodyInfo").find("tr>td>input:checked").parent().parent();
+	var seatName=$(".selectInfoBtn").attr("seatName");
+	var orderNumber=$(seatOrder).find("input[class='doOrder']").attr("orderNumber");
+	url=baseUrl +"/merchant/integral/updataSeatInfo"
+	var params={
+			seatName:seatName,
+			orderNumber:orderNumber
+	}
+	$.post(url,params,function(data){
+		if(data.code==0){
+			alert(data.message)
+			$(seatOrder).remove()
+			addSeatOrder()
+				$("#myModal").modal('hide')
+		}
+	})
+	console.log(seatOrder)
+}
 function doTab(data,i){
 	var table=$(".bodyInfo");
 	var tr="<tr>"+
 	"<td>"+i+"</td>"+
-	"<td>"+data.orderNumber+"</td>"+
 	"<td>"+data.seatCount+"</td>"+
-	"<td>空</td>"+
 	"<td>"+data.scheduledName+"</td>"+
 	"<td>"+data.scheduledTime+"</td>"+
 	"<td>"+data.seatPhone+"</td>"+
-	"<td>"+data.remarks+"</td>"+
-	"<td>"+(data.status==0?'未处理':'已处理')+"</td>"+
-	"<td shopId="+data.shopId+"><input type='checkbox' class='doOrder'></td>"+
+	"<td>"+(data.remarks==null?'顾客没有特殊要求':data.remarks)+"</td>"+
+	"<td shopId="+data.shopId+"><input type='checkbox' class='doOrder' orderNumber='"+data.orderNumber+"'></td>"+
 	"</tr>"
 	table.append(tr);
 }
-function addSelectInfo(){
-	debugger
-	var selectInfo=$("#selectInfo")
-	var seatNames= new Array();
-	var seatInfo=$(".tabListDiv").find("div[seatStatus='0']")
-	console.log(seatInfo)
-	$(seatInfo).each(function(index, item){ 
-		var seatName=$(item).find(".seatName")
-		seatNames.push($(seatName).html());
-		}); 
-	console.log(seatNames)
-	$(seatNames).each(function (index, item) {
-		 var option="<option>"+item+"</option>"
-		 selectInfo.append(option);
-    })
-}
+
 function addSeatOrder(){
-	url=baseUrl +"/merchant/integral/getSeatInfo"
+	url=baseUrl +"/merchant/integral/getSeatInfoByStatus"
 	$.post(url,function(data){
 		if(data.code==0){
 			$(".bodyInfo").empty()
-			$("#selectInfo").empty()
 			for(var i=1;i<=data.data.length;i++){
 				doTab(data.data[i-1],i)
 			}
-			addSelectInfo()
 		}
 	})
 }

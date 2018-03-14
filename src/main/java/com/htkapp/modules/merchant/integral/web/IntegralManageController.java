@@ -8,12 +8,10 @@ import com.htkapp.core.utils.Globals;
 import com.htkapp.modules.merchant.integral.entity.AccountSaverTicket;
 import com.htkapp.modules.merchant.integral.entity.ShopArticleInfo;
 import com.htkapp.modules.merchant.integral.service.IntegralManageService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,8 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import java.util.Date;
 
@@ -179,10 +175,23 @@ public class IntegralManageController {
     public AjaxResponseModel updateMes(ShopArticleInfo shopArticleInfo){
         return integralManageService.updateMes(shopArticleInfo);
     }
+    //获取订座订单信息
     @RequestMapping("/getSeatInfo")
     @ResponseBody
     public AjaxResponseModel getSeatInfo(){
         return integralManageService.getSeatInfo();
     }
+    //订座订单操作(安排座位)
+    @RequestMapping("/updataSeatInfo")
+    @ResponseBody
+    public AjaxResponseModel updataSeatInfo(String seatName,String orderNumber){
+        return integralManageService.updataSeatInfo(seatName,orderNumber);
+    }
+    //获取订座订单信息(未处理)
+    @RequestMapping("/getSeatInfoByStatus")
+    @ResponseBody
+    public AjaxResponseModel getSeatInfoByStatus(){
+        return integralManageService.getSeatInfoByStatus();
+        		}
 
 }

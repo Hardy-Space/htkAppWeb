@@ -418,7 +418,35 @@ public class IntegralManageServiceImpl implements IntegralManageService {
 			}
 			return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED,"目前没有预定订单");
 		} catch (Exception e) {
-			e.printStackTrace();
+			return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED,"查询错误，请联系管理员");
+		}
+	}
+
+
+	@Override
+	public AjaxResponseModel updataSeatInfo(String seatName,String orderNumber) {
+		try {
+			seatOrderService.updataSeatInfo(seatName, orderNumber);
+			return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION,"更新成功");
+		}catch (Exception e) {
+			return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED,"查询错误，请联系管理员");
+		}
+	}
+
+
+	@Override
+	public AjaxResponseModel getSeatInfoByStatus() {
+		int accountShopId;
+		List<SeatOrder> list=new ArrayList<>();
+		try {
+			accountShopId = OtherUtils.getLoginUserByRequest().getUserId();
+			Shop takeOutShop=shopService.getShopByAccountShopIdAndMark(accountShopId,0);
+			list=seatOrderService.getSeatOrderListByShopIdAndStatus(takeOutShop.getShopId().toString());
+			if(list.size()>0) {
+				return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION,"查询成功",list);
+			}
+			return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED,"目前没有预定订单");
+		} catch (Exception e) {
 			return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED,"查询错误，请联系管理员");
 		}
 	}

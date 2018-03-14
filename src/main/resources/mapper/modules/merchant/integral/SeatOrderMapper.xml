@@ -83,6 +83,12 @@
             </if>
         </trim>
     </insert>
+    
+    <select id="getSeatOrderListByShopIdAndStatus" resultType="SeatOrder">
+    select <include refid="Base_Column_List" />
+    	 from seat_order 
+    	 where shop_id=#{0} and status=#{1}
+    </select>
     <!-- ======================接口结束============================= -->
 
     <!-- =====================JSP接口开始============================== -->
@@ -147,7 +153,12 @@
     	 where shop_id=#{shopId}
     
     </select>
-    
+    <update id="updataSeatInfo">
+    	update seat_order
+    	set seat_name=#{0},
+    	status =1
+    	where  order_number=#{1}
+    </update>
     <!-- =====================JSP接口结束============================ -->
 
 </mapper>
