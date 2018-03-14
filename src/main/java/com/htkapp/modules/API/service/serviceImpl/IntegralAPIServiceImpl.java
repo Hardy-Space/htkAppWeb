@@ -126,7 +126,21 @@ public class IntegralAPIServiceImpl implements IntegralAPIService {
                 accountMes.setAvatarUrl(OtherUtils.getRootDirectory() + account.getAvatarUrl());
                 accountMes.setNickName(account.getNickName());
                 accountMes.setPhone(account.getPhone());
-                accountMes.setTicketCount(resultList == null ? 0 : resultList.size());
+
+                //                accountMes.setTicketCount(resultList == null ? 0 : resultList.size());
+                /**
+                 * @author 马鹏昊
+                 * @desc 计算所有优惠券的数量
+                 */
+                int ticketCount = 0 ;
+                if (resultList!=null) {
+                    for (AccountTicketList singleTicket : resultList) {
+                        ticketCount += singleTicket.getQuantity();
+                    }
+                }
+                accountMes.setTicketCount(ticketCount);
+
+
                 accountMes.setIntegralCount(integral == null ? 0 : integral.getVal());
                 return new APIResponseModel<>(Globals.API_SUCCESS, "成功", accountMes);
             } catch (Exception e) {
