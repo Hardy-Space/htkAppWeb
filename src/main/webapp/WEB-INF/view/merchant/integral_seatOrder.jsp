@@ -18,7 +18,31 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, maximum-scale=1">
 <%@include file="head.jsp"%>
-
+<style type="text/css">
+* {
+	font-family: "微软雅黑";
+}
+.useBtn{
+margin: auto 10px;
+}
+.seatOrder{
+	width: 95%;
+	height: 100%;
+	background-color: white;
+	margin: auto;
+	padding-top: 80px;
+	text-align: center;
+}
+.body-content{
+	height: 100%;
+}
+.orderContent{
+	margin:auto 80px;	
+}
+.codition{
+	text-align: left;
+}
+</style>
 </head>
 <body>
 	<div class="layui-layout layui-layout-admin">
@@ -29,7 +53,10 @@
 					<div class="codition">
 						<label>条件筛选</label>
 						<div class="conditionInput" style="display: inline-block">
-							<input name="date" id="date" title="" value="" />
+							<input name="date useBtn" id="date" title="" value="" />
+							<input type="button" value="添加座位" class="btn btn-info useBtn" id="addSeatInformation" >
+							<input type="button" value="删除座位" class="btn btn-danger useBtn" id="delSeatInfo">
+							<input type="button" value="调整座位" class="btn btn-info useBtn" id="changeSeatInfo">
 						</div>
 					</div>
 					<div class="orderContent">
@@ -67,11 +94,14 @@
 													<td>${each.seatPhone }</td>
 													<td>${each.remarks }</td>
 													<td>${each.status==0?"未处理":"已处理" }</td>
-													<td><input type="checkbox" ></td>
+													<td><input type="checkbox" class="doOrder"></td>
 												</tr>
 											</c:forEach>
 										</c:when>
 										<c:otherwise>
+											<tr>
+												<td>目前没有预定订单</td>
+											</tr>
 										</c:otherwise>
 									</c:choose>
 								</tbody>

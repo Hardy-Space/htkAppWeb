@@ -18,6 +18,7 @@ import com.htkapp.modules.common.entity.LoginUser;
 import com.htkapp.modules.merchant.integral.dto.AccountIntegralList;
 import com.htkapp.modules.merchant.integral.entity.AccountSaverTicket;
 import com.htkapp.modules.merchant.integral.entity.IntegralManageRecord;
+import com.htkapp.modules.merchant.integral.entity.SeatOrder;
 import com.htkapp.modules.merchant.integral.entity.ShopArticleInfo;
 import com.htkapp.modules.merchant.integral.service.*;
 import com.htkapp.modules.merchant.shop.entity.AccountShop;
@@ -30,7 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
-import sun.rmi.runtime.Log;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -62,6 +62,8 @@ public class IntegralManageServiceImpl implements IntegralManageService {
     private AccountSaverTicketService accountSaverTicketService;
     @Resource
     private AccountShopServiceI accountShopService;
+    @Resource
+    private SeatOrderService seatOrderService;
 
     /* =====================接口开始========================= */
     //获取用户积分列表数据
@@ -401,6 +403,25 @@ public class IntegralManageServiceImpl implements IntegralManageService {
             return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
         }
     }
+
+
+	@Override
+	public AjaxResponseModel getSeatInfo() {
+		int accountShopId;
+		List<SeatOrder> list=new ArrayList<>();
+		try {
+			accountShopId = OtherUtils.getLoginUserByRequest().getUserId();
+			Shop takeOutShop=shopService.getShopByAccountShopIdAndMark(accountShopId,0);
+			list=seatOrderService.getSeatOrderListByShopId(takeOutShop.getShopId().toString());
+			if(list.size()>0) {
+				return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION,"查询成功",list);
+			}
+			return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED,"目前没有预定订单");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED,"查询错误，请联系管理员");
+		}
+	}
 
     /* ====================JSP页面接口结束========================== */
 }

@@ -179,5 +179,10 @@ public class IntegralManageController {
     public AjaxResponseModel updateMes(ShopArticleInfo shopArticleInfo){
         return integralManageService.updateMes(shopArticleInfo);
     }
+    @RequestMapping("/getSeatInfo")
+    @ResponseBody
+    public AjaxResponseModel getSeatInfo(){
+        return integralManageService.getSeatInfo();
+    }
 
 }

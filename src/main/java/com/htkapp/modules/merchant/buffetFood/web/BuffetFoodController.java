@@ -254,7 +254,6 @@ public class BuffetFoodController {
 			}
 			return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
 		}
 	}

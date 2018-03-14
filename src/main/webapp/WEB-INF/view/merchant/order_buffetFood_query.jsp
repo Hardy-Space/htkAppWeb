@@ -169,6 +169,7 @@
             display: block;
         }
         .section4{
+        	font-size: 12px;
         }
         .section4 .total label{
             display: block;
@@ -634,8 +635,8 @@
                     <table style="width: 100%;">
                         <thead>
                             <tr>
-                                <td width="60%">菜单名称</td>
-                                <td width="20%">数量</td>
+                                <td width="50%">菜单名称</td>
+                                <td width="30%">数量</td>
                                 <td width="20%">金额</td>
                             </tr>
                         </thead>
@@ -935,9 +936,7 @@ function updataPrintArea(){
     function printArea(){
     	//debugger
     	var body=$("body").html();
-    	var printArea=$(".printArea").html();
-    	var model=$("#myModal").html();
-    	alert($("div.PrintArea").html())
+    	var printArea=$("div.PrintArea").html();
     	$("div.PrintArea").printArea()
  
     }

@@ -52,207 +52,23 @@ margin: auto 10px;
 	text-align: center;
 	height: 40px;
 }
-
-.btnDiv {
-	width: 60%;
-	word-wrap: break-word;
-	white-space: normal;
-	margin: auto;
-}
-
 .tog {
 	width: 100%;
 	padding: 0px;
 }
 
-.modal-body span {
-	text-align: center;
-	margin-top: 10px;
-	font-weight: 700;
-}
-
-.affirmSettleBtn {
-	height: 30px;
-	float: right;
-	line-height: 30px;
-	width: 20%;
-	margin-top: 11px;
-}
-
-.oBuffetFoodQuerySpanSelect {
-	margin-top: 5px;
-	margin-bottom: 0;
-	padding: 5px;
-}
-
-.oBuffetFoodQuerySpanInput {
-	margin-top: 5px;
-	margin-bottom: 5px;
-	padding: 5px;
-}
-
-.oBuffetFoodQuerySpanButton {
-	margin-top: 5px;
-	margin-bottom: 5px;
-	padding: 5px;
-}
-
-.oBuffetFoodQuerySpanInput>span>input {
-	width: 100%;
-	border-radius: 2px;
-	border: 1px solid #e2e2e2;
-	height: 30px;
-	padding-left: 10px;
-}
-
-.oBuffetFoodQuerySpanSelect>span>select {
-	width: 100%;
-	border-radius: 2px;
-	border: 1px solid #e2e2e2;
-	height: 30px;
-	padding-left: 10px;
-}
-
-.numberH {
-	border-radius: 6px 6px 0 0;
-}
-
-.tableTableModeH {
-	margin-bottom: 15px;
-}
-
-.tableTableModeH>b {
-	padding-top: 15px;
-	font-size: 15px;
-}
-
-.productDetailH>h5 {
-	margin-bottom: 0;
-	padding-left: 0;
-}
-
-.shouqi.ModelWindow {
-	cursor: pointer;
-}
-
-.xiangqing.modelWindow {
-	border-bottom: 1px solid gainsboro;
-	border-top: 1px solid gainsboro;
-	height: 40px;
-	padding-bottom: 13px;
-}
-
-.bt.modelWindow {
-	width: 15%;
-	border-radius: 6px;
-}
-
-.cancel.modelWindow {
-	float: left;
-	margin-left: 30px;
-	width: 15%;
-	border-radius: 6px;
-}
-
-.szhong.modelWindow {
-	text-align: right;
-	float: right;
-	font-size: 14px;
-	margin-top: 0;
-	line-height: 0;
-}
-
-.szuo.modelWindow {
-	line-height: 0;
-	margin-top: 0;
-}
-
-.tabDivFirstChild {
-	padding-left: 10px;
-	padding-right: 10px;
-	background-color: #f3f3f4;
-	padding-bottom: 15px;
-}
-
-.productDetailBody {
-	padding-left: 0;
-	/*padding-bottom: -10px;*/
-	margin-top: 10px;
-}
-
-.productDetailBody>h5 {
-	margin-bottom: 0;
-}
-
-.xiangqing.bodyContent {
-	border-bottom: 1px solid gainsboro;
-	border-top: 1px solid gainsboro;
-	height: 45px;
-	margin-top: 10px;
-}
-
-.szuo.bodyContent {
-	font-weight: 700;
-	font-size: 12px;
-	margin-top: -7px;
-}
-
-.szhong.bodyContent {
-	text-align: right;
-	font-weight: 700;
-	font-size: 13px;
-	margin-top: -7px;
-}
-
-.syou.bodyContent {
-	padding-right: 0;
-	text-align: right;
-	margin-right: 0;
-	font-weight: 700;
-	font-size: 13px;
-	margin-top: -7px;
-}
-
-.xiangqing.bodyContent {
-	padding-right: 0;
-}
-
-.tog.modelWindow {
-	height: 70px;
-	overflow: auto;
-}
 </style>
 <style>
 * {
 	font-family: "微软雅黑";
 }
 
-.szuo {
-	font-size: 13px;
-	text-align: left;
-	height: 20px;
-	padding-left: 0px;
-}
 
 .szhong {
 	font-size: 13px;
 	text-align: right;
 	height: 20px;
 	text-align: right;
-}
-
-.syou {
-	font-size: 13px;
-	height: 20px;
-	text-align: right;
-}
-
-.xiaojie {
-	font-size: 13px;
-	float: right;
-	text-align: right;
-	margin-right: 0px;
-	padding-right: 0px;
 }
 
 .tog {
@@ -278,31 +94,7 @@ margin: auto 10px;
 	border-bottom: 2px solid #ddd;
 }
 
-.bianhao {
-	text-align: left;
-	padding-right: 20px;
-	font-size: 12px;
-	height: 30px;
-	margin-top: 12px;
-	font-weight: 700;
-	padding-left: 0px;
-	line-height: 30px;
-}
 
-.shouqi {
-	font-size: 10px;
-	color: dodgerblue;
-	float: right;
-	margin-right: 13px;
-	line-height: 40px;
-	margin-top: 5px;
-}
-
-.modal-body span {
-	text-align: center;
-	margin-top: 10px;
-	font-weight: 700;
-}
 
 .xuhao {
 	background-color: lightgray;
@@ -326,55 +118,9 @@ margin: auto 10px;
 	background-color: dodgerblue;
 	color: white;
 }
-
-.nav {
-	height: 40px;
-	background-color: white;
-	text-align: center;
-	line-height: 40px;
-}
-
-.nav div a {
-	text-decoration: none;
-	out-line: none;
-	color: # *****;
-	font-size: 15px;
-	font-weight: 700;
-}
-
-.active {
-	border-bottom: 3px solid dodgerblue;
-	height: 40px;
-}
 </style>
 <style>
-.szuo {
-	font-size: 13px;
-	text-align: left;
-	height: 20px;
-	padding-left: 0px;
-}
 
-.szhong {
-	font-size: 13px;
-	text-align: right;
-	height: 20px;
-	text-align: right;
-}
-
-.syou {
-	font-size: 13px;
-	height: 20px;
-	text-align: right;
-}
-
-.xiaojie {
-	font-size: 13px;
-	float: right;
-	text-align: right;
-	margin-right: 0px;
-	padding-right: 0px;
-}
 
 .tog {
 	width: 100%;
@@ -399,30 +145,6 @@ margin: auto 10px;
 	border-bottom: 2px solid #ddd;
 }
 
-.bianhao {
-	text-align: left;
-	padding-right: 20px;
-	font-size: 12px;
-	height: 30px;
-	margin-top: 12px;
-	font-weight: 700;
-	padding-left: 0px;
-	line-height: 30px;
-}
-
-.shouqi {
-	font-size: 10px;
-	color: dodgerblue;
-	float: right;
-	margin-right: 13px;
-	line-height: 40px;
-}
-
-.modal-body span {
-	text-align: center;
-	margin-top: 10px;
-	font-weight: 700;
-}
 
 .xuhao {
 	background-color: lightgray;
@@ -447,226 +169,6 @@ margin: auto 10px;
 	color: white;
 }
 
-.nav {
-	height: 40px;
-	background-color: white;
-	text-align: center;
-	line-height: 40px;
-}
-
-.nav div a {
-	text-decoration: none;
-	out-line: none;
-	font-size: 15px;
-	font-weight: 700;
-}
-
-.active {
-	border-bottom: 3px solid dodgerblue;
-	height: 40px;
-}
-</style>
-
-<style>
-.affirmSettleBtn {
-	height: 30px;
-	float: right;
-	line-height: 30px;
-	width: 20%;
-	margin-top: 11px;
-}
-
-.oBuffetFoodQuerySpanSelect {
-	margin-top: 5px;
-	margin-bottom: 0;
-	padding: 5px;
-}
-
-.oBuffetFoodQuerySpanInput {
-	margin-top: 5px;
-	margin-bottom: 5px;
-	padding: 5px;
-}
-
-.oBuffetFoodQuerySpanButton {
-	margin-top: 5px;
-	margin-bottom: 5px;
-	padding: 5px;
-}
-
-.oBuffetFoodQuerySpanInput>span>input {
-	width: 100%;
-	border-radius: 2px;
-	border: 1px solid #e2e2e2;
-	height: 30px;
-	padding-left: 10px;
-}
-
-.oBuffetFoodQuerySpanSelect>span>select {
-	width: 100%;
-	border-radius: 2px;
-	border: 1px solid #e2e2e2;
-	height: 30px;
-	padding-left: 10px;
-}
-
-.spanFontSize {
-	font-size: 13px;
-}
-
-.affirmAddItemBtn {
-	height: 20px;
-	border-radius: 2px;
-	border: 1px solid #1E9FFF;
-	color: #fff;
-	padding: 8px;
-	line-height: 2px;
-	background-color: #1E9FFF;
-}
-
-.labelSpanText {
-	font-size: 15px;
-	font-weight: 500;
-	line-height: 30px;
-	padding-right: 0;
-	text-align: left;
-}
-
-.iconSpan {
-	position: relative;
-	left: -150px;
-	color: #1E9FFF;
-	cursor: pointer;
-}
-
-.tableNumberH {
-	padding-left: 0;
-	margin-bottom: 15px;
-}
-
-.tableNumberH>b {
-	padding-top: 15px;
-	font-size: 15px;
-}
-
-.pd-0 {
-	padding-left: 0;
-}
-
-.productDetailH {
-	padding-bottom: 0;
-	margin-top: 17px;
-	text-align: left;
-}
-
-.numberH {
-	border-radius: 6px 6px 0 0;
-}
-
-.tableTableModeH {
-	margin-bottom: 15px;
-}
-
-.tableTableModeH>b {
-	padding-top: 15px;
-	font-size: 15px;
-}
-
-.productDetailH>h5 {
-	margin-bottom: 0;
-	padding-left: 0;
-}
-
-.shouqi.ModelWindow {
-	cursor: pointer;
-}
-
-.xiangqing.modelWindow {
-	border-bottom: 1px solid gainsboro;
-	border-top: 1px solid gainsboro;
-	height: 40px;
-	padding-bottom: 13px;
-}
-
-.bt.modelWindow {
-	width: 15%;
-	border-radius: 6px;
-}
-
-.cancel.modelWindow {
-	float: left;
-	margin-left: 30px;
-	width: 15%;
-	border-radius: 6px;
-}
-
-.szhong.modelWindow {
-	text-align: right;
-	float: right;
-	font-size: 14px;
-	margin-top: 0;
-	line-height: 0;
-}
-
-.szuo.modelWindow {
-	line-height: 0;
-	margin-top: 0;
-}
-
-.tabDivFirstChild {
-	padding-left: 10px;
-	padding-right: 10px;
-	background-color: #f3f3f4;
-	padding-bottom: 15px;
-}
-
-.productDetailBody {
-	padding-left: 0;
-	/*padding-bottom: -10px;*/
-	margin-top: 10px;
-}
-
-.productDetailBody>h5 {
-	margin-bottom: 0;
-}
-
-.xiangqing.bodyContent {
-	border-bottom: 1px solid gainsboro;
-	border-top: 1px solid gainsboro;
-	height: 45px;
-	margin-top: 10px;
-}
-
-.szuo.bodyContent {
-	font-weight: 700;
-	font-size: 12px;
-	margin-top: -7px;
-}
-
-.szhong.bodyContent {
-	text-align: right;
-	font-weight: 700;
-	font-size: 13px;
-	margin-top: -7px;
-}
-
-.syou.bodyContent {
-	padding-right: 0;
-	text-align: right;
-	margin-right: 0;
-	font-weight: 700;
-	font-size: 13px;
-	margin-top: -7px;
-}
-
-.xiangqing.bodyContent {
-	padding-right: 0;
-}
-
-.tog.modelWindow {
-	height: 70px;
-	overflow: auto;
-}
 </style>
 </head>
 <body>

@@ -61,140 +61,27 @@
 	padding-top: 80px;
 	text-align: center;
 }
-
-.tog {
-	width: 100%;
-	padding: 0px;
+#myModal{
+	width: 50%;
+	height: 60%;
+	background-color: #fff;
+	text-align: center;
+	position: fixed;
+	top: 10%;
+	left: 450px;
 }
+.tableContent{
+	border-collapse: collapse;
+	margin: auto;
+	width: 80%;
+	height: 80%;
+	font-size: 20px;
 
-.xiangqing.modelWindow {
-	border-bottom: 1px solid gainsboro;
-	border-top: 1px solid gainsboro;
+}
+.tableContent,.titleInfo ,.titleInfo>th,.bodyInfo>td{
+	border: 1px solid #d2d2d2;
+	text-align: center;
 	height: 40px;
-	padding-bottom: 13px;
-}
-
-.bt.modelWindow {
-	width: 15%;
-	border-radius: 6px;
-}
-
-.tog.modelWindow {
-	height: 70px;
-	overflow: auto;
-}
-</style>
-<style>
-* {
-	font-family: "微软雅黑";
-}
-
-.tog {
-	width: 100%;
-	padding: 0px;
-}
-
-.xiangqing {
-	margin-top: 0px;
-}
-
-.row {
-	margin-top: 20px;
-	background-color: white;
-	height: 100%;
-	background-color: white;
-	width: 100%;
-	float: right;
-	margin-right: 1px;
-	padding-left: 0px;
-	padding-right: 0px;
-	padding-bottom: 10px;
-	border-bottom: 2px solid #ddd;
-}
-
-.xuhao {
-	background-color: lightgray;
-	margin-top: 0px;
-	height: 40px;
-	line-height: 40px;
-	padding-left: 0px;
-}
-
-.bt {
-	width: 10%;
-	height: 30px;
-	background-color: white;
-	border: 1px solid dodgerblue;
-	border-radius: 5px;
-	color: lightskyblue;
-	margin-top: 12px;
-}
-
-.bt-primary {
-	background-color: dodgerblue;
-	color: white;
-}
-
-.tog {
-	width: 100%;
-	padding: 0px;
-}
-
-.xiangqing {
-	margin-top: 0px;
-}
-
-.row {
-	margin-top: 20px;
-	background-color: white;
-	height: 100%;
-	background-color: white;
-	width: 100%;
-	float: right;
-	margin-right: 1px;
-	padding-left: 0px;
-	padding-right: 0px;
-	padding-bottom: 10px;
-	border-bottom: 2px solid #ddd;
-}
-
-.xuhao {
-	background-color: lightgray;
-	margin-top: 0px;
-	height: 40px;
-	line-height: 40px;
-	padding-left: 0px;
-}
-
-.bt {
-	width: 10%;
-	height: 30px;
-	background-color: white;
-	border: 1px solid dodgerblue;
-	border-radius: 5px;
-	color: lightskyblue;
-	margin-top: 12px;
-}
-
-.bt-primary {
-	background-color: dodgerblue;
-	color: white;
-}
-.xiangqing.modelWindow {
-	border-bottom: 1px solid gainsboro;
-	border-top: 1px solid gainsboro;
-	height: 40px;
-	padding-bottom: 13px;
-}
-
-.bt.modelWindow {
-	width: 15%;
-	border-radius: 6px;
-}
-
-.tog.modelWindow {
-	height: 70px;
-	overflow: auto;
 }
 
 </style>
@@ -217,13 +104,16 @@
 								<c:if test="${each.bfo!=null }">
 								<span class="orderAmount">¥${each.bfo.orderAmount }</span><br/>
 								</c:if>
+									<c:choose>
 								<c:when test="${each.bfo.orderTime!=null}">
 								<span class="orderTime">${each.bfo.orderTime }</span>
 								</c:when>
-								<c:otherwise test="${each.useSeatTime!=null}">
+								<c:when test="${each.useSeatTime!=null}">
 								<span class="orderTime">${each.useSeatTime }</span>
-								</c:otherwise>
+								</c:when>
+									</c:choose>
 								<span class="numberSeat">${each.numberSeat }</span><br/>
+						
 							</div>
 							</c:if>
 							<c:if test="${each.seatStatus==0 }">
@@ -243,68 +133,97 @@
 						<span>目前没有任何座位，请添加座位</span>
 					</c:otherwise>
 				</c:choose>
+				<div><input type="button" id="modal" value="测试模态框"></div>
 			</div>
 		</div>
 		<%@include file="footer.jsp"%>
 	</div>
 	<%@include file="js.jsp"%>
-	<div class="modal fade " id="message" tabindex="-1" role="dialog"
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
-		<!--这里id和上面那个动态值一样-->
-		<div class="modal-dialog">
-			<div style="border-radius: 6px;" class="row col-md-12">
-				<!--序号-->
-				<h3 style="padding-left: 0px; border-radius: 6px 6px 0 0;"
-					class="xuhao col-md-12">
-					<b class="col-md-12" id="opMessage"></b>
-				</h3>
-				<hr />
-				<div class="tog">
-					<span class="xiangqing col-md-12" style="" id="delSeatInfoName"></span>
+		<div class="orderContent">
+			<div>
+				<table class="tableContent">
+					<thead class="titleInfo">
+						<tr>
+							<th>序号</th>
+							<th>订单号</th>
+							<th>人数</th>
+							<th>座位名</th>
+							<th>预定人</th>
+							<th>预定时间</th>
+							<th>预定手机号</th>
+							<th>备注</th>
+							<th>状态</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody class="bodyInfo">
+					</tbody>
+				</table>
+				<div>
+					<select id="selectInfo">
+						<option>选择座位号</option>
+					</select>
 				</div>
-				<span class="xiangqing col-md-12" style="">
-					<button style="width: 15%; border-radius: 6px;" id="delMessage"
-						type="button" class="bt bt-primary col-md-4">确定</button> <input
-					style="float: left; margin-left: 30px; width: 15%; border-radius: 6px;"
-					data-dismiss="modal" type="button" class="bt bt-default col-md-4 "
-					value="取消" />
-				</span>
 			</div>
 		</div>
 	</div>
-	<div class="modal fade " id="myModal" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<!--这里id和上面那个动态值一样-->
-		<div class="modal-dialog">
-			<div style="border-radius: 6px;" class="row col-md-12">
-				<!--序号-->
-				<h3 style="padding-left: 0px; border-radius: 6px 6px 0 0;"
-					class="xuhao col-md-12">
-					<b class="col-md-12" id="changeMsg"></b>
-				</h3>
-				<hr />
-				<div class="tog">
-					<form action="" method="post" class="xiangqing col-md-12">
-						座位编号： <input type="text" id="seatName" value=""></br> 座位人数： <input
-							type="text" id="numberSeat" value=""></br>
-					</form>
-				</div>
-				<span class="xiangqing col-md-12" style="">
-					<button style="width: 15%; border-radius: 6px;" id="myModalc"
-						type="button" class="bt bt-primary col-md-4">添加</button> <input
-					style="float: left; margin-left: 30px; width: 15%; border-radius: 6px;"
-					data-dismiss="modal" type="button" class="bt bt-default col-md-4 "
-					value="取消" />
-				</span>
-			</div>
-		</div>
-	</div>
-<script type="text/javascript">
+	<script type="text/javascript">
 $(function(){
 	$(".seatInfo").on("click",function(){
 		changeSeatState(this)
 	})
+	$("#modal").on("click",function(){
+		$("#myModal").modal('show')
+		addSeatOrder()
+	})
 })
+function doTab(data,i){
+	var table=$(".bodyInfo");
+	var tr="<tr>"+
+	"<td>"+i+"</td>"+
+	"<td>"+data.orderNumber+"</td>"+
+	"<td>"+data.seatCount+"</td>"+
+	"<td>空</td>"+
+	"<td>"+data.scheduledName+"</td>"+
+	"<td>"+data.scheduledTime+"</td>"+
+	"<td>"+data.seatPhone+"</td>"+
+	"<td>"+data.remarks+"</td>"+
+	"<td>"+(data.status==0?'未处理':'已处理')+"</td>"+
+	"<td shopId="+data.shopId+"><input type='checkbox' class='doOrder'></td>"+
+	"</tr>"
+	table.append(tr);
+}
+function addSelectInfo(){
+	debugger
+	var selectInfo=$("#selectInfo")
+	var seatNames= new Array();
+	var seatInfo=$(".tabListDiv").find("div[seatStatus='0']")
+	console.log(seatInfo)
+	$(seatInfo).each(function(index, item){ 
+		var seatName=$(item).find(".seatName")
+		seatNames.push($(seatName).html());
+		}); 
+	console.log(seatNames)
+	$(seatNames).each(function (index, item) {
+		 var option="<option>"+item+"</option>"
+		 selectInfo.append(option);
+    })
+}
+function addSeatOrder(){
+	url=baseUrl +"/merchant/integral/getSeatInfo"
+	$.post(url,function(data){
+		if(data.code==0){
+			$(".bodyInfo").empty()
+			$("#selectInfo").empty()
+			for(var i=1;i<=data.data.length;i++){
+				doTab(data.data[i-1],i)
+			}
+			addSelectInfo()
+		}
+	})
+}
 function changeSeatState(change){
 		var myDate=new Date();
 		console.log(change)

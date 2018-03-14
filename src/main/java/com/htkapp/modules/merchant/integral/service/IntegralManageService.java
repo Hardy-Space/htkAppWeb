@@ -43,6 +43,8 @@ public interface IntegralManageService {
     AjaxResponseModel openActivity(AjaxRequestParams params);
     //修改资讯
     AjaxResponseModel updateMes(ShopArticleInfo shopArticleInfo);
+    //查询座位订单号
+    AjaxResponseModel getSeatInfo();
     /* ====================JSP页面接口结束========================== */
 
 	String uploadNewsContentImg(MultipartFile file);
