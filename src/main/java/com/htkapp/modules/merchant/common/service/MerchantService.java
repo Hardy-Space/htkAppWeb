@@ -75,7 +75,7 @@ public interface MerchantService {
     //自助点餐订单处理(催单)
     void buffetFoodOrderReminder(RequestParams params);
     //自助点餐订座处理
-    void getSeatOrder(RequestParams params);
+    void getSeatOrder(RequestParams params,String startTime,String endTime,Integer pageNum);
     
     /* ===========================JSP页面接口结束============================== */
 }

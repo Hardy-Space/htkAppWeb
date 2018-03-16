@@ -151,6 +151,9 @@
     	select <include refid="Base_Column_List" />
     	 from seat_order 
     	 where shop_id=#{shopId}
+    	 <if test="startTime != null and endTime != null">
+            and gmt_create between #{startTime} and #{endTime} 
+        </if>
     
     </select>
     <update id="updataSeatInfo">

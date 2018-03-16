@@ -412,7 +412,7 @@ public class IntegralManageServiceImpl implements IntegralManageService {
 		try {
 			accountShopId = OtherUtils.getLoginUserByRequest().getUserId();
 			Shop takeOutShop=shopService.getShopByAccountShopIdAndMark(accountShopId,0);
-			list=seatOrderService.getSeatOrderListByShopId(takeOutShop.getShopId().toString());
+			list=seatOrderService.getSeatOrderListByShopId(takeOutShop.getShopId().toString(),null,null);
 			if(list.size()>0) {
 				return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION,"查询成功",list);
 			}

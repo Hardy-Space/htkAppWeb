@@ -64,8 +64,8 @@ public class SeatOrderServiceImpl implements SeatOrderService {
     /* =====================JSP接口结束========================= */
     //查询店铺名下的所有预定订单
 	@Override
-	public List<SeatOrder> getSeatOrderListByShopId(String shopId) {
-		List<SeatOrder> list=seatOrderDao.getSeatOrderListByShopId(shopId);
+	public List<SeatOrder> getSeatOrderListByShopId(String shopId,String startTime,String endTime) {
+		List<SeatOrder> list=seatOrderDao.getSeatOrderListByShopId(shopId,startTime,endTime);
 		if(list.size()<=0) {
 			return list;
 		}

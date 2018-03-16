@@ -1089,60 +1089,6 @@ public class MerchantServiceImpl implements MerchantService {
 		}
 	}
 
-	//		//自助点餐订单处理(订单调整)
-	//		@Override
-	//		public void buffetFoodOrderEdit(RequestParams params) {
-	//			System.out.println("帮忙进入");
-	//			if (params != null) {
-	//				try {
-	//					//获得model
-	//					Model model = params.getModel();
-	//					//通过model获取用户
-	//					LoginUser user = OtherUtils.getLoginUserByRequest();
-	//					//通过用户id跟mark标记获得商铺信息
-	//					Shop shop = shopService.getShopByAccountShopIdAndMark(user.getUserId(), 2);
-	//					int pageNumber = Globals.DEFAULT_PAGE_NO;
-	//					int pageLimit = Globals.DEFAULT_PAGE_LIMIT;
-	//					if (params.getPageNum() > 1) {
-	//						pageNumber = params.getPageNum();
-	//					}
-	//					String orderDesc = "gmt_create desc";
-	//					//通过店铺id查询订单列表
-	//					List<BuffetFoodOrder> result = buffetFoodOrderService.getAdjustOrderList(shop.getShopId(), orderDesc, pageNumber, pageLimit);
-	//					List<BuffetFoodOrderProduct> productLists=new ArrayList<BuffetFoodOrderProduct>();
-	//					Integer a=0;
-	//					if (result != null) {
-	//						int quantity = 0;
-	//						for (BuffetFoodOrder each : result) {
-	//							quantity = 0;
-	//							Gson gson=new Gson();
-	//							//通过每个订单id查询订单下的商品列表
-	//							productLists = gson.fromJson(each.getAdjustOrderProductJson(), new TypeToken<List<BuffetFoodOrderProduct>>() {
-	//							}.getType());
-	//							List<BuffetFoodOrderProduct> orderProductList = buffetFoodOrderProductService.getOrderProductListById(each.getId());
-	//							each.setProductLists(orderProductList);
-	//							Date date = new Date();
-	//							long time = date.getTime() - DateUtil.parse(each.getOrderTime()).getTime();
-	//							String commitMinute = DateUtil.formatBetween(time, BetweenFormater.Level.MINUTE);
-	//							each.setMinute(commitMinute);
-	//							if (orderProductList != null) {
-	//								for (BuffetFoodOrderProduct every : orderProductList) {
-	//									quantity += every.getQuantity();
-	//								}
-	//							}
-	//							each.setSum(quantity);
-	//							model.addAttribute("change"+a,productLists);
-	//							a++;
-	//						}
-	//					}
-	//					model.addAttribute("count",a);
-	//					model.addAttribute("data", result);
-	//				} catch (Exception e) {
-	//					e.printStackTrace();
-	//				}
-	//			}
-	//		}
-
 
 	//自助点餐订单处理(订单调整)
 	@Override
@@ -1403,7 +1349,6 @@ public class MerchantServiceImpl implements MerchantService {
 			LoginUser user;
 			try {
 				user = OtherUtils.getLoginUserByRequest();
-				AccountShop accountShop = accountShopService.getAccountShopDataById(user.getUserId());
 				Shop shop = shopService.getShopMessageById(user.getUserId(), 2);
 				Model model = params.getModel();
 				List<SeatInformation> list=new ArrayList<SeatInformation>();
@@ -1447,15 +1392,23 @@ public class MerchantServiceImpl implements MerchantService {
 	}
 	//获取订座订单
 	@Override
-	public void getSeatOrder(RequestParams params) {
+	public void getSeatOrder(RequestParams params,String startTime,String endTime,Integer pageNum) {
 		if(params!=null) {
 			Model model = params.getModel();
 			int accountShopId;
+			int pageLimit = Globals.DEFAULT_PAGE_LIMIT;
+			List<SeatOrder> list=new ArrayList<SeatOrder>();
 			try {
+				PageHelper.startPage(pageNum, pageLimit);
 				accountShopId = OtherUtils.getLoginUserByRequest().getUserId();
 				Shop takeOutShop=shopService.getShopByAccountShopIdAndMark(accountShopId,0);
-				List<SeatOrder> list=SeatOrderService.getSeatOrderListByShopId(takeOutShop.getShopId().toString());
-				model.addAttribute("list",list);
+				if(startTime==null&&endTime==null) {
+					 list=SeatOrderService.getSeatOrderListByShopId(takeOutShop.getShopId().toString(),null,null);
+				}else {
+					list=SeatOrderService.getSeatOrderListByShopId(takeOutShop.getShopId().toString(),startTime,endTime);
+				}
+				PageInfo<SeatOrder> p=new PageInfo<SeatOrder>(list);
+				model.addAttribute("p",p);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return;

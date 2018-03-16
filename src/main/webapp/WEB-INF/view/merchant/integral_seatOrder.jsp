@@ -87,6 +87,12 @@
 	position: relative;
 	top: -2px;
 }
+
+.page {
+	font-size: 15px;
+	text-align: center;
+	font-weight: 2px;
+}
 </style>
 </head>
 <body>
@@ -129,8 +135,8 @@
 								</thead>
 								<tbody>
 									<c:choose>
-										<c:when test="${list != null}">
-											<c:forEach items="${list }" var="each" varStatus="i">
+										<c:when test="${p.list != null}">
+											<c:forEach items="${p.list }" var="each" varStatus="i">
 												<tr>
 													<td>${i.index }</td>
 													<td>${each.orderNumber}</td>
@@ -154,7 +160,13 @@
 								</tbody>
 							</table>
 						</div>
-						<div class=></div>
+						<div class="row item col-md-12 page">
+							<p>一共${p.pages}页</p>
+							<a href="done?pageNum=${p.firstPage}">第一页</a> <a
+								href="done?pageNum=${p.nextPage}">下一页</a> <a
+								href="done?pageNum=${p.prePage}">上一页</a> <a
+								href="done?pageNum=${p.lastPage}">最后页</a>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -184,18 +196,26 @@
 			last : false
 		});
 	});
-	   layui.use(['element', 'util', 'layer', 'laydate', 'laypage'], function () {
-	        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
-	        var date = layui.laydate;
-	        date.render({
-	            elem: '#date',
-	            theme: '#20A0FF',
-	            trigger: 'click',
-	            max: 0,
-	            min: -365,
-	            range: '~',
-	            format: 'yyyy-MM-dd'
-	        })
-	    });
+	layui.use([ 'element', 'util', 'layer', 'laydate', 'laypage' ], function() {
+		var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		var date = layui.laydate;
+		date.render({
+			elem : '#date',
+			theme : '#20A0FF',
+			trigger : 'click',
+			max : 0,
+			min : -365,
+			range : '~',
+			format : 'yyyy-MM-dd'
+		})
+	});
+	 $("button.nowQueryBtn").on("click", function () {
+	        var dateVal = $("#date").val();
+	        if (dateVal === '' || dateVal === undefined) {
+	            return false;
+	        }
+	        var dateValList = dateVal.split("~");
+	        window.location.href = baseUrl + "/merchant/integral/seatOrder?startTime=" + dateValList[0] + "&endTime=" + dateValList[1];
+	    })
 </script>
 </html>

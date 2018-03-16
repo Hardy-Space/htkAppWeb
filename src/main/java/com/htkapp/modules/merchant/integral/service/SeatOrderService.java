@@ -6,6 +6,9 @@ import com.htkapp.modules.merchant.integral.entity.SeatOrder;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+import org.directwebremoting.guice.RequestParameters;
+
 /**
  *
  */
@@ -19,7 +22,7 @@ public interface SeatOrderService {
     //插入座位预定
     void insertSeatOrderByToken(SeatOrder order);
     //根据店铺号查询店铺名下所有的订座信息
-    List<SeatOrder> getSeatOrderListByShopId(String shopId);
+    List<SeatOrder> getSeatOrderListByShopId(String shopId,String startTime,String endTime);
     //订座订单操作(安排座位)
     int updataSeatInfo(String seatName,String orderNumber);
   //根据店铺号以及状态码查询店铺名下未处理的订单

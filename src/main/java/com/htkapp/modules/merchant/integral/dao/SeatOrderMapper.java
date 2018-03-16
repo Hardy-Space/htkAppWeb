@@ -21,7 +21,7 @@ public interface SeatOrderMapper {
     //根据订座订单号查询订座详情
     SeatOrderDetail getSeatOrderDetailDAO(String orderNumber, String token);
     //根据店铺号查询店铺名下所有的订座信息
-    List<SeatOrder> getSeatOrderListByShopId(String shopId);
+    List<SeatOrder> getSeatOrderListByShopId(@Param("shopId")String shopId,@Param("startTime")String startTime,@Param("endTime")String endTime);
     //更新订单信息
     int updataSeatInfo(String seatName,String orderNumber);
     //根据店铺号以及状态码查询店铺名下未处理的订单
