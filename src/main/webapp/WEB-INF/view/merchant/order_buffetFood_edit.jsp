@@ -678,11 +678,6 @@
                     </table>
                 </div>
             	<span>**************************</span> 
-                <div class="total">
-                    <label class="left">总计</label>
-                    <label class="right" id="orderAmount">39</label>
-                    <div class="clearfix"></div>
-                </div>
 				<div class="section3">
 					<label id="nowTime"></label>
 				</div>
@@ -814,8 +809,6 @@
           $("#orderTime").html("下单时间:<br />"+orderSubmitTimeEle+"钟")
           var orderNumberEle=$(curClickEle).attr("data-orderNumber");
           $("#orderNumber").html("订单编号:<br />"+orderNumberEle)
-          var orderAmountEle=$(curClickEle).attr("data-orderAmount");
-          $("#orderAmount").html("¥"+orderAmountEle)
           var productItems=$("#orderProduct")
           var myDate = new Date();    
           $("#nowTime").html("时间:<br />"+myDate.toLocaleDateString()+myDate.toLocaleTimeString())
