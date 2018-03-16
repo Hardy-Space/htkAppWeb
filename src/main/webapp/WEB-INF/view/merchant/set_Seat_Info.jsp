@@ -22,7 +22,7 @@ background-color: #c9defd;
 }
 
 .useBtn{
-margin: auto 10px;
+margin: auto 5px;
 }
 
 .buttons {
@@ -31,11 +31,11 @@ margin: auto 10px;
 }
 
 .tabListDiv {
-	width: 80%;
+	width: 50%;
 	height: 100%;
 	background-color: white;
 	margin: auto;
-	padding-top: 80px;
+	padding-top: 10px;
 	text-align: center;
 }
 

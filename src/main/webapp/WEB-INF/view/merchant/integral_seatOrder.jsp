@@ -32,7 +32,7 @@
 	height: 100%;
 	background-color: white;
 	margin: auto;
-	padding-top: 80px;
+	padding-top: 10px;
 	text-align: center;
 }
 
@@ -48,6 +48,45 @@
 	margin: auto 80px;
 	text-align: left;
 }
+
+.dateCondition {
+	background-color: white;
+	margin: 10px auto;
+	width: 95%;
+	padding: 10px 0;
+}
+
+.contentCondition {
+	background-color: #fff;
+	padding: 0 65px;
+}
+
+.contentCondition>label.labelName {
+	padding: 15px;
+	font-size: 15px;
+	margin-bottom: 0;
+}
+
+.contentCondition>div.dateInputDiv {
+	display: inline-block;
+}
+
+.contentCondition>div.dateInputDiv>input {
+	height: 30px;
+	border-radius: 2px;
+	border: 1px solid #e2e2e2;
+	padding-left: 10px;
+	width: 220px;
+}
+
+.contentCondition>div.dateInputDiv>button {
+	height: 30px;
+	line-height: 30px;
+	/*padding-left: 50px;*/
+	margin-left: 50px;
+	position: relative;
+	top: -2px;
+}
 </style>
 </head>
 <body>
@@ -55,16 +94,18 @@
 		<%@include file="top.jsp"%>
 		<div class="layui-body" style="background-color: #f3f3f4">
 			<div class="body-content">
-				<div class="seatOrder">
-					<div class="codition">
-						<label>条件筛选</label>
-						<div class="conditionInput" style="display: inline-block">
-							<input name="date useBtn" id="date" title="" value="" />
-							<input type="button" value="添加座位" class="btn btn-info useBtn" id="addSeatInformation" >
-							<input type="button" value="删除座位" class="btn btn-danger useBtn" id="delSeatInfo">
-							<input type="button" value="调整座位" class="btn btn-info useBtn" id="changeSeatInfo">
+				<div class="dateCondition">
+					<div class="contentCondition">
+						<label class="labelName">选择日期:</label>
+						<div class="dateInputDiv">
+							<input id="date" readonly placeholder="点击选择筛选日期" name="date"
+								value="">
+							<button class="layui-btn-normal layui-btn nowQueryBtn">查询</button>
 						</div>
 					</div>
+				</div>
+				<div class="seatOrder">
+
 					<div class="orderContent">
 						<div class="tableContent">
 							<table class="layui-table">
@@ -113,9 +154,7 @@
 								</tbody>
 							</table>
 						</div>
-						<div class="pages_">
-							<div id="page"></div>
-						</div>
+						<div class=></div>
 					</div>
 				</div>
 			</div>
@@ -145,5 +184,18 @@
 			last : false
 		});
 	});
+	   layui.use(['element', 'util', 'layer', 'laydate', 'laypage'], function () {
+	        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+	        var date = layui.laydate;
+	        date.render({
+	            elem: '#date',
+	            theme: '#20A0FF',
+	            trigger: 'click',
+	            max: 0,
+	            min: -365,
+	            range: '~',
+	            format: 'yyyy-MM-dd'
+	        })
+	    });
 </script>
 </html>

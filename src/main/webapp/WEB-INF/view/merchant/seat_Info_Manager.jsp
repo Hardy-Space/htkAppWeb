@@ -45,7 +45,7 @@
 	border: 1px solid #000;
 	width: 120px;
 	height: 120px;
-	margin: 20px 15px;
+	margin: 20px 8px;
 	padding: 20px;
 	float: left;
 	-moz-border-radius: 10px;
@@ -58,7 +58,6 @@
 	height: 100%;
 	background-color: white;
 	margin: auto;
-	padding-top: 80px;
 	text-align: center;
 }
 
@@ -96,8 +95,13 @@
 	height: 100%;
 	overflow: scroll;
 }
-</style>
 
+.selectBtn {
+	position: fixed;
+right: 205px;
+bottom: 70px;
+}
+</style>
 </head>
 <body>
 	<div class="layui-layout layui-layout-admin">
@@ -145,9 +149,9 @@
 						<span>目前没有任何座位，请添加座位</span>
 					</c:otherwise>
 				</c:choose>
-				<div>
-					<input type="button" value="测试" class="selectBtn" seatName="">
-				</div>
+			</div>
+			<div>
+				<input type="button" value="选择订单" class="selectBtn btn btn-primary btn-lg" seatName="">
 			</div>
 		</div>
 		<%@include file="footer.jsp"%>
@@ -174,7 +178,8 @@
 				</table>
 			</div>
 			<div class="toolDiv">
-				<input type="button" value="安排座位" class="btn btn-primary selectInfoBtn" seatName=""/>
+				<input type="button" value="安排座位"
+					class="btn btn-primary selectInfoBtn" seatName="" />
 				<button type="button" class="btn btn-info" data-dismiss="modal">关闭</button>
 			</div>
 		</div>
@@ -191,7 +196,6 @@ $(function(){
 		}
 	})
 	$(".selectBtn").on("click",function(){
-		debugger
 		var seatName=$(".selectBtn").attr("seatName")
 		if(seatName==''||seatName==null){
 			alert("请选择闲置的座位")
@@ -207,7 +211,6 @@ $(function(){
 })
 
 function addSeatOrderInfo(order){
-	debugger
 	var seatOrder=$(".bodyInfo").find("tr>td>input:checked").parent().parent();
 	var seatName=$(".selectInfoBtn").attr("seatName");
 	var orderNumber=$(seatOrder).find("input[class='doOrder']").attr("orderNumber");
