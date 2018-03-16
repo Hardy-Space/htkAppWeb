@@ -22,10 +22,12 @@
 * {
 	font-family: "微软雅黑";
 }
-.useBtn{
-margin: auto 10px;
+
+.useBtn {
+	margin: auto 10px;
 }
-.seatOrder{
+
+.seatOrder {
 	width: 95%;
 	height: 100%;
 	background-color: white;
@@ -33,13 +35,17 @@ margin: auto 10px;
 	padding-top: 80px;
 	text-align: center;
 }
-.body-content{
+
+.body-content {
 	height: 100%;
 }
-.orderContent{
-	margin:auto 80px;	
+
+.orderContent {
+	margin: auto 80px;
 }
-.codition{
+
+.codition {
+	margin: auto 80px;
 	text-align: left;
 }
 </style>

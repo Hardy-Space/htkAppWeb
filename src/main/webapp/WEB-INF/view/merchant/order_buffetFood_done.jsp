@@ -20,7 +20,9 @@
     <link href="${staticFilePath}resource/plugins/assets/laydate/theme/default/laydate.css"/>
     <script src="${staticFilePath}resource/plugins/assets/laydate/laydate.js"></script>
     <style>
-
+	* {
+	font-family: "微软雅黑";
+}
         .szuo {
             font-size: 13px;
             text-align: left;
@@ -92,11 +94,6 @@
             line-height: 40px;
         }
 
-        .modal-body span {
-            text-align: center;
-            margin-top: 10px;
-            font-weight: 700;
-        }
 
         .xuhao {
             background-color: lightgray;
@@ -177,81 +174,8 @@
         .section4 .other_fee{
             border-bottom: 1px solid #DADADA;
         }
-        .section5 label{
-            display: block;
-        }
 </style>
     <style>
-        .affirmSettleBtn {
-            height: 30px;
-            float: right;
-            line-height: 30px;
-            width: 20%;
-            margin-top: 11px;
-        }
-
-        .oBuffetFoodQuerySpanSelect {
-            margin-top: 5px;
-            margin-bottom: 0;
-            padding: 5px;
-        }
-
-        .oBuffetFoodQuerySpanInput {
-            margin-top: 5px;
-            margin-bottom: 5px;
-            padding: 5px;
-        }
-
-        .oBuffetFoodQuerySpanButton {
-            margin-top: 5px;
-            margin-bottom: 5px;
-            padding: 5px;
-        }
-
-        .oBuffetFoodQuerySpanInput > span > input {
-            width: 100%;
-            border-radius: 2px;
-            border: 1px solid #e2e2e2;
-            height: 30px;
-            padding-left: 10px;
-        }
-
-        .oBuffetFoodQuerySpanSelect > span > select {
-            width: 100%;
-            border-radius: 2px;
-            border: 1px solid #e2e2e2;
-            height: 30px;
-            padding-left: 10px;
-        }
-
-        .spanFontSize {
-            font-size: 13px;
-        }
-
-        .affirmAddItemBtn {
-            height: 20px;
-            border-radius: 2px;
-            border: 1px solid #1E9FFF;
-            color: #fff;
-            padding: 8px;
-            line-height: 2px;
-            background-color: #1E9FFF;
-        }
-
-        .labelSpanText {
-            font-size: 15px;
-            font-weight: 500;
-            line-height: 30px;
-            padding-right: 0;
-            text-align: left;
-        }
-
-        .iconSpan {
-            position: relative;
-            left: -150px;
-            color: #1E9FFF;
-            cursor: pointer;
-        }
 
         .tableNumberH {
             padding-left: 0;
@@ -267,65 +191,6 @@
             padding-left: 0;
         }
 
-        .productDetailH {
-            padding-bottom: 0;
-            margin-top: 17px;
-            text-align: left;
-        }
-
-        .numberH {
-            border-radius: 6px 6px 0 0;
-        }
-
-        .tableTableModeH {
-            margin-bottom: 15px;
-        }
-
-        .tableTableModeH > b {
-            padding-top: 15px;
-            font-size: 15px;
-        }
-
-        .productDetailH > h5 {
-            margin-bottom: 0;
-            padding-left: 0;
-        }
-
-        .shouqi.ModelWindow {
-            cursor: pointer;
-        }
-
-        .xiangqing.modelWindow {
-            border-bottom: 1px solid gainsboro;
-            border-top: 1px solid gainsboro;
-            height: 40px;
-            padding-bottom: 13px;
-        }
-
-        .bt.modelWindow {
-            width: 15%;
-            border-radius: 6px;
-        }
-
-        .cancel.modelWindow {
-            float: left;
-            margin-left: 30px;
-            width: 15%;
-            border-radius: 6px;
-        }
-
-        .szhong.modelWindow {
-            text-align: right;
-            float: right;
-            font-size: 14px;
-            margin-top: 0;
-            line-height: 0;
-        }
-
-        .szuo.modelWindow {
-            line-height: 0;
-            margin-top: 0;
-        }
 
         .tabDivFirstChild {
             padding-left: 10px;
@@ -377,16 +242,9 @@
             padding-right: 0;
         }
 
-        .tog.modelWindow {
-            height: 70px;
-            overflow: auto;
-        }
     </style>
 
     <style>
-        .dateCondition {
-
-        }
 
         .contentCondition {
             background-color: #fff;
@@ -422,6 +280,11 @@
         .dateCondition {
             padding-top: 65px;
         }
+        .page{
+        	  font-size: 15px;
+        	  text-align: center;
+        	  font-weight: 2px;
+        }
     </style>
 </head>
 <body>
@@ -454,10 +317,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tabListDiv">
+								<div class="tabListDiv">
                                 <c:choose>
-                                    <c:when test="${data != null}">
-                                        <c:forEach items="${data}" var="each">
+                                    <c:when test="${page.list != null}">
+                                        <c:forEach items="${page.list}" var="each">
                                             <!-- 有数据显示 -->
                                             <div class="row item col-md-12">
                                                 <h3 class="xuhao serialNumber bodyContent col-md-12 pd-0">
@@ -500,7 +363,15 @@
                                                     </span>
                                                 </span>
                                             </div>
+                                            
                                         </c:forEach>
+                                        <div class="row item col-md-12 page">
+												<p	>一共${page.pages}页</p>
+												<a href="done?pageNum=${page.firstPage}">第一页</a>
+												<a href="done?pageNum=${page.nextPage}">下一页</a> 
+												<a href="done?pageNum=${page.prePage}">上一页</a> 
+												<a href="done?pageNum=${page.lastPage}">最后页</a>
+											</div>
                                     </c:when>
                                     <c:otherwise>
                                         <!-- 没有数据显示 -->
@@ -520,7 +391,6 @@
                                         </div>
                                     </c:otherwise>
                                 </c:choose>
-                                <div id="page"></div>
                             </div>
                         </div>
                     </div>

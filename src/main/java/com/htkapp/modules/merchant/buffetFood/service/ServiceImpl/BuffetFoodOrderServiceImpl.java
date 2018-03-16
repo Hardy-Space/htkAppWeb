@@ -1,6 +1,7 @@
 package com.htkapp.modules.merchant.buffetFood.service.ServiceImpl;
 
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.htkapp.core.curdException.DeleteException;
 import com.htkapp.core.curdException.UpdateException;
 import com.htkapp.core.jsAjax.AjaxResponseModel;
@@ -234,7 +235,6 @@ public class BuffetFoodOrderServiceImpl implements BuffetFoodOrderService {
     public List<BuffetFoodOrder> getBuffetFoodOrderListByToken(String accountShopToken, String startTime, String endTime, int payState, int pageNumber, int pageLimit) {
         try {
             String orderDesc = "buffet_food_order.gmt_create desc";
-            PageHelper.startPage(pageNumber, pageLimit);
             List<BuffetFoodOrder> resultList = buffetFoodOrderDao.getBuffetFoodOrderListByTokenAndConditionDAO(accountShopToken, payState, startTime, endTime, orderDesc);
             if(resultList != null && resultList.size() > 0){
                 return resultList;

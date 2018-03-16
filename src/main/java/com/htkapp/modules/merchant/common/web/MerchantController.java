@@ -395,7 +395,7 @@ public class MerchantController {
     //====自助点餐订单查询(已结算订单)
     @RequestMapping(value = "/buffetFood/order/done", method = RequestMethod.GET)
     public String buffetFoodOrderDone(Model model, String startTime, String endTime, 
-                                      @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
+                                      @RequestParam(value = "pageNum") Integer pageNum) {
         Map<String, Object> map = new HashMap<>();
         map.put("date", new Date().getTime());
         map.put("ord_mark", true);

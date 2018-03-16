@@ -202,7 +202,7 @@ public class BuffetFoodController {
 				each.setOrderId(order.getId());
 				//插入订单商品记录，改变订单总价
 				buffetFoodOrderProductService.insertProductDetailsUnderOrder(each);
-				orderAmount += each.getPrice();
+				orderAmount += (each.getPrice()*each.getQuantity());
 			}
 			List<BuffetFoodProduct> bfpList=buffetFoodProductService.getAllProductByShopId(order.getShopId(),null);
 			List<BuffetFoodOrderProduct> bfopList=buffetFoodOrderProductService.getOrderProductListById(order.getId());
