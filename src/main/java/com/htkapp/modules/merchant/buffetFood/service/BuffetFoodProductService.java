@@ -1,5 +1,6 @@
 package com.htkapp.modules.merchant.buffetFood.service;
 
+import com.htkapp.core.jsAjax.AjaxResponseModel;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodProduct;
 
 import java.util.List;
@@ -39,6 +40,10 @@ public interface BuffetFoodProductService {
     void delProductByCId(int categoryId) throws Exception;
     //关联团购添加产品表，只查询出未添加到团购产品表中的数据
     List<BuffetFoodProduct> getNotInGroupBuyProductListData(int shopId);
+    //通过商品id下架商品
+    AjaxResponseModel buffetFoodOff(String selectedIds);
+    //通过商品id上架商品
+    AjaxResponseModel buffetFoodOn(String selectedIds);
 
     //根据店铺id查询其名下所有的产品详情
     List<BuffetFoodProduct> getAllProductByShopId(int shopId,String orderBy);

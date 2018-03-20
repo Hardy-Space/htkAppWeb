@@ -92,7 +92,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="formItem">
                                 <h3>价格</h3>
                                 <div class="formList">
@@ -110,7 +109,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="formItem">
                                 <h3>积分</h3>
                                 <div class="formList">
@@ -131,8 +129,6 @@
                             <div class="subFrm">
                                 <input type="submit" value="保存"/>
                                 <input type="reset" onclick="openIndex()" value="取消"/>
-                                <input type="submit" value="删除" style="margin-left: 390px"/>
-                                <input type="reset" value="下架" style="float: right"/>
                             </div>
                             <input name="id" value="${dataPro.id}" hidden="hidden">
                         </form>

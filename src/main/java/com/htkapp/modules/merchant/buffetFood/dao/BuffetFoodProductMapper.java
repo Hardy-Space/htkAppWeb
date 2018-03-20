@@ -1,5 +1,6 @@
 package com.htkapp.modules.merchant.buffetFood.dao;
 
+import com.htkapp.core.jsAjax.AjaxResponseModel;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodCategory;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodProduct;
 import org.apache.ibatis.annotations.Param;
@@ -43,5 +44,9 @@ public interface BuffetFoodProductMapper {
     List<BuffetFoodProduct> getNotInGroupBuyProductListDataDAO(int shopId);
 //通过店铺id查询店铺下的所有自助点餐产品列表
     List<BuffetFoodProduct> getAllProductByShopId(@Param("shopId")int shopId,@Param("orderBy")String orderBy);
+    //通过商品id下架商品(修改商品状态)
+    int buffetFoodOff(@Param("productIds") List<Integer> idInts);
+    //通过商品id上架商品
+    int buffetFoodOn(@Param("productIds") List<Integer> idInts);
     /* ==========================JSP页面接口结束=============================== */
 }

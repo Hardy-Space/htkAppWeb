@@ -153,7 +153,7 @@
 										</c:when>
 										<c:otherwise>
 											<tr>
-												<td>目前没有预定订单</td>
+												<td colspan="9">目前没有预定订单</td>
 											</tr>
 										</c:otherwise>
 									</c:choose>

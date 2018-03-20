@@ -815,7 +815,7 @@
         //获取模态框的tabDom对象
         //模态框优惠券
         var ticket_m=$(this).find(".ticket.modelWindow > span:last");
-       if(parseInt(ticket_tUseMoney)<parseInt(orderAmount)){
+       if(parseInt(ticket_tUseMoney)<=parseInt(orderAmount)){
             ticket_m.text(ticket);
         }else{
         	ticket_m.text("优惠券使用条件不满足");
@@ -902,6 +902,7 @@
 		 updataPrintArea()
 	    })
 })
+
 function updataPrintArea(){
        curClickEleItemList = new Array();
        //商品条目信息

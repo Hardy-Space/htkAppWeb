@@ -244,13 +244,23 @@ function doTab(data,i){
 }
 
 function addSeatOrder(){
+	debugger
 	url=baseUrl +"/merchant/integral/getSeatInfoByStatus"
 	$.post(url,function(data){
+		console.log(data.data)
 		if(data.code==0){
-			$(".bodyInfo").empty()
-			for(var i=1;i<=data.data.length;i++){
-				doTab(data.data[i-1],i)
+			if(data.data!=null){
+				$(".bodyInfo").empty()
+				for(var i=1;i<=data.data.length;i++){
+					doTab(data.data[i-1],i)
+				}
 			}
+			$(".bodyInfo").empty()
+			var table=$(".bodyInfo");
+			var tr="<tr>"+
+			"<td colspan='9'>目前没有未处理的订单</td>"+
+			"</tr>"
+			table.append(tr);
 		}
 	})
 }

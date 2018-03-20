@@ -132,6 +132,29 @@ public class BuffetFoodController {
 			return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, e.getMessage());
 		}
 	}
+	
+	//下架商品接口
+	@RequestMapping("/product/buffetFoodOff")
+	@ResponseBody
+	public AjaxResponseModel buffetFoodOff(String selectedIds) {
+		try {
+			buffetFoodProductService.buffetFoodOff(selectedIds);
+			return new AjaxResponseModel<>(Globals.COMMON_SUCCESS_AND_JUMP_URL, "下架成功");
+		} catch (Exception e) {
+			return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, e.getMessage());
+		}
+	}
+	//上架商品接口
+	@RequestMapping("/product/buffetFoodOn")
+	@ResponseBody
+	public AjaxResponseModel buffetFoodOn(String selectedIds) {
+		try {
+			buffetFoodProductService.buffetFoodOn(selectedIds);
+			return new AjaxResponseModel<>(Globals.COMMON_SUCCESS_AND_JUMP_URL, "上架成功");
+		} catch (Exception e) {
+			return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, e.getMessage());
+		}
+	}
 
 	//======================================================分类
 	//==== 接口

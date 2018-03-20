@@ -1,6 +1,7 @@
 package com.htkapp.modules.merchant.buffetFood.service.ServiceImpl;
 
 import com.github.pagehelper.PageHelper;
+import com.htkapp.core.jsAjax.AjaxResponseModel;
 import com.htkapp.core.utils.Globals;
 import com.htkapp.modules.merchant.buffetFood.dao.BuffetFoodProductMapper;
 import com.htkapp.modules.merchant.buffetFood.entity.BuffetFoodProduct;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import sun.awt.geom.AreaOp;
 
 import javax.annotation.Resource;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -176,6 +179,41 @@ public class BuffetFoodProductServiceImpl implements BuffetFoodProductService {
         }
         return null;
     }
+
+	@Override
+	public AjaxResponseModel buffetFoodOff(String selectedIds) {
+		 try {
+	            //转成int型id
+	            String[] idStrs = selectedIds.split(",");
+	            List<Integer> idInts = new ArrayList<>();
+	            for (String idStr : idStrs) {
+	                Integer i = Integer.parseInt(idStr);
+	                idInts.add(i);
+	            }
+	            buffetFoodProductDao.buffetFoodOff(idInts);
+	            return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION, "下架失败");
+	        } catch (Exception e) {
+	            return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "下架失败");
+	        }
+	}
+
+	@Override
+	public AjaxResponseModel buffetFoodOn(String selectedIds){
+		 try {
+	            //转成int型id
+	            String[] idStrs = selectedIds.split(",");
+	            List<Integer> idInts = new ArrayList<>();
+	            for (String idStr : idStrs) {
+	                Integer i = Integer.parseInt(idStr);
+	                idInts.add(i);
+	            }
+	    		buffetFoodProductDao.buffetFoodOn(idInts);
+	    		return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION, "上架成功");
+	        } catch (Exception e) {
+	        	e.printStackTrace();
+	            return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "上架失败");
+	        }
+	}
 
     /* ======================JSP接口结束========================== */
 }

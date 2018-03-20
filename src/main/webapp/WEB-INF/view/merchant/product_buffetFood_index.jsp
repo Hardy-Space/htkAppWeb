@@ -70,6 +70,12 @@
                         <div class="catTitle clearfix">
                             <span title=""></span>
                             <a href="javascript:void(0);" class="editCat fa fa-pencil"> 编辑</a>
+                            <div class="action">
+                                <a href="javascript:void(0);" class="on">上架</a>
+                                <a href="javascript:void(0);" class="off">下架</a>
+                                <!--  <a href="javascript:void(0);" class="del">删除</a>-->
+                                <a href="javascript:void(0);" class="act">批量管理</a>
+                            </div>
                         </div>
                         <div class="goodsContiner">
                             <p class="emptyGoods">暂无数据</p>
@@ -146,6 +152,7 @@
         setData(data);
 
         function setData(data) {
+        	debugger
             data_ = data;
             if (data) {
                 var catHtml = "";
@@ -155,13 +162,19 @@
                     goodsHtml += '<div class="goodsContiner clearfix">';
                     if (item.buffetFoodProductList) {
                         $.each(item.buffetFoodProductList, function (indexb, itemb) {
-                            goodsHtml += '<div class="goodsItem">' +
-                                '<div class="goodsDetail" style="padding-top: 0;border-radius: 5px">' +
-                                '<div class="info clearfix" style="padding-top: 0">' +
-                                '<div class="fright" style="width: 100%">' +
-                                '<img src="' + itemb.imgUrl + '" style="width: 100%;height:168.73px;">' +
-                                '</div>' +
-                                '</div>' +
+                        	 var ifCanBuyStr = (itemb.state == 1)?"已上架":"已下架";
+                            goodsHtml += '<div class="goodsItem" data-id="' + itemb.id + '">' +
+                            '<div class="goodsDetail">' +
+                            //是否上架
+                            '<p class="ifCanBuy" style="background-color:#FF7F24;color:white;margin-bottom:10px;padding:10px">'+ifCanBuyStr+'</p>' +
+                            '<div class="info clearfix">' +
+                            '<div class="fleft">' +
+                            '<h3>' + itemb.productName + '</h3>' +
+                            '</div>' +
+                            '<div class="fright">' +
+                            '<img src="' + itemb.imgUrl + '">' +
+                            '</div>' +
+                            '</div>' +
                                 '<div class="goodsButton clearfix">' +
                                 '<span style="line-height: 32px;font-size: 16px;color: red;text-align: left;width: 67%">' + '￥' + itemb.price + '</span>' +
                                 '<a href="${sysPath}merchant/buffetFood/product/editProduct?productId=' + itemb.id + '">编辑</a>' +
@@ -300,7 +313,85 @@
 
             });
         });
+     // @author 马鹏昊
+        // @desc 上架点击事件
+        $(".goodsList .action .on").click(function(){
+            var allGoodItems = $(".goodsItem");
+            var selectedIds = "";
+            for(var i=0;i<allGoodItems.length;i++){
+                var single = allGoodItems[i];
+                var ifChecked = single.firstChild.lastChild.checked;
+                if (ifChecked){
+                    selectedIds = selectedIds+","+single.dataset.id;
+                }
+            }
+            //如果没有选中的则什么也不做
+            if(selectedIds=="")
+                return false;
+            var url = baseUrl + "/merchant/buffetFood/product/buffetFoodOn";
+            var params = {"selectedIds":selectedIds.substring(1,selectedIds.length)};
+            $.post(url,params,function (result, status) {
+            	console.log("============")
+            	console.log(result)
+            	console.log("============")
+            	console.log(status)
+                if(status === 'success'){
+                    if (result && result.code === 0){
+                        // $(this).siblings("a").css("display","none");
+                        // $(".goodsItem input[type='checkbox']").attr("checked",false).hide();
+                        // $(this).removeClass("edit");
+                        location.reload();
+                        return false;
+                    }else {
+                        layer_msg(result.message,'error');
+                        return false;
+                    }
+                }else {
+                    layer_msg('网络连接异常','exception');
+                    return false;
+                }
+            },"json");
+        });
 
+        
+        // @author 马鹏昊
+        // @desc 下架点击事件
+        $(".goodsList .action .off").click(function(){
+
+            var allGoodItems = $(".goodsItem");
+            var selectedIds = "";
+            for(var i=0;i<allGoodItems.length;i++){
+                var single = allGoodItems[i];
+                var ifChecked = single.firstChild.lastChild.checked;
+                if (ifChecked){
+                    selectedIds = selectedIds+","+single.dataset.id;
+                }
+            }
+            //如果没有选中的则什么也不做
+            if(selectedIds=="")
+                return false;
+            var url = baseUrl + "/merchant/buffetFood/product/buffetFoodOff";
+            var params = {"selectedIds":selectedIds.substring(1,selectedIds.length)};
+            $.post(url,params,function (result, status) {
+                if(status === 'success'){
+                    if (result && result.code === 0){
+                        // $(this).siblings("a").css("display","none");
+                        // $(".goodsItem input[type='checkbox']").attr("checked",false).hide();
+                        // $(this).removeClass("edit");
+                        location.reload();
+                        return false;
+                    }else {
+                        layer_msg(result.message,'error');
+                        return false;
+                    }
+                }else {
+                    layer_msg('网络连接异常','exception');
+                    return false;
+                }
+            },"json");
+
+        });
+		
 
         //搜索
         $(".goodsSearch a").click(function () {

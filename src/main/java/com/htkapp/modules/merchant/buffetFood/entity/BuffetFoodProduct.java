@@ -45,8 +45,18 @@ public class BuffetFoodProduct {
     private String categoryName; //分类名
 
     private List<BuffetFoodProductPackage> pgProductList;   //套餐内产品
+    
+    private String state;
 
-    public Integer getId() {
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public Integer getId() {
         return id;
     }
 

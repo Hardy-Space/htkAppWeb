@@ -413,7 +413,6 @@ public class TakeoutServiceImpl implements TakeoutService {
             }
             return takeoutProductService.setProductTakeOff(idInts);
         } catch (Exception e) {
-            e.printStackTrace();
             return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "下架失败");
         }
     }
