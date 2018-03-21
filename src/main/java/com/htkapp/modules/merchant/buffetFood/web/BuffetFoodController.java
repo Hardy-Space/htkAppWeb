@@ -202,7 +202,7 @@ public class BuffetFoodController {
 	@ResponseBody
 	public AjaxResponseModel affirmSettleMethod(@RequestParam("productList") String productList,
 			@RequestParam("orderNumber") String orderNumber,
-			@RequestParam(value="dataTime",required=false) String dataTime) {
+			@RequestParam(value="dataId",required=false) String dataId) {
 		try {
 			List<BuffetFoodOrderProduct> products = new ArrayList<>();
 			if (StringUtils.isNotEmpty(productList)) {
@@ -215,8 +215,6 @@ public class BuffetFoodController {
 			BuffetFoodOrder order = buffetFoodOrderService.getBuffetFoodOrder(accountShopToken, orderNumber);
 			Shop takeOutShop=shopService.getShopByAccountShopIdAndMark(accountShopId,0);
 			System.out.println(products);
-			buffetFoodOrderService.changeOrderStateByAccountShopToken(orderNumber, 2);  //更改订单支付状态
-			buffetFoodOrderService.changeOrderState(orderNumber,2); //更改订单状态
 			double orderAmount = order.getOrderAmount();
 			//追加订单中的商品
 			int integral=0;
@@ -244,13 +242,14 @@ public class BuffetFoodController {
 				return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "订单不存在");
 			}
 			//如果使用了优惠券会有优惠券创建时间传递过来
-			if(dataTime!=null) {
+			if(dataId!=null) {
 				//通过一系列条件查询出使用的优惠券
-				AccountUseTicketList autl=useTicketListService.getTicketListByTokenAndShopIdAndTime(order.getToken(), takeOutShop.getShopId(), dataTime);
+				AccountUseTicketList autl=useTicketListService.getTicketListByTokenAndShopId(order.getToken(),dataId);
 				Double ticketMoney=autl.gettMoney();
 				orderAmount-=ticketMoney;
 				//使用结束后该优惠券数量-1
-				useTicketListService.updataTicketListByTokenAndShopIdAndTime(order.getToken(), takeOutShop.getShopId(), dataTime, (autl.getQuantity()-1));
+				useTicketListService.updataTicketListByTokenAndShopId(order.getToken(),dataId, (autl.getQuantity()-1));
+				
 			}
 			buffetFoodOrderService.updateOrderTotalAmount(orderNumber, orderAmount);
 			buffetFoodOrderService.changeOrderStateByAccountShopToken(orderNumber,2);
@@ -267,6 +266,8 @@ public class BuffetFoodController {
 			jsonObject.put("orderNumber", order.getOrderNumber());
 			jsonObject.put("orderState", order.getOrderState());
 			jsonObject.put("orderId", order.getId());
+			buffetFoodOrderService.changeOrderStateByAccountShopToken(orderNumber, 2);  //更改订单支付状态
+			buffetFoodOrderService.changeOrderState(orderNumber,2); //更改订单状态
 			//            推送消息
 			if(order.getToken() == null){
 				Jpush.jPushMethodToMerchant(accountShopToken,"有一个自助点餐结算","ALERT", "商家版");

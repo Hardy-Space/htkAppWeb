@@ -479,7 +479,7 @@
 																		<option value="0" data-price="0">请选择优惠券</option>
 																			<c:forEach items="${each.ticketList}" var="ticketList">
 																				<option value="${ticketList.tMoney }" data-money="${ticketList.tUseMoney}"
-																				data-Time="${ticketList.gmtCreate }">${ticketList.tName}</option>
+																				data-Id="${ticketList.id }">${ticketList.tName}</option>
 																			</c:forEach>
 																	</c:when>
 																	<c:otherwise>
@@ -594,7 +594,7 @@
 					class="arrow fa fa-angle-up"></i></span> <br />
 				<div class="tog modelWindow" ></div>
 				<span class="xiangqing modelWindow col-md-12"> <br /> <span
-					class="szuo col-md-4 bianhao modelWindow">订单已提交：<b></b>分钟
+					class="szuo col-md-4 bianhao modelWindow">订单已提交：<b></b>钟
 				</span> <span class="xiaojie modelWindow allXiaoJie col-med-2 ">合计：<b></b>元
 				</span> <span class="szhong modelWindow allCount col-md-2 ">共<b></b>件
 				</span> <br />
@@ -698,6 +698,7 @@
 
     //结算时添加其它商品到订单条目中
     $(".oBuffetFoodQuerySpanButton > span > .affirmAddItemBtn").on("click", function () {
+    	debugger
         //获得select选中对象
         var selectedEle = $(".oBuffetFoodQuerySpanSelect > span > select").children('option:selected');
         //获得数量输入值对象
@@ -718,7 +719,6 @@
             }, 1500);
             return false;
         }
-
         //拿到值后动态插入页面中,页面中动态插入的元素可以动态删除
         var orderListParentEle = $(".tog.modelWindow");
         var price = selectedEle.attr("data-price");
@@ -736,32 +736,36 @@
         orderListParentEle.append(insertStr);
         //动态计算弹窗总件数
         var a=0;
-        sumUp(a,(parseInt(inputQuantityEle.val())*parseInt(price)));
+        sumUp(a,(parseInt(inputQuantityEle.val())*parseInt(price)),inputQuantityEle.val());
     });
 
     //删除条目按钮
     $(document).on("click", ".iconSpan", function () {
-    	var total=$(this).siblings(".xiaojie").html().replace("¥", "");
+    	debugger
         var ele = $(this);
+        var total=$(ele).siblings(".xiaojie").html().replace("¥", "");
+        var quantity=$(ele).siblings(".syou").html().replace("X", "");
         var eleParent = ele.parent();
         eleParent.remove();
         var a=1;
         //动态计算弹窗总件数
-        sumUp(a,total);
+        sumUp(a,total,quantity);
     })
 
     //删除或添加后动态计算总条数
-    function sumUp(a,price) {
+    function sumUp(a,price,quantity) {
+    	debugger
         //取总数值
-        var allCountEle = $(".modelWindow.allCount > b");
+        var allCountEle = $(".modelWindow.allCount > b").html();
         //计算item数量
         var itemList = $(".tog.modelWindow");
-        allCountEle.text(itemList.children().length);
         var orderAmountEle=$(".xiaojie.modelWindow.allXiaoJie >b").html();
         if(a==0){
         	$(".xiaojie.modelWindow.allXiaoJie >b").html((parseInt(orderAmountEle)+parseInt(price)).toFixed(1))
+        	$(".modelWindow.allCount > b").html(parseInt(allCountEle)+parseInt(quantity))
         }else if(a){
         	$(".xiaojie.modelWindow.allXiaoJie >b").html(parseInt(orderAmountEle)-parseInt(price).toFixed(1))
+        	$(".modelWindow.allCount > b").html(parseInt(allCountEle)-parseInt(quantity))
         }
        
     }
@@ -776,6 +780,7 @@
 
     //手动调起模态框的回调函数
     $("#myModal").on('show.bs.modal', function (even) {
+    	debugger
         //要显示的数据是: 桌号，商品条目信息（名字，数量），总数量,　订单号, 序号
         //初始化select选择框为未选中状态
         $(".selectDown").get(0).selectedIndex = 0;
@@ -800,7 +805,7 @@
         //优惠券金额
         var ticket_tMoney=$(ele).find(".orderTicketList > span > select").children('option:selected').attr("value");
         //优惠券时间
-        var ticket_time=$(ele).find(".orderTicketList > span > select").children('option:selected').attr("data-Time");
+        var dataId=$(ele).find(".orderTicketList > span > select").children('option:selected').attr("data-Id");
         //桌号
         var tableNumber = $(ele).find(".tableNumberH.bodyContent > b").text();
         //总数量
@@ -838,16 +843,16 @@
         //模态框总价
         var orderAmountEle=$(this).find(".xiaojie.modelWindow > b");
         if(parseInt(ticket_tUseMoney)<parseInt(orderAmount)){
-        	orderAmountEle.text(parseInt(orderAmount)-parseInt(ticket_tMoney));
+        	orderAmountEle.text((parseInt(orderAmount)-parseInt(ticket_tMoney)).toFixed(1));
         }else{
-        	 orderAmountEle.text(orderAmount);
+        	 orderAmountEle.text(parseInt(orderAmount).toFixed(1));
         }
         $(".print").attr("orderNumber",$(ele).find(".orderNumber.bodyContent").attr("value"));
         //模态框商品条目内容
         var productItemParent = $(this).find(".tog.modelWindow");
         productItemParent.empty();
         $(".affirmSettleBtn").attr("data-orderNumber", orderNumber);
-        $(".affirmSettleBtn").attr("data-Time",ticket_time);
+        $(".affirmSettleBtn").attr("data-Id",dataId);
         $(curClickEleItemList).each(function (index, item) {
             var insertStr = '<span class="xiangqing col-md-12">\n' +
                 '                    <span class="szuo col-md-3">' + item.productName + '</span>\n' +
@@ -862,8 +867,9 @@
 
 
     $(".affirmSettleBtn").on("click", function () {
+    	debugger
         var orderNumber = $(this).attr("data-orderNumber").replace("订单编号：", "");
-        var dataTime = $(this).attr("data-Time");
+        var dataId = $(this).attr("data-Id");
         const url = baseUrl + "/merchant/buffetFood/affirmSettleMethod";
         //获取新增的商品名，价格，数量，商品id
         var addedEntries = $(".xiangqing.addItem");
@@ -879,7 +885,7 @@
         $.ajax({
             url: url,
             type: 'post',
-            data: {productList: JSON.stringify(paramList), orderNumber: orderNumber,dataTime:(dataTime==null?dataTime:"")},
+            data: {productList: JSON.stringify(paramList), orderNumber: orderNumber,dataId:(dataId!=null?dataId:null)},
             dataType: 'json',
             success: function (data) {
                 if (data && data.code === 0) {
@@ -935,10 +941,9 @@ function updataPrintArea(){
 	 printArea()
 }
     function printArea(){
-    	//debugger
-    	var body=$("body").html();
     	var printArea=$("div.PrintArea").html();
     	$("div.PrintArea").printArea()
+    	alert($("div.PrintArea").html())
  
     }
  

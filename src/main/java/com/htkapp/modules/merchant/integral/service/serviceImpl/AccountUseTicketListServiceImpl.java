@@ -26,8 +26,8 @@ public class AccountUseTicketListServiceImpl implements AccountUseTicketListServ
 	}
 
 	@Override
-	public AccountUseTicketList getTicketListByTokenAndShopIdAndTime(String token, int shopId, String dataTime) {
-		AccountUseTicketList autl=accountUseTicketListMapper.getTicketListByTokenAndShopIdAndTime(token, shopId, dataTime);
+	public AccountUseTicketList getTicketListByTokenAndShopId(String token, String dataId) {
+		AccountUseTicketList autl=accountUseTicketListMapper.getTicketListByTokenAndShopId(token, dataId);
 		if(autl!=null) {
 			return autl;
 		}
@@ -36,7 +36,7 @@ public class AccountUseTicketListServiceImpl implements AccountUseTicketListServ
 
 	@Override
 	public int delTicketListByTokenAndShopIdAndTime(String token, int shopId, String dataTime) {
-		int a =accountUseTicketListMapper.delTicketListByTokenAndShopIdAndTime(token, shopId, dataTime);
+		int a =accountUseTicketListMapper.delTicketListByTokenAndShopId(token, shopId);
 		if(a<=0) {
 			return 0;
 		}
@@ -44,8 +44,8 @@ public class AccountUseTicketListServiceImpl implements AccountUseTicketListServ
 	}
 
 	@Override
-	public int updataTicketListByTokenAndShopIdAndTime(String token, int shopId, String dataTime, int quantity) {
-		int a=accountUseTicketListMapper.updataTicketListByTokenAndShopIdAndTime(token, shopId, dataTime, quantity);
+	public int updataTicketListByTokenAndShopId(String token, String dataId, int quantity) {
+		int a=accountUseTicketListMapper.updataTicketListByTokenAndShopIdAndTime(token, dataId, quantity);
 		if(a<=0) {
 			return 0;
 		}
