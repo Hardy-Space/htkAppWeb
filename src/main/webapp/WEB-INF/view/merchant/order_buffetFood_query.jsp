@@ -943,7 +943,7 @@ function updataPrintArea(){
     function printArea(){
     	var printArea=$("div.PrintArea").html();
     	$("div.PrintArea").printArea()
-    	alert($("div.PrintArea").html())
+//    	alert($("div.PrintArea").html())
  
     }
  
