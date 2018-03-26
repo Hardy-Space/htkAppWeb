@@ -139,7 +139,7 @@ public class BuffetFoodController {
 	public AjaxResponseModel buffetFoodOff(String selectedIds) {
 		try {
 			buffetFoodProductService.buffetFoodOff(selectedIds);
-			return new AjaxResponseModel<>(Globals.COMMON_SUCCESS_AND_JUMP_URL, "下架成功");
+			return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION, "下架成功");
 		} catch (Exception e) {
 			return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, e.getMessage());
 		}
@@ -150,7 +150,7 @@ public class BuffetFoodController {
 	public AjaxResponseModel buffetFoodOn(String selectedIds) {
 		try {
 			buffetFoodProductService.buffetFoodOn(selectedIds);
-			return new AjaxResponseModel<>(Globals.COMMON_SUCCESS_AND_JUMP_URL, "上架成功");
+			return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION, "上架成功");
 		} catch (Exception e) {
 			return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, e.getMessage());
 		}
@@ -242,7 +242,7 @@ public class BuffetFoodController {
 				return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "订单不存在");
 			}
 			//如果使用了优惠券会有优惠券创建时间传递过来
-			if(dataId!=null) {
+			if(dataId!=null&&dataId!="") {
 				//通过一系列条件查询出使用的优惠券
 				AccountUseTicketList autl=useTicketListService.getTicketListByTokenAndShopId(order.getToken(),dataId);
 				Double ticketMoney=autl.gettMoney();
@@ -278,6 +278,7 @@ public class BuffetFoodController {
 			}
 			return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
 		}
 	}
@@ -303,18 +304,6 @@ public class BuffetFoodController {
 		return buffetFoodControllerService.enterAdjust(params);
 	}
 
-	//打印各种单据接口
-//	@RequestMapping("/print")
-//	@ResponseBody
-//	public AjaxResponseModel printOrder(Model model,AjaxRequestParams params, RequestParams Rparams,Integer state){
-//		if(params!=null&&params.getOrderNumber()!=null) {
-//			Map<String, Object> map = new HashMap<>();
-//			OtherUtils.ReturnValByModel(model, map);
-//			Rparams.setModel(model);
-//			return  buffetFoodControllerService.printOrder(params,Rparams,state);
-//		}
-//		return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
-//	}
 
 
 	//核退
@@ -323,10 +312,21 @@ public class BuffetFoodController {
 	public AjaxResponseModel replyFalse(AjaxRequestParams params){
 		try {
 			if(params != null){
+				String accountShopToken = OtherUtils.getLoginUserByRequest().getToken();
+				BuffetFoodOrder order = buffetFoodOrderService.getBuffetFoodOrder(accountShopToken, params.getOrderNumber());
+				Shop shop = shopService.getShopDataById(order.getShopId());
+				System.out.println("shop is:"+shop.toString());
+				AccountShop user = accountShopService.getAccountShopDataById(shop.getAccountShopId());
+				JSONObject jsonObject = new JSONObject();
+				jsonObject.put("orderNumber", order.getOrderNumber());
+				jsonObject.put("orderState", order.getOrderState());
+				jsonObject.put("orderId", order.getId());
 				int row = buffetFoodOrderDao.replyFalseDAO(params.getOrderNumber(),null);
 				if(row <= 0){
 					return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED);
 				}else {
+					moreMethodsUtils.jPushToMerAndAccount(order.getToken(),"订单已核退", jsonObject.toJSONString(),
+							user.getToken(),"有一个自助点餐订单已核退", jsonObject.toJSONString(), 2);
 					return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION);
 				}
 			}else {

@@ -152,7 +152,6 @@
         setData(data);
 
         function setData(data) {
-        	debugger
             data_ = data;
             if (data) {
                 var catHtml = "";
@@ -163,6 +162,9 @@
                     if (item.buffetFoodProductList) {
                         $.each(item.buffetFoodProductList, function (indexb, itemb) {
                         	 var ifCanBuyStr = (itemb.state == 1)?"已上架":"已下架";
+                        	 console.log(itemb)
+                        	 console.log("======")
+                        	 console.log(itemb.state)
                             goodsHtml += '<div class="goodsItem" data-id="' + itemb.id + '">' +
                             '<div class="goodsDetail">' +
                             //是否上架
@@ -331,15 +333,9 @@
             var url = baseUrl + "/merchant/buffetFood/product/buffetFoodOn";
             var params = {"selectedIds":selectedIds.substring(1,selectedIds.length)};
             $.post(url,params,function (result, status) {
-            	console.log("============")
-            	console.log(result)
-            	console.log("============")
-            	console.log(status)
                 if(status === 'success'){
                     if (result && result.code === 0){
-                        // $(this).siblings("a").css("display","none");
-                        // $(".goodsItem input[type='checkbox']").attr("checked",false).hide();
-                        // $(this).removeClass("edit");
+                    	layer_msg(result.message,'success');
                         location.reload();
                         return false;
                     }else {
@@ -378,6 +374,7 @@
                         // $(this).siblings("a").css("display","none");
                         // $(".goodsItem input[type='checkbox']").attr("checked",false).hide();
                         // $(this).removeClass("edit");
+                        layer_msg(result.message,'success');
                         location.reload();
                         return false;
                     }else {

@@ -29,7 +29,8 @@
 		buffet_food_product.id, buffet_food_product.product_name, buffet_food_product.price,
 		buffet_food_product.img_url, buffet_food_product.product_detail,
 		buffet_food_product.category_id,
-		buffet_food_product.integral, buffet_food_product.shop_id, category_name as categoryName
+		buffet_food_product.integral, buffet_food_product.shop_id, category_name as categoryName,
+		buffet_food_product.state
 		from buffet_food_product left join buffet_food_category
 		on buffet_food_product.category_id = buffet_food_category.id
 		where buffet_food_product.category_id = #{categoryId}

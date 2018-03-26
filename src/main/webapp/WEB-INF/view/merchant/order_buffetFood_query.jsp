@@ -820,11 +820,16 @@
         //获取模态框的tabDom对象
         //模态框优惠券
         var ticket_m=$(this).find(".ticket.modelWindow > span:last");
-       if(parseInt(ticket_tUseMoney)<=parseInt(orderAmount)){
-            ticket_m.text(ticket);
+        if(ticket_tMoney!=0){
+        	if(parseInt(ticket_tUseMoney)<=parseInt(orderAmount)){
+                ticket_m.text(ticket);
+            }else{
+            	ticket_m.text("优惠券使用条件不满足");
+           }
         }else{
-        	ticket_m.text("优惠券使用条件不满足");
-       }
+        	ticket_m.text("不使用优惠券");
+        }
+       
         //模态框序号
         var serialNumber_m = $(this).find(".numberH.modelWindow > b");
         serialNumber_m.text(serialNumber);

@@ -136,6 +136,7 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 			}
 			try {
 				List<BuffetFoodProduct> resultList = buffetFoodProductService.getGoodsListByCategoryId(params.getCategoryId(), pageNumber, pageLimit);
+				List<BuffetFoodProduct> newList=new ArrayList<BuffetFoodProduct>();
 				if (resultList != null && resultList.size() > 0) {
 					for (BuffetFoodProduct each : resultList) {
 						each.setImgUrl(OtherUtils.getRootDirectory() + each.getImgUrl());
@@ -146,16 +147,19 @@ public class BuffetFoodServiceImpl implements BuffetFoodService {
 						} else {
 							each.setPgProductList(null);
 						}
+						if(Integer.parseInt(each.getState())!=0) {
+							newList.add(each);
+						}
 					}
 					if (params.getToken() != null) {
-						for (BuffetFoodProduct each : resultList) {
+						for (BuffetFoodProduct each : newList) {
 							int resultInt = buffetFoodCollectService.getCollectObjById(each.getId(), params.getToken());
 							each.setCollectState(resultInt);
 						}
 					}
-					return new APIResponseModel<List<BuffetFoodProduct>>(Globals.API_SUCCESS, "成功", resultList);
+					return new APIResponseModel<List<BuffetFoodProduct>>(Globals.API_SUCCESS, "成功", newList);
 				} else {
-					return new APIResponseModel<List<BuffetFoodProduct>>(Globals.API_SUCCESS, "没有产品", resultList);
+					return new APIResponseModel<List<BuffetFoodProduct>>(Globals.API_SUCCESS, "没有产品", newList);
 				}
 			} catch (Exception e) {
 				return new APIResponseModel(Globals.API_FAIL, e.getMessage());
