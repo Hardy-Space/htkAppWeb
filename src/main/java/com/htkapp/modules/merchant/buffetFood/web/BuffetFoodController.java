@@ -254,10 +254,12 @@ public class BuffetFoodController {
 			buffetFoodOrderService.updateOrderTotalAmount(orderNumber, orderAmount);
 			buffetFoodOrderService.changeOrderStateByAccountShopToken(orderNumber,2);
 			Integer AllIntegral=integralService.getVal(order.getToken(),takeOutShop.getShopId());
-			AllIntegral+=integral;
-			Integer result=integralService.updateIntegral(order.getToken(),takeOutShop.getShopId(), AllIntegral);
-			if(result<=0) {
-				return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "积分插入失败");
+			if(AllIntegral!=null) {
+				AllIntegral+=integral;
+				Integer result=integralService.updateIntegral(order.getToken(),takeOutShop.getShopId(), AllIntegral);
+				if(result<=0) {
+					return new AjaxResponseModel(Globals.COMMON_OPERATION_FAILED, "积分插入失败");
+				}
 			}
 			Shop shop = shopService.getShopDataById(order.getShopId());
 			System.out.println("shop is:"+shop.toString());

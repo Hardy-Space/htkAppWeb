@@ -3,21 +3,16 @@ package com.htkapp.core.utils;
 import com.htkapp.core.OtherUtils;
 import com.htkapp.core.config.FTPConfig;
 import com.htkapp.core.shiro.common.utils.LoggerUtils;
-import com.xiaoleilu.hutool.util.ImageUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 import org.json.JSONObject;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.net.SocketException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 文件上传工具类

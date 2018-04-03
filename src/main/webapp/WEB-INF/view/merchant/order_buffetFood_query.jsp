@@ -627,11 +627,6 @@
             <span>**************************</span>
             <div class="section4">
                 <div style="border-bottom: 1px solid #DADADA;">
-                    <!--<ul>
-                        <div>菜单名称     数量    金额</div>
-                        <li>米饭米饭 米饭 米饭 米饭 米饭 米饭       2    28元</li>
-                        <li>米饭      2    28元</li>
-                    </ul>-->
                     <table style="width: 100%;">
                         <thead>
                             <tr>
@@ -947,9 +942,7 @@ function updataPrintArea(){
 }
     function printArea(){
     	var printArea=$("div.PrintArea").html();
-    	$("div.PrintArea").printArea()
-//    	alert($("div.PrintArea").html())
- 
+    	$("#Retain").printArea()
     }
  
     	

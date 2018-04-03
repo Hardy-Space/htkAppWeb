@@ -25,9 +25,7 @@
 <!--
 
 //-->
-</script>
 <script>
-
     var goEasy = new GoEasy({
         appkey: goEasyKey
     });

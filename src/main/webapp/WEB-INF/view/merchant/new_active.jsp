@@ -260,7 +260,6 @@
     var edit;
     var editIndex;
     layui.use(['element', 'util', 'layer', 'laydate', 'form', 'upload', 'layedit'], function () {
-
         var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
         var util = layui.util;
         date = layui.laydate;
@@ -268,6 +267,7 @@
         upload = layui.upload;
         edit = layui.layedit;
         form.on('submit(message)', function(data){
+        	debugger
             //取编辑器内容
 //            alert("========================layui.element:"+layui.element+" layui.util:"+layui.util+" layui.form:"+layui.form+" layui.upload:"+layui.upload+" layui.layedit:"+layui.layedit)
             if(editIndex !== undefined){
@@ -435,7 +435,6 @@
         var params = {
             title: false,
             content: contentStr,
-//            offset: '50px',
             fixed: true,
             area: {width: '650px', height: '600px'}
         };

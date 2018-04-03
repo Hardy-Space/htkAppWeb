@@ -1,9 +1,9 @@
 package com.htkapp.modules.merchant.integral.entity;
 
-import com.htkapp.core.OtherUtils;
 
 //平台资讯显示
 public class ShopArticleInfo {
+	
 
     private Integer id;
 
