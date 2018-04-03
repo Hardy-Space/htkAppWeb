@@ -28,7 +28,8 @@
         shop.shop_id,shop_name,logo_url,score,monthly_sales_volume,
         longitude,latitude
         from shop left join shop_message on shop.shop_id = shop_message.shop_id
-        where shop.shop_id not in
+        left join account_shop on shop.account_shop_id = account_shop.id
+        where #{3} &lt;= account_shop.use_end_time and shop.shop_id not in
         (select
         shop.shop_id
         from shop left join shop_message on shop.shop_id = shop_message.shop_id
@@ -41,7 +42,8 @@
         shop.shop_id,shop_name,logo_url,score,monthly_sales_volume,
         longitude,latitude
         from shop left join shop_message on shop.shop_id = shop_message.shop_id
-        where shop.mark = #{0} order by #{1}
+        left join account_shop on shop.account_shop_id = account_shop.id
+        where shop.mark = #{0} and #{2} &lt;= account_shop.use_end_time order by #{1}
     </select>
     <select id="getShopByConditionDAO" resultType="Shop">
         select
@@ -131,7 +133,9 @@
     <select id="getShopListByCategoryIdAndFocusDAO" resultType="Shop">
         select shop.*, score,monthly_sales_volume from shop
         left join shop_message on shop.shop_id = shop_message.shop_id
-        where
+        left join account_shop on shop.account_shop_id = account_shop.id
+        where  #{nowDate} &lt;= account_shop.use_end_time
+        and
         <choose>
             <when test="tag == 0">
                 shop.shop_id not in
@@ -152,7 +156,9 @@
     <select id="getShopListByChildCategoryIdsAndFocusDAO" resultType="Shop">
         select shop.*, score,monthly_sales_volume from shop
         left join shop_message on shop.shop_id = shop_message.shop_id
-        where
+        left join account_shop on shop.account_shop_id = account_shop.id
+        where  #{nowDate} &lt;= account_shop.use_end_time
+        and
         <choose>
             <when test="tag == 0">
                 shop.shop_id not in

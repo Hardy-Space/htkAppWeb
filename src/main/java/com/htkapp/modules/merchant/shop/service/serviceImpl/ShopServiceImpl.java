@@ -9,14 +9,10 @@ import com.htkapp.modules.merchant.shop.dao.ShopMapper;
 import com.htkapp.modules.merchant.shop.dao.ShopMessageMapper;
 import com.htkapp.modules.merchant.shop.entity.Shop;
 import com.htkapp.modules.merchant.shop.service.ShopServiceI;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ShopServiceImpl implements ShopServiceI {
@@ -97,7 +93,7 @@ public class ShopServiceImpl implements ShopServiceI {
         try {
             String orderDesc = "shop.shop_id asc";
             PageHelper.startPage(pageNo, pageLimit);
-            List<Shop> resultList = shopDao.getAllShopLatitudeAndLongitudeDAO(mark, token, orderDesc);
+            List<Shop> resultList = shopDao.getAllShopLatitudeAndLongitudeDAO(mark, token, orderDesc ,new Date());
             if (resultList != null && resultList.size() > 0) {
                 return resultList;
             }
@@ -114,7 +110,7 @@ public class ShopServiceImpl implements ShopServiceI {
     public List<Shop> notLoginRecommendedBusinesses(int mark, int pageNo, int pageLimit) {
         String orderDesc = "shop.shop_id asc";
         PageHelper.startPage(pageNo, pageLimit);
-        List<Shop> shops = shopDao.getNotLoginRecommendedBusinessesDAO(mark, orderDesc);
+        List<Shop> shops = shopDao.getNotLoginRecommendedBusinessesDAO(mark, orderDesc,new Date());
         if (shops != null && shops.size() > 0) {
             return shops;
         }
@@ -226,7 +222,7 @@ public class ShopServiceImpl implements ShopServiceI {
     @Override
     public List<Shop> getShopListByChildCategoryIdsAndFocus(int mark, Set<String> childSId, Set<Integer> shopIdList, String token, int tag, int pageNo, int pageLimit) {
         PageHelper.startPage(pageNo, pageLimit);
-        List<Shop> shops = shopDao.getShopListByChildCategoryIdsAndFocusDAO(mark, childSId, shopIdList, token, tag);
+        List<Shop> shops = shopDao.getShopListByChildCategoryIdsAndFocusDAO(mark, childSId, shopIdList, token, tag,new Date());
         if (shops != null) {
             return shops;
         }
@@ -237,7 +233,7 @@ public class ShopServiceImpl implements ShopServiceI {
     @Override
     public List<Shop> getShopListByCategoryIdAndFocus(int mark, int categoryId, Set<Integer> shopIdList, String token, int tag, int pageNo, int pageLimit) {
         PageHelper.startPage(pageNo, pageLimit);
-        List<Shop> shops = shopDao.getShopListByCategoryIdAndFocusDAO(mark, categoryId, shopIdList, token, tag);
+        List<Shop> shops = shopDao.getShopListByCategoryIdAndFocusDAO(mark, categoryId, shopIdList, token, tag,new Date());
         if (shops != null) {
             return shops;
         }
@@ -247,7 +243,7 @@ public class ShopServiceImpl implements ShopServiceI {
     //查找分类下的所有关注店铺数量(子分类是0:代表全部)
     @Override
     public int getFocusCategoryShopListCount(int mark, Set<String> childSId, Set<Integer> shopIdList, String token, int tag) {
-        List<Shop> resultList = shopDao.getShopListByChildCategoryIdsAndFocusDAO(mark, childSId, shopIdList, token, tag);
+        List<Shop> resultList = shopDao.getShopListByChildCategoryIdsAndFocusDAO(mark, childSId, shopIdList, token, tag, new Date());
         if (resultList != null && resultList.size() > 0) {
             return resultList.size();
         }
@@ -257,7 +253,7 @@ public class ShopServiceImpl implements ShopServiceI {
     //查找二级分类下的所有关注店铺数量
     @Override
     public int getFocusChildCategoryShopListCount(int mark, int categoryId, Set<Integer> shopIdList, String token, int tag) {
-        List<Shop> shops = shopDao.getShopListByCategoryIdAndFocusDAO(mark, categoryId, shopIdList, token, tag);
+        List<Shop> shops = shopDao.getShopListByCategoryIdAndFocusDAO(mark, categoryId, shopIdList, token, tag, new Date());
         if (shops != null && shops.size() > 0) {
             return shops.size();
         }
