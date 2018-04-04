@@ -77,7 +77,7 @@
                                         <div class="formInput">
                                             <label class="uploadImage">
                                                 <img src="${dataPro.imgUrl}"/>
-                                                <%--<input type="file" accept=".jpg,.png" onchange="preview(this);" name="imgFile"/>--%>
+                                                <input type="file" accept=".jpg,.png" onchange="preview(this);" name="imgFile"/>
                                             </label>
                                             <p class="fieldNotice">提示：请上传jpg/png文件，且不超过 <i>5MB</i></p>
                                         </div>
