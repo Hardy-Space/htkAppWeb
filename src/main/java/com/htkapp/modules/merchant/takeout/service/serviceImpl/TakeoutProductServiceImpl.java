@@ -188,9 +188,9 @@ public class TakeoutProductServiceImpl implements TakeoutProductServiceI {
 			int row = takeoutProductDao.setProductTakeOff(idInts);
 //			if (row<0)
 //				return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "所选商品已经下架了");
-			return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION, "上架成功");
+			return new AjaxResponseModel<>(Globals.COMMON_SUCCESSFUL_OPERATION, "下架成功");
 		}catch (Exception e) {
-			return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "上架失败");
+			return new AjaxResponseModel<>(Globals.COMMON_OPERATION_FAILED, "下架失败");
 		}
 	}
 

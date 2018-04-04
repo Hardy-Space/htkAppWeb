@@ -16,9 +16,9 @@
     <div>
         ${data.htmlContent}
     </div>
-    <div>
-        <img src="${data.imgUrl}" />
-    </div>
+    <%--<div>--%>
+        <%--<img src="${data.imgUrl}" />--%>
+    <%--</div>--%>
 </div>
 </body>
 </html>
