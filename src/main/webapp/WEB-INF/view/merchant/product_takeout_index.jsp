@@ -59,18 +59,18 @@
             </div>
             <div class="continerCont pdtp10">
                 <div class="goods clearfix">
-                    <div class="category">
+                    <div class="category" >
                         <div style="background-color: #fff;height: 100%;">
                             <div class="goodsSearch clearfix">
                                 <input type="text" id="search" placeholder="搜索商品" autocomplete="off"/>
                                 <a href="javascript:;;">搜索111333</a>
                             </div>
-                            <div class="catList">
+                            <div class="catList" style="overflow:scroll">
                                 <a href="" class="cur empty">暂无分类</a>
                             </div>
                         </div>
                     </div>
-                    <div class="goodsList">
+                    <div class="goodsList" style="overflow:scroll">
                         <div class="catTitle clearfix">
                             <span title=""></span>
                             <a href="javascript:void(0);" class="editCat fa fa-pencil"> 编辑</a>
