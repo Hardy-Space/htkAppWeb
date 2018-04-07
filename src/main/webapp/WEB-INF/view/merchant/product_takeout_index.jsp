@@ -63,7 +63,7 @@
                         <div style="background-color: #fff;height: 100%;">
                             <div class="goodsSearch clearfix">
                                 <input type="text" id="search" placeholder="搜索商品" autocomplete="off"/>
-                                <a href="javascript:;;">搜索</a>
+                                <a href="javascript:;;">搜索111333</a>
                             </div>
                             <div class="catList" style="overflow:scroll">
                                 <a href="" class="cur empty">暂无分类</a>

@@ -1,4 +1,4 @@
-/* =====================自定义开始=========================== */
+/* =====================鑷畾涔夊紑濮�=========================== */
 .beg-login-bg {
     background-color: #393D49;
 }
@@ -106,7 +106,7 @@ a:focus, a:hover {
     text-decoration: none !important;
 }
 
-/* 顶部栏 */
+/* 椤堕儴鏍� */
 .index_top {
     background-color: #007DDB;
 }
@@ -1149,7 +1149,7 @@ div.mesCenter-content > .content-list > .list-content > .mesItem {
     background-color: #ff0000;
 }
 
-/*active 要在后面 否则会被hover覆盖*/
+/*active 瑕佸湪鍚庨潰 鍚﹀垯浼氳hover瑕嗙洊*/
 
 .aBtn:focus {
     background-color: #00ff00;
@@ -1274,9 +1274,9 @@ div.mesCenter-content > .content-list > .list-content > .mesItem {
 .floatRight {
     float: right;
 }
-/* ===========================自定义结束======================= */
+/* ===========================鑷畾涔夌粨鏉�======================= */
 
-/* ================前端外包css开始================ */
+/* ================鍓嶇澶栧寘css寮�濮�================ */
 * {
     margin: 0;
     padding: 0;
@@ -1350,7 +1350,7 @@ i {
     visibility: hidden;
 }
 
-/* 左侧菜单 */
+/* 宸︿晶鑿滃崟 */
 .leftMenu {
     width: 200px;
     height: 100%;
@@ -1478,7 +1478,7 @@ i {
     display: block;
 }
 
-/* 右侧主体 */
+/* 鍙充晶涓讳綋 */
 .rightContiner {
     height: 100%;
     margin-left: 200px;
@@ -1487,7 +1487,7 @@ i {
     overflow: hidden;
 }
 
-/* 顶部 */
+/* 椤堕儴 */
 .top {
     height: 50px;
     line-height: 50px;
@@ -1686,7 +1686,7 @@ i {
     box-shadow: 0 2px 6px #ccc;
 }
 
-/* 面包屑 */
+/* 闈㈠寘灞� */
 .crumbs {
     height: 50px;
     line-height: 50px;
@@ -1723,7 +1723,7 @@ i {
     color: #CCC;
 }
 
-/* 主体子栏目 */
+/* 涓讳綋瀛愭爮鐩� */
 .childCat {
     height: 60px;
     width: 87%;
@@ -1783,7 +1783,7 @@ i {
     margin-left: 15px;
 }
 
-/* 内容主体 */
+/* 鍐呭涓讳綋 */
 .pdtp125 {
     padding-top: 125px;
 }
@@ -1805,12 +1805,13 @@ i {
 
 .category {
     width: 200px;
-    height: 100%;
+    height: 830px;
     margin-left: 210px;
     position: fixed;
     left: 0px;
     top: 120px;
     z-index: 10;
+    overflo:auto;
 }
 
 .goodsSearch {
@@ -1845,7 +1846,8 @@ i {
     height: 100%;
     padding-top: 65px;
     box-sizing: border-box;
-    overflow: auto;
+    /*overflow: auto;*/
+    overflow:auto;
     border-right: 1px solid #ddd;
 }
 
@@ -2149,7 +2151,7 @@ i {
     margin-left: 65px;
 }
 
-/* 添加商品 */
+/* 娣诲姞鍟嗗搧 */
 .addFormCont {
     height: 100%;
     overflow: auto;
@@ -2430,7 +2432,7 @@ i {
     display: none;
 }
 
-/* 订单管理 */
+/* 璁㈠崟绠＄悊 */
 .orderContiner {
     overflow: auto;
 }
@@ -2703,7 +2705,7 @@ i {
     background-color: #eee;
 }
 
-/* 弹窗 */
+/* 寮圭獥 */
 .layer {
     position: fixed;
     left: 0px;
@@ -2805,4 +2807,4 @@ a, span {
 
 }
 
-/*!* =============other前端外包css结束============= *!*/
+/*!* =============other鍓嶇澶栧寘css缁撴潫============= *!*/
