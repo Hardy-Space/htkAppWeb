@@ -1,23 +1,25 @@
 package com.htkapp.core.interceptor;
 
-import com.alibaba.fastjson.JSONObject;
-import com.htkapp.core.dto.APIResponseModel;
-import com.htkapp.core.utils.CheckMobile;
-import com.htkapp.core.utils.Globals;
-import com.htkapp.core.utils.StringUtils;
-import com.htkapp.modules.merchant.common.service.UserServiceI;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
+import java.io.PrintWriter;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.PrintWriter;
-import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.alibaba.fastjson.JSONObject;
+import com.htkapp.core.dto.APIResponseModel;
+import com.htkapp.core.utils.CheckMobile;
+import com.htkapp.core.utils.Globals;
+import com.htkapp.core.utils.StringUtils;
+import com.htkapp.modules.common.entity.LoginUser;
+import com.htkapp.modules.merchant.common.service.UserServiceI;
 
 /**
  * 登录认证的拦截器
@@ -181,6 +183,7 @@ public class LoginInterceptor implements HandlerInterceptor {
                 if (requestUri.contains("admin")) {
                     //管理页面
                     if (session.getAttribute(Globals.ADMIN_SESSION_USER) != null) {
+                    	//TODO 再次出现卡死时，判断user.getState()和user.getShopName()
                         return true;
                     } else {
 //                        Cookie cookieUserName = CookiesUtils.getCookieByName(request, Globals.ADMIN_COOKIE_USER_NAME);
