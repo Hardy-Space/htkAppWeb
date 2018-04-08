@@ -48,6 +48,7 @@
         <include refid="Base_Column_List"/>
         from takeout_product
         where category_id = #{categoryId}
+        order by if_can_buy desc,gmt_modified desc
     </select>
     <update id="productReduceNumberDAO">
     update
