@@ -87,38 +87,38 @@
                                             <span class="num txar">0/250</span>
                                         </div>
                                     </div>
-                                    <div class="formLine clearfix">
-                                        <div class="formTit">标签</div>
-                                        <div class="formInput fontNum">
-                                            <div class="tags clearfix">
-                                                <c:choose>
-                                                    <c:when test="${fn:contains(dataPro.label, '招牌菜') }">
-                                                        <label><input type="checkbox" name="label1" checked="checked" value="招牌菜"/> 招牌菜</label>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <label><input type="checkbox" name="label1" value="招牌菜"/> 招牌菜</label>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                                <c:choose>
-                                                    <c:when test="${fn:contains(dataPro.label, '新菜') }">
-                                                        <label><input type="checkbox" name="label2" checked="checked" value="新菜"/> 招牌菜</label>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <label><input type="checkbox" name="label2" value="招牌菜"/> 招牌菜</label>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                                <c:choose>
-                                                    <c:when test="${fn:contains(dataPro.label, '辣') }">
-                                                        <label><input type="checkbox" name="label3" checked="checked" value="辣"/> 招牌菜</label>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <label><input type="checkbox" name="label3" value="辣"/> 辣</label>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </div>
-                                            <p class="fieldNotice">提示：销量较高的招牌菜会进入您的热销榜</p>
-                                        </div>
-                                    </div>
+                                    <%--<div class="formLine clearfix">--%>
+                                        <%--<div class="formTit">标签</div>--%>
+                                        <%--<div class="formInput fontNum">--%>
+                                            <%--<div class="tags clearfix">--%>
+                                                <%--<c:choose>--%>
+                                                    <%--<c:when test="${fn:contains(dataPro.label, '招牌菜') }">--%>
+                                                        <%--<label><input type="checkbox" name="label1" checked="checked" value="招牌菜"/> 招牌菜</label>--%>
+                                                    <%--</c:when>--%>
+                                                    <%--<c:otherwise>--%>
+                                                        <%--<label><input type="checkbox" name="label1" value="招牌菜"/> 招牌菜</label>--%>
+                                                    <%--</c:otherwise>--%>
+                                                <%--</c:choose>--%>
+                                                <%--<c:choose>--%>
+                                                    <%--<c:when test="${fn:contains(dataPro.label, '新菜') }">--%>
+                                                        <%--<label><input type="checkbox" name="label2" checked="checked" value="新菜"/> 招牌菜</label>--%>
+                                                    <%--</c:when>--%>
+                                                    <%--<c:otherwise>--%>
+                                                        <%--<label><input type="checkbox" name="label2" value="招牌菜"/> 招牌菜</label>--%>
+                                                    <%--</c:otherwise>--%>
+                                                <%--</c:choose>--%>
+                                                <%--<c:choose>--%>
+                                                    <%--<c:when test="${fn:contains(dataPro.label, '辣') }">--%>
+                                                        <%--<label><input type="checkbox" name="label3" checked="checked" value="辣"/> 招牌菜</label>--%>
+                                                    <%--</c:when>--%>
+                                                    <%--<c:otherwise>--%>
+                                                        <%--<label><input type="checkbox" name="label3" value="辣"/> 辣</label>--%>
+                                                    <%--</c:otherwise>--%>
+                                                <%--</c:choose>--%>
+                                            <%--</div>--%>
+                                            <%--<p class="fieldNotice">提示：销量较高的招牌菜会进入您的热销榜</p>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
                                 </div>
                             </div>
 
