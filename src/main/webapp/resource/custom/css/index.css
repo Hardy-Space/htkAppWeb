@@ -1809,7 +1809,7 @@ i {
     margin-left: 210px;
     position: fixed;
     left: 0px;
-    top: 120px;
+    top: 170px;
     z-index: 10;
     overflo:auto;
 }
@@ -1819,7 +1819,7 @@ i {
     width: 190px;
     position: absolute;
     left: 0;
-    top: 0;
+    top: 57px;
 }
 
 .goodsSearch input {
@@ -1843,8 +1843,7 @@ i {
 }
 
 .catList {
-    height: 80%;
-    padding-top: 65px;
+    height: 90%;
     box-sizing: border-box;
     /*overflow: auto;*/
     overflow:auto;

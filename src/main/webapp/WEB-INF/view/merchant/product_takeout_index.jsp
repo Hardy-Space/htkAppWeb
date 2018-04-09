@@ -6,136 +6,152 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"
-         pageEncoding="UTF-8" %>
-<%@ include file="/WEB-INF/view/common/url.jsp" %>
+	pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/view/common/url.jsp"%>
 <!DOCTYPE HTML>
-<%@include file="IE_lang.jsp" %>
+<%@include file="IE_lang.jsp"%>
 
 <head>
-    <title>回头客商家首页</title>
-    <meta charset="utf-8"/>
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <script src="${staticFilePath}resource/custom/plugins/floating-button/dist/lib/modernizr.touch.js"></script>
-    <link href="${staticFilePath}resource/custom/plugins/floating-button/dist/mfb.css" rel="stylesheet">
-    <link rel="stylesheet" href="${staticFilePath}resource/custom/plugins/floating-button/ionicons.min.css">
-    <link rel="stylesheet" href="${staticFilePath}resource/custom/plugins/floating-button/normalize.min.css">
-    <%@include file="head.jsp" %>
-    <style>
-        @media screen and (min-width: 1300px) and (max-width: 1366px) {
-            .goodsItem {
-                width: 33.333333%;
-            }
+<title>回头客商家首页</title>
+<meta charset="utf-8" />
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<script
+	src="${staticFilePath}resource/custom/plugins/floating-button/dist/lib/modernizr.touch.js"></script>
+<link
+	href="${staticFilePath}resource/custom/plugins/floating-button/dist/mfb.css"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="${staticFilePath}resource/custom/plugins/floating-button/ionicons.min.css">
+<link rel="stylesheet"
+	href="${staticFilePath}resource/custom/plugins/floating-button/normalize.min.css">
+<%@include file="head.jsp"%>
+<style>
+@media screen and (min-width: 1300px) and (max-width: 1366px) {
+	.goodsItem {
+		width: 33.333333%;
+	}
+	.childCat {
+		width: 82% !important;
+	}
+}
 
-            .childCat {
-                width: 82% !important;
-            }
-        }
-
-        @media screen and (min-width: 1900px) and (max-width: 1920px) {
-            .goodsItem {
-                width: 20%;
-            }
-
-            .childCat {
-                width: 87.5% !important;
-            }
-        }
-    </style>
+@media screen and (min-width: 1900px) and (max-width: 1920px) {
+	.goodsItem {
+		width: 20%;
+	}
+	.childCat {
+		width: 87.5% !important;
+	}
+}
+</style>
 </head>
 <body>
-<div class="layui-layout layui-layout-admin">
-    <%@include file="top.jsp" %>
-    <div class="layui-body" style="background-color: #f3f3f4;overflow: auto">
-        <%--<ul id="menu" class="mfb-component--br mfb-zoomin" data-mfb-toggle="hover" style="margin: 60px">--%>
-        <div class="body-content">
-            <div class="childCat clearfix tab">
-                <div style="position: relative">
-                    <a href="${sysPath}merchant/takeout/product/homePage" class="cur">商品管理</a>
-                    <%--<a href="${sysPath}merchant/takeout/product/homePage">回收站</a>--%>
-                    <%--<a href="">违规</a>--%>
-                </div>
-            </div>
-            <div class="continerCont pdtp10">
-                <div class="goods clearfix">
-                    <div class="category" >
-                        <div style="background-color: #fff;height: 100%;">
-                            <div class="goodsSearch clearfix">
-                                <input type="text" id="search" placeholder="搜索商品" autocomplete="off"/>
-                                <a href="javascript:;;">搜索</a>
-                            </div>
-                            <div class="catList" style="overflow:scroll">
-                                <a href="" class="cur empty">暂无分类</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="goodsList" style="overflow:scroll">
-                        <div class="catTitle clearfix">
-                            <span title=""></span>
-                            <a href="javascript:void(0);" class="editCat fa fa-pencil"> 编辑</a>
-                            <div class="action">
-                                <a href="javascript:void(0);" class="on">上架</a>
-                                <a href="javascript:void(0);" class="off">下架</a>
-                                <a href="javascript:void(0);" class="act">批量管理</a>
-                            </div>
-                        </div>
-                        <div class="goodsContiner">
-                            <p class="emptyGoods">暂无数据</p>
-                        </div>
-                        <div class="add">
-                            <a href="javascript:void(0);"><i class="fa fa-plus"></i>添加</a>
-                            <div class="addButton clearfix">
-                                <a href="${sysPath}merchant/takeout/product/addProduct">添加商品</a>
-                                <a href="javascript:void(0);" class="addCategory">添加分类</a>
-                            </div>
-                            <div class="pd"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="layer">
-        <div class="layerCont addCats">
-            <h1>添加分类<a href="javascript:void(0);" class="fa fa-remove close"></a></h1>
-            <form method="post" id="addCat">
-                <div class="layerItem">
-                    <p><i>*</i>分类名称</p>
-                    <input type="text" placeholder="请输入20字以内的分类名称" name="catName" maxlength="20" autocomplete="off"/>
-                </div>
-                <div class="layerItem">
-                    <p>分类描述</p>
-                    <input type="text" placeholder="请输入50字以内的分类描述（非必填）" name="catDes" maxlength="50"
-                           autocomplete="off"/>
-                </div>
-                <div class="layerButton">
-                    <input type="submit" value="保存"/>
-                </div>
-            </form>
-        </div>
-        <div class="layerCont editCats">
-            <h1>编辑分类<a href="javascript:void(0);" class="fa fa-remove close"></a></h1>
-            <form method="post" id="editCat">
-                <div class="layerItem">
-                    <p><i>*</i>分类名称</p>
-                    <input type="text" placeholder="请输入20字以内的分类名称" name="catName" maxlength="20" autocomplete="off"/>
-                </div>
-                <div class="layerItem">
-                    <p>分类描述</p>
-                    <input type="text" placeholder="请输入50字以内的分类描述（非必填）" name="catDes" maxlength="50"
-                           autocomplete="off"/>
-                </div>
-                <div class="layerButton">
-                    <input type="button" value="删除分类" id="delCat"/>
-                    <input type="submit" value="保存修改"/>
-                </div>
-            </form>
-        </div>
-        <%@include file="footer.jsp" %>
-    </div>
+	<div class="layui-layout layui-layout-admin">
+		<%@include file="top.jsp"%>
+		<div class="layui-body"
+			style="background-color: #f3f3f4; overflow: auto">
+			<%--<ul id="menu" class="mfb-component--br mfb-zoomin" data-mfb-toggle="hover" style="margin: 60px">--%>
+			<div class="body-content">
+				<div class="childCat clearfix tab">
+					<div style="position: relative">
+						<a href="${sysPath}merchant/takeout/product/homePage" class="cur">商品管理</a>
+						<%--<a href="${sysPath}merchant/takeout/product/homePage">回收站</a>--%>
+						<%--<a href="">违规</a>--%>
+					</div>
+				</div>
+				<div class="continerCont pdtp10">
+					<div class="goodsSearch clearfix">
+						<input type="text" id="search" placeholder="搜索商品"
+							autocomplete="off" /> <a href="javascript:;;">搜索</a>
+					</div>
+					<div class="category">
+						<div style="background-color: #fff; height: 100%;">
+							<div class="catList" style="overflow: scroll">
+								<a href="" class="cur empty">暂无分类</a>
+							</div>
+						</div>
+					</div>
+					<div class="goods clearfix">
+						<div class="goodsList" style="overflow: scroll">
+							<div class="catTitle clearfix">
+								<span title=""></span> <a href="javascript:void(0);"
+									class="editCat fa fa-pencil"> 编辑</a>
+								<div class="action">
+									<a href="javascript:void(0);" class="on">上架</a> <a
+										href="javascript:void(0);" class="off">下架</a> <a
+										href="javascript:void(0);" class="act">批量管理</a>
+								</div>
+							</div>
+							<div class="goodsContiner">
+								<p class="emptyGoods">暂无数据</p>
+							</div>
+							<div class="add">
+								<a href="javascript:void(0);"><i class="fa fa-plus"></i>添加</a>
+								<div class="addButton clearfix">
+									<a href="${sysPath}merchant/takeout/product/addProduct">添加商品</a>
+									<a href="javascript:void(0);" class="addCategory">添加分类</a>
+								</div>
+								<div class="pd"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="layer">
+			<div class="layerCont addCats">
+				<h1>
+					添加分类<a href="javascript:void(0);" class="fa fa-remove close"></a>
+				</h1>
+				<form method="post" id="addCat">
+					<div class="layerItem">
+						<p>
+							<i>*</i>分类名称
+						</p>
+						<input type="text" placeholder="请输入20字以内的分类名称" name="catName"
+							maxlength="20" autocomplete="off" />
+					</div>
+					<div class="layerItem">
+						<p>分类描述</p>
+						<input type="text" placeholder="请输入50字以内的分类描述（非必填）" name="catDes"
+							maxlength="50" autocomplete="off" />
+					</div>
+					<div class="layerButton">
+						<input type="submit" value="保存" />
+					</div>
+				</form>
+			</div>
+			<div class="layerCont editCats">
+				<h1>
+					编辑分类<a href="javascript:void(0);" class="fa fa-remove close"></a>
+				</h1>
+				<form method="post" id="editCat">
+					<div class="layerItem">
+						<p>
+							<i>*</i>分类名称
+						</p>
+						<input type="text" placeholder="请输入20字以内的分类名称" name="catName"
+							maxlength="20" autocomplete="off" />
+					</div>
+					<div class="layerItem">
+						<p>分类描述</p>
+						<input type="text" placeholder="请输入50字以内的分类描述（非必填）" name="catDes"
+							maxlength="50" autocomplete="off" />
+					</div>
+					<div class="layerButton">
+						<input type="button" value="删除分类" id="delCat" /> <input
+							type="submit" value="保存修改" />
+					</div>
+				</form>
+			</div>
+			<%@include file="footer.jsp"%>
+		</div>
+	</div>
 </body>
-<%@include file="js.jsp" %>
+<%@include file="js.jsp"%>
 <%--<script src="${sysPath}resource/custom/plugins/layui/lay/modules/layer.js"></script>--%>
 <script type="text/javascript">
     $(function () {
