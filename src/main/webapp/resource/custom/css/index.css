@@ -1843,7 +1843,7 @@ i {
 }
 
 .catList {
-    height: 100%;
+    height: 90%;
     padding-top: 65px;
     box-sizing: border-box;
     /*overflow: auto;*/
