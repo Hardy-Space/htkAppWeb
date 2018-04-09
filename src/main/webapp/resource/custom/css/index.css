@@ -232,6 +232,7 @@ a:focus, a:hover {
 .body-content {
     padding-left: 10px;
     padding-right: 10px;
+    height: 100%;
 }
 
 .panel_content {
@@ -1805,13 +1806,11 @@ i {
 
 .category {
     width: 200px;
-    height: 830px;
-    margin-left: 210px;
-    position: fixed;
-    left: 0px;
-    top: 120px;
+    height: 100%;
+    position: relative;
+    top: 85px;
     z-index: 10;
-    overflo:auto;
+    float: left;
 }
 
 .goodsSearch {
@@ -1819,7 +1818,7 @@ i {
     width: 190px;
     position: absolute;
     left: 0;
-    top: 0;
+    top: 57px;
 }
 
 .goodsSearch input {
@@ -1843,8 +1842,7 @@ i {
 }
 
 .catList {
-    height: 90%;
-    padding-top: 65px;
+    height: 100%;
     box-sizing: border-box;
     /*overflow: auto;*/
     overflow:auto;
