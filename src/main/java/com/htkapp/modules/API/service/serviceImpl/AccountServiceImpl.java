@@ -131,7 +131,11 @@ public class AccountServiceImpl implements AccountServiceI {
         }
     }
 
-    //给传入的手机号发送验证码
+    /**
+     * @param phone
+     * @return
+     * @author 新的短信验证码发送
+     */
     @Override
     public APIResponseModel sendSMS(String phone) {
         //生成验证码
@@ -140,25 +144,167 @@ public class AccountServiceImpl implements AccountServiceI {
         try {
             smsService.saveOrUpdate(String.valueOf(phone), valCode);
             String smsRet = smsService.SendSms(String.valueOf(phone), smsText);
-            if (Integer.parseInt(smsRet) < 0) {
+            int key = smsRet.contains(",") ? Integer.parseInt(smsRet.split(",")[0]) : Integer.parseInt(smsRet);
+            if (key == -1) {
+                String errorMsg = "用户名或者密码不正确或用户禁用或者是管理账户";
                 AppAccountEventLog eventLog = new AppAccountEventLog()
                         .setToken(String.valueOf(phone))
                         .setEventTime(format(new Date(), NORM_DATETIME_PATTERN))
-                        .setContent("发送短信状态码失败!");
+                        .setContent(errorMsg);
                 eventLogService.insertAppEventLog(eventLog);
-                return new APIResponseModel(-99, "发送短信状态码失败!");
-            } else {
+                return new APIResponseModel(-99, errorMsg);
+            } else if (key == 1) {
                 AppAccountEventLog eventLog = new AppAccountEventLog()
                         .setToken(String.valueOf(phone))
                         .setEventTime(format(new Date(), NORM_DATETIME_PATTERN))
                         .setContent("短信已发送，请注意查收！");
                 eventLogService.insertAppEventLog(eventLog);
                 return new APIResponseModel(Globals.API_SUCCESS, "短信已发送，请注意查收！");
+            } else if (key == 0) {
+                String errorMsg = "发送短信失败";
+                AppAccountEventLog eventLog = new AppAccountEventLog()
+                        .setToken(String.valueOf(phone))
+                        .setEventTime(format(new Date(), NORM_DATETIME_PATTERN))
+                        .setContent(errorMsg);
+                eventLogService.insertAppEventLog(eventLog);
+                return new APIResponseModel(-99, errorMsg);
+            } else if (key == 2) {
+                String errorMsg = "余额不够或扣费错误";
+                AppAccountEventLog eventLog = new AppAccountEventLog()
+                        .setToken(String.valueOf(phone))
+                        .setEventTime(format(new Date(), NORM_DATETIME_PATTERN))
+                        .setContent(errorMsg);
+                eventLogService.insertAppEventLog(eventLog);
+                return new APIResponseModel(-99, errorMsg);
+            } else if (key == 3) {
+                String errorMsg = "扣费失败异常（请联系客服）";
+                AppAccountEventLog eventLog = new AppAccountEventLog()
+                        .setToken(String.valueOf(phone))
+                        .setEventTime(format(new Date(), NORM_DATETIME_PATTERN))
+                        .setContent(errorMsg);
+                eventLogService.insertAppEventLog(eventLog);
+                return new APIResponseModel(-99, errorMsg);
+            } else if (key == 6) {
+                String errorMsg = "有效号码为空";
+                AppAccountEventLog eventLog = new AppAccountEventLog()
+                        .setToken(String.valueOf(phone))
+                        .setEventTime(format(new Date(), NORM_DATETIME_PATTERN))
+                        .setContent(errorMsg);
+                eventLogService.insertAppEventLog(eventLog);
+                return new APIResponseModel(-99, errorMsg);
+            } else if (key == 7) {
+                String errorMsg = "短信内容为空";
+                AppAccountEventLog eventLog = new AppAccountEventLog()
+                        .setToken(String.valueOf(phone))
+                        .setEventTime(format(new Date(), NORM_DATETIME_PATTERN))
+                        .setContent(errorMsg);
+                eventLogService.insertAppEventLog(eventLog);
+                return new APIResponseModel(-99, errorMsg);
+            } else if (key == 8) {
+                String errorMsg = "无签名，必须，格式：【签名】";
+                AppAccountEventLog eventLog = new AppAccountEventLog()
+                        .setToken(String.valueOf(phone))
+                        .setEventTime(format(new Date(), NORM_DATETIME_PATTERN))
+                        .setContent(errorMsg);
+                eventLogService.insertAppEventLog(eventLog);
+                return new APIResponseModel(-99, errorMsg);
+            } else if (key == 9) {
+                String errorMsg = "没有Url提交权限";
+                AppAccountEventLog eventLog = new AppAccountEventLog()
+                        .setToken(String.valueOf(phone))
+                        .setEventTime(format(new Date(), NORM_DATETIME_PATTERN))
+                        .setContent(errorMsg);
+                eventLogService.insertAppEventLog(eventLog);
+                return new APIResponseModel(-99, errorMsg);
+            }else if (key == 10) {
+                String errorMsg = "发送号码过多,最多支持2000个号码";
+                AppAccountEventLog eventLog = new AppAccountEventLog()
+                        .setToken(String.valueOf(phone))
+                        .setEventTime(format(new Date(), NORM_DATETIME_PATTERN))
+                        .setContent(errorMsg);
+                eventLogService.insertAppEventLog(eventLog);
+                return new APIResponseModel(-99, errorMsg);
+            }else if (key == 11) {
+                String errorMsg = "产品ID异常或产品禁用";
+                AppAccountEventLog eventLog = new AppAccountEventLog()
+                        .setToken(String.valueOf(phone))
+                        .setEventTime(format(new Date(), NORM_DATETIME_PATTERN))
+                        .setContent(errorMsg);
+                eventLogService.insertAppEventLog(eventLog);
+                return new APIResponseModel(-99, errorMsg);
+            }else if (key == 12) {
+                String errorMsg = "参数异常";
+                AppAccountEventLog eventLog = new AppAccountEventLog()
+                        .setToken(String.valueOf(phone))
+                        .setEventTime(format(new Date(), NORM_DATETIME_PATTERN))
+                        .setContent(errorMsg);
+                eventLogService.insertAppEventLog(eventLog);
+                return new APIResponseModel(-99, errorMsg);
+            }else if (key == 13) {
+                String errorMsg = "tkey参数错误";
+                AppAccountEventLog eventLog = new AppAccountEventLog()
+                        .setToken(String.valueOf(phone))
+                        .setEventTime(format(new Date(), NORM_DATETIME_PATTERN))
+                        .setContent(errorMsg);
+                eventLogService.insertAppEventLog(eventLog);
+                return new APIResponseModel(-99, errorMsg);
+            }else if (key == 15) {
+                String errorMsg = "Ip验证失败";
+                AppAccountEventLog eventLog = new AppAccountEventLog()
+                        .setToken(String.valueOf(phone))
+                        .setEventTime(format(new Date(), NORM_DATETIME_PATTERN))
+                        .setContent(errorMsg);
+                eventLogService.insertAppEventLog(eventLog);
+                return new APIResponseModel(-99, errorMsg);
+            }else if (key == 16) {
+                String errorMsg = "xh参数错误";
+                AppAccountEventLog eventLog = new AppAccountEventLog()
+                        .setToken(String.valueOf(phone))
+                        .setEventTime(format(new Date(), NORM_DATETIME_PATTERN))
+                        .setContent(errorMsg);
+                eventLogService.insertAppEventLog(eventLog);
+                return new APIResponseModel(-99, errorMsg);
+            }else if (key == 19) {
+                String errorMsg = "短信内容过长，最多支持500个,或提交编码异常导致";
+                AppAccountEventLog eventLog = new AppAccountEventLog()
+                        .setToken(String.valueOf(phone))
+                        .setEventTime(format(new Date(), NORM_DATETIME_PATTERN))
+                        .setContent(errorMsg);
+                eventLogService.insertAppEventLog(eventLog);
+                return new APIResponseModel(-99, errorMsg);
+            }else {
+                return new APIResponseModel(-99, "未知异常");
             }
         } catch (Exception e) {
             return new APIResponseModel(Globals.API_FAIL, "短信发送失败，请联系客服人员！");
         }
     }
+//    public APIResponseModel sendSMS(String phone) {
+//        //生成验证码
+//        String valCode = smsService.generatorValCode();
+//        String smsText = "【回头客】验证码是:" + valCode;
+//        try {
+//            smsService.saveOrUpdate(String.valueOf(phone), valCode);
+//            String smsRet = smsService.SendSms(String.valueOf(phone), smsText);
+//            if (Integer.parseInt(smsRet) < 0) {
+//                AppAccountEventLog eventLog = new AppAccountEventLog()
+//                        .setToken(String.valueOf(phone))
+//                        .setEventTime(format(new Date(), NORM_DATETIME_PATTERN))
+//                        .setContent("发送短信状态码失败!");
+//                eventLogService.insertAppEventLog(eventLog);
+//                return new APIResponseModel(-99, "发送短信状态码失败!");
+//            } else {
+//                AppAccountEventLog eventLog = new AppAccountEventLog()
+//                        .setToken(String.valueOf(phone))
+//                        .setEventTime(format(new Date(), NORM_DATETIME_PATTERN))
+//                        .setContent("短信已发送，请注意查收！");
+//                eventLogService.insertAppEventLog(eventLog);
+//                return new APIResponseModel(Globals.API_SUCCESS, "短信已发送，请注意查收！");
+//            }
+//        } catch (Exception e) {
+//            return new APIResponseModel(Globals.API_FAIL, "短信发送失败，请联系客服人员！");
+//        }
+//    }
 
     //通过手机号和短信验证码登陆
     @Override
@@ -765,10 +911,10 @@ public class AccountServiceImpl implements AccountServiceI {
                  * @author 马鹏昊
                  * @desc 确认收货只修改订单状态，还需要把催单状态取消（takeout_order表里的reminder_state置为0）
                  */
-                takeoutOrderService.updateReminderStateByOrderId(orderRecord.getId(),0);
+                takeoutOrderService.updateReminderStateByOrderId(orderRecord.getId(), 0);
 
                 //改变记录状态为已入账(2为已入账)
-                billRecordService.updateBillStatus(accountShop.getToken(),orderNumber, "2");
+                billRecordService.updateBillStatus(accountShop.getToken(), orderNumber, "2");
                 //TODO 记录收入记录
                 BillBalanceSheet balanceSheet = new BillBalanceSheet();
                 balanceSheet.setSumAmount(orderRecord.getOrderAmount());

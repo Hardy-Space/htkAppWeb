@@ -233,6 +233,12 @@ public final class Globals {
     public static final String API_SMS_USERNAME="dxjdcx";
     //短信平台密码
     public static final String API_SMS_PASSWORD="jdcx2015";
+    //新的短信请求url
+    public static final String NEW_API_SMS_URL ="http://www.ztsms.cn/sendNSms.do";
+    //新的短信平台用户名
+    public static final String NEW_API_SMS_USERNAME="qdhualing";
+    //新的短信平台密码
+    public static final String NEW_API_SMS_PASSWORD="VvMYl9ny";
     //===============================短信结束
     //===============================jPush开始
     public static final String JPUSH_APP_NAME = "回头客";

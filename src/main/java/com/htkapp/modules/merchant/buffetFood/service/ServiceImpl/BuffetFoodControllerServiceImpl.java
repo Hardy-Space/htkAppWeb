@@ -174,6 +174,9 @@ public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerServ
     @Override
     public void saveProductEdit(BuffetFoodProduct product) throws Exception {
         try {
+            String desc = product.getDescription();
+            desc = desc.replace("\r\n"," ");
+            product.setDescription(desc);
             buffetFoodProductService.editProductById(product);
         } catch (Exception e) {
             throw new Exception("保存修改失败");

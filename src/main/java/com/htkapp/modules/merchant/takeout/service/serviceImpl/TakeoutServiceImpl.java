@@ -334,6 +334,9 @@ public class TakeoutServiceImpl implements TakeoutService {
         }
         takeoutProduct.setProperty(String.valueOf(property));
         try {
+            String desc = takeoutProduct.getDescription();
+            desc = desc.replace("\r\n"," ");
+            takeoutProduct.setDescription(desc);
             takeoutProductService.editProductById(takeoutProduct);
         } catch (Exception e) {
             throw new Exception("保存修改失败");
