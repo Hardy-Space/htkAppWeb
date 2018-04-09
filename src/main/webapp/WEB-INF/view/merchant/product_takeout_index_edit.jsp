@@ -245,6 +245,11 @@
 
     $(function () {
         $("#description").html("${dataPro.description}");
+
+//        解决初始界面已输入字数为0的问题
+        var desc = "${dataPro.description}";
+        var nowSize = desc.length;
+        $(".num.txar").html(nowSize+"/250");
     })
 </script>
 </html>
