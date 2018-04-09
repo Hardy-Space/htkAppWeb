@@ -77,7 +77,7 @@
                                     <div class="formLine clearfix">
                                         <div class="formTit">描述</div>
                                         <div class="formInput fontNum">
-                                            <textarea placeholder="请输入商品描述" maxlength="250" name="productDetail"></textarea>
+                                            <textarea placeholder="请输入商品描述" maxlength="250" style="line-height:2.0" name="productDetail"></textarea>
                                             <span class="num txar">0/250</span>
                                         </div>
                                     </div>

@@ -82,7 +82,7 @@
                                     <div class="formLine clearfix">
                                         <div class="formTit">描述</div>
                                         <div class="formInput fontNum">
-                                            <textarea placeholder="请输入商品描述" id="description" maxlength="250" name="description">
+                                            <textarea placeholder="请输入商品描述" id="description" style="line-height:2.0" maxlength="250" name="description">
                                             </textarea>
                                             <span class="num txar">0/250</span>
                                         </div>
@@ -244,10 +244,12 @@
     }
 
     $(function () {
-        $("#description").html("${dataPro.description}");
+
+        var desc = "${dataPro.description}";
+        desc = desc.trim();
+        $("#description").html(desc);
 
 //        解决初始界面已输入字数为0的问题
-        var desc = "${dataPro.description}";
         var nowSize = desc.length;
         $(".num.txar").html(nowSize+"/250");
     })
