@@ -33,10 +33,8 @@ public class FileUploadUtils {
             String fileName = timeStr + "." + originalFileName[1];
             FTPClient client = getFTPClient(FTPConfig.host, FTPConfig.port, FTPConfig.userName, FTPConfig.password);
             String writeTempPath = "D:\\resource";
-//            String writeTempPath = "/home/terabithia";
             FileUtils.copyInputStreamToFile(myFile.getInputStream(), new File(writeTempPath, fileName));
             uploadFileForFTP(client, fileName, writeTempPath + "\\" + fileName, "Resource\\htkApp\\upload\\" + folder);
-//            uploadFileForFTP(client, fileName, writeTempPath + "/" + fileName, "Resource\\htkApp\\upload\\" + folder);
             String avaPath = Globals.PROJECT_URL + Globals.PHOTO_URL + folder;
             return avaPath + fileName;
         } catch (IOException ex) {
@@ -113,7 +111,7 @@ public class FileUploadUtils {
 
 
 //            uploadFileForFTP(client, fileName, writeTempPath + "\\" + fileName, "Resource\\htkApp\\upload\\" + folder);
-//            uploadFileForFTP(client, newName, writeTempPath + "\\" + newName, "Resource\\htkApp\\upload\\" + folder);
+            uploadFileForFTP(client, newName, writeTempPath + "\\" + newName, "Resource\\htkApp\\upload\\" + folder);
 //            uploadFileForFTP(client, fileName, writeTempPath + "/" + fileName, "Resource\\htkApp\\upload\\" + folder);
 //            String avaPath = OtherUtils.getRootDirectory() + Globals.PROJECT_URL + Globals.PHOTO_URL + folder + fileName;
             String avaPath = OtherUtils.getRootDirectory() + Globals.PROJECT_URL + Globals.PHOTO_URL + folder + newName;
