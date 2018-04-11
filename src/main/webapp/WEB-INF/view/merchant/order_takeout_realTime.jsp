@@ -118,7 +118,8 @@
                                                 <div class="orderHead">#<i>${each.number}</i></div>
                                                 <div class="userInfo">
                                                     <div class="uname">${fn:substring(each.receiptName,0,1)}（${each.sex == 0 ? "女士" : "先生"}）</div>
-                                                    <p>${beginPhoeNumber}*****${endPhoneNumber}</p>
+                                                    <%--<p>${beginPhoeNumber}*****${endPhoneNumber}</p>--%>
+                                                    <p>${each.receivingCall}</p>
                                                     <p>${each.shippingAddress}</p>
                                                 </div>
                                                 <div class="goodsInfo">
@@ -182,7 +183,8 @@
                                                 <div class="orderHead">#<i>${each.number}</i></div>
                                                 <div class="userInfo">
                                                     <div class="uname">${fn:substring(each.receiptName,0,1)}（${each.sex == 0 ? "女士" : "先生"}）</div>
-                                                    <p>${beginPhoeNumber}*****${endPhoneNumber}</p>
+                                                    <%--<p>${beginPhoeNumber}*****${endPhoneNumber}</p>--%>
+                                                    <p>${each.receivingCall}</p>
                                                     <p>${each.shippingAddress}</p>
                                                 </div>
                                                 <div class="goodsInfo">
@@ -246,7 +248,8 @@
                                                 <div class="orderHead">#<i>${each.number}</i></div>
                                                 <div class="userInfo">
                                                     <div class="uname">${fn:substring(each.receiptName,0,1)}（${each.sex == 0 ? "女士" : "先生"}）</div>
-                                                    <p>${beginPhoeNumber}*****${endPhoneNumber}</p>
+                                                    <%--<p>${beginPhoeNumber}*****${endPhoneNumber}</p>--%>
+                                                    <p>${each.receivingCall}</p>
                                                     <p>${each.shippingAddress}</p>
                                                 </div>
                                                 <div class="goodsInfo">
@@ -375,7 +378,8 @@
                                                 <div class="orderHead">#<i>${each.number}</i></div>
                                                 <div class="userInfo">
                                                     <div class="uname">${fn:substring(each.receiptName,0,1)}（${each.sex == 0 ? "女士" : "先生"}）</div>
-                                                    <p>${beginPhoeNumber}*****${endPhoneNumber}</p>
+                                                    <%--<p>${beginPhoeNumber}*****${endPhoneNumber}</p>--%>
+                                                    <p>${each.receivingCall}</p>
                                                     <p>${each.shippingAddress}</p>
                                                 </div>
                                                 <div class="goodsInfo">
@@ -439,7 +443,8 @@
                                                 <div class="orderHead">#<i>${each.number}</i></div>
                                                 <div class="userInfo">
                                                     <div class="uname">${fn:substring(each.receiptName,0,1)}（${each.sex == 0 ? "女士" : "先生"}）</div>
-                                                    <p>${beginPhoeNumber}*****${endPhoneNumber}</p>
+                                                    <%--<p>${beginPhoeNumber}*****${endPhoneNumber}</p>--%>
+                                                    <p>${each.receivingCall}</p>
                                                     <p>${each.shippingAddress}</p>
                                                 </div>
                                                 <div class="goodsInfo">
