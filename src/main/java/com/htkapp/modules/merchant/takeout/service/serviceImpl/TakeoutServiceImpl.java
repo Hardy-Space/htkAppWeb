@@ -320,7 +320,12 @@ public class TakeoutServiceImpl implements TakeoutService {
 
     //保存商品修改
     @Override
-    public void saveProductEdit(TakeoutProduct takeoutProduct, String label, PropertyList propertyList) throws Exception {
+    public void saveProductEdit(TakeoutProduct takeoutProduct, MultipartFile imgFile,String label, PropertyList propertyList) throws Exception {
+        //处理产品图片
+        if (imgFile != null) {
+            String uploadUrl = FileUploadUtils.appUploadAvatarImg(imgFile, "shop/takeout/");
+            takeoutProduct.setImgUrl(uploadUrl);
+        }
         StringBuffer property = new StringBuffer();
         Set<String> propertySet = new HashSet<>();
         if (propertyList != null && propertyList.getPropertyList() != null) {

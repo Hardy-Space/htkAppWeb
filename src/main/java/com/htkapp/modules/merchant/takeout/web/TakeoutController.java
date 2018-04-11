@@ -106,7 +106,7 @@ public class TakeoutController {
 
     //保存外卖商品修改接口
     @RequestMapping(value = "/product/saveProduct",method = RequestMethod.POST)
-    public String saveProduct(TakeoutProduct product, String label1, String label2, String label3, PropertyList propertyList) {
+    public String saveProduct(TakeoutProduct product, MultipartFile imgFile,String label1, String label2, String label3, PropertyList propertyList) {
         try {
             StringBuffer label = new StringBuffer();
             if (StringUtils.isNotEmpty(label1)) {
@@ -118,7 +118,7 @@ public class TakeoutController {
             if (StringUtils.isNotEmpty(label3)) {
                 label.append(label3);
             }
-            takeoutService.saveProductEdit(product,String.valueOf(label),propertyList);
+            takeoutService.saveProductEdit(product,imgFile,String.valueOf(label),propertyList);
             return mTakeoutDirectory + "product_takeout_index";
         } catch (Exception e) {
             return "redirect:editProduct?productId="+product.getId();

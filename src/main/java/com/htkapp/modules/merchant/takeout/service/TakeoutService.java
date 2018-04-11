@@ -40,7 +40,7 @@ public interface TakeoutService {
     //通过产品id查找出产品信息
     void getProductDetailByPID(Model model,int productId);
     //保存商品修改
-    void saveProductEdit(TakeoutProduct takeoutProduct, String label, PropertyList propertyList) throws Exception;
+    void saveProductEdit(TakeoutProduct takeoutProduct,MultipartFile imgFile, String label, PropertyList propertyList) throws Exception;
     //新订单确认接单接口
     AjaxResponseModel confirmTheOrderSuc(String orderNumber);
     //配送商品接口
