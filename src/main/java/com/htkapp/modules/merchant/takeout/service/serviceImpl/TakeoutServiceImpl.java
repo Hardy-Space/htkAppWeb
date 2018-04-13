@@ -321,7 +321,10 @@ public class TakeoutServiceImpl implements TakeoutService {
     //保存商品修改
     @Override
     public void saveProductEdit(TakeoutProduct takeoutProduct, MultipartFile imgFile,String label, PropertyList propertyList) throws Exception {
-        //处理产品图片
+        /**
+         * @author 马鹏昊
+         * @desc 只判断为空还不行要判断imgFile有没有信息（修改信息但是没修改图片的情况）
+         */
         if (imgFile != null&&!imgFile.isEmpty()) {
             String uploadUrl = FileUploadUtils.appUploadAvatarImg(imgFile, "shop/takeout/");
             takeoutProduct.setImgUrl(uploadUrl);
