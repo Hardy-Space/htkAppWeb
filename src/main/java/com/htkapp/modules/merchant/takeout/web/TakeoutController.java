@@ -228,7 +228,12 @@ public class TakeoutController {
     public AjaxResponseModel itemsToShip(String orderNumber){
         return takeoutService.itemsToShip(orderNumber);
     }
-
+    //外招配送商品接口
+    @RequestMapping("/order/needHelp")
+    @ResponseBody
+    public AjaxResponseModel needHelp(String orderNumber){
+        return new AjaxResponseModel(Globals.COMMON_SUCCESSFUL_OPERATION, "==成功调用方法==");
+    }
     //回复催单接口
     @RequestMapping("/order/replyMessage")
     @ResponseBody

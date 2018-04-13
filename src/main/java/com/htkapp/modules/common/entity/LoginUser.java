@@ -237,5 +237,15 @@ public class LoginUser implements Serializable {
         this.shopName = shopName;
     }
 
+	@Override
+	public String toString() {
+		return "LoginUser [userId=" + userId + ", userName=" + userName + ", password=" + password + ", email=" + email
+				+ ", token=" + token + ", saltToken=" + saltToken + ", encryptToken=" + encryptToken + ", pcLoginState="
+				+ pcLoginState + ", role=" + role + ", accountStatus=" + accountStatus + ", loginWay=" + loginWay
+				+ ", avatarImg=" + avatarImg + ", useStartTime=" + useStartTime + ", useEndTime=" + useEndTime
+				+ ", nickName=" + nickName + ", rememberMe=" + rememberMe + ", shopName=" + shopName + ", state="
+				+ state + ", createTime=" + createTime + ", lastLoginTime=" + lastLoginTime + "]";
+	}
+
 
 }

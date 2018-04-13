@@ -45,6 +45,7 @@ public interface TakeoutService {
     AjaxResponseModel confirmTheOrderSuc(String orderNumber);
     //配送商品接口
     AjaxResponseModel itemsToShip(String orderNumber);
+    
     //回复催单接口
     AjaxResponseModel replyMessage(AjaxRequestParams params);
 

@@ -18,11 +18,16 @@
 //    获取/login接口传过来的值
 //    String state = (String)request.getSession().getAttribute("status");
 	LoginUser loginUser = (LoginUser)request.getSession().getAttribute(Globals.MERCHANT_SESSION_USER);
-	String status = loginUser.getState()+"";
-	String shopName = loginUser.getShopName();
-	
-    //String status = (String)request.getSession().getAttribute("status");
-    //String shopName = (String)request.getSession().getAttribute("shopName");
+    String status = (String)request.getSession().getAttribute("status");
+    String shopName = (String)request.getSession().getAttribute("shopName");
+    System.out.println("这是决定状态的参数"+status+"=================");
+    System.out.print("这是决定店铺名字的参数"+shopName+"=================");
+    System.out.print("这是登录资料的参数"+loginUser.toString()+"=================");
+//    if(status==null||shopName==null){
+//    	 response.setHeader("Refresh", "1;url=login");
+    	// request.getRequestDispatcher("login").forward(request, response);
+  //  	 return;
+//    }
 %>
 <div class="layui-header">
     <div class="layui-row index">
@@ -66,13 +71,13 @@
                         <div class="statusSelect">
                             <div class="statusItem clearfix">
                                 <a href="javascript:void(0)"
-                                   class="${status == '1' ?'cur' : ''} openState changeState"
+                                   class="${status =='1' ?'cur' : ''} openState changeState"
                                    data-id="1">营业中</a>
                                 <p>当前餐厅处于设置的营业时间内，正常接受新订单</p>
                             </div>
                             <div class="statusItem clearfix">
                                 <a href="javascript:void(0)"
-                                   class="${status == '0' ? 'cur':'' } stopState changeState" data-id="0">停止营业</a>
+                                   class="${status =='0' ? 'cur':'' } stopState changeState" data-id="0">停止营业</a>
                                 <p>适用于较长时间停止提供服务，不接受任何订单，手动恢复营业后可正常接受订单</p>
                             </div>
                             <div class="statusItem clearfix">营业时间：9:00-20:00</div>

@@ -129,6 +129,7 @@ public class MerchantController {
                 loginUser.setShopName(shop.getShopName());
                 session.setAttribute(Globals.MERCHANT_SESSION_USER, loginUser);
                 //店铺名字
+                //TODO留个坐标检检测用
                 session.setAttribute("shopName", shop.getShopName().toString());
                 //店铺是否营业状态（0停止营业 1营业中）
                 session.setAttribute("status", shop.getState().toString());
@@ -245,6 +246,7 @@ public class MerchantController {
     @RequestMapping(value = "/changeShopState_Page", method = RequestMethod.POST)
     @ResponseBody
     public AjaxResponseModel changeShopState(HttpServletRequest request, int stateId/*,int userId*/) {
+    	//TODO
         return merchantService.changeShopState(request, stateId/*,userId*/);
     }
 
