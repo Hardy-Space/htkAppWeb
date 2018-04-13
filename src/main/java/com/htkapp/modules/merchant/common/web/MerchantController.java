@@ -127,6 +127,7 @@ public class MerchantController {
                 Shop shop = shopService.getShopDataByAccountShopIdAndMark(loginUser.getUserId(), 0);
                 loginUser.setState(shop.getState());
                 loginUser.setShopName(shop.getShopName());
+                System.out.println("loginUser:"+loginUser);
                 session.setAttribute(Globals.MERCHANT_SESSION_USER, loginUser);
                 //店铺名字
                 //TODO留个坐标检检测用
