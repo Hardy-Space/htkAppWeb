@@ -322,7 +322,7 @@ public class TakeoutServiceImpl implements TakeoutService {
     @Override
     public void saveProductEdit(TakeoutProduct takeoutProduct, MultipartFile imgFile,String label, PropertyList propertyList) throws Exception {
         //处理产品图片
-        if (imgFile != null) {
+        if (imgFile != null&&!imgFile.isEmpty()) {
             String uploadUrl = FileUploadUtils.appUploadAvatarImg(imgFile, "shop/takeout/");
             takeoutProduct.setImgUrl(uploadUrl);
         }
