@@ -146,6 +146,7 @@
 			</div>
 			<%@include file="footer.jsp"%>
 		</div>
+	</div>
 </body>
 <%@include file="js.jsp"%>
 <script type="text/javascript">

@@ -1,4 +1,4 @@
-/* =====================鑷畾涔夊紑濮�=========================== */
+/* =====================閼奉亜鐣炬稊澶婄磻婵拷=========================== */
 .beg-login-bg {
     background-color: #393D49;
 }
@@ -106,7 +106,7 @@ a:focus, a:hover {
     text-decoration: none !important;
 }
 
-/* 椤堕儴鏍� */
+/* 妞ゅ爼鍎撮弽锟� */
 .index_top {
     background-color: #007DDB;
 }
@@ -1150,7 +1150,7 @@ div.mesCenter-content > .content-list > .list-content > .mesItem {
     background-color: #ff0000;
 }
 
-/*active 瑕佸湪鍚庨潰 鍚﹀垯浼氳hover瑕嗙洊*/
+/*active 鐟曚礁婀崥搴ㄦ桨 閸氾箑鍨导姘愁潶hover鐟曞棛娲�*/
 
 .aBtn:focus {
     background-color: #00ff00;
@@ -1275,9 +1275,9 @@ div.mesCenter-content > .content-list > .list-content > .mesItem {
 .floatRight {
     float: right;
 }
-/* ===========================鑷畾涔夌粨鏉�======================= */
+/* ===========================閼奉亜鐣炬稊澶岀波閺夛拷======================= */
 
-/* ================鍓嶇澶栧寘css寮�濮�================ */
+/* ================閸撳秶顏径鏍у瘶css瀵拷婵拷================ */
 * {
     margin: 0;
     padding: 0;
@@ -1351,7 +1351,7 @@ i {
     visibility: hidden;
 }
 
-/* 宸︿晶鑿滃崟 */
+/* 瀹革缚鏅堕懣婊冨礋 */
 .leftMenu {
     width: 200px;
     height: 100%;
@@ -1479,7 +1479,7 @@ i {
     display: block;
 }
 
-/* 鍙充晶涓讳綋 */
+/* 閸欏厖鏅舵稉璁崇秼 */
 .rightContiner {
     height: 100%;
     margin-left: 200px;
@@ -1488,7 +1488,7 @@ i {
     overflow: hidden;
 }
 
-/* 椤堕儴 */
+/* 妞ゅ爼鍎� */
 .top {
     height: 50px;
     line-height: 50px;
@@ -1687,7 +1687,7 @@ i {
     box-shadow: 0 2px 6px #ccc;
 }
 
-/* 闈㈠寘灞� */
+/* 闂堛垹瀵樼仦锟� */
 .crumbs {
     height: 50px;
     line-height: 50px;
@@ -1724,7 +1724,7 @@ i {
     color: #CCC;
 }
 
-/* 涓讳綋瀛愭爮鐩� */
+/* 娑撹缍嬬�涙劖鐖惄锟� */
 .childCat {
     height: 60px;
     width: 87%;
@@ -1784,7 +1784,7 @@ i {
     margin-left: 15px;
 }
 
-/* 鍐呭涓讳綋 */
+/* 閸愬懎顔愭稉璁崇秼 */
 .pdtp125 {
     padding-top: 125px;
 }
@@ -1955,7 +1955,7 @@ i {
 /*margin-left:15px;*/
 /*}*/
 .goodsItem {
-    float: left;
+    display: inline-block
     width: 20%;
 }
 
@@ -2149,7 +2149,7 @@ i {
     margin-left: 65px;
 }
 
-/* 娣诲姞鍟嗗搧 */
+/* 濞ｈ濮為崯鍡楁惂 */
 .addFormCont {
     height: 100%;
     overflow: auto;
@@ -2430,7 +2430,7 @@ i {
     display: none;
 }
 
-/* 璁㈠崟绠＄悊 */
+/* 鐠併垹宕熺粻锛勬倞 */
 .orderContiner {
     overflow: auto;
 }
@@ -2703,7 +2703,7 @@ i {
     background-color: #eee;
 }
 
-/* 寮圭獥 */
+/* 瀵湱鐛� */
 .layer {
     position: fixed;
     left: 0px;
@@ -2805,4 +2805,4 @@ a, span {
 
 }
 
-/*!* =============other鍓嶇澶栧寘css缁撴潫============= *!*/
+/*!* =============other閸撳秶顏径鏍у瘶css缂佹挻娼�============= *!*/
