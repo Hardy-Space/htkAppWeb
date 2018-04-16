@@ -25,6 +25,7 @@ import com.htkapp.modules.merchant.buffetFood.service.*;
 import com.htkapp.modules.merchant.shop.entity.Shop;
 import com.htkapp.modules.merchant.shop.service.ShopServiceI;
 import com.htkapp.modules.merchant.takeout.dto.AddProductList;
+import com.htkapp.modules.merchant.takeout.dto.Property;
 import com.htkapp.modules.merchant.takeout.dto.PropertyList;
 import com.htkapp.modules.merchant.takeout.dto.ReturnCategoryAndProduct;
 import com.htkapp.modules.merchant.takeout.entity.TakeoutCategory;
@@ -172,11 +173,16 @@ public class BuffetFoodControllerServiceImpl implements BuffetFoodControllerServ
 
     //保存商品修改
     @Override
-    public void saveProductEdit(BuffetFoodProduct product) throws Exception {
+    public void saveProductEdit(BuffetFoodProduct product, MultipartFile imgFile) throws Exception {
+        //处理产品图片
+        if (imgFile != null&&!imgFile.isEmpty()) {
+            String uploadUrl = FileUploadUtils.appUploadAvatarImg(imgFile, "shop/takeout/");
+            product.setImgUrl(uploadUrl);
+        }
         try {
-            String desc = product.getDescription();
+            String desc = product.getProductDetail();
             desc = desc.replace("\r\n"," ");
-            product.setDescription(desc);
+            product.setProductDetail(desc);
             buffetFoodProductService.editProductById(product);
         } catch (Exception e) {
             throw new Exception("保存修改失败");
