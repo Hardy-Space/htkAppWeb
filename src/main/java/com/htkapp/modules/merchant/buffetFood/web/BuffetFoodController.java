@@ -26,6 +26,8 @@ import com.htkapp.modules.merchant.shop.entity.AccountShop;
 import com.htkapp.modules.merchant.shop.entity.Shop;
 import com.htkapp.modules.merchant.shop.service.AccountShopServiceI;
 import com.htkapp.modules.merchant.shop.service.ShopServiceI;
+import com.htkapp.modules.merchant.takeout.dto.PropertyList;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -94,9 +96,9 @@ public class BuffetFoodController {
 
 	//保存自助商品修改页面
 	@RequestMapping(value = "/product/saveProduct", method = RequestMethod.POST)
-	public String saveProduct(BuffetFoodProduct product) {
+	public String saveProduct(BuffetFoodProduct product, MultipartFile imgFile) {
 		try {
-			buffetFoodControllerService.saveProductEdit(product);
+			buffetFoodControllerService.saveProductEdit(product,imgFile);
 			return mTakeoutDirectory + "product_buffetFood_index";
 		} catch (Exception e) {
 			return "redirect:editProduct?productId=" + product.getId();

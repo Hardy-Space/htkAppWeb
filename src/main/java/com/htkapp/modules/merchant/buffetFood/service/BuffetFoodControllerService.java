@@ -27,7 +27,7 @@ public interface BuffetFoodControllerService {
     //通过产品id查找出产品信息
     void getProductDetailByPID(Model model,int productId);
     //保存商品修改
-    void saveProductEdit(BuffetFoodProduct product) throws Exception;
+    void saveProductEdit(BuffetFoodProduct product, MultipartFile imgFile) throws Exception;
     //新订单下单接口
     AjaxResponseModel dealWithNewOrder(AjaxRequestParams params);
     //回复催单接口
