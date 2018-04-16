@@ -47,7 +47,7 @@ public class CustomSessionListener implements SessionListener {
     public void onExpiration(Session session) {
         //当session超时触发的delete redis内session 缓存操作
         LoggerUtils.fmtDebug(getClass(), "session expiration , current time is :"+ format(new Date(), NORM_DATETIME_MINUTE_PATTERN));
-        shiroSessionRepository.deleteSession(session.getId());
+//        shiroSessionRepository.deleteSession(session.getId());
     }
 
     public ShiroSessionRepository getShiroSessionRepository() {
