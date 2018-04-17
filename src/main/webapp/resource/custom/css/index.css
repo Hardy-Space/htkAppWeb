@@ -1957,6 +1957,7 @@ i {
 .goodsItem {
     display: inline-block;
     width: 20%;
+    height: 45%;
 }
 
 .goodsDetail {
@@ -1967,6 +1968,7 @@ i {
     padding: 10px 0px;
     margin-bottom: 15px;
     position: relative;
+    height: 100%;
 }
 
 .goodsDetail {

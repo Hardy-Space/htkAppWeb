@@ -262,6 +262,7 @@
 
                             goodsHtml += '<div class="goodsItem">' +
                                 '<div class="goodsDetail">' +
+                                '<div style=" position: absolute;top: 50%;transform: translateY(-50%);">'+
                                 //是否上架
                                 '<p class="ifCanBuy" style="background-color:#FF7F24;color:white;margin-bottom:10px;padding:10px">'+ifCanBuyStr+'</p>' +
                                 '<div class="info clearfix">' +
@@ -281,6 +282,7 @@
                                 '</div>' +
                                 '<input name="checkGoods" value="1" type="checkbox">' +
                                 '</div>' +
+                                '</div>'+
                                 '</div>';
                         });
                         goodsHtml += '<div class="pageNotice">' +

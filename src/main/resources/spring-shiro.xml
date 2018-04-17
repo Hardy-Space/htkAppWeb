@@ -88,7 +88,7 @@
 		<!--<property name="globalSessionTimeout" value="18000000" />-->
 		<!--@author 马鹏昊-->
 		<!--@desc 设置永不超时-->
-		<property name="globalSessionTimeout" value="-1" />
+		<property name="globalSessionTimeout" value="-1000" />
 		<property name="sessionDAO" ref="customShiroSessionDAO" />
 		<!-- session 监听，可以多个。 -->
 		<property name="sessionListeners">
@@ -96,7 +96,7 @@
 				<ref bean="customSessionListener" />
 			</list>
 		</property>
-		<property name="sessionValidationInterval" value="3600000" />
+		<property name="sessionValidationInterval" value="600000" />
 		<!-- 间隔多少时间检查，不配置是60分钟 -->
 		<!--<property name="sessionValidationScheduler" ref="sessionValidationScheduler"/> -->
 		<!-- 是否开启 检测，默认开启 -->
