@@ -270,8 +270,8 @@
                                 '<p class="price">￥' + itemb.price + '</p>' +
                                 '<p class="num">' + itemb.inventory + '/ ' + itemb.inventoryCount + '</p>' +
                                 '</div>' +
-                                '<div class="fright">' +
-                                '<img src="' + itemb.imgUrl + '">' +
+                                '<div class="fright pSize">' +
+                                '<img src="' + itemb.imgUrl + '"style="max-width:300px;_width:expression(this.width > 300 ? "300px" : this.width);" >' +
                                 '</div>' +
                                 '</div>' +
                                 '<div class="goodsButton clearfix">' +
@@ -280,7 +280,8 @@
                                 '<a href="${sysPath}/merchant/takeout/product/editProduct?productId=' + itemb.id + '">编辑</a>' +
                                 '</div>' +
                                 '<input name="checkGoods" value="1" type="checkbox">' +
-                                '</div>' +
+                                '</div>'+
+                                '<div style="font: 0px/0px sans-serif;clear: both;display: block"> </div>'+
                                 '</div>';
                         });
                         goodsHtml += '<div class="pageNotice">' +

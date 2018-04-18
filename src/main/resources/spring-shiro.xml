@@ -96,11 +96,11 @@
 				<ref bean="customSessionListener" />
 			</list>
 		</property>
-		<property name="sessionValidationInterval" value="3600000" />
+		<property name="sessionValidationInterval" value="600000" />
 		<!-- 间隔多少时间检查，不配置是60分钟 -->
 		<!--<property name="sessionValidationScheduler" ref="sessionValidationScheduler"/> -->
 		<!-- 是否开启 检测，默认开启 -->
-		<property name="sessionValidationSchedulerEnabled" value="true" />
+		<property name="sessionValidationSchedulerEnabled" value="false" />
 		<!-- 是否删除无效的，默认也是开启 -->
 		<property name="deleteInvalidSessions" value="true" />
 		<!-- 会话Cookie模板 -->

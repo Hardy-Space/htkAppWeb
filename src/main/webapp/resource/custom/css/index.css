@@ -1341,6 +1341,11 @@ i {
 .fright {
     float: right;
 }
+.pSize{
+	 height:100px;
+	 overflow:hidden;
+	 background-color: #f3f3f4;
+}
 
 .clearfix:after {
     content: "";
@@ -1955,7 +1960,7 @@ i {
 /*margin-left:15px;*/
 /*}*/
 .goodsItem {
-    display: inline-block
+    display: inline-block;
     width: 20%;
 }
 
@@ -1967,6 +1972,7 @@ i {
     padding: 10px 0px;
     margin-bottom: 15px;
     position: relative;
+    height: 100%;
 }
 
 .goodsDetail {

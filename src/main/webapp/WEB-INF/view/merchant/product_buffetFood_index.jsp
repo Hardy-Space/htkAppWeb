@@ -178,9 +178,6 @@
                     if (item.buffetFoodProductList) {
                         $.each(item.buffetFoodProductList, function (indexb, itemb) {
                         	 var ifCanBuyStr = (itemb.state == 1)?"已上架":"已下架";
-                        	 console.log(itemb)
-                        	 console.log("======")
-                        	 console.log(itemb.state)
                             goodsHtml += '<div class="goodsItem" data-id="' + itemb.id + '">' +
                             '<div class="goodsDetail">' +
                             //是否上架
@@ -189,8 +186,8 @@
                             '<div class="fleft">' +
                             '<h3>' + itemb.productName + '</h3>' +
                             '</div>' +
-                            '<div class="fright">' +
-                            '<img src="' + itemb.imgUrl + '">' +
+                            '<div class="fright pSize">' +
+                            '<img src="' + itemb.imgUrl + '"style="max-width:300px;_width:expression(this.width > 300 ? "300px" : this.width);">' +
                             '</div>' +
                             '</div>' +
                                 '<div class="goodsButton clearfix">' +
@@ -199,6 +196,7 @@
                                 '</div>' +
                                 '<input name="checkGoods" value="1" type="checkbox">' +
                                 '</div>' +
+                                '<div style="font: 0px/0px sans-serif;clear: both;display: block"> </div>'+
                                 '</div>';
                         });
                         goodsHtml += '<div class="pageNotice">' +
