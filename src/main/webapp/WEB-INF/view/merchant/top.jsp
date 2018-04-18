@@ -13,7 +13,7 @@
 <%
     response.setHeader("Pragma","No-cache");
     response.setHeader("Cache-Control","no-cache");
-    response.setDateHeader("Expires", 0);
+    response.setDateHeader("Expires", -1);
     response.flushBuffer();
 //    获取/login接口传过来的值
 //    String state = (String)request.getSession().getAttribute("status");

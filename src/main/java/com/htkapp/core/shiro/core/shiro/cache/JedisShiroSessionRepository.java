@@ -42,8 +42,18 @@ public class JedisShiroSessionRepository implements ShiroSessionRepository {
 //            session.setTimeout(3600000L);
             byte[] value = SerializeUtil.serialize(session);
             long sessionTimeOut = session.getTimeout() / 1000;
-            Long expireTime = sessionTimeOut + SESSION_VAL_TIME_SPAN + (5 * 60);
-;            getJedisManager().saveValueByKey(DB_INDEX, key, value, expireTime.intValue());
+
+//            Long expireTime = sessionTimeOut + SESSION_VAL_TIME_SPAN + (5 * 60);
+//            getJedisManager().saveValueByKey(DB_INDEX, key, value, expireTime.intValue());
+
+            /**
+             * @author 马鹏昊
+             * @desc 设置过期时间小于0，不对Jedis设置expire就不会删除sessionId
+             */
+            int expireTime = -1;
+            getJedisManager().saveValueByKey(DB_INDEX, key, value, expireTime);
+
+
             LoggerUtils.fmtDebug(getClass(), "保存session操作");
         } catch (Exception e) {
             LoggerUtils.fmtError(getClass(), e, "save session error，id:[%s]", session.getId());

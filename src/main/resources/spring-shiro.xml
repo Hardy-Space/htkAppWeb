@@ -88,7 +88,7 @@
 		<!--<property name="globalSessionTimeout" value="18000000" />-->
 		<!--@author 马鹏昊-->
 		<!--@desc 设置永不超时-->
-		<property name="globalSessionTimeout" value="-1" />
+		<property name="globalSessionTimeout" value="-1000" />
 		<property name="sessionDAO" ref="customShiroSessionDAO" />
 		<!-- session 监听，可以多个。 -->
 		<property name="sessionListeners">
