@@ -4,6 +4,23 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
     <display-name>htkApp</display-name>
+
+
+    <!--session过期跳转-->
+    <!--<filter>-->
+        <!--<filter-name>sessionFilter</filter-name>-->
+        <!--<filter-class>com.htkapp.core.filter.SessionFilter</filter-class>-->
+        <!--<init-param>-->
+            <!--<param-name>excludedPages</param-name>-->
+            <!--<param-value>login,resource,js,gif,jpg,png,css,ico,druid</param-value>-->
+        <!--</init-param>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>sessionFilter</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
+
+
     <!-- 字符编码 -->
     <filter>
         <filter-name>characterEncodingFilter</filter-name>
