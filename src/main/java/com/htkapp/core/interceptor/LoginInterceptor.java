@@ -70,7 +70,16 @@ public class LoginInterceptor implements HandlerInterceptor {
         for (String excludeUrl : excludedUrls) {
             //contains()方法返回boolean类型
             //当参数出现在此字符串中返回true
-            if (requestUri.contains(excludeUrl)) {
+
+            /**
+             * @author 马鹏昊
+             * @desc 去掉xml属性的前后空格、回车符、制表符
+             */
+            String formatStr = excludeUrl;
+            formatStr = formatStr.replace("\n","");
+            formatStr = formatStr.replace("\t","");
+            formatStr = formatStr.trim();
+            if (requestUri.contains(formatStr)) {
                 return true;
             }
         }

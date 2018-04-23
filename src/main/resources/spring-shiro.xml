@@ -103,13 +103,13 @@
 		<!-- 间隔多少时间检查，不配置是60分钟 -->
 		<!--<property name="sessionValidationScheduler" ref="sessionValidationScheduler"/> -->
 		<!-- 是否开启 检测，默认开启 -->
-		<property name="sessionValidationSchedulerEnabled" value="true" />
+		<property name="sessionValidationSchedulerEnabled" value="false" />
 		<!-- 是否删除无效的，默认也是开启 -->
-		<property name="deleteInvalidSessions" value="true" />
+		<property name="deleteInvalidSessions" value="false" />
 		<!-- 会话Cookie模板 -->
 		<property name="sessionIdCookie" ref="sessionIdCookie" />
 		<!-- 是否开启cookie缓存 默认是开启 -->
-		<property name="sessionIdCookieEnabled" value="true" />
+		<property name="sessionIdCookieEnabled" value="false" />
 	</bean>
 
 	<!-- session 创建、删除、查询 -->
