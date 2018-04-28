@@ -88,5 +88,15 @@ public class SeatOrderServiceImpl implements SeatOrderService {
 		}
 		return list;
 	}
+	@Override
+	public int deleteSeatOrder(List<String> idInts) {
+		int a =seatOrderDao.deleteSeatOrder(idInts);
+		return a;
+	}
+	@Override
+	public int updataSeatInfoStatus(List<String> idInts) {
+		int a =seatOrderDao.updataSeatInfoStatus(idInts);
+		return a;
+	}
 
 }

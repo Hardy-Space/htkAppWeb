@@ -1415,5 +1415,7 @@ public class MerchantServiceImpl implements MerchantService {
 			}
 		}
 	}
+	//撤销订座订单
+	
 	/* ===================JSP接口结束======================= */
 }

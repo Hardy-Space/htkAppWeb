@@ -107,6 +107,7 @@
 							<input id="date" readonly placeholder="点击选择筛选日期" name="date"
 								value="">
 							<button class="layui-btn-normal layui-btn nowQueryBtn">查询</button>
+							<button class="layui-btn-normal layui-btn cancelOrder">取消预订</button>
 						</div>
 					</div>
 				</div>
@@ -146,8 +147,9 @@
 													<td>${each.scheduledTime }</td>
 													<td>${each.seatPhone }</td>
 													<td>${each.remarks }</td>
-													<td>${each.status==0?"未处理":"已处理" }</td>
-													<td><input type="checkbox" class="doOrder"></td>
+													<td>${each.status==0?"未处理":(each.status==1?"已处理":"订单撤销") }</td>
+													<td><input type="checkbox" class="doOrder"
+														data-orderNumber="${each.orderNumber}"></td>
 												</tr>
 											</c:forEach>
 										</c:when>
@@ -162,10 +164,10 @@
 						</div>
 						<div class="row item col-md-12 page">
 							<p>一共${p.pages}页</p>
-							<a href="done?pageNum=${p.firstPage}">第一页</a> <a
-								href="done?pageNum=${p.nextPage}">下一页</a> <a
-								href="done?pageNum=${p.prePage}">上一页</a> <a
-								href="done?pageNum=${p.lastPage}">最后页</a>
+							<a href="seatOrder?pageNum=${p.firstPage}">第一页</a> <a
+								href="seatOrder?pageNum=${p.nextPage}">下一页</a> <a
+								href="seatOrder?pageNum=${p.prePage}">上一页</a> <a
+								href="seatOrder?pageNum=${p.lastPage}">最后页</a>
 						</div>
 					</div>
 				</div>
@@ -209,13 +211,47 @@
 			format : 'yyyy-MM-dd'
 		})
 	});
-	 $("button.nowQueryBtn").on("click", function () {
-	        var dateVal = $("#date").val();
-	        if (dateVal === '' || dateVal === undefined) {
-	            return false;
-	        }
-	        var dateValList = dateVal.split("~");
-	        window.location.href = baseUrl + "/merchant/integral/seatOrder?startTime=" + dateValList[0] + "&endTime=" + dateValList[1];
-	    })
+	$("button.nowQueryBtn").on(
+			"click",
+			function() {
+				var dateVal = $("#date").val();
+				if (dateVal === '' || dateVal === undefined) {
+					return false;
+				}
+				var dateValList = dateVal.split("~");
+				window.location.href = baseUrl
+						+ "/merchant/integral/seatOrder?startTime="
+						+ dateValList[0] + "&endTime=" + dateValList[1];
+			})
+	$(".cancelOrder").on("click", function() {
+		var allOrder = $(".doOrder")
+		var selectedIds = "";
+		for (var i = 0; i < allOrder.length; i++) {
+			var single = allOrder[i];
+			var ifChecked = single.checked;
+			if (ifChecked) {
+				selectedIds = selectedIds + "," + single.dataset.ordernumber;
+			}
+		}
+		if (selectedIds == "")
+			return false;
+		var url=baseUrl+"/merchant/integral/deleteSeatOrder";
+		  var params = {"selectedIds":selectedIds.substring(1,selectedIds.length)};
+          $.post(url,params,function (result, status) {
+              if(status === 'success'){
+                  if (result && result.code === 0){
+                  	layer_msg(result.message,'success');
+                      location.reload();
+                      return false;
+                  }else {
+                      layer_msg(result.message,'error');
+                      return false;
+                  }
+              }else {
+                  layer_msg('网络连接异常','exception');
+                  return false;
+              }
+          },"json");
+	})
 </script>
 </html>

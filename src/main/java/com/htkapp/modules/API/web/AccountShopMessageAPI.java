@@ -31,7 +31,7 @@ public class AccountShopMessageAPI {
     public APIResponseModel appAccountShopLoginByUserName(APIRequestParams params) {
         return accountShopMessageAPIService.appAccountShopLoginByUserName(params.getUserName(), params.getPassword(), params.getRole());
     }
-
+    	
     //忘记密码 通过手机短信找回密码
     @RequestMapping("/forgetPasswordBySMS")
     public APIResponseModel forgetPasswordBySMS(APIRequestParams params) {

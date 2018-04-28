@@ -2,7 +2,9 @@ package com.htkapp.modules.API.service.serviceImpl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.htkapp.core.API.APIRequestParams;
+import com.htkapp.core.MethodsParamsEntity.PushMesEntity;
 import com.htkapp.core.GetIdUtil;
+import com.htkapp.core.MoreMethodsUtils;
 import com.htkapp.core.OtherUtils;
 import com.htkapp.core.dto.APIResponseModel;
 import com.htkapp.core.utils.Globals;
@@ -20,10 +22,12 @@ import com.htkapp.modules.merchant.common.service.SinglePageService;
 import com.htkapp.modules.merchant.integral.entity.*;
 import com.htkapp.modules.merchant.integral.service.*;
 import com.htkapp.modules.merchant.shop.dto.AppShowShopInfo;
+import com.htkapp.modules.merchant.shop.entity.AccountShop;
 import com.htkapp.modules.merchant.shop.entity.Shop;
 import com.htkapp.modules.merchant.shop.entity.ShopBulletin;
 import com.htkapp.modules.merchant.shop.entity.ShopSaverTicketRecord;
 import com.htkapp.modules.merchant.shop.entity.ShopSuggest;
+import com.htkapp.modules.merchant.shop.service.AccountShopServiceI;
 import com.htkapp.modules.merchant.shop.service.ShopBulletinService;
 import com.htkapp.modules.merchant.shop.service.ShopSaverTicketRecordService;
 import com.htkapp.modules.merchant.shop.service.ShopServiceI;
@@ -84,6 +88,10 @@ public class IntegralAPIServiceImpl implements IntegralAPIService {
     private AccountTradingRecordService tradingRecordService;
     @Resource
     private ShopSuggestService shopSuggestService;
+    @Resource
+	private MoreMethodsUtils methodsUtils;
+	@Resource
+	private AccountShopServiceI accountShopService;
 
     /* =============接口开始================= */
 
@@ -321,10 +329,13 @@ public class IntegralAPIServiceImpl implements IntegralAPIService {
         if (params != null && order != null) {
             //预定时间、预定人数、预定人姓名、预定手机
             try {
-            	//TODO
-				order.setShopId(params.getShopId());
-                order.setOrderNumber(String.valueOf(OrderNumGen.next()));
-                seatOrderService.insertSeatOrderByToken(order);
+            	order.setShopId(params.getShopId());
+            	order.setOrderNumber(String.valueOf(OrderNumGen.next()));
+            	 seatOrderService.insertSeatOrderByToken(order);
+            	SeatOrder seatOrder=seatOrderService.getSeatOrderByOrderNumber(order.getOrderNumber());
+            	Shop shop=shopService.getShopDataById(seatOrder.getShopId());
+            	 AccountShop user = accountShopService.getAccountShopDataById(shop.getAccountShopId());
+                methodsUtils.pushMesToManagePage(new PushMesEntity("订座订单信息", "b", "新的订座订单", user.getToken(), 'b',2, "您有一个订座订单信息", user.getId()));
                 return new APIResponseModel(Globals.API_SUCCESS);
             } catch (Exception e) {
             	e.printStackTrace();

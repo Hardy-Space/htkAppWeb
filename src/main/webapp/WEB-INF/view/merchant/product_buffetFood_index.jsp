@@ -332,6 +332,7 @@
      // @author 马鹏昊
         // @desc 上架点击事件
         $(".goodsList .action .on").click(function(){
+        	debugger
             var allGoodItems = $(".goodsItem");
             var selectedIds = "";
             for(var i=0;i<allGoodItems.length;i++){
@@ -367,7 +368,6 @@
         // @author 马鹏昊
         // @desc 下架点击事件
         $(".goodsList .action .off").click(function(){
-
             var allGoodItems = $(".goodsItem");
             var selectedIds = "";
             for(var i=0;i<allGoodItems.length;i++){
