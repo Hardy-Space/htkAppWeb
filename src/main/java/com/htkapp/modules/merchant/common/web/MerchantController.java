@@ -331,7 +331,7 @@ public class MerchantController {
 
         map.put("dateStart", startDate);
         map.put("dateEnd", endDate);
-
+        //TODO
         //已接订单数
         map.put("orderCount", 5);
         //今日营页额
@@ -411,7 +411,6 @@ public class MerchantController {
         merchantService.getBuffetFoodOrderDoneResult(model, startTime, endTime, pageNum);
         return mDirectory + "order_buffetFood_done";
     }
-
     //====自助点餐订单处理(新订单)
     @RequestMapping(value = "/buffetFood/order/new", method = RequestMethod.GET)
     public String buffetFoodOrderNew(Model model, RequestParams params,

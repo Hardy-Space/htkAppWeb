@@ -477,7 +477,7 @@ public class IntegralManageServiceImpl implements IntegralManageService {
 				jsonObject.put("orderNumber", order.getOrderNumber());
 				jsonObject.put("orderState", order.getStatus());
 				jsonObject.put("orderId", order.getId());
-				Jpush.jPushMethod(order.getAccountToken(),"预订座位被拒绝","ALERT");
+				Jpush.jPushMethod(order.getAccountToken(),"由于座位已满，预定失败","ALERT");
 				Jpush.jPushMethod(order.getAccountToken(),jsonObject.toJSONString(),"");
 				idInts.add(i);
 			}

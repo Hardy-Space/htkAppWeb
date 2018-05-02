@@ -164,6 +164,7 @@
     	 <if test="startTime != null and endTime != null">
             and gmt_create between #{startTime} and #{endTime} 
         </if>
+        order by gmt_create DESC
     
     </select>
     <update id="updataSeatInfo">
