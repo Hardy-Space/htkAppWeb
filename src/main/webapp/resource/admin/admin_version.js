@@ -46,6 +46,7 @@ const Main = {
             appDownloadUrl: "www.htk-app.com"
 
         }
+
     },
 
     mounted() {

@@ -4,7 +4,8 @@
 
     <sql id="Base_Column_List">
         id, order_number, order_amount, receipt_name, sex, receiving_call,shipping_address,longitude, latitude,
-        order_body,payment_method,order_state, order_time, mark, account_token as token,shop_id, number, all_number,coupon_id
+        order_body,payment_method,order_state, order_time, mark, account_token as token,shop_id, number, all_number,coupon_id,
+        remark
     </sql>
 
     <!-- ===================接口开始===================== -->
@@ -84,6 +85,9 @@
             <if test="couponId != null">
                 coupon_id
             </if>
+            <if test="remark != null">
+                remark
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="orderNumber != null">
@@ -142,6 +146,9 @@
             </if>
             <if test="couponId != null">
                 #{couponId}
+            </if>
+            <if test="remark != null">
+                #{remark}
             </if>
         </trim>
     </insert>

@@ -615,6 +615,7 @@ public class ShopDataServiceImpl implements ShopDataService {
                                 .setPaymentMethod(orderRecord.getPaymentMethod())
                                 .setSex(orderRecord.getSex())
                                 .setProductList(resultList)
+                                .setRemark(orderRecord.getRemark())
                                 .setShippingAddress(orderRecord.getShippingAddress());
                         orderInfo.setCommentStatus(statusCode);
                         Date curDate = new Date();

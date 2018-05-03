@@ -43,6 +43,17 @@ public class ReturnOrderInfo {
 
     private String oneProductName;
 
+    private String remark; //备注
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public ReturnOrderInfo setRemark(String remark) {
+        this.remark = remark;
+        return this;
+    }
+
     private Double deliveryFee;  //配送费
 
     private Integer commentStatus;  //评价状态

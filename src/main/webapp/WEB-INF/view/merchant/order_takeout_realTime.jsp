@@ -133,6 +133,7 @@
 														<%--<p>${beginPhoeNumber}*****${endPhoneNumber}</p>--%>
 														<p>${each.receivingCall}</p>
 														<p>${each.shippingAddress}</p>
+														<p>备注：${each.remark}</p>
 													</div>
 													<div class="goodsInfo">
 														<div class="uname">
@@ -210,6 +211,7 @@
 														<%--<p>${beginPhoeNumber}*****${endPhoneNumber}</p>--%>
 														<p>${each.receivingCall}</p>
 														<p>${each.shippingAddress}</p>
+														<p>备注：${each.remark}</p>
 													</div>
 													<div class="goodsInfo">
 														<div class="uname">
@@ -289,6 +291,7 @@
 														<%--<p>${beginPhoeNumber}*****${endPhoneNumber}</p>--%>
 														<p>${each.receivingCall}</p>
 														<p>${each.shippingAddress}</p>
+														<p>备注：${each.remark}</p>
 													</div>
 													<div class="goodsInfo">
 														<div class="uname">
@@ -366,6 +369,7 @@
 														<%--<p>${beginPhoeNumber}*****${endPhoneNumber}</p>--%>
 														<p>${each.receivingCall}</p>
 														<p>${each.shippingAddress}</p>
+														<p>备注：${each.remark}</p>
 													</div>
 													<div class="goodsInfo">
 														<div class="uname">
@@ -443,6 +447,7 @@
 														<%--<p>${beginPhoeNumber}*****${endPhoneNumber}</p>--%>
 														<p>${each.receivingCall}</p>
 														<p>${each.shippingAddress}</p>
+														<p>备注：${each.remark}</p>
 													</div>
 													<div class="goodsInfo">
 														<div class="uname">
@@ -519,6 +524,7 @@
 														<%--<p>${beginPhoeNumber}*****${endPhoneNumber}</p>--%>
 														<p>${each.receivingCall}</p>
 														<p>${each.shippingAddress}</p>
+														<p>备注：${each.remark}</p>
 													</div>
 													<div class="goodsInfo">
 														<div class="uname">
@@ -695,7 +701,7 @@
             cancel: function () {
             }
         })
-	})	
+	})
     //待配送
     $(".delivery").on("click", function () {
         var orderNumber = $(this).attr("data-num");
