@@ -323,9 +323,12 @@ public class MerchantServiceImpl implements MerchantService {
 			pageNumber = pageNo;
 		}
 		try {
+			int accountShopId = OtherUtils.getLoginUserByRequest().getUserId();
 			String endDateStr = format(DateUtil.endOfDay(DateUtil.parse(endDate)), NORM_DATETIME_PATTERN);
+			Shop takeOutShop=shopService.getShopByAccountShopIdAndMark(accountShopId,0);
 			//查询所有已完成的订单
-			List<OrderRecord> resultList = orderRecordService.getOrderPageDataByCondition(1, mark, pageNumber, pageLimit, startDate, endDateStr, 1);
+			//TODO这里查询的是一个统计数量
+			List<OrderRecord> resultList = orderRecordService.getOrderPageDataByCondition(takeOutShop.getShopId(), mark, pageNumber, pageLimit, startDate, endDateStr, 1);
 			//根据订单查询订单下的商品
 			if (resultList != null && resultList.size() > 0) {
 				for (OrderRecord each : resultList) {
@@ -798,6 +801,10 @@ public class MerchantServiceImpl implements MerchantService {
 				}
 			}
 			//orderList　结果集为null　返回由EL表达式判断,为空则显示没有数据的布局
+			if(startTime!=null&&endTime!=null) {
+				model.addAttribute("startTime",startTime);
+				model.addAttribute("endTime",endTime);
+			}
 			model.addAttribute("page",p);
 			model.addAttribute("data", orderList);
 		} catch (Exception e) {
@@ -996,16 +1003,16 @@ public class MerchantServiceImpl implements MerchantService {
 					Account account = accountService.selectByToken(each.getAccountToken());
 					if (account != null) {
 						each.setUserPhone(account.getUserName());
+						if (each.getLastConsumeTime() != null) {
+							each.setLastConsumeTime(format(DateUtil.parseDate(each.getLastConsumeTime()), NORM_DATE_PATTERN));
+						}
+						if (each.getLastGetTime() != null) {
+							each.setLastGetTime(format(DateUtil.parseDate(each.getLastGetTime()), NORM_DATE_PATTERN));
+						}
+						//查次根据用户token查看积分
+						Integer val = integralService.getIntegralValByAccountToken(accountShopToken, each.getAccountToken());
+						each.setVal(val);
 					}
-					if (each.getLastConsumeTime() != null) {
-						each.setLastConsumeTime(format(DateUtil.parseDate(each.getLastConsumeTime()), NORM_DATE_PATTERN));
-					}
-					if (each.getLastGetTime() != null) {
-						each.setLastGetTime(format(DateUtil.parseDate(each.getLastGetTime()), NORM_DATE_PATTERN));
-					}
-					//查次根据用户token查看积分
-					Integer val = integralService.getIntegralValByAccountToken(accountShopToken, each.getAccountToken());
-					each.setVal(val);
 				}
 				model.addAttribute("data", integralList);
 			}
@@ -1415,5 +1422,7 @@ public class MerchantServiceImpl implements MerchantService {
 			}
 		}
 	}
+	//撤销订座订单
+	
 	/* ===================JSP接口结束======================= */
 }

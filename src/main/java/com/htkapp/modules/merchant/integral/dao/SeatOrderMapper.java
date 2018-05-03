@@ -26,6 +26,10 @@ public interface SeatOrderMapper {
     int updataSeatInfo(String seatName,String orderNumber);
     //根据店铺号以及状态码查询店铺名下未处理的订单
     List<SeatOrder> getSeatOrderListByShopIdAndStatus(String shopId,int status);
+//根据订单号撤销对应的订座订单
+    int deleteSeatOrder(@Param("productIds") List<String> idInts);
+    //根据订单号改变订座订单的状态
+    int updataSeatInfoStatus(@Param("productIds")List<String> idInts);
     /* ========================接口结束======================== */
 
 

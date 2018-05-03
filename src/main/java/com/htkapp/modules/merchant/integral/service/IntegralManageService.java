@@ -49,6 +49,8 @@ public interface IntegralManageService {
     AjaxResponseModel updataSeatInfo(String seatName,String orderNumber);
     //查询座位订单中没有被处理的
     AjaxResponseModel getSeatInfoByStatus();
+    //订座订单撤销操作
+    AjaxResponseModel deleteSeatOrder(String selectedIds);
     /* ====================JSP页面接口结束========================== */
 
 	String uploadNewsContentImg(MultipartFile file);

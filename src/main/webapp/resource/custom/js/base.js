@@ -366,7 +366,7 @@ function bOrderHandle(statusCode, message, soundsUrl_) {
                 playSounds(soundsUrl_ + "resource/custom/sounds/xinDuanXiaoXi.mp3");
                 break;
             case 2:
-                // playSounds(soundsUrl);
+            	playSounds(soundsUrl_ + "resource/custom/sounds/xinDuanXiaoXi.mp3");
                 break;
             case 3:
                 playSounds(soundsUrl_ + "resource/custom/sounds/7815.wav");
@@ -390,15 +390,15 @@ function bOrderHandle(statusCode, message, soundsUrl_) {
             //下单成功
             const soundsUrl = soundsUrl_ + "resource/custom/sounds/xinDuanXiaoXi.mp3";
             url = baseUrl + "/merchant/buffetFood/order/new";
-            title = "自助点餐订单下单成功";
+            title = "新自助点餐订单";
             playSounds(soundsUrl);
             orderPushHint(title, message, url, delay)
         }else if(statusCode === 2){
             //已结算
-            // url = baseUrl + "/mmerchant/buffetFood/order/new";
-            // title = "自助点餐订单已结算";
-            // playSounds(soundsUrl);
-            // orderPushHint(title, message, url, delay)
+        	const soundsUrl = soundsUrl_ + "resource/custom/sounds/xinDuanXiaoXi.mp3";
+        	 url = baseUrl + "/merchant/integral/seatOrder";
+        	 title = "新订座订单";
+        	  orderPushHint(title, message, url, delay)
         }else if(statusCode === 4){
             //催单
             const soundsUrl = soundsUrl_ + "resource/custom/sounds/7815.wav";

@@ -21,9 +21,19 @@
     </select>
     <select id="getSeatOrderByOrderNumberDAO" resultType="SeatOrder">
         select
-        seat_order.order_number, seat_order.seat_count, seat_order.scheduled_time, seat_order.scheduled_time, remarks, seat_order.seat_name, seat_phone,
-        seat_order.status, seat_order.gmt_create as order_time,
-        seat_order.shop_id, shop.shop_name, shop.logo_url
+        seat_order.order_number,
+         seat_order.seat_count,
+          seat_order.scheduled_time, 
+          seat_order.scheduled_time, 
+          remarks, 
+          seat_order.seat_name, 
+          seat_phone,
+        seat_order.status, 
+        seat_order.gmt_create as order_time,
+        seat_order.account_token as accountToken,
+        seat_order.shop_id, 
+        shop.shop_name, 
+        shop.logo_url
         from seat_order left join shop
         on seat_order.shop_id = shop.shop_id
         where seat_order.order_number = #{0}
@@ -154,6 +164,7 @@
     	 <if test="startTime != null and endTime != null">
             and gmt_create between #{startTime} and #{endTime} 
         </if>
+        order by gmt_create DESC
     
     </select>
     <update id="updataSeatInfo">
@@ -162,6 +173,23 @@
     	status =1
     	where  order_number=#{1}
     </update>
+    <delete id="deleteSeatOrder" >
+    	delete from seat_order where 
+    	<foreach collection="productIds" item="each" index="index" open=""
+			separator="or" close="">
+		order_number= #{each}
+		</foreach>
+    </delete>
+    <update id="updataSeatInfoStatus">
+    	update seat_order
+    	set status=2
+    	where
+    	<foreach collection="productIds" item="each" index="index" open=""
+			separator="or" close="">
+		order_number= #{each}
+		</foreach>
+    </update>
+    
     <!-- =====================JSP接口结束============================ -->
 
 </mapper>

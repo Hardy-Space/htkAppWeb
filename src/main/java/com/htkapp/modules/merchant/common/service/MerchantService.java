@@ -76,6 +76,7 @@ public interface MerchantService {
     void buffetFoodOrderReminder(RequestParams params);
     //自助点餐订座处理
     void getSeatOrder(RequestParams params,String startTime,String endTime,Integer pageNum);
+   
     
     /* ===========================JSP页面接口结束============================== */
 }
