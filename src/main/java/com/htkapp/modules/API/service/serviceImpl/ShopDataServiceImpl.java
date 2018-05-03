@@ -673,7 +673,6 @@ public class ShopDataServiceImpl implements ShopDataService {
                 pageNo = (pageNumber - 1) * 8;
             }
             try {
-                //TODO  标记
                 List<OrderCommon> orderCommonList = orderCommonService.getAllOrderList(token, pageNo, pageLimit);
                 if (orderCommonList != null) {
                     for (OrderCommon each : orderCommonList) {

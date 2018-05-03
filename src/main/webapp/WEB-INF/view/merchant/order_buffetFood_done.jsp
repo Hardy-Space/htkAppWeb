@@ -390,7 +390,7 @@ ul {
 											<c:choose>
 												<c:when test="${startTime!=null&&endTime!=null }">
 													<div class="row item col-md-12 page">
-														<p>一共${page.pages}页</p>
+														<p>当前${page.pageNum}页，一共${page.pages}页</p>
 														<a href="done?pageNum=${page.firstPage}&startTime=${startTime }&endTime=${endTime}">第一页</a> <a
 															href="done?pageNum=${page.nextPage}&startTime=${startTime }&endTime=${endTime}">下一页</a> <a
 															href="done?pageNum=${page.prePage}&startTime=${startTime }&endTime=${endTime}">上一页</a> <a
@@ -399,7 +399,7 @@ ul {
 												</c:when>
 												<c:otherwise>
 													<div class="row item col-md-12 page">
-														<p>一共${page.pages}页</p>
+														<p>当前${page.pageNum}页，一共${page.pages}页</p>
 														<a href="done?pageNum=${page.firstPage}">第一页</a> <a
 															href="done?pageNum=${page.nextPage}">下一页</a> <a
 															href="done?pageNum=${page.prePage}">上一页</a> <a
@@ -487,7 +487,9 @@ ul {
 	layui.use([ 'element', 'util', 'layer', 'laydate', 'laypage' ], function() {
 		var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
 		var date = layui.laydate;
-		date.render({
+		var page = layui.laypage;
+
+        date.render({
 			elem : '#date',
 			theme : '#20A0FF',
 			trigger : 'click',

@@ -776,6 +776,9 @@ public class MerchantServiceImpl implements MerchantService {
 		//根据商铺Token查找未结算订单列表
 //		int pageNumber = Globals.DEFAULT_PAGE_NO;
 		int pageLimit = Globals.DEFAULT_PAGE_LIMIT;
+		if(pageNum==0) {
+			pageNum=1;
+		}
 		try {
 			String token = OtherUtils.getLoginUserByRequest().getToken();
 			PageHelper.startPage(pageNum, pageLimit);
