@@ -58,6 +58,9 @@
                                                     <%-->${pageInfo.pageNum == 1 ? i.index+1 : ((pageInfo.pageNum - 1) * 10) + i.index +1}--%>
                                                 #<i>${each.allNumber}</i><span>用户已确认收餐</span>
                                             </div>
+                                            <div class="remark">
+                                                <i>  备注：${each.remark}</i>
+                                            </div>
                                             <div class="userInfo">
                                                 <div class="uname">${fn:substring(each.receiptName,0,1)}（${each.sex == 0 ? "女士" : "先生"}）<a
                                                         href="javascript:void(0)" class="lookHistoryOrder">查看用户历史订单

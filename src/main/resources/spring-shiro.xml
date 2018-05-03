@@ -14,7 +14,7 @@
 	<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
 		<constructor-arg name="name" value="hui_tou_ke" />
 		<property name="httpOnly" value="true" />
-		<!--cookie的有效时间 -->
+		<!--cookie的有效时间,-1为关闭浏览器失效 -->
 		<property name="maxAge" value="-1" />
 	</bean>
 
@@ -88,8 +88,9 @@
 		<!--<property name="globalSessionTimeout" value="18000000" />-->
 		<!--@author 马鹏昊-->
 		<!--@desc 设置永不超时-->
-		<property name="globalSessionTimeout" value="-1000" />
-		<!--<property name="globalSessionTimeout" value="60000" />-->
+		<!--<property name="globalSessionTimeout" value="-1000" />-->
+		<!--配置12个小时失效-->
+		<property name="globalSessionTimeout" value="43200000" />
 		<property name="sessionDAO" ref="customShiroSessionDAO" />
 		<!-- session 监听，可以多个。 -->
 		<property name="sessionListeners">
@@ -98,7 +99,7 @@
 			</list>
 		</property>
 		<!--配置12个小时一检查-->
-		<property name="sessionValidationInterval" value="43200000" />
+		<property name="sessionValidationInterval" value="43210000" />
 		<!--<property name="sessionValidationInterval" value="65000" />-->
 		<!-- 间隔多少时间检查，不配置是60分钟 -->
 		<!--<property name="sessionValidationScheduler" ref="sessionValidationScheduler"/> -->
