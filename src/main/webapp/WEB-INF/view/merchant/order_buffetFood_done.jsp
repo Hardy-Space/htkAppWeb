@@ -537,7 +537,6 @@ ul {
 		})
 	})
 	function updataPrintArea() {
-		debugger
 		var ele = $(curClickEle).parent().parent().parent();
 		curClickEleItemList = new Array();
 		//商品条目信息
@@ -562,6 +561,7 @@ ul {
 		var orderAmountEle = $(curClickEle).attr("data-orderAmount");
 		$("#orderAmount").html("¥" + orderAmountEle)
 		var productItems = $("#orderProduct")
+		productItems.empty();
 		var myDate = new Date();
 		$("#nowTime").html(
 				"时间:<br />" + myDate.toLocaleDateString()

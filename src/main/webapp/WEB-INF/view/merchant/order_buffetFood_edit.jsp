@@ -810,6 +810,7 @@
           var orderNumberEle=$(curClickEle).attr("data-orderNumber");
           $("#orderNumber").html("订单编号:<br />"+orderNumberEle)
           var productItems=$("#orderProduct")
+          productItems.empty();
           var myDate = new Date();    
           $("#nowTime").html("时间:<br />"+myDate.toLocaleDateString()+myDate.toLocaleTimeString())
           $(curClickEleItemList).each(function (index, item) {

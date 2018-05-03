@@ -928,6 +928,7 @@ function updataPrintArea(){
        var orderAmountEle=$("#myModal").find(".xiaojie.modelWindow > b").html();
        $("#orderAmount").html("¥"+orderAmountEle)
        var productItems=$("#orderProduct")
+       productItems.empty();
        var myDate = new Date();    
        $("#nowTime").html("时间:<br />"+myDate.toLocaleDateString()+myDate.toLocaleTimeString())
        $(curClickEleItemList).each(function (index, item) {
