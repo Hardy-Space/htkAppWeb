@@ -913,8 +913,8 @@ public class AccountServiceImpl implements AccountServiceI {
                  */
                 takeoutOrderService.updateReminderStateByOrderId(orderRecord.getId(), 0);
 
-                //改变记录状态为已入账(2为已入账)
-                billRecordService.updateBillStatus(accountShop.getToken(), orderNumber, "2");
+                //改变记录状态为已入账(2为已入账，备注修改2为未入账，1为已入账)
+                billRecordService.updateBillStatus(accountShop.getToken(), orderNumber, "1");
                 //TODO 记录收入记录
                 BillBalanceSheet balanceSheet = new BillBalanceSheet();
                 balanceSheet.setSumAmount(orderRecord.getOrderAmount());
