@@ -19,7 +19,7 @@ var goEasyKey = getGoEasyKey();
 
 //返回goEasy_key值
 function getGoEasyKey() {
-    return "BS-3c634c020551453aa330033c6c95e3ef";
+    return "BS-6fa879f9547b4061bcf7932c2613b26c";
 }
 
 //适应IE9浏览器中placeholder显示问题

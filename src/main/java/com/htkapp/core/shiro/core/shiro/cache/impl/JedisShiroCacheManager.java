@@ -14,7 +14,9 @@ public class JedisShiroCacheManager implements ShiroCacheManager {
     public <K, V> Cache<K, V> getCache(String name) {
         return new JedisShiroCache<K, V>(name, getJedisManager());
     }
-
+    /**
+     * 关闭redis的链接
+     */
     @Override
     public void destroy() {
     	//如果和其他系统，或者应用在一起就不能关闭

@@ -46,7 +46,7 @@ public final class Globals {
     //二维码加密码key
     public static final String encryptionKey = "yinqilei_ug@126.";
     //goEasy appKey
-    public static final String goEasyKey = "BC-d7651b210fdf49e094722a192278aa37";
+    public static final String goEasyKey = "BC-71831bbaf07c4ecba5a026bec6cc5f4e";
     //默认外卖订单下单成功状态
     public static final int DEFAULT_T_OrderState = 1;
     //默认团购订单下单成功状态
